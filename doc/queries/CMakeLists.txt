@@ -22,6 +22,7 @@ SET(LOCAL_FILES
     doc-pgr_bellman_ford.queries
     doc-pgr_biconnectedComponents.queries
     doc-pgr_boykovKolmogorov.queries
+    doc-pgr_breadthFirstSearch.queries
     doc-pgr_bridges.queries
     doc-pgr_connectedComponents.queries
     doc-pgr_createTopology.queries
