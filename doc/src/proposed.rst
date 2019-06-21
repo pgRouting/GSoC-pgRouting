@@ -163,6 +163,8 @@ Experimental Functions
 
 .. rubric:: Others
 
+- :doc:`pgr_breadthFirstSearch`
+
 .. rubric:: VRP
 
 - :doc:`pgr_gsoc_vrppdtw`
