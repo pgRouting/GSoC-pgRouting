@@ -64,6 +64,7 @@ SET(LOCAL_FILES
     doc-pickDeliverEuclidean.queries
     doc-pickDeliver.queries
     doc-stoerWagner.queries
+    doc-topologicalSort.queries
     doc-trsp.queries
     proof_of_concept.queries
     )
