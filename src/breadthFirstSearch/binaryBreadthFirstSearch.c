@@ -39,10 +39,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/edges_input.h"
 #include "c_common/arrays_input.h"
 
-#include "drivers/binaryBreadthFirstSearch/binaryBreadthFirstSearch_driver.h"
+#include "drivers/breadthFirstSearch/binaryBreadthFirstSearch_driver.h"
 
-PGDLLEXPORT Datum binaryBreadthFirstSearch(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(binaryBreadthFirstSearch);
+PGDLLEXPORT Datum _pgr_binarybreadthfirstsearch(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_binarybreadthfirstsearch);
 
 static void
 process(
@@ -134,7 +134,7 @@ process(
     pgr_SPI_finish();
 }
 
-PGDLLEXPORT Datum binaryBreadthFirstSearch(PG_FUNCTION_ARGS)
+PGDLLEXPORT Datum _pgr_binarybreadthfirstsearch(PG_FUNCTION_ARGS)
 {
     FuncCallContext *funcctx;
     TupleDesc tuple_desc;

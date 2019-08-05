@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _binaryBreadthFirstSearch.sql
+File: _edwardMoore.sql
 
 Copyright (c) 2019 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,11 +26,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ********************************************************************PGR-GNU*/
 -------------------------
 -------------------------
--- _pgr_binaryBreadthFirstSearch
+-- _pgr_edwardMoore
 -------------------------
 -------------------------
 
-CREATE OR REPLACE FUNCTION _pgr_binaryBreadthFirstSearch(
+CREATE OR REPLACE FUNCTION _pgr_edwardMoore(
     edges_sql TEXT,
     from_vids ANYARRAY,
     to_vids   ANYARRAY,
@@ -46,11 +46,11 @@ CREATE OR REPLACE FUNCTION _pgr_binaryBreadthFirstSearch(
     OUT agg_cost FLOAT)
 
 RETURNS SETOF RECORD AS
-'MODULE_PATHNAME', 'binaryBreadthFirstSearch'
+'MODULE_PATHNAME'
 LANGUAGE c IMMUTABLE STRICT;
 
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_binaryBreadthFirstSearch(TEXT, ANYARRAY, ANYARRAY, BOOLEAN)
+COMMENT ON FUNCTION _pgr_edwardMoore(TEXT, ANYARRAY, ANYARRAY, BOOLEAN)
 IS 'pgRouting internal function';

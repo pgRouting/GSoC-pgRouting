@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: binaryBreadthFirstSearch_driver.cpp
+File: edwardMoore_driver.cpp
 
 Generated with Template by:
 Copyright (c) 2019 pgRouting developers
@@ -28,25 +28,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-#include "drivers/binaryBreadthFirstSearch/binaryBreadthFirstSearch_driver.h"
+#include "drivers/bellman_ford/edwardMoore_driver.h"
 
 #include <sstream>
 #include <deque>
 #include <vector>
 #include <algorithm>
 
-#include "binaryBreadthFirstSearch/pgr_binaryBreadthFirstSearch.hpp"
+#include <set>
+#include <functional>
+#include <limits>
+#include <numeric>
+
+#include "bellman_ford/pgr_edwardMoore.hpp"
+
+
+
+
+#include "cpp_common/basePath_SSEC.hpp"
+#include "cpp_common/pgr_base_graph.hpp"
+
 
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
+
 template < class G >
 std::deque< Path >
-pgr_binaryBreadthFirstSearch(
+pgr_edwardMoore(
         G &graph,
         std::vector < int64_t > sources,
         std::vector < int64_t > targets) {
-
     std::sort(sources.begin(), sources.end());
     sources.erase(
             std::unique(sources.begin(), sources.end()),
@@ -57,57 +69,16 @@ pgr_binaryBreadthFirstSearch(
             std::unique(targets.begin(), targets.end()),
             targets.end());
 
-    pgrouting::functions::Pgr_binaryBreadthFirstSearch< G > fn_binaryBreadthFirstSearch;
-    auto paths = fn_binaryBreadthFirstSearch.binaryBreadthFirstSearch(
+    pgrouting::functions::Pgr_edwardMoore< G > fn_edwardMoore;
+    auto paths = fn_edwardMoore.edwardMoore(
             graph,
             sources, targets);
 
     return paths;
 }
 
-const size_t MAX_UNIQUE_EDGE_COSTS = 2;
-const std::string COST_ERR_MSG = 
-    "Graph Condition Failed: Graph should have atmost two distinct non-negative edge costs! If there are exactly two distinct edge costs, one of them must equal zero!";
-template < class G >
-bool
-costCheck(G &graph) 
-{
-    typedef typename G::E E;
-    typedef typename G::E_i E_i;
-
-    auto edges = boost::edges(graph.graph);
-    E e;
-    E_i out_i;
-    E_i out_end;
-    std::set<double> cost_set;
-    for (boost::tie(out_i, out_end) = edges;
-            out_i != out_end; ++out_i)
-    {
-
-        e = *out_i;
-        cost_set.insert(graph[e].cost);
-
-        if (cost_set.size() > MAX_UNIQUE_EDGE_COSTS)
-        {
-            return false;
-        }
-    }
-
-    if (cost_set.size() == 2)
-    {
-        if (*cost_set.begin() != 0.0)
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-
-
 void
-do_pgr_binaryBreadthFirstSearch(
+do_pgr_edwardMoore(
         pgr_edge_t  *data_edges,
         size_t total_edges,
         int64_t  *start_vidsArr,
@@ -135,7 +106,7 @@ do_pgr_binaryBreadthFirstSearch(
 
         graphType gType = directed? DIRECTED: UNDIRECTED;
 
-        // log << "Inserting vertices into a c++ vector structure";
+        log << "Inserting vertices into a c++ vector structure";
         std::vector<int64_t>
             start_vertices(start_vidsArr, start_vidsArr + size_start_vidsArr);
         std::vector< int64_t >
@@ -144,37 +115,22 @@ do_pgr_binaryBreadthFirstSearch(
 
         std::deque< Path >paths;
         if (directed) {
-            // log << "\nWorking with directed Graph";
+            log << "\nWorking with directed Graph";
             pgrouting::DirectedGraph digraph(gType);
             digraph.insert_edges(data_edges, total_edges);
-
-            if(!(costCheck(digraph))){
-                err << COST_ERR_MSG;
-                *err_msg = pgr_msg(err.str().c_str());
-                return;
-            }
-            
-            paths = pgr_binaryBreadthFirstSearch(
+            paths = pgr_edwardMoore(
                 digraph,
                 start_vertices,
                 end_vertices);
-
         } else {
-            // log << "\nWorking with Undirected Graph";
+            log << "\nWorking with Undirected Graph";
             pgrouting::UndirectedGraph undigraph(gType);
             undigraph.insert_edges(data_edges, total_edges);
 
-            if(!(costCheck(undigraph))){
-                err << COST_ERR_MSG;
-                *err_msg = pgr_msg(err.str().c_str());
-                return;
-            }
-
-            paths = pgr_binaryBreadthFirstSearch(
+            paths = pgr_edwardMoore(
                 undigraph,
                 start_vertices,
                 end_vertices);
-
         }
 
         size_t count(0);
