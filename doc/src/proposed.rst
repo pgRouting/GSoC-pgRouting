@@ -149,7 +149,10 @@ Experimental Functions
 .. rubric:: Shortest Path Algorithms
 
 - :doc:`pgr_bellmanFord`
+- :doc:`pgr_binaryBreadthFirstSearch`
+- :doc:`pgr_breadthFirstSearch`
 - :doc:`pgr_dagShortestPath`
+- :doc:`pgr_edwardMoore`
 - :doc:`pgr_stoerWagner`
 - :doc:`pgr_turnRestrictedPath`
 
@@ -157,7 +160,10 @@ Experimental Functions
   :hidden:
 
   pgr_bellmanFord
+  pgr_binaryBreadthFirstSearch
+  pgr_breadthFirstSearch
   pgr_dagShortestPath
+  pgr_edwardMoore
   pgr_stoerWagner
   pgr_turnRestrictedPath
 
