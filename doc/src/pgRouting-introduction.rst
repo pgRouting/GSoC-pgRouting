@@ -48,8 +48,7 @@ This Release Contributors
 Individuals (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Gudesa Venkata Sai Akhil
-Virginia Vergara
+Gudesa Venkata Sai Akhil, Virginia Vergara
 
 And all the people that give us a little of their time making comments, finding issues, making pull requests etc.
 
