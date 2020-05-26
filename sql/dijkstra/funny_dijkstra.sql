@@ -52,6 +52,7 @@ COST 100
 ROWS 1000;
 
 
+<<<<<<< HEAD
 -- ONE to MANY
 CREATE OR REPLACE FUNCTION pgr_funnyDijkstra(
     TEXT,     -- edges_sql (required)
@@ -141,6 +142,7 @@ IS 'pgr_funnyDijkstra(One to One)
 - Documentation:
    - ${PGROUTING_DOC_LINK}/pgr_funnyDijkstra.html
 ';
+<<<<<<< HEAD
 
 COMMENT ON FUNCTION pgr_funnyDijkstra(TEXT, BIGINT, ANYARRAY, BOOLEAN)
 IS 'pgr_funnyDijkstra(One to Many)
