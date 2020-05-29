@@ -28,19 +28,46 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/depthFirstSearch/depthFirstSearch_driver.h"
 
-#include <sstream>
-#include <deque>
 #include <vector>
+#include <algorithm>
 #include <string>
 
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
-#include "spanningTree/pgr_prim.hpp"
-#include "spanningTree/details.hpp"
+#include "depthFirstSearch/pgr_depthFirstSearch.hpp"
 
 
-// TODO(krashish8): Use the data_edges, max_depth and directed parameter below.
+/**********************************************************************/
+/*
+pgr_depthFirstSearch(
+    edges_sql TEXT,
+    root_vids ANYARRAY,
+    max_depth BIGINT DEFAULT 9223372036854775807,
+    directed BOOLEAN DEFAULT true
+);
+*/
+/**********************************************************************/
+
+template < class G >
+std::vector<pgr_mst_rt>
+pgr_depthFirstSearch(
+        G &graph,
+        std::vector < int64_t > roots,
+        int64_t max_depth,
+        std::string &log) {
+    std::sort(roots.begin(), roots.end());
+    roots.erase(
+            std::unique(roots.begin(), roots.end()),
+            roots.end());
+
+    pgrouting::functions::Pgr_depthFirstSearch< G > fn_depthFirstSearch;
+    auto results = fn_depthFirstSearch.depthFirstSearch(
+            graph, roots, max_depth);
+    log += fn_depthFirstSearch.get_log();
+    return results;
+}
+
 void
 do_pgr_depthFirstSearch(
         pgr_edge_t  *data_edges,
@@ -72,6 +99,31 @@ do_pgr_depthFirstSearch(
         std::vector<int64_t> roots(rootsArr, rootsArr + size_rootsArr);
 
         std::vector<pgr_mst_rt> results;
+
+        graphType gType = directed ? DIRECTED : UNDIRECTED;
+
+        std::string logstr;
+        if (directed) {
+            log << "Working with directed Graph\n";
+            pgrouting::DirectedGraph digraph(gType);
+            digraph.insert_edges(data_edges, total_edges);
+            results = pgr_depthFirstSearch(
+                    digraph,
+                    roots,
+                    max_depth,
+                    logstr);
+        } else {
+            log << "Working with Undirected Graph\n";
+            pgrouting::UndirectedGraph undigraph(gType);
+            undigraph.insert_edges(data_edges, total_edges);
+
+            results = pgr_depthFirstSearch(
+                    undigraph,
+                    roots,
+                    max_depth,
+                    logstr);
+        }
+        log << logstr;
 
 #if 0
         pgrouting::UndirectedGraph undigraph(UNDIRECTED);
