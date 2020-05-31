@@ -29,57 +29,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 #ifndef INCLUDE_LTDTREE_PGR_LTDTREE_HPP
-#define INCLUDE_LTDTREE_PGR_LTDTREE_HPP
-#pragma once
-#include <vector>
-
-#include "cpp_common/pgr_base_graph.hpp"
-#include "cpp_common/pgr_messages.h"
-#include <iostream>
-#include <algorithm>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/dominator_tree.hpp>
-#include <boost/property_map/property_map.hpp>
-#include <boost/property_map/vector_property_map.hpp>
-#include <boost/type_traits.hpp>
-using namespace boost;
-using namespace  std;
-
-namespace pgrouting {
-    namespace functions {
-
-        template<class G>
-        class Pgr_LTDTree : public pgrouting::Pgr_messages {
-        public:
-            typedef typename G::V Vertex;
-            typedef typename G::E_i E_i;
-         
-            typedef pair<int64_t , int64_t> edge; //For making edge list to be used in extract vertices
-            vector<edge> edgeList;
-            std::vector<pgr_ltdtree_rt> results;
-            
-
-            std::vector <pgr_ltdtree_rt> pgr_ltdtree(
-                    G &graph,
-                    int64_t root
-                    ){
-                   const int64_t numOfVertices=graph.num_vertices();
-                  
-               
-               
-                   // Lengauer-Tarjan dominator tree algorithm
-                   auto v_root(graph.get_V(root));
-                  vector<Vertex> domTreePredVector =  vector<Vertex>(num_vertices(graph.graph));
-                  auto domTreePredMap =
-                           make_iterator_property_map(domTreePredVector.begin(), boost::get(boost::vertex_index, graph.graph));
-                   
-                   lengauer_tarjan_dominator_tree(graph.graph, v_root, domTreePredMap);
+#ifndef INCLUDE_LTDTREE_PGR_LTDTREE_HPP
 
 
 
-                return results;
-            }
-        };
-    }
-}
+
 #endif  // INCLUDE_LTDTREE_PGR_LTDTREE_HPP
