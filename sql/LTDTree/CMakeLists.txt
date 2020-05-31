@@ -1,7 +1,7 @@
 
 SET(LOCAL_FILES
-    _LTDTree.sql
     LTDTree.sql
+    _LTDTree.sql
     )
 
 foreach (f ${LOCAL_FILES})

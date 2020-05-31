@@ -27,22 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 ---------------
--- _pgr_lengauer_tarjan_dominator_tree
+-- pgr_LTDTree
 ---------------
-CREATE OR REPLACE FUNCTION _pgr_lengauer_tarjan_dominator_tree (
-    edges_sql TEXT, -- edges_sql (required)
-    root_vid BIGINT , -- vertex (required)
-    OUT seq integer,
-    OUT vid BIGINT,
-    OUT idom BIGINT)
 
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE c VOLATILE STRICT;
-
--- COMMENTS
-
-
-COMMENT ON FUNCTION _pgr_lengauer_tarjan_dominator_tree (TEXT,BIGINT)
-IS 'pgRouting internal function';
 
