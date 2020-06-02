@@ -1,8 +1,15 @@
 /*PGR-GNU*****************************************************************
+<<<<<<< HEAD
 File: pgr_ltdtree_rt.h
 
 Copyright (c) 2020 Prakash Tiwari
 Mail: 85prakash2017@gmail.com
+=======
+File: pgr_kruskal_t.h
+
+Copyright (c) 2015 Aditya Pratap Singh
+Mail: adityapratap.singh28@gmail.com
+>>>>>>> [LTDTRee] result tuple struct
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -22,8 +29,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 /*! @file */
 
-#ifndef INCLUDE_C_TYPES_PGR_LTDTREE_RT_H_
-#define INCLUDE_C_TYPES_PGR_LTDTREE_RT_H_
+#ifndef INCLUDE_C_TYPES_PGR_MST_RT_H_
+#define INCLUDE_C_TYPES_PGR_MST_RT_H_
 #pragma once
 
 /* for int64_t */
@@ -34,11 +41,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #endif
 
 typedef struct {
-    //int64_t seq;
-    int64_t vid;
-    int64_t idom;
-    //int64_t sdom;
-
+    int64_t from_v;
+    int64_t depth;
+    int64_t node;
+    int64_t edge;
+    double cost;
+    double agg_cost;
 } pgr_ltdtree_rt;
 
 #endif  // INCLUDE_C_TYPES_PGR_MST_RT_H_
