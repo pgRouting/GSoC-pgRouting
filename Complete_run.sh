@@ -60,7 +60,7 @@ cd build/
 # with developers documentation
 #cmake  -DWITH_DOC=ON -DBUILD_DOXY=ON ..
 
-cmake  -DPOSTGRESQL_BIN=${PGBIN} -DWITH_DOC=ON -DBUILD_DOXY=ON  -DBUILD_LATEX=ON  -DCMAKE_BUILD_TYPE=Debug ..
+cmake..
 
 make -j 4
 sudo make install
