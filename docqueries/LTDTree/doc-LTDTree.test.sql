@@ -1,3 +1,7 @@
-\echo -- q1
-   select * from pgr_lengauer_tarjan_dominator_tree($$select * from edge_table$$,1);
-\echo -- q2
+\echo --q1
+
+   SELECT * FROM pgr_LTDTree(
+     'SELECT id, source, target, cost, reverse_cost FROM edge_table',
+      1
+   );
+\echo --q2
