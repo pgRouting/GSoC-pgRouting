@@ -52,6 +52,7 @@ Aasheesh Tiwari, Aditya Pratap Singh, Adrien Berchet,
 Cayetano Benavent,
 Gudesa Venkata Sai Akhil,
 Hang Wu,
+Himanshu Raj,
 Imre Samu,
 Maoguang Wang, Martha Vergara,
 Mohamed Bakli,
@@ -122,4 +123,3 @@ More Information
 * PostGIS extension at the PostGIS project web site https://postgis.net.
 * Boost C++ source libraries at https://www.boost.org.
 * The Migration guide can be found at https://github.com/pgRouting/pgrouting/wiki/Migration-Guide.
-
