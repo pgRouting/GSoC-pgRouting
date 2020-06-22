@@ -57,6 +57,7 @@ Individuals (in alphabetical order)
 
 Cayetano Benavent,
 Daniel Kastl,
+Himanshu Raj,
 Martha Vergara,
 Regina Obe,
 Virginia Vergara
@@ -124,4 +125,3 @@ More Information
 * PostGIS extension at the PostGIS project web site https://postgis.net.
 * Boost C++ source libraries at https://www.boost.org.
 * The Migration guide can be found at https://github.com/pgRouting/pgrouting/wiki/Migration-Guide.
-
