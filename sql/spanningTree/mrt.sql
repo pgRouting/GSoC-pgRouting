@@ -27,38 +27,5 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 ---------------
--- pgr_two_graphs_common_spanning_trees
+-- pgr_mrt
 ---------------
-CREATE OR REPLACE FUNCTION pgr_two_graphs_common_spanning_trees(
-    edges_sql1 TEXT, -- edges_sql1 (required)
-    edges_sql2 TEXT, -- edges_sql2 (required)
-    directed BOOLEAN DEFAULT true,
-
-    OUT seq integer,
-    OUT tree_edges BIGINT[] --contains list of edegs of spanning tree
-    )
-RETURNS SETOF RECORD AS
-$BODY$
-BEGIN
-
-    RETURN QUERY
-    SELECT *
-    FROM _pgr_two_graphs_common_spanning_trees(_pgr_get_statement($1),_pgr_get_statement($2),$3);
-END;
-$BODY$
-LANGUAGE  plpgsql VOLATILE STRICT;
-
-
--- COMMENTS
-
-
-COMMENT ON FUNCTION pgr_two_graphs_common_spanning_trees(TEXT,TEXT,BOOLEAN)
-IS 'pgr_mrt
-- EXPERIMENTAL
-- Directed graph
-- Parameters:
-  - edges SQL with columns: id, source, target, cost [,reverse_cost]
-- Documentation:
-  - ${PGROUTING_DOC_LINK}/pgr_LTDTree.html
-';
-
