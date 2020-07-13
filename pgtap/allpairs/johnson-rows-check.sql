@@ -31,7 +31,7 @@ SELECT * FROM pgr_johnson(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
-    false
+    directed => false
 );
 
 PREPARE descendingOrderUndirected AS
@@ -39,7 +39,7 @@ SELECT * FROM pgr_johnson(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
-    false
+    directed => false
 );
 
 PREPARE randomOrderUndirected AS
@@ -47,7 +47,7 @@ SELECT * FROM pgr_johnson(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
-    false
+    directed => false
 );
 
 SELECT SETSEED(1);
