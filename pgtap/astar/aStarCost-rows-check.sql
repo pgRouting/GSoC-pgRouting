@@ -1,6 +1,6 @@
 \i setup.sql
 
-SELECT plan(60);
+SELECT plan(20);
 
 
 -- Check whether the same set of rows are returned always
