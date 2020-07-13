@@ -6,7 +6,7 @@ SELECT plan(20);
 -- Check whether the same set of rows are returned always
 
 PREPARE expectedOutputDirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCost(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY id',
@@ -14,7 +14,7 @@ SELECT * FROM pgr_bdAstar(
 );
 
 PREPARE descendingOrderDirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCost(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY id DESC',
@@ -22,7 +22,7 @@ SELECT * FROM pgr_bdAstar(
 );
 
 PREPARE randomOrderDirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCost(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY RANDOM()',
@@ -30,7 +30,7 @@ SELECT * FROM pgr_bdAstar(
 );
 
 PREPARE expectedOutputUndirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCost(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY id',
@@ -39,7 +39,7 @@ SELECT * FROM pgr_bdAstar(
 );
 
 PREPARE descendingOrderUndirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCost(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY id DESC',
@@ -48,7 +48,7 @@ SELECT * FROM pgr_bdAstar(
 );
 
 PREPARE randomOrderUndirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCost(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY RANDOM()',

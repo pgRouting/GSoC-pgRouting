@@ -6,53 +6,53 @@ SELECT plan(20);
 -- Check whether the same set of rows are returned always
 
 PREPARE expectedOutputDirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCostMatrix(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY id',
-    ARRAY[7, 2], ARRAY[3, 12]
+    (SELECT array_agg(id) FROM edge_table_vertices_pgr)
 );
 
 PREPARE descendingOrderDirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCostMatrix(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY id DESC',
-    ARRAY[7, 2], ARRAY[3, 12]
+    (SELECT array_agg(id) FROM edge_table_vertices_pgr)
 );
 
 PREPARE randomOrderDirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCostMatrix(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY RANDOM()',
-    ARRAY[7, 2], ARRAY[3, 12]
+    (SELECT array_agg(id) FROM edge_table_vertices_pgr)
 );
 
 PREPARE expectedOutputUndirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCostMatrix(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY id',
-    ARRAY[7, 2], ARRAY[3, 12],
+    (SELECT array_agg(id) FROM edge_table_vertices_pgr),
     directed => false
 );
 
 PREPARE descendingOrderUndirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCostMatrix(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY id DESC',
-    ARRAY[7, 2], ARRAY[3, 12],
+    (SELECT array_agg(id) FROM edge_table_vertices_pgr),
     directed => false
 );
 
 PREPARE randomOrderUndirected AS
-SELECT * FROM pgr_bdAstar(
+SELECT * FROM pgr_bdAstarCostMatrix(
     'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
     FROM edge_table
     ORDER BY RANDOM()',
-    ARRAY[7, 2], ARRAY[3, 12],
+    (SELECT array_agg(id) FROM edge_table_vertices_pgr),
     directed => false
 );
 
