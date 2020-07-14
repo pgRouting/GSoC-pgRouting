@@ -7,7 +7,7 @@ SELECT plan(20);
 
 PREPARE expectedOutputDirected AS
 SELECT * FROM pgr_bdDijkstraCostMatrix(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
     (SELECT array_agg(id) FROM edge_table_vertices_pgr)
@@ -15,7 +15,7 @@ SELECT * FROM pgr_bdDijkstraCostMatrix(
 
 PREPARE descendingOrderDirected AS
 SELECT * FROM pgr_bdDijkstraCostMatrix(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
     (SELECT array_agg(id) FROM edge_table_vertices_pgr)
@@ -23,7 +23,7 @@ SELECT * FROM pgr_bdDijkstraCostMatrix(
 
 PREPARE randomOrderDirected AS
 SELECT * FROM pgr_bdDijkstraCostMatrix(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
     (SELECT array_agg(id) FROM edge_table_vertices_pgr)
@@ -31,7 +31,7 @@ SELECT * FROM pgr_bdDijkstraCostMatrix(
 
 PREPARE expectedOutputUndirected AS
 SELECT * FROM pgr_bdDijkstraCostMatrix(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
     (SELECT array_agg(id) FROM edge_table_vertices_pgr),
@@ -40,7 +40,7 @@ SELECT * FROM pgr_bdDijkstraCostMatrix(
 
 PREPARE descendingOrderUndirected AS
 SELECT * FROM pgr_bdDijkstraCostMatrix(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
     (SELECT array_agg(id) FROM edge_table_vertices_pgr),
@@ -49,7 +49,7 @@ SELECT * FROM pgr_bdDijkstraCostMatrix(
 
 PREPARE randomOrderUndirected AS
 SELECT * FROM pgr_bdDijkstraCostMatrix(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
     (SELECT array_agg(id) FROM edge_table_vertices_pgr),

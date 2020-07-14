@@ -7,7 +7,7 @@ SELECT plan(20);
 
 PREPARE expectedOutputDirected AS
 SELECT * FROM pgr_bdDijkstraCost(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
     ARRAY[2, 7], ARRAY[3, 11]
@@ -15,7 +15,7 @@ SELECT * FROM pgr_bdDijkstraCost(
 
 PREPARE descendingOrderDirected AS
 SELECT * FROM pgr_bdDijkstraCost(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
     ARRAY[2, 7], ARRAY[3, 11]
@@ -23,7 +23,7 @@ SELECT * FROM pgr_bdDijkstraCost(
 
 PREPARE randomOrderDirected AS
 SELECT * FROM pgr_bdDijkstraCost(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
     ARRAY[2, 7], ARRAY[3, 11]
@@ -31,7 +31,7 @@ SELECT * FROM pgr_bdDijkstraCost(
 
 PREPARE expectedOutputUndirected AS
 SELECT * FROM pgr_bdDijkstraCost(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
     ARRAY[2, 7], ARRAY[3, 11],
@@ -40,7 +40,7 @@ SELECT * FROM pgr_bdDijkstraCost(
 
 PREPARE descendingOrderUndirected AS
 SELECT * FROM pgr_bdDijkstraCost(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
     ARRAY[2, 7], ARRAY[3, 11],
@@ -49,7 +49,7 @@ SELECT * FROM pgr_bdDijkstraCost(
 
 PREPARE randomOrderUndirected AS
 SELECT * FROM pgr_bdDijkstraCost(
-    'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2
+    'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
     ARRAY[2, 7], ARRAY[3, 11],
