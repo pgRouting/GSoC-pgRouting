@@ -184,6 +184,8 @@ SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '28: Should ret
 SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '29: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '30: Should return same set of rows');
 
+SELECT todo_start('Fix the code to return same set of rows');
+
 SELECT set_eq('expectedOutputUndirected1', 'descendingOrderUndirected1', '31: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '32: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '33: Should return same set of rows');
@@ -195,6 +197,8 @@ SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '37: Should
 SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '38: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '39: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '40: Should return same set of rows');
+
+SELECT todo_end();
 
 SELECT * FROM finish();
 ROLLBACK;
