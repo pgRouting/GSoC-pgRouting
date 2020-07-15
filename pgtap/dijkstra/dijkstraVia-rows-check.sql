@@ -121,7 +121,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
-    ARRAY[7, 3, 2, 12, 7]
+    ARRAY[7, 3, 2, 12, 7],
+    directed => false
 );
 
 PREPARE descendingOrderUndirected1 AS
@@ -129,7 +130,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
-    ARRAY[7, 3, 2, 12, 7]
+    ARRAY[7, 3, 2, 12, 7],
+    directed => false
 );
 
 PREPARE randomOrderUndirected1 AS
@@ -137,7 +139,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
-    ARRAY[7, 3, 2, 12, 7]
+    ARRAY[7, 3, 2, 12, 7],
+    directed => false
 );
 
 -- Not strict, Not Allowed U turn
@@ -147,7 +150,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
-    ARRAY[7, 3, 2, 12, 7], U_turn_on_edge => false
+    ARRAY[7, 3, 2, 12, 7], U_turn_on_edge => false,
+    directed => false
 );
 
 PREPARE descendingOrderUndirected2 AS
@@ -155,7 +159,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
-    ARRAY[7, 3, 2, 12, 7], U_turn_on_edge => false
+    ARRAY[7, 3, 2, 12, 7], U_turn_on_edge => false,
+    directed => false
 );
 
 PREPARE randomOrderUndirected2 AS
@@ -163,7 +168,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
-    ARRAY[7, 3, 2, 12, 7], U_turn_on_edge => false
+    ARRAY[7, 3, 2, 12, 7], U_turn_on_edge => false,
+    directed => false
 );
 
 -- Strict, Allowed U turn
@@ -173,7 +179,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
-    ARRAY[7, 3, 2, 12, 7], strict => false
+    ARRAY[7, 3, 2, 12, 7], strict => false,
+    directed => false
 );
 
 PREPARE descendingOrderUndirected3 AS
@@ -181,7 +188,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
-    ARRAY[7, 3, 2, 12, 7], strict => false
+    ARRAY[7, 3, 2, 12, 7], strict => false,
+    directed => false
 );
 
 PREPARE randomOrderUndirected3 AS
@@ -189,7 +197,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
-    ARRAY[7, 3, 2, 12, 7], strict => false
+    ARRAY[7, 3, 2, 12, 7], strict => false,
+    directed => false
 );
 
 -- Strict, Not allowed U turn
@@ -199,7 +208,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
-    ARRAY[7, 3, 2, 12, 7], strict => false, U_turn_on_edge => false
+    ARRAY[7, 3, 2, 12, 7], strict => false, U_turn_on_edge => false,
+    directed => false
 );
 
 PREPARE descendingOrderUndirected4 AS
@@ -207,7 +217,8 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
-    ARRAY[7, 3, 2, 12, 7], strict => false, U_turn_on_edge => false
+    ARRAY[7, 3, 2, 12, 7], strict => false, U_turn_on_edge => false,
+    directed => false
 );
 
 PREPARE randomOrderUndirected4 AS
@@ -215,14 +226,14 @@ SELECT * FROM pgr_dijkstraVia(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
-    ARRAY[7, 3, 2, 12, 7], strict => false, U_turn_on_edge => false
+    ARRAY[7, 3, 2, 12, 7], strict => false, U_turn_on_edge => false,
+    directed => false
 );
 
 SELECT SETSEED(1);
 
 -- Directed
 
-SELECT todo_start('Fix the code to return same set of rows');
 
 SELECT set_eq('expectedOutputDirected1', 'descendingOrderDirected1', '1: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '2: Should return same set of rows');
@@ -230,6 +241,7 @@ SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '3: Should retu
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '4: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '5: Should return same set of rows');
 
+-- SERVER CRASH
 -- SELECT set_eq('expectedOutputDirected2', 'descendingOrderDirected2', '6: Should return same set of rows');
 -- SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '7: Should return same set of rows');
 -- SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '8: Should return same set of rows');
@@ -242,6 +254,9 @@ SELECT set_eq('expectedOutputDirected3', 'randomOrderDirected3', '13: Should ret
 SELECT set_eq('expectedOutputDirected3', 'randomOrderDirected3', '14: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected3', 'randomOrderDirected3', '15: Should return same set of rows');
 
+SELECT todo_start('Fix the code to return same set of rows');
+
+-- SERVER CRASH
 -- SELECT set_eq('expectedOutputDirected4', 'descendingOrderDirected4', '16: Should return same set of rows');
 -- SELECT set_eq('expectedOutputDirected4', 'randomOrderDirected4', '17: Should return same set of rows');
 -- SELECT set_eq('expectedOutputDirected4', 'randomOrderDirected4', '18: Should return same set of rows');
@@ -256,6 +271,7 @@ SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '23: Should
 SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '24: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '25: Should return same set of rows');
 
+-- SERVER CRASH
 -- SELECT set_eq('expectedOutputUndirected2', 'descendingOrderUndirected2', '26: Should return same set of rows');
 -- SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '27: Should return same set of rows');
 -- SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '28: Should return same set of rows');
@@ -270,6 +286,7 @@ SELECT set_eq('expectedOutputUndirected3', 'randomOrderUndirected3', '35: Should
 
 SELECT todo_end();
 
+-- SERVER CRASH
 -- SELECT set_eq('expectedOutputUndirected4', 'descendingOrderUndirected4', '36: Should return same set of rows');
 -- SELECT set_eq('expectedOutputUndirected4', 'randomOrderUndirected4', '37: Should return same set of rows');
 -- SELECT set_eq('expectedOutputUndirected4', 'randomOrderUndirected4', '38: Should return same set of rows');
@@ -286,6 +303,7 @@ SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '43: Should ret
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '44: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '45: Should return same set of rows');
 
+-- SERVER CRASH
 -- SELECT set_eq('expectedOutputDirected2', 'descendingOrderDirected2', '46: Should return same set of rows');
 -- SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '47: Should return same set of rows');
 -- SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '48: Should return same set of rows');
@@ -298,6 +316,7 @@ SELECT set_eq('expectedOutputDirected3', 'randomOrderDirected3', '53: Should ret
 SELECT set_eq('expectedOutputDirected3', 'randomOrderDirected3', '54: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected3', 'randomOrderDirected3', '55: Should return same set of rows');
 
+-- SERVER CRASH
 -- SELECT set_eq('expectedOutputDirected4', 'descendingOrderDirected4', '56: Should return same set of rows');
 -- SELECT set_eq('expectedOutputDirected4', 'randomOrderDirected4', '57: Should return same set of rows');
 -- SELECT set_eq('expectedOutputDirected4', 'randomOrderDirected4', '58: Should return same set of rows');
@@ -312,6 +331,7 @@ SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '63: Should
 SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '64: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '65: Should return same set of rows');
 
+-- SERVER CRASH
 -- SELECT set_eq('expectedOutputUndirected2', 'descendingOrderUndirected2', '66: Should return same set of rows');
 -- SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '67: Should return same set of rows');
 -- SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '68: Should return same set of rows');
@@ -324,6 +344,7 @@ SELECT set_eq('expectedOutputUndirected3', 'randomOrderUndirected3', '73: Should
 SELECT set_eq('expectedOutputUndirected3', 'randomOrderUndirected3', '74: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected3', 'randomOrderUndirected3', '75: Should return same set of rows');
 
+-- SERVER CRASH
 -- SELECT set_eq('expectedOutputUndirected4', 'descendingOrderUndirected4', '76: Should return same set of rows');
 -- SELECT set_eq('expectedOutputUndirected4', 'randomOrderUndirected4', '77: Should return same set of rows');
 -- SELECT set_eq('expectedOutputUndirected4', 'randomOrderUndirected4', '78: Should return same set of rows');
