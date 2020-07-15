@@ -122,13 +122,13 @@ SELECT * FROM pgr_KSP(
 
 SELECT SETSEED(1);
 
+SELECT todo_start('Fix the code to return same set of rows');
+
 SELECT set_eq('expectedOutputDirected1', 'descendingOrderDirected1', '1: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '2: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '3: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '4: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '5: Should return same set of rows');
-
-SELECT todo_start('Fix the code to return same set of rows');
 
 SELECT set_eq('expectedOutputDirected2', 'descendingOrderDirected2', '6: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '7: Should return same set of rows');
@@ -147,8 +147,6 @@ SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '17: Should
 SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '18: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '19: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '20: Should return same set of rows');
-
-SELECT todo_end();
 
 UPDATE edge_table SET cost = cost + 0.001 * id * id, reverse_cost = reverse_cost + 0.001 * id * id;
 
@@ -175,6 +173,8 @@ SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '37: Should
 SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '38: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '39: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected2', 'randomOrderUndirected2', '40: Should return same set of rows');
+
+SELECT todo_end();
 
 SELECT * FROM finish();
 ROLLBACK;
