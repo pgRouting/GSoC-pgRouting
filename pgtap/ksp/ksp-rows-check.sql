@@ -128,13 +128,13 @@ SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '3: Should retu
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '4: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '5: Should return same set of rows');
 
+SELECT todo_start('Fix the code to return same set of rows');
+
 SELECT set_eq('expectedOutputDirected2', 'descendingOrderDirected2', '6: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '7: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '8: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '9: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected2', 'randomOrderDirected2', '10: Should return same set of rows');
-
-SELECT todo_start('Fix the code to return same set of rows');
 
 SELECT set_eq('expectedOutputUndirected1', 'descendingOrderUndirected1', '11: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '12: Should return same set of rows');

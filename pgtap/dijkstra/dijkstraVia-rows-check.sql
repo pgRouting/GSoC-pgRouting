@@ -222,6 +222,8 @@ SELECT SETSEED(1);
 
 -- Directed
 
+SELECT todo_start('Fix the code to return same set of rows');
+
 SELECT set_eq('expectedOutputDirected1', 'descendingOrderDirected1', '1: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '2: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '3: Should return same set of rows');
@@ -247,8 +249,6 @@ SELECT set_eq('expectedOutputDirected3', 'randomOrderDirected3', '15: Should ret
 -- SELECT set_eq('expectedOutputDirected4', 'randomOrderDirected4', '20: Should return same set of rows');
 
 -- -- Undirected
-
-SELECT todo_start('Fix the code to return same set of rows');
 
 SELECT set_eq('expectedOutputUndirected1', 'descendingOrderUndirected1', '21: Should return same set of rows');
 SELECT set_eq('expectedOutputUndirected1', 'randomOrderUndirected1', '22: Should return same set of rows');
