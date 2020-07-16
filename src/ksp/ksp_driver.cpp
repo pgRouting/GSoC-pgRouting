@@ -68,6 +68,12 @@ void  do_pgr_ksp(
 
         std::deque< Path > paths;
 
+        // sorting the edges in an ascending order of their id, before creating the graph
+        std::sort(data_edges, data_edges + total_edges,
+            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
+                return edge1.id < edge2.id;
+            });
+
         if (directed) {
             pgrouting::DirectedGraph digraph(gType);
             Pgr_ksp< pgrouting::DirectedGraph > fn_yen;
