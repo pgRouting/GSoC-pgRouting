@@ -80,18 +80,13 @@ do_pgr_edge_disjoint_paths(
     std::ostringstream notice;
     std::ostringstream err;
     try {
-        // sorting the edges in an ascending order of their id, before creating the graph
-        std::sort(data_edges, data_edges + total_edges,
-            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
-                return edge1.id < edge2.id;
-            });
-
         std::set<int64_t> set_source_vertices(
                 sources, sources + size_source_verticesArr);
         std::set<int64_t> set_sink_vertices(
                 sinks, sinks + size_sink_verticesArr);
         std::vector<pgr_edge_t> edges(
                 data_edges, data_edges + total_edges);
+
 
         std::vector<General_path_element_t> paths;
         for (const auto &s : set_source_vertices) {

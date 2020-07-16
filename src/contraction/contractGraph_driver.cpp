@@ -201,12 +201,6 @@ do_pgr_contractGraph(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-        // sorting the edges in an ascending order of their id, before creating the graph
-        std::sort(data_edges, data_edges + total_edges,
-            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
-                return edge1.id < edge2.id;
-            });
-
         /*
          * Converting to C++ structures
          */

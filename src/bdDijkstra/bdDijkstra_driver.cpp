@@ -122,19 +122,13 @@ do_pgr_bdDijkstra(
 
         graphType gType = directed? DIRECTED: UNDIRECTED;
 
-        // sorting the edges in an ascending order of their id, before creating the graph
-        std::sort(data_edges, data_edges + total_edges,
-            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
-                return edge1.id < edge2.id;
-            });
-
         std::deque<Path> paths;
 
         log << "starting process\n";
         if (directed) {
             log << "Working with directed Graph\n";
             pgrouting::DirectedGraph digraph(gType);
-            digraph.insert_edges(data_edges, total_edges);
+            digraph.insert_edges_sorted(data_edges, total_edges);
             paths = pgr_bdDijkstra(digraph,
                     start_vertices,
                     end_vertices,
@@ -143,7 +137,7 @@ do_pgr_bdDijkstra(
         } else {
             log << "Working with Undirected Graph\n";
             pgrouting::UndirectedGraph undigraph(gType);
-            undigraph.insert_edges(data_edges, total_edges);
+            undigraph.insert_edges_sorted(data_edges, total_edges);
             paths = pgr_bdDijkstra(
                     undigraph,
                     start_vertices,

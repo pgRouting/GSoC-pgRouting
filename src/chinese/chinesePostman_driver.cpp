@@ -60,12 +60,6 @@ do_pgr_directedChPP(
         pgassert(*return_count == 0);
         pgassert(total_edges != 0);
 
-        // sorting the edges in an ascending order of their id, before creating the graph
-        std::sort(data_edges, data_edges + total_edges,
-            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
-                return edge1.id < edge2.id;
-            });
-
         pgrouting::graph::PgrDirectedChPPGraph digraph(
                 data_edges, total_edges);
 

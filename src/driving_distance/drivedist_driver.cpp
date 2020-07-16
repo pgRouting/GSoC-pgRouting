@@ -104,12 +104,6 @@ do_pgr_driving_many_to_dist(
 
         graphType gType = directedFlag? DIRECTED: UNDIRECTED;
 
-        // sorting the edges in an ascending order of their id, before creating the graph
-        std::sort(data_edges, data_edges + total_edges,
-            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
-                return edge1.id < edge2.id;
-            });
-
         std::deque<Path> paths;
         std::vector<int64_t> start_vertices(start_vertex, start_vertex + s_len);
 
@@ -137,7 +131,7 @@ do_pgr_driving_many_to_dist(
             log << "********Inserting edges at time: " << std::ctime(&start_t)
                 << "\n";
 #endif
-            digraph.insert_edges(data_edges, total_edges, true);
+            digraph.insert_edges_sorted(data_edges, total_edges, true);
 #ifdef WITH_TIME
             end_timing(start_t, begin_elapsed, begin, log);
 #endif
@@ -168,7 +162,7 @@ do_pgr_driving_many_to_dist(
             log << "*******Inserting edges at time: " << std::ctime(&start_t)
                 << "\n";
 #endif
-            undigraph.insert_edges(data_edges, total_edges, true);
+            undigraph.insert_edges_sorted(data_edges, total_edges, true);
 #ifdef WITH_TIME
             end_timing(start_t, begin_elapsed, begin, log);
 #endif

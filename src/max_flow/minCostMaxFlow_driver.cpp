@@ -61,12 +61,6 @@ do_pgr_minCostMaxFlow(
         pgassert(*return_count == 0);
         pgassert(total_edges != 0);
 
-        // sorting the edges in an ascending order of their id, before creating the graph
-        std::sort(data_edges, data_edges + total_edges,
-            [](const pgr_costFlow_t &edge1, const pgr_costFlow_t &edge2) -> bool {
-                return edge1.edge_id < edge2.edge_id;
-            });
-
         std::vector<pgr_costFlow_t> edges(data_edges, data_edges + total_edges);
         std::set<int64_t> sources(
                 sourceVertices, sourceVertices + sizeSourceVerticesArr);

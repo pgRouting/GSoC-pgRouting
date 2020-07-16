@@ -117,19 +117,13 @@ void do_pgr_astarManyToMany(
 
         graphType gType = directed? DIRECTED: UNDIRECTED;
 
-        // sorting the edges in an ascending order of their id, before creating the graph
-        std::sort(edges, edges + total_edges,
-            [](const Pgr_edge_xy_t &edge1, const Pgr_edge_xy_t &edge2) -> bool {
-                return edge1.id < edge2.id;
-            });
-
         std::deque< Path >paths;
         if (directed) {
             log << "Working with directed Graph\n";
             pgrouting::xyDirectedGraph digraph(
                     pgrouting::extract_vertices(edges, total_edges),
                     gType);
-            digraph.insert_edges(edges, total_edges);
+            digraph.insert_edges_sorted(edges, total_edges);
             paths = pgr_astar(digraph, start_vids, end_vids,
                     heuristic, factor, epsilon, only_cost, normal);
         } else {
@@ -137,7 +131,7 @@ void do_pgr_astarManyToMany(
             pgrouting::xyUndirectedGraph undigraph(
                     pgrouting::extract_vertices(edges, total_edges),
                     gType);
-            undigraph.insert_edges(edges, total_edges);
+            undigraph.insert_edges_sorted(edges, total_edges);
             paths = pgr_astar(undigraph, start_vids, end_vids,
                     heuristic, factor, epsilon, only_cost, normal);
         }
