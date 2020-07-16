@@ -62,8 +62,8 @@ do_pgr_max_flow(
 
         // sorting the edges in an ascending order of their id, before creating the graph
         std::sort(data_edges, data_edges + total_edges,
-            [](const pgr_costFlow_t &edge1, const pgr_costFlow_t &edge2) -> bool {
-                return edge1.edge_id < edge2.edge_id;
+            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
+                return edge1.id < edge2.id;
             });
 
         std::vector<pgr_edge_t> edges(data_edges, data_edges + total_edges);
