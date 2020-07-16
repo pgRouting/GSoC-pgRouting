@@ -117,6 +117,12 @@ void do_pgr_astarManyToMany(
 
         graphType gType = directed? DIRECTED: UNDIRECTED;
 
+        // sorting the edges in an ascending order of their id, before creating the graph
+        std::sort(edges, edges + total_edges,
+            [](const Pgr_edge_xy_t &edge1, const Pgr_edge_xy_t &edge2) -> bool {
+                return edge1.id < edge2.id;
+            });
+
         std::deque< Path >paths;
         if (directed) {
             log << "Working with directed Graph\n";
