@@ -2,6 +2,7 @@
 
 SELECT plan(5);
 
+SET extra_float_digits = -3;
 
 -- Check whether the same set of rows are returned always
 
