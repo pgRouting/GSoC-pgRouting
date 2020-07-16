@@ -30,8 +30,6 @@ SELECT * FROM pgr_edmondsKarp(
     ARRAY[7, 2], ARRAY[3, 12]
 );
 
-SELECT SETSEED(1);
-
 SELECT todo_start('Fix the code to return same set of rows');
 
 SELECT set_eq('expectedOutput', 'descendingOrder', '1: Should return same set of rows');

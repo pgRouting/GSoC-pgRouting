@@ -144,8 +144,6 @@ SELECT * FROM pgr_withPointsKSP(
     directed => false, heap_paths => true
 );
 
-SELECT SETSEED(1);
-
 SELECT set_eq('expectedOutputDirected1', 'descendingOrderDirected1', '1: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '2: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected1', 'randomOrderDirected1', '3: Should return same set of rows');

@@ -30,8 +30,6 @@ SELECT * FROM pgr_kruskalDFS(
     2
 );
 
-SELECT SETSEED(1);
-
 SELECT todo_start('Fix the code to return same set of rows');
 
 SELECT set_eq('expectedOutput', 'descendingOrder', '1: Should return same set of rows');

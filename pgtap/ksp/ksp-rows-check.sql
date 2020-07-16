@@ -120,8 +120,6 @@ SELECT * FROM pgr_KSP(
     directed => false, heap_paths => true
 );
 
-SELECT SETSEED(1);
-
 SELECT todo_start('Fix the code to return same set of rows');
 
 SELECT set_eq('expectedOutputDirected1', 'descendingOrderDirected1', '1: Should return same set of rows');

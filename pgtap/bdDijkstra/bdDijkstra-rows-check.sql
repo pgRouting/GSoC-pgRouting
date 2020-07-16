@@ -56,8 +56,6 @@ SELECT * FROM pgr_bdDijkstra(
     directed => false
 );
 
-SELECT SETSEED(1);
-
 SELECT todo_start('Fix the code to return same set of rows');
 
 SELECT set_eq('expectedOutputDirected', 'descendingOrderDirected', '1: Should return same set of rows');

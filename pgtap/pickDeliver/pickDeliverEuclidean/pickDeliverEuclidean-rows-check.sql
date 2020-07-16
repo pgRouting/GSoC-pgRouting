@@ -23,8 +23,6 @@ SELECT * FROM pgr_pickDeliverEuclidean(
     'SELECT * from vehicles'
 );
 
-SELECT SETSEED(1);
-
 SELECT set_eq('expectedOutput', 'descendingOrder', '1: Should return same set of rows');
 SELECT set_eq('expectedOutput', 'randomOrder', '2: Should return same set of rows');
 SELECT set_eq('expectedOutput', 'randomOrder', '3: Should return same set of rows');

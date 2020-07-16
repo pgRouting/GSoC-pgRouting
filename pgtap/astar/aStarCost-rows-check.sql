@@ -56,8 +56,6 @@ SELECT * FROM pgr_astarCost(
     directed => false
 );
 
-SELECT SETSEED(1);
-
 SELECT set_eq('expectedOutputCostDirected', 'descendingOrderCostDirected', '1: Should return same set of rows');
 SELECT set_eq('expectedOutputCostDirected', 'randomOrderCostDirected', '2: Should return same set of rows');
 SELECT set_eq('expectedOutputCostDirected', 'randomOrderCostDirected', '3: Should return same set of rows');

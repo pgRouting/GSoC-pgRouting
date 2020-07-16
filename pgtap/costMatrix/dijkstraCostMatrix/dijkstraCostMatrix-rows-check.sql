@@ -57,8 +57,6 @@ SELECT * FROM pgr_dijkstraCostMatrix(
     directed => false
 );
 
-SELECT SETSEED(1);
-
 SELECT set_eq('expectedOutputDirected', 'descendingOrderDirected', '1: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected', 'randomOrderDirected', '2: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected', 'randomOrderDirected', '3: Should return same set of rows');

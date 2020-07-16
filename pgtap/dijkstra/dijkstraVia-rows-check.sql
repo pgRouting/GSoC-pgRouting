@@ -230,8 +230,6 @@ SELECT * FROM pgr_dijkstraVia(
     directed => false
 );
 
-SELECT SETSEED(1);
-
 -- Directed
 
 
