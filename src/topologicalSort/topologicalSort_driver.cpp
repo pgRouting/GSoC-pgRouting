@@ -80,6 +80,12 @@ do_pgr_topologicalSort(
 
         std::vector<pgr_topologicalSort_t> results;
 
+        // sorting the edges in an ascending order of their id, before creating the graph
+        std::sort(data_edges, data_edges + total_edges,
+            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
+                return edge1.id < edge2.id;
+            });
+
         log << "Working with Directed Graph\n";
         pgrouting::DirectedGraph digraph(gType);
         digraph.insert_edges(data_edges, total_edges);
