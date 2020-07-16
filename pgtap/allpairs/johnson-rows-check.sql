@@ -7,28 +7,28 @@ SET extra_float_digits = -3;
 -- Check whether the same set of rows are returned always
 
 PREPARE expectedOutputDirected AS
-SELECT * FROM pgr_johnson(
+SELECT start_vid, end_vid, agg_cost::TEXT FROM pgr_johnson(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id'
 );
 
 PREPARE descendingOrderDirected AS
-SELECT * FROM pgr_johnson(
+SELECT start_vid, end_vid, agg_cost::TEXT FROM pgr_johnson(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC'
 );
 
 PREPARE randomOrderDirected AS
-SELECT * FROM pgr_johnson(
+SELECT start_vid, end_vid, agg_cost::TEXT FROM pgr_johnson(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()'
 );
 
 PREPARE expectedOutputUndirected AS
-SELECT * FROM pgr_johnson(
+SELECT start_vid, end_vid, agg_cost::TEXT FROM pgr_johnson(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
@@ -36,7 +36,7 @@ SELECT * FROM pgr_johnson(
 );
 
 PREPARE descendingOrderUndirected AS
-SELECT * FROM pgr_johnson(
+SELECT start_vid, end_vid, agg_cost::TEXT FROM pgr_johnson(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
@@ -44,14 +44,12 @@ SELECT * FROM pgr_johnson(
 );
 
 PREPARE randomOrderUndirected AS
-SELECT * FROM pgr_johnson(
+SELECT start_vid, end_vid, agg_cost::TEXT FROM pgr_johnson(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
     directed => false
 );
-
-SELECT SETSEED(1);
 
 SELECT set_eq('expectedOutputDirected', 'descendingOrderDirected', '1: Should return same set of rows');
 SELECT set_eq('expectedOutputDirected', 'randomOrderDirected', '2: Should return same set of rows');
