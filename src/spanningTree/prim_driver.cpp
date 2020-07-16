@@ -74,6 +74,12 @@ do_pgr_prim(
 
         std::vector<pgr_mst_rt> results;
 
+        // sorting the edges in an ascending order of their id, before creating the graph
+        std::sort(data_edges, data_edges + total_edges,
+            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
+                return edge1.id < edge2.id;
+            });
+
         if (total_edges == 0) {
             results = pgrouting::details::get_no_edge_graph_result(roots);
         } else {
