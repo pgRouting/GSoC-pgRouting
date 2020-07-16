@@ -11,7 +11,7 @@ SET extra_float_digits = -3;
 -- Without heap paths
 
 PREPARE expectedOutputDirected1 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
@@ -19,7 +19,7 @@ SELECT * FROM pgr_KSP(
 );
 
 PREPARE descendingOrderDirected1 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
@@ -27,7 +27,7 @@ SELECT * FROM pgr_KSP(
 );
 
 PREPARE randomOrderDirected1 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
@@ -37,7 +37,7 @@ SELECT * FROM pgr_KSP(
 -- With heap paths
 
 PREPARE expectedOutputDirected2 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
@@ -45,7 +45,7 @@ SELECT * FROM pgr_KSP(
 );
 
 PREPARE descendingOrderDirected2 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
@@ -53,7 +53,7 @@ SELECT * FROM pgr_KSP(
 );
 
 PREPARE randomOrderDirected2 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
@@ -65,7 +65,7 @@ SELECT * FROM pgr_KSP(
 -- Without heap paths
 
 PREPARE expectedOutputUndirected1 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
@@ -74,7 +74,7 @@ SELECT * FROM pgr_KSP(
 );
 
 PREPARE descendingOrderUndirected1 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
@@ -83,7 +83,7 @@ SELECT * FROM pgr_KSP(
 );
 
 PREPARE randomOrderUndirected1 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
@@ -94,7 +94,7 @@ SELECT * FROM pgr_KSP(
 -- With heap paths
 
 PREPARE expectedOutputUndirected2 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id',
@@ -103,7 +103,7 @@ SELECT * FROM pgr_KSP(
 );
 
 PREPARE descendingOrderUndirected2 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY id DESC',
@@ -112,7 +112,7 @@ SELECT * FROM pgr_KSP(
 );
 
 PREPARE randomOrderUndirected2 AS
-SELECT * FROM pgr_KSP(
+SELECT seq, path_id, path_seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_KSP(
     'SELECT id, source, target, cost, reverse_cost
     FROM edge_table
     ORDER BY RANDOM()',
