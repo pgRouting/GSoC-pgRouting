@@ -112,6 +112,11 @@ do_pgr_edwardMoore(
         std::vector< int64_t >
             end_vertices(end_vidsArr, end_vidsArr + size_end_vidsArr);
 
+        // sorting the edges in an ascending order of their id, before creating the graph
+        std::sort(data_edges, data_edges + total_edges,
+            [](const pgr_edge_t &edge1, const pgr_edge_t &edge2) -> bool {
+                return edge1.id < edge2.id;
+            });
 
         std::deque< Path >paths;
         if (directed) {
