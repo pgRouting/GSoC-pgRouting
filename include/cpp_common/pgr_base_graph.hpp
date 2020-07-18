@@ -429,6 +429,131 @@ class Pgr_base_graph {
      }
      //@}
 
+     //! @name Insert edges sorted
+     //@{
+     /*! @brief Inserts *count* edges of type *T* into the graph in sorted order,
+      *
+      *  Converts the edges to a std::vector<T> & calls the overloaded
+      *  twin function, which calls the function to sort the edges
+      *  in an increasing order of their id, then source (if ids are equal)
+      *  and then target (if ids and sources are equal).
+      *
+      *  @param edges
+      *  @param count
+      */
+     template < typename T >
+     void insert_edges_sorted(const T *edges, int64_t count) {
+         insert_edges_sorted(std::vector < T >(edges, edges + count));
+     }
+
+     /*! @brief Sorts edges of the graph, passed in the form of C array
+      *
+      *  First, it sorts the edges in the increasing order of the target vertices,
+      *  then it does a stable sort in an increasing order of the source vertices.
+      *  Finally, it does a stable sort in an increasing order of the id of edges.
+      *  Hence, the edges get sorted in the order of id, then source, then target.
+      *
+      *  @param edges
+      *  @param count
+      */
+     template < typename T>
+         void sort_edges(T *&edges, int64_t count) {
+             std::sort(edges, edges + count,
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.target < rhs.target;
+                 });
+             std::stable_sort(edges, edges + count,
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.source < rhs.source;
+                 });
+             std::stable_sort(edges, edges + count,
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.id < rhs.id;
+                 });
+         }
+
+     /*! @brief Sorts edges of the graph, passed in the form of C++ container - vector
+      *
+      *  First, it sorts the edges in the increasing order of the target vertices,
+      *  then it does a stable sort in an increasing order of the source vertices.
+      *  Finally, it does a stable sort in an increasing order of the id of edges.
+      *  Hence, the edges get sorted in the order of id, then source, then target.
+      *
+      *  @param edges
+      */
+     template < typename T>
+         void sort_edges(std::vector<T> &edges) {
+             std::sort(edges.begin(), edges.end(),
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.target < rhs.target;
+                 });
+             std::stable_sort(edges.begin(), edges.end(),
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.source < rhs.source;
+                 });
+             std::stable_sort(edges.begin(), edges.end(),
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.id < rhs.id;
+                 });
+         }
+
+     /*! @brief Inserts *count* edges of type *T* into the graph in sorted order,
+      *
+      *  Sorts the edges and then for every edge, assets that the corresponding
+      *  vertex exists. Finally, adds the edge to the graph without creating the vertex.
+      *
+      *  @param edges
+      *  @param count
+      *  @param bool
+      */
+     template < typename T>
+         void insert_edges_sorted(T *edges, int64_t count, bool) {
+             sort_edges(edges, count);
+             for (int64_t i = 0; i < count; ++i) {
+                 pgassert(has_vertex(edges[i].source));
+                 pgassert(has_vertex(edges[i].target));
+                 graph_add_edge_no_create_vertex(edges[i]);
+             }
+         }
+
+     /*! @brief Inserts *count* edges of type *pgr_edge_t* into the graph
+        The set of edges should not have an illegal vertex defined
+        When the graph is empty calls:
+        - @b extract_vertices
+        and throws an exception if there are illegal vertices.
+        When developing:
+          - if an illegal vertex is found an exception is thrown
+          - That means that the set of vertices should be checked in the
+            code that is being developed
+        No edge is inserted when there is an error on the vertices
+        @param edges
+        @param normal
+      */
+     template <typename T>
+     void
+     insert_edges_sorted(std::vector<T> edges, bool normal = true) {
+         sort_edges(edges);
+         for (const auto edge : edges) {
+             graph_add_edge(edge, normal);
+         }
+     }
+
+     /*! @brief Inserts *count* edges of type *T* into the graph in sorted order,
+      *
+      *  Converts the edges to a std::vector<T> & calls the overloaded
+      *  twin function, which calls the function to sort the edges
+      *  in an increasing order of their id, then source (if ids are equal)
+      *  and then target (if ids and sources are equal).
+      *
+      *  @param edges
+      *  @param count
+      */
+     template <typename T>
+     void insert_min_edges_no_parallel_sorted(const T *edges, int64_t count) {
+         insert_edges_sorted(std::vector<T>(edges, edges + count));
+     }
+     //@}
+
  private:
      /*! @brief adds the vertices into the graph
       *
