@@ -427,15 +427,16 @@ class Pgr_base_graph {
              graph_add_neg_edge(edge, normal);
          }
      }
+     //@}
 
      //! @name Insert edges sorted
      //@{
      /*! @brief Inserts *count* edges of type *T* into the graph in sorted order,
       *
       *  Converts the edges to a std::vector<T> & calls the overloaded
-      *  twin function, which sorts the edges in an increasing order of
-      *  their id, then source (if ids are equal) and then target
-      *  (if ids and sources are equal).
+      *  twin function, which calls the function to sort the edges
+      *  in an increasing order of their id, then source (if ids are equal)
+      *  and then target (if ids and sources are equal).
       *
       *  @param edges
       *  @param count
@@ -445,6 +446,16 @@ class Pgr_base_graph {
          insert_edges_sorted(std::vector < T >(edges, edges + count));
      }
 
+     /*! @brief Sorts edges of the graph, passed in the form of C array
+      *
+      *  First, it sorts the edges in the increasing order of the target vertices,
+      *  then it does a stable sort in an increasing order of the source vertices.
+      *  Finally, it does a stable sort in an increasing order of the id of edges.
+      *  Hence, the edges get sorted in the order of id, then source, then target.
+      *
+      *  @param edges
+      *  @param count
+      */
      template < typename T>
          void sort_edges(T *&edges, int64_t count) {
              std::sort(edges, edges + count,
@@ -461,6 +472,15 @@ class Pgr_base_graph {
                  });
          }
 
+     /*! @brief Sorts edges of the graph, passed in the form of C++ container - vector
+      *
+      *  First, it sorts the edges in the increasing order of the target vertices,
+      *  then it does a stable sort in an increasing order of the source vertices.
+      *  Finally, it does a stable sort in an increasing order of the id of edges.
+      *  Hence, the edges get sorted in the order of id, then source, then target.
+      *
+      *  @param edges
+      */
      template < typename T>
          void sort_edges(std::vector<T> &edges) {
              std::sort(edges.begin(), edges.end(),
@@ -477,6 +497,15 @@ class Pgr_base_graph {
                  });
          }
 
+     /*! @brief Inserts *count* edges of type *T* into the graph in sorted order,
+      *
+      *  Sorts the edges and then for every edge, assets that the corresponding
+      *  vertex exists. Finally, adds the edge to the graph without creating the vertex.
+      *
+      *  @param edges
+      *  @param count
+      *  @param bool
+      */
      template < typename T>
          void insert_edges_sorted(T *edges, int64_t count, bool) {
              sort_edges(edges, count);
@@ -503,32 +532,25 @@ class Pgr_base_graph {
      template <typename T>
      void
      insert_edges_sorted(std::vector<T> edges, bool normal = true) {
-#if 0
-         // This code does not work with contraction
-         if (num_vertices() == 0) {
-             auto vertices = pgrouting::extract_vertices(edges);
-             pgassert(pgrouting::check_vertices(vertices) == 0);
-             add_vertices(vertices);
-         }
-#endif
          sort_edges(edges);
          for (const auto edge : edges) {
              graph_add_edge(edge, normal);
          }
      }
 
+     /*! @brief Inserts *count* edges of type *T* into the graph in sorted order,
+      *
+      *  Converts the edges to a std::vector<T> & calls the overloaded
+      *  twin function, which calls the function to sort the edges
+      *  in an increasing order of their id, then source (if ids are equal)
+      *  and then target (if ids and sources are equal).
+      *
+      *  @param edges
+      *  @param count
+      */
      template <typename T>
      void insert_min_edges_no_parallel_sorted(const T *edges, int64_t count) {
          insert_edges_sorted(std::vector<T>(edges, edges + count));
-     }
-
-     template <typename T>
-     void
-     insert_min_edges_no_parallel_sorted(const std::vector<T> &edges) {
-         sort_edges(edges);
-         for (const auto edge : edges) {
-             graph_add_min_edge_no_parallel_sorted(edge);
-         }
      }
      //@}
 
