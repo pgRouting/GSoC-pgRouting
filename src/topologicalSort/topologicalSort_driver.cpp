@@ -82,7 +82,7 @@ do_pgr_topologicalSort(
 
         log << "Working with Directed Graph\n";
         pgrouting::DirectedGraph digraph(gType);
-        digraph.insert_edges(data_edges, total_edges);
+        digraph.insert_edges_sorted(data_edges, total_edges);
         results = pgr_topologicalSort(
                 digraph);
 

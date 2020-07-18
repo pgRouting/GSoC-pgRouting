@@ -427,6 +427,109 @@ class Pgr_base_graph {
              graph_add_neg_edge(edge, normal);
          }
      }
+
+     //! @name Insert edges sorted
+     //@{
+     /*! @brief Inserts *count* edges of type *T* into the graph in sorted order,
+      *
+      *  Converts the edges to a std::vector<T> & calls the overloaded
+      *  twin function, which sorts the edges in an increasing order of
+      *  their id, then source (if ids are equal) and then target
+      *  (if ids and sources are equal).
+      *
+      *  @param edges
+      *  @param count
+      */
+     template < typename T >
+     void insert_edges_sorted(const T *edges, int64_t count) {
+         insert_edges_sorted(std::vector < T >(edges, edges + count));
+     }
+
+     template < typename T>
+         void sort_edges(T *&edges, int64_t count) {
+             std::sort(edges, edges + count,
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.target < rhs.target;
+                 });
+             std::stable_sort(edges, edges + count,
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.source < rhs.source;
+                 });
+             std::stable_sort(edges, edges + count,
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.id < rhs.id;
+                 });
+         }
+
+     template < typename T>
+         void sort_edges(std::vector<T> &edges) {
+             std::sort(edges.begin(), edges.end(),
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.target < rhs.target;
+                 });
+             std::stable_sort(edges.begin(), edges.end(),
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.source < rhs.source;
+                 });
+             std::stable_sort(edges.begin(), edges.end(),
+                 [](const T &lhs, const T &rhs) -> bool {
+                     return lhs.id < rhs.id;
+                 });
+         }
+
+     template < typename T>
+         void insert_edges_sorted(T *edges, int64_t count, bool) {
+             sort_edges(edges, count);
+             for (int64_t i = 0; i < count; ++i) {
+                 pgassert(has_vertex(edges[i].source));
+                 pgassert(has_vertex(edges[i].target));
+                 graph_add_edge_no_create_vertex(edges[i]);
+             }
+         }
+
+     /*! @brief Inserts *count* edges of type *pgr_edge_t* into the graph
+        The set of edges should not have an illegal vertex defined
+        When the graph is empty calls:
+        - @b extract_vertices
+        and throws an exception if there are illegal vertices.
+        When developing:
+          - if an illegal vertex is found an exception is thrown
+          - That means that the set of vertices should be checked in the
+            code that is being developed
+        No edge is inserted when there is an error on the vertices
+        @param edges
+        @param normal
+      */
+     template <typename T>
+     void
+     insert_edges_sorted(std::vector<T> edges, bool normal = true) {
+#if 0
+         // This code does not work with contraction
+         if (num_vertices() == 0) {
+             auto vertices = pgrouting::extract_vertices(edges);
+             pgassert(pgrouting::check_vertices(vertices) == 0);
+             add_vertices(vertices);
+         }
+#endif
+         sort_edges(edges);
+         for (const auto edge : edges) {
+             graph_add_edge(edge, normal);
+         }
+     }
+
+     template <typename T>
+     void insert_min_edges_no_parallel_sorted(const T *edges, int64_t count) {
+         insert_edges_sorted(std::vector<T>(edges, edges + count));
+     }
+
+     template <typename T>
+     void
+     insert_min_edges_no_parallel_sorted(const std::vector<T> &edges) {
+         sort_edges(edges);
+         for (const auto edge : edges) {
+             graph_add_min_edge_no_parallel_sorted(edge);
+         }
+     }
      //@}
 
  private:

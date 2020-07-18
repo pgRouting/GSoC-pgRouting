@@ -97,7 +97,6 @@ PgrDirectedChPPGraph::PgrDirectedChPPGraph(
         edge.target = dataEdges[i].target;
         edge.reverse_cost = -1.0;
         if (dataEdges[i].cost > 0) {
-            startPoint = edge.source;
             edge.cost = dataEdges[i].cost;
             totalCost += edge.cost;
             resultEdges.push_back(edge);
@@ -109,6 +108,21 @@ PgrDirectedChPPGraph::PgrDirectedChPPGraph(
             resultEdges.push_back(edge);
         }
     }
+
+    std::sort(resultEdges.begin(), resultEdges.end(),
+        [](const pgr_edge_t &lhs, const pgr_edge_t &rhs) -> bool {
+            return lhs.target < rhs.target;
+        });
+    std::stable_sort(resultEdges.begin(), resultEdges.end(),
+        [](const pgr_edge_t &lhs, const pgr_edge_t &rhs) -> bool {
+            return lhs.source < rhs.source;
+        });
+    std::stable_sort(resultEdges.begin(), resultEdges.end(),
+        [](const pgr_edge_t &lhs, const pgr_edge_t &rhs) -> bool {
+            return lhs.id < rhs.id;
+        });
+
+    startPoint = resultEdges[0].source;
 
     std::vector<pgr_costFlow_t> edges;
     std::set<int64_t> sources;

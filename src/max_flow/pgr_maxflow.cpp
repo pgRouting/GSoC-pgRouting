@@ -68,12 +68,29 @@ PgrFlowGraph::PgrFlowGraph(
     insert_edges_edge_disjoint(edges, directed);
 }
 
+void PgrFlowGraph::sort_edges(
+        std::vector<pgr_edge_t> &edges) {
+    std::sort(edges.begin(), edges.end(),
+        [](const pgr_edge_t &lhs, const pgr_edge_t &rhs) -> bool {
+            return lhs.target < rhs.target;
+        });
+    std::stable_sort(edges.begin(), edges.end(),
+        [](const pgr_edge_t &lhs, const pgr_edge_t &rhs) -> bool {
+            return lhs.source < rhs.source;
+        });
+    std::stable_sort(edges.begin(), edges.end(),
+        [](const pgr_edge_t &lhs, const pgr_edge_t &rhs) -> bool {
+            return lhs.id < rhs.id;
+        });
+}
+
 /* Inserting edges
  * Push-relabel requires each edge to be mapped to its reverse with capacity 0.
  */
 void PgrFlowGraph::insert_edges_push_relabel(
-        const std::vector<pgr_edge_t> &edges) {
+        std::vector<pgr_edge_t> edges) {
     bool added;
+    sort_edges(edges);
     for (const auto edge : edges) {
         V v1 = get_boost_vertex(edge.source);
         V v2 = get_boost_vertex(edge.target);
@@ -107,8 +124,9 @@ void PgrFlowGraph::insert_edges_push_relabel(
  * The other pgr_maxflow algorithms have no such requirement. (can have have as many edges)
  */
 void PgrFlowGraph::insert_edges(
-        const std::vector<pgr_edge_t> &edges) {
+        std::vector<pgr_edge_t> edges) {
     bool added;
+    sort_edges(edges);
     for (const auto edge : edges) {
         V v1 = get_boost_vertex(edge.source);
         V v2 = get_boost_vertex(edge.target);
@@ -130,9 +148,10 @@ void PgrFlowGraph::insert_edges(
  * for the edge_disjoint_paths  algorithms
  */
 void PgrFlowGraph::insert_edges_edge_disjoint(
-        const std::vector<pgr_edge_t> &edges,
+        std::vector<pgr_edge_t> edges,
         bool directed) {
     bool added;
+    sort_edges(edges);
     for (const auto edge : edges) {
         V v1 = get_boost_vertex(edge.source);
         V v2 = get_boost_vertex(edge.target);

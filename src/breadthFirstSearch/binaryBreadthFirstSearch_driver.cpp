@@ -141,7 +141,7 @@ do_pgr_binaryBreadthFirstSearch(
         if (directed) {
             // log << "\nWorking with directed Graph";
             pgrouting::DirectedGraph digraph(gType);
-            digraph.insert_edges(data_edges, total_edges);
+            digraph.insert_edges_sorted(data_edges, total_edges);
 
             if (!(costCheck(digraph))) {
                 err << COST_ERR_MSG;
@@ -156,7 +156,7 @@ do_pgr_binaryBreadthFirstSearch(
         } else {
             // log << "\nWorking with Undirected Graph";
             pgrouting::UndirectedGraph undigraph(gType);
-            undigraph.insert_edges(data_edges, total_edges);
+            undigraph.insert_edges_sorted(data_edges, total_edges);
 
             if (!(costCheck(undigraph))) {
                 err << COST_ERR_MSG;
