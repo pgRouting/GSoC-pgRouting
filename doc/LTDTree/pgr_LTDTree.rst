@@ -6,17 +6,25 @@
     This documentation is licensed under a Creative Commons Attribution-Share
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
-.. _pgr_LTDTree:
+.. index::
+    single: pgr_lengauer_tarjan_dominator_tree -Experimental (Complete Doc)
+.. _pgr_lengauer_tarjan_dominator_tree:
 
-pgr_LTDTree
+pgr_lengauer_tarjan_dominator_tree -Experimental
 ===============================================================================
 
-``pgr_LTDTree`` — Returns the immediate dominator of all vertices.
+``pgr_lengauer_tarjan_dominator_tree`` — Returns the immediate dominator of all vertices.
 In particular, the Lengauer Tarjan Dominator Tree algorithm implemented by Boost.Graph.
 
 .. figure:: images/boost-inside.jpeg
    :target: https://www.boost.org/doc/libs/1_50_0/libs/graph/doc/lengauer_tarjan_dominator.htm
+   
    Boost Graph Inside
+
+.. include:: experimental.rst
+   :start-after: begin-warn-expr
+   :end-before: end-warn-expr
+   
 .. rubric:: Availability
 
 
@@ -31,12 +39,9 @@ Signatures
 
 .. code-block:: sql
 
-    pgr_LTDTree(edges_sql,root )
+    pgr_lengauer_tarjan_dominator_tree(edges_sql,root)
     RETURNS SET OF (id,vid,idom)
 
-.. rubric:: Using defaults
-
-.. code-block:: sql
 
 :Example: **TBD**
 
@@ -48,7 +53,12 @@ Complete Signature
 
 .. code-block:: sql
 
-:Example: **TBD**
+
+:Example: The lengauer_tarjan_dominator_tree with root vertex :math:`2`
+
+.. literalinclude:: doc-LTDTree.queries
+   :start-after: -- q1
+   :end-before: -- q2
 
 Parameters
 -------------------------------------------------------------------------------
