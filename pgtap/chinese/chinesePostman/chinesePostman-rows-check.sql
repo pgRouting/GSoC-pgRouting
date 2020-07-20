@@ -30,7 +30,7 @@ SELECT * FROM pgr_chinesePostman(
     ORDER BY RANDOM()'
 );
 
-SELECT todo_start('Fix the code to return same set of rows');
+SELECT todo_start('Chinese Postman Problem is Experimental, tests left pending');
 
 SELECT set_eq('expectedOutput', 'descendingOrder', '1: Should return same set of rows');
 SELECT set_eq('expectedOutput', 'randomOrder', '2: Should return same set of rows');
