@@ -3,7 +3,7 @@
 SELECT plan(5);
 
 
--- Check whether the same set of rows are returned always
+-- Check whether the same set of rows is always returned
 
 PREPARE expectedOutput AS
 SELECT * FROM pgr_pickDeliverEuclidean(

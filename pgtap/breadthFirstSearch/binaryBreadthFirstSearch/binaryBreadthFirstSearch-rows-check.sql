@@ -3,7 +3,7 @@
 SELECT plan(10);
 
 
--- Check whether the same set of rows are returned always
+-- Check whether the same set of rows is always returned
 
 -- Creating the table used for the queries
 

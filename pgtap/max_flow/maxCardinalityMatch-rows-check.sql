@@ -4,7 +4,7 @@ SELECT plan(20);
 
 SET extra_float_digits = -3;
 
--- Check whether the same set of rows are returned always
+-- Check whether the same set of rows is always returned
 
 PREPARE expectedOutputDirected AS
 SELECT * FROM pgr_maxCardinalityMatch(
