@@ -91,7 +91,7 @@ do_pgr_breadthFirstSearch(
         if (directed) {
             log << "Working with directed Graph\n";
             pgrouting::DirectedGraph digraph(gType);
-            digraph.insert_edges(data_edges, total_edges);
+            digraph.insert_edges_sorted(data_edges, total_edges);
             results = pgr_breadthFirstSearch(
                     digraph,
                     start_vertices,
@@ -100,7 +100,7 @@ do_pgr_breadthFirstSearch(
         } else {
             log << "Working with Undirected Graph\n";
             pgrouting::UndirectedGraph undigraph(gType);
-            undigraph.insert_edges(data_edges, total_edges);
+            undigraph.insert_edges_sorted(data_edges, total_edges);
 
             results = pgr_breadthFirstSearch(
                     undigraph,
