@@ -60,8 +60,25 @@ PgrCostFlowGraph::E PgrCostFlowGraph::AddEdge(
     return e;
 }
 
+void PgrCostFlowGraph::SortEdges(
+        std::vector<pgr_costFlow_t> &edges) {
+    std::sort(edges.begin(), edges.end(),
+        [](const pgr_costFlow_t &lhs, const pgr_costFlow_t &rhs) -> bool {
+            return lhs.target < rhs.target;
+        });
+    std::stable_sort(edges.begin(), edges.end(),
+        [](const pgr_costFlow_t &lhs, const pgr_costFlow_t &rhs) -> bool {
+            return lhs.source < rhs.source;
+        });
+    std::stable_sort(edges.begin(), edges.end(),
+        [](const pgr_costFlow_t &lhs, const pgr_costFlow_t &rhs) -> bool {
+            return lhs.edge_id < rhs.edge_id;
+        });
+}
+
 void PgrCostFlowGraph::InsertEdges(
-        const std::vector<pgr_costFlow_t> &edges) {
+        std::vector<pgr_costFlow_t> edges) {
+    SortEdges(edges);
     for (const auto edge : edges) {
         PgrCostFlowGraph::E e1, e1Rev, e2, e2Rev;
         V v1 = GetBoostVertex(edge.source);
