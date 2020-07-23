@@ -123,7 +123,7 @@ void do_pgr_astarManyToMany(
             pgrouting::xyDirectedGraph digraph(
                     pgrouting::extract_vertices(edges, total_edges),
                     gType);
-            digraph.insert_edges(edges, total_edges);
+            digraph.insert_edges_sorted(edges, total_edges);
             paths = pgr_astar(digraph, start_vids, end_vids,
                     heuristic, factor, epsilon, only_cost, normal);
         } else {
@@ -131,7 +131,7 @@ void do_pgr_astarManyToMany(
             pgrouting::xyUndirectedGraph undigraph(
                     pgrouting::extract_vertices(edges, total_edges),
                     gType);
-            undigraph.insert_edges(edges, total_edges);
+            undigraph.insert_edges_sorted(edges, total_edges);
             paths = pgr_astar(undigraph, start_vids, end_vids,
                     heuristic, factor, epsilon, only_cost, normal);
         }
