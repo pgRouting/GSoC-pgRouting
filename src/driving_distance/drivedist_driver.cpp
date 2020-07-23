@@ -131,7 +131,7 @@ do_pgr_driving_many_to_dist(
             log << "********Inserting edges at time: " << std::ctime(&start_t)
                 << "\n";
 #endif
-            digraph.insert_edges(data_edges, total_edges, true);
+            digraph.insert_edges_sorted(data_edges, total_edges, true);
 #ifdef WITH_TIME
             end_timing(start_t, begin_elapsed, begin, log);
 #endif
@@ -162,7 +162,7 @@ do_pgr_driving_many_to_dist(
             log << "*******Inserting edges at time: " << std::ctime(&start_t)
                 << "\n";
 #endif
-            undigraph.insert_edges(data_edges, total_edges, true);
+            undigraph.insert_edges_sorted(data_edges, total_edges, true);
 #ifdef WITH_TIME
             end_timing(start_t, begin_elapsed, begin, log);
 #endif
