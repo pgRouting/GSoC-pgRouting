@@ -142,14 +142,12 @@ class PgrFlowGraph {
      void set_supersink(
              const std::set<int64_t> &sink_vertices);
 
-     void sort_edges(
-             std::vector<pgr_edge_t> &edges);
      void insert_edges_push_relabel(
-             std::vector<pgr_edge_t> edges);
+             const std::vector<pgr_edge_t> &edges);
      void insert_edges(
-             std::vector<pgr_edge_t> edges);
+             const std::vector<pgr_edge_t> &edges);
      void insert_edges_edge_disjoint(
-             std::vector<pgr_edge_t> edges,
+             const std::vector<pgr_edge_t> &edges,
              bool directed);
 
      void flow_dfs(

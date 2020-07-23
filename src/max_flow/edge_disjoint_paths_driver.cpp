@@ -87,6 +87,7 @@ do_pgr_edge_disjoint_paths(
         std::vector<pgr_edge_t> edges(
                 data_edges, data_edges + total_edges);
 
+
         std::vector<General_path_element_t> paths;
         for (const auto &s : set_source_vertices) {
             for (const auto &t : set_sink_vertices) {

@@ -105,10 +105,8 @@ class PgrCostFlowGraph {
 
      E AddEdge(V v, V w, double wei, double cap);
 
-     void SortEdges(
-             std::vector<pgr_costFlow_t> &edges);
      void InsertEdges(
-             std::vector<pgr_costFlow_t> edges);
+             const std::vector<pgr_costFlow_t> &edges);
 
      /*
       * vertices = {sources} U {sink} U {edges.source} U {edge.target}
