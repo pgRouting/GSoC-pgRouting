@@ -114,7 +114,7 @@ do_pgr_bellman_ford(
         if (directed) {
             log << "Working with directed Graph\n";
             pgrouting::DirectedGraph digraph(gType);
-            digraph.insert_edges(data_edges, total_edges);
+            digraph.insert_edges_sorted(data_edges, total_edges);
             paths = pgr_bellman_ford(digraph,
                     start_vertices,
                     end_vertices,
@@ -123,7 +123,7 @@ do_pgr_bellman_ford(
         } else {
             log << "Working with Undirected Graph\n";
             pgrouting::UndirectedGraph undigraph(gType);
-            undigraph.insert_edges(data_edges, total_edges);
+            undigraph.insert_edges_sorted(data_edges, total_edges);
             paths = pgr_bellman_ford(
                     undigraph,
                     start_vertices,
