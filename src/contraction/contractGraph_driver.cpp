@@ -88,7 +88,7 @@ void process_contraction(
         const std::vector< int64_t > &forbidden_vertices,
         const std::vector< int64_t > &contraction_order,
         int64_t max_cycles) {
-    graph.insert_edges(edges);
+    graph.insert_edges_sorted(edges);
     Identifiers<typename G::V> forbid_vertices;
     for (const auto &vertex : forbidden_vertices) {
         if (graph.has_vertex(vertex)) {
