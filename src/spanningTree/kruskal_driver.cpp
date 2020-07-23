@@ -78,7 +78,7 @@ do_pgr_kruskal(
             results = pgrouting::details::get_no_edge_graph_result(roots);
         } else {
             pgrouting::UndirectedGraph undigraph(UNDIRECTED);
-            undigraph.insert_edges(data_edges, total_edges);
+            undigraph.insert_edges_sorted(data_edges, total_edges);
 
             pgrouting::functions::Pgr_kruskal
                 <pgrouting::UndirectedGraph> kruskal;

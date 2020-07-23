@@ -118,7 +118,7 @@ do_pgr_transitiveClosure(
 
         graphType gType = DIRECTED;
         pgrouting::DirectedGraph digraph(gType);
-        digraph.insert_edges(data_edges, total_edges);
+        digraph.insert_edges_sorted(data_edges, total_edges);
 
         get_postgres_result(
                 digraph,
