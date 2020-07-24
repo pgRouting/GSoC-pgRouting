@@ -51,14 +51,9 @@ namespace pgrouting {
         template<class Graph>
         class Pgr_LTDTree : public pgrouting::Pgr_messages {
         public:
-            typedef typename Graph::V Vertex;
-            typedef typename Graph::E_i E_i;
-            typedef adjacency_list<
-                    listS,
-                    listS,
-                    bidirectionalS,
-                    property<vertex_index_t, std::size_t>, no_property> G;
-
+            typedef typename G::V Vertex;
+            typedef typename G::E_i E_i;
+            typedef typename G::V_i V_i;
             typedef pair<int64_t , int64_t> edge; //For making edge list to be used in extract vertices
             vector<edge> edgeList;
             std::vector<pgr_ltdtree_rt> results;
@@ -106,27 +101,9 @@ namespace pgrouting {
                     Graph &graph,
                     int64_t root
                     ){
-                   const int64_t numOfVertices=graph.num_vertices();
-                   extract_vertices(graph,numOfVertices);
-                   if(!is_valid_root(root))
-                   {
-                       notice<<"Invalid root "<<root<<"\n";
-                       return results;
-                   }
-
-                   typedef graph_traits<G>::vertex_descriptor Vertex;
-                   typedef property_map<G, vertex_index_t>::type IndexMap;
-                   typedef iterator_property_map<vector<Vertex>::iterator, IndexMap> PredMap;
-
-                   G g(edgeList.begin(), edgeList.end(),numOfVertices);
-                   vector<Vertex> domTreePredVector, domTreePredVector2;
-                   IndexMap indexMap(get(vertex_index, g));
-                   graph_traits<G>::vertex_iterator uItr, uEnd;
-                   int j = 0;
-                   for (boost::tie(uItr, uEnd) = vertices(g); uItr != uEnd; ++uItr, ++j)
-                   {
-                       put(indexMap, *uItr, j);
-                   }
+                   const int64_t numOfVertices=graph.num_vertices();                  
+               log <<"numOfVertices "<<numOfVertices;
+               
                    // Lengauer-Tarjan dominator tree algorithm
                    domTreePredVector =
                            vector<Vertex>(num_vertices(g), graph_traits<G>::null_vertex());
@@ -155,9 +132,27 @@ namespace pgrouting {
 
                    }
 
-                return results;
+
+
+            V_i v, vend;
+
+         // iterate through every vertex in the graph
+         for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
+             int64_t vid = graph[*v].id;
+             int64_t idom = domTreePredVector[*v];
+            // log<<"\n"<<node<<" "<<color<<" ";
+             results.push_back(
+                 {
+                     vid,idom
+                 }
+             );
+
+                
             }
+            return results;
+                    }
         };
     }
 }
 #endif  // INCLUDE_LTDTREE_PGR_LTDTREE_HPP
+
