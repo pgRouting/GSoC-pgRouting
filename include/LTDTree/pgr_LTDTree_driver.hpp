@@ -105,32 +105,14 @@ namespace pgrouting {
                log <<"numOfVertices "<<numOfVertices;
                
                    // Lengauer-Tarjan dominator tree algorithm
-                   domTreePredVector =
-                           vector<Vertex>(num_vertices(g), graph_traits<G>::null_vertex());
-                   PredMap domTreePredMap =
-                           make_iterator_property_map(domTreePredVector.begin(), indexMap);
-                   lengauer_tarjan_dominator_tree(g, vertex(root-min_vertex, g), domTreePredMap);
+                   //auto v_root(graph.get_V(root));
+                  vector<Vertex> domTreePredVector =  vector<Vertex>(num_vertices(graph.graph),-1);
+                  auto domTreePredMap =
+                           make_iterator_property_map(domTreePredVector.begin(), boost::get(boost::vertex_index, graph.graph));
+                   
+                   lengauer_tarjan_dominator_tree(graph.graph, graph.get_V(root), domTreePredMap);
 
 
-/*****************************************Making result vector*************************************/
-                   pgr_ltdtree_rt temp;
-                   for (boost::tie(uItr, uEnd) = vertices(g); uItr != uEnd; ++uItr)
-                   {
-                       if (get(domTreePredMap, *uItr) != graph_traits<G>::null_vertex())
-                       {
-                           temp.vid=(get(indexMap, *uItr)+min_vertex);
-                           temp.idom=get(indexMap, get(domTreePredMap, *uItr))+min_vertex;
-                           results.push_back(temp);
-                       }
-                       else
-                       {
-
-                           temp.vid=(get(indexMap, *uItr)+min_vertex);
-                           temp.idom=0;
-                           results.push_back(temp);
-                       }
-
-                   }
 
 
 
@@ -139,7 +121,17 @@ namespace pgrouting {
          // iterate through every vertex in the graph
          for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
              int64_t vid = graph[*v].id;
-             int64_t idom = domTreePredVector[*v];
+              int64_t idom;
+             if(domTreePredVector[*v]!=-1)
+             {
+                 idom = domTreePredVector[*v]+1;
+             }
+             else
+             {
+                 idom = 0;
+             }
+             
+             
             // log<<"\n"<<node<<" "<<color<<" ";
              results.push_back(
                  {
