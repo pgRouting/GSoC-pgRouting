@@ -96,7 +96,7 @@ pgr_depthFirstSearch(
  * vector and passes these variables to the template function `pgr_depthFirstSearch`
  * which calls the main function defined in the C++ Header file. It also does
  * exception handling.
- * 
+ *
  * @param data_edges     the set of edges from the SQL query
  * @param total_edges    the total number of edges in the SQL query
  * @param rootsArr       the array containing the starting vertices
