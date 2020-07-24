@@ -60,7 +60,7 @@ cd build/
 # with developers documentation
 #cmake  -DWITH_DOC=ON -DBUILD_DOXY=ON ..
 
-cmake..
+cmake ..
 
 make -j 4
 sudo make install
