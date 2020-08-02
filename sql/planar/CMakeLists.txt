@@ -1,7 +1,7 @@
 
 SET(LOCAL_FILES
-    _boyerMyrvold.sql
-    boyerMyrvold.sql
+    _isPlanar.sql
+    isPlanar.sql
     )
 
 foreach (f ${LOCAL_FILES})

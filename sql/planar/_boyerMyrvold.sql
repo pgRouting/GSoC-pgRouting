@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _boyerMyrvold.sql
+File: _boyerMyrvold_1.sql
 
 Copyright (c) 2020 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ********************************************************************PGR-GNU*/
 -------------------------
 -------------------------
--- _boyerMyrvold
+-- _boyerMyrvold_1
 -------------------------
 -------------------------
 

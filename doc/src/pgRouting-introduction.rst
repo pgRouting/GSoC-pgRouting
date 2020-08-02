@@ -60,15 +60,6 @@ Daniel Kastl,
 Himanshu Raj,
 Martha Vergara,
 Regina Obe,
-Gudesa Venkata Sai Akhil,
-Hang Wu,
-Himanshu Raj,
-Imre Samu,
-Maoguang Wang, Martha Vergara,
-Mohamed Bakli,
-Mahmoud SAKR, Esteban Zimanyi
-Regina Obe, Rohith Reddy,
-Sourabh Garg,
 Virginia Vergara
 
 
@@ -100,6 +91,7 @@ Esteban Zimanyi,
 Florian Thurkow, Frederic Junod,
 Gerald Fenoy, Gudesa Venkata Sai Akhil,
 Hang Wu,
+Himanshu Raj,
 Imre Samu,
 Jay Mahadeokar, Jinfu Leng,
 Kai Behncke, Kishore Kumar, Ko Nagase,

@@ -21,8 +21,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_PLANARGRAPH_PGR_BOYERMYRVOLD_HPP_
-#define INCLUDE_PLANARGRAPH_PGR_BOYERMYRVOLD_HPP_
+#ifndef INCLUDE_PLANAR_PGR_BOYERMYRVOLD_HPP_
+#define INCLUDE_PLANAR_PGR_BOYERMYRVOLD_HPP_
 #pragma once
 
 #include <boost/graph/adjacency_list.hpp>
@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/is_kuratowski_subgraph.hpp>
 
+#include "cpp_common/pgr_messages.h"
 #include "cpp_common/pgr_base_graph.hpp"
 #include "c_types/pgr_boyer_t.h"
 //******************************************
@@ -43,42 +44,43 @@ namespace pgrouting {
 namespace functions {
 
 template < class G >
-class Pgr_boyerMyrvold {
+class Pgr_boyerMyrvold : public pgrouting::Pgr_messages {
  public:
      typedef typename G::V V;
      typedef typename G::E E;
      typedef typename G::E_i E_i;
-     std::vector<pgr_boyer_t> boyerMyrvold(
-                 G &graph){
-                   return generateboyerMyrvold(
-                                          graph);
-                 }
+     std::vector<pgr_boyer_t> boyerMyrvold(G &graph){
+          return generateboyerMyrvold(graph);
+     }
+
+     bool isPlanar(G &graph){
+          return (boyer_myrvold_planarity_test(graph.graph));
+     }
 
  private:
-     std::vector< pgr_boyer_t >
-     generateboyerMyrvold(
-        const G &graph ) {
-       std::vector< pgr_boyer_t > results;
-       auto check = boyer_myrvold_planarity_test(graph.graph);
-       if(check){
-      E_i ei, ei_end;
-      int i;
-      for (boost::tie(ei, ei_end) = edges(graph.graph),i = 0; ei != ei_end; ++ei,++i){
-           int64_t src = graph[graph.source(*ei)].id;
-           int64_t tgt = graph[graph.target(*ei)].id;
-           double cost = graph[*ei].cost;
-           pgr_boyer_t tmp;
-           tmp.source = src;
-           tmp.target = tgt;
-           tmp.cost = cost;
-           results.push_back(tmp);
+     std::vector< pgr_boyer_t >generateboyerMyrvold(const G &graph ) {
+     std::vector< pgr_boyer_t > results;
+     auto check = boyer_myrvold_planarity_test(graph.graph);
+     if(check){
+         E_i ei, ei_end;
+         int i;
+     for (boost::tie(ei, ei_end) = edges(graph.graph),i = 0; ei != ei_end; ++ei,++i){
+         int64_t src = graph[graph.source(*ei)].id;
+         int64_t tgt = graph[graph.target(*ei)].id;
+         double cost = graph[*ei].cost;
+         pgr_boyer_t tmp;
+         tmp.source = src;
+         tmp.target = tgt;
+         tmp.cost = cost;
+         results.push_back(tmp);
       }
 
     }
        return results;
     }
+
 };
 }
 }
 
-#endif //INCLUDE_PLANARGRAPH_PGR_BOYERMYRVOLD_HPP_
+#endif //INCLUDE_PLANAR_PGR_BOYERMYRVOLD_HPP_

@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: boyerMyrvold_1.sql
+File: isPlanar.sql
 
 Copyright (c) 2020 pgRouting developers
 Mail: project@pgrouting.org
@@ -27,31 +27,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ********************************************************************PGR-GNU*/
 
 ------------------
--- pgr_boyerMyrvold_1
+-- pgr_isPlanar
 ------------------
 
-CREATE OR REPLACE FUNCTION pgr_boyerMyrvold_1(
-    TEXT,   -- edges_sql (required)
-    OUT seq BIGINT,
-    OUT source BIGINT,
-    OUT target BIGINT,
-    OUT cost FLOAT)
+CREATE OR REPLACE FUNCTION pgr_isPlanar(
+    TEXT   -- edges_sql (required)
+        )
 
-RETURNS SETOF RECORD AS
+RETURNS BOOLEAN AS
 $BODY$
     SELECT *
-    FROM _pgr_boyerMyrvold_1(_pgr_get_statement($1)) AS a;
+    FROM _pgr_isPlanar(_pgr_get_statement($1)) AS a;
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_boyerMyrvold_1(TEXT)
-IS 'pgr_boyerMyrvold
+COMMENT ON FUNCTION pgr_isPlanar(TEXT)
+IS 'pgr_isPlanar
 - EXPERIMENTAL
 - Undirected graph
 - Parameters:
   - edges SQL with columns: id, source, target, cost [,reverse_cost]
 - Documentation:
-  - ${PGROUTING_DOC_LINK}/pgr_boyerMyrvold.html
+  - ${PGROUTING_DOC_LINK}/pgr_isPlanar.html
 ';

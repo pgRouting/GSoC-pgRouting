@@ -1,7 +1,8 @@
 /*PGR-GNU*****************************************************************
-File: boyerMyrvold_1.sql
+File: isPlanar_driver.h
 
-Copyright (c) 2020 pgRouting developers
+Generated with Template by:
+Copyright (c) 2019 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
@@ -26,32 +27,40 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-------------------
--- pgr_boyerMyrvold
-------------------
+#ifndef INCLUDE_DRIVERS_PLANAR_ISPLANAR_DRIVER_H_
+#define INCLUDE_DRIVERS_PLANAR_ISPLANAR_DRIVER_H_
+#pragma once
 
-CREATE OR REPLACE FUNCTION pgr_boyerMyrvold(
-    TEXT,   -- edges_sql (required)
-    OUT seq BIGINT,
-    OUT source BIGINT,
-    OUT target BIGINT,
-    OUT cost FLOAT)
+/* for size-t */
+#ifdef __cplusplus
+#   include <cstddef>
+#else
+#   include <stddef.h>
+#endif
 
-RETURNS SETOF RECORD AS
-$BODY$
-    SELECT *
-    FROM _pgr_boyerMyrvold(_pgr_get_statement($1)) AS a;
-$BODY$
-LANGUAGE SQL VOLATILE STRICT;
+#include "c_types/pgr_edge_t.h"
+#include "c_types/pgr_boyer_t.h"
+#include "c_types/pgr_mst_rt.h"
 
--- COMMENTS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-COMMENT ON FUNCTION pgr_boyerMyrvold(TEXT)
-IS 'pgr_boyerMyrvold
-- EXPERIMENTAL
-- Undirected graph
-- Parameters:
-  - edges SQL with columns: id, source, target, cost [,reverse_cost]
-- Documentation:
-  - ${PGROUTING_DOC_LINK}/pgr_boyerMyrvold.html
-';
+    /*********************************************************
+    TEXT
+     ********************************************************/
+
+
+    bool do_pgr_isPlanar(
+                pgr_edge_t  *data_edges,
+                size_t total_tuples,
+                char ** log_msg,
+                char ** notice_msg,
+                char ** err_msg);
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // INCLUDE_DRIVERS_PLANAR_ISPLANAR_DRIVER_H_

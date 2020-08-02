@@ -1,6 +1,6 @@
 
 SET(LOCAL_FILES
-    pgr_boyerMyrvold.rst
+    pgr_isPlanar.rst
     )
 
 foreach (f ${LOCAL_FILES})

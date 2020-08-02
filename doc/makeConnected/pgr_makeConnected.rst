@@ -50,16 +50,43 @@ Signatures
 
 .. code-block:: none
 
-    pgr_makeConnected(edges_sql)
+    pgr_makeConnected(Edges SQL)
 
-    RETURNS SET OF (seq, source, target, cost)
+    RETURNS SET OF (seq, node_from, node_to)
     OR EMPTY SET
 
-:Example: Query done on :doc:`sampledata` network gives.
+Using pgr_connectedComponents() to check the number of connected components in the :doc:`sampledata` graph.
+There are 3 connected components namely **1**, **14**, **16**.
 
 .. literalinclude:: doc-pgr_makeConnected.queries
    :start-after: -- q1
    :end-before: -- q2
+
+:Example: Query done on :doc:`sampledata` network gives the list of edges that are needed in the graph to make it connected.
+
+.. literalinclude:: doc-pgr_makeConnected.queries
+   :start-after: -- q2
+   :end-before: -- q3
+
+Inserting the above list of edges in the edge_table.
+
+.. literalinclude:: doc-pgr_makeConnected.queries
+   :start-after: -- q3
+   :end-before: -- q4
+
+Using pgr_connectedComponents() to check the number of connected components. So, Now the graph has
+only one connected component.
+
+.. literalinclude:: doc-pgr_makeConnected.queries
+      :start-after: -- q4
+      :end-before: -- q5
+
+pgr_makeConnected() can also be used to verify it. Since, the graph is already connected now, it will
+return an empty set of row.
+
+.. literalinclude:: doc-pgr_makeConnected.queries
+      :start-after: -- q5
+      :end-before: -- q6
 
 Parameters
 -------------------------------------------------------------------------------
@@ -67,13 +94,13 @@ Parameters
 =================== ====================== ========= =================================================
 Parameter           Type                   Default   Description
 =================== ====================== ========= =================================================
-**edges_sql**       ``TEXT``                         SQL query as described above.
+**Edges SQL**       ``TEXT``                         SQL query as described above.
 =================== ====================== ========= =================================================
 
 Inner query
 -------------------------------------------------------------------------------
 
-:edges_sql: an SQL query, which should return a set of rows with the following columns:
+:Edges SQL: an SQL query, which should return a set of rows with the following columns:
 
 ================= =================== ======== =================================================
 Column            Type                 Default  Description
@@ -108,11 +135,6 @@ Column           Type        Description
 **node_from**    ``BIGINT``  Identifier of the first end point vertex of the edge.
 **node_to**      ``BIGINT``  Identifier of the second end point vertex of the edge.
 ===============  =========== ============================================================
-
-Additional Example:
--------------------------------------------------------------------------------
-
-
 
 See Also
 -------------------------------------------------------------------------------
