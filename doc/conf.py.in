@@ -303,6 +303,8 @@ linkcheck_ignore = [
     "https://github.com/pgRouting/pgrouting/issues/*",    # limit only pgrouting
     "https://docs.pgrouting.org/3.2/en/pgr_isPlanar.html",
     "https://docs.pgrouting.org/3.2/en/pgr_makeConnected.html",
+    "https://docs.pgrouting.org/3.2/en/pgr_bipartite.html",
+    "https://docs.pgrouting.org/3.2/en/pgr_LengauerTarjanDominatorTree.html",
 ]
 
 linkcheck_timeout = 20
