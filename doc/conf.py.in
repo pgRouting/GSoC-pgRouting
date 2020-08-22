@@ -304,7 +304,7 @@ linkcheck_ignore = [
     "https://docs.pgrouting.org/3.2/en/pgr_isPlanar.html",
     "https://docs.pgrouting.org/3.2/en/pgr_makeConnected.html",
     "https://docs.pgrouting.org/3.2/en/pgr_bipartite.html",
-    "https://docs.pgrouting.org/3.2/en/pgr_LengauerTarjanDominatorTree.html",
+    "https://docs.pgrouting.org/3.2/en/pgr_lengauerTarjanDominatorTree.html",
 ]
 
 linkcheck_timeout = 20
