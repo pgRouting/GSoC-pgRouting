@@ -8,11 +8,10 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-pgr_LengauerTarjanDominatorTree -Experimental
+pgr_lengauerTarjanDominatorTree -Experimental
 ===============================================================================
 
-``pgr_LengauerTarjanDominatorTree`` — Returns the immediate dominator of all vertices.
-In particular, the Lengauer Tarjan Dominator Tree algorithm implemented by Boost.Graph.
+``pgr_lengauerTarjanDominatorTree`` — Returns the immediate dominator of all vertices.
 
 .. figure:: images/boost-inside.jpeg
    :target: https://www.boost.org/doc/libs/1_50_0/libs/graph/doc/lengauer_tarjan_dominator.htm
@@ -25,10 +24,29 @@ In particular, the Lengauer Tarjan Dominator Tree algorithm implemented by Boost
 
 .. rubric:: Availability
 
+* Version 3.2.0
+
+  * New **experimental** function
+
+.. rubric:: Support
+
+* **Supported versions:**
+  current(`3.2 <https://docs.pgrouting.org/3.2/en/pgr_lengauerTarjanDominatorTree.html>`__)
+
+
+
 
 Description
 -------------------------------------------------------------------------------
-Lengauer Tarjan Dominator Tree algorithm is used to make dominator tree of any graph. It calculates the immidiate dominator of each vertex called idom, once idom of each vertex is calculated then by making every idom of each vertex as its parent, the dominator tree can be built.
+The algorithm calculates the *immidiate dominator* of each vertex called **idom**, once **idom** of each vertex is calculated then by making every **idom** of each vertex as its parent, the dominator tree can be built.
+
+**The main Characteristics are:**
+
+- The algorithm works in directed graph only.
+- The returned values are not ordered.
+- The algorithm returns *idom* of each vertex.
+- If the *root vertex* not present in the graph then it returns empty set.
+- Running time: :math:`O((V+E)log(V+E))`
 
 Signatures
 -------------------------------------------------------------------------------
@@ -37,16 +55,16 @@ Signatures
 
 .. code-block:: sql
 
-    pgr_LengauerTarjanDominatorTree(edges_sql,root)
-    RETURNS SET OF (id,vid,idom)
-
+    pgr_lengauerTarjanDominatorTree(Edges SQL, root vertex) -- Experimental on v3.2
+    RETURNS SET OF (seq, vertex_id, idom)
+    OR EMPTY SET
 
 
 .. index::
-    single: pgr_LengauerTarjanDominatorTree
+    single: pgr_lengauerTarjanDominatorTree
 
 
-:Example: The lengauer_tarjan_dominator_tree with root vertex :math:`1`
+:Example: The lengauerTarjanDominatorTree with root vertex :math:`1`
 
 .. literalinclude:: doc-lengauerTarjanDominatorTree.queries
    :start-after: --q1
@@ -55,12 +73,12 @@ Signatures
 Parameters
 -------------------------------------------------------------------------------
 
-============== ============ =================================================
-Column         Type           Description
-============== ============ =================================================
-**edges_sql**   ``TEXT``    SQL query as described above.
-**root_vid**    ``BIGINT``  Identifier of the starting vertex.
-============== ============ =================================================
+=============== ============ =================================================
+Column          Type           Description
+=============== ============ =================================================
+**Edges SQL**    ``TEXT``    SQL query as described above.
+**root vertex**  ``BIGINT``  Identifier of the starting vertex.
+=============== ============ =================================================
 
 
 Inner query
@@ -73,13 +91,13 @@ Inner query
 Result Columns
 -------------------------------------------------------------------------------
 
-Returns set of ``(seq, vid,idom)``
+Returns set of ``(seq, vertex_id,idom)``
 
 ============== =========== =================================================
 Column         Type        Description
 ============== =========== =================================================
 **seq**        ``INTEGER`` Sequential value starting from **1**.
-**vid**        ``BIGINT``  Identifier of vertex .
+**vertex_id**  ``BIGINT``  Identifier of vertex .
 **idom**       ``BIGINT``  Immediate dominator of vertex.
 ============== =========== =================================================
 
@@ -87,7 +105,7 @@ Additional Examples
 ------------------------------------------------------------------------------------------
 The examples in this section use the following :ref:`fig1`
 
-:Example: When the edge is disonnectd from graph then it will returns immidiate dominator of all vertex as zero except that edge:
+:Example: When the edge is disonnectd from graph then it will returns immidiate dominator of all other vertex as zero.
 
 
 
@@ -98,9 +116,8 @@ The examples in this section use the following :ref:`fig1`
 See Also
 -------------------------------------------------------------------------------
 
-* https://www.boost.org/doc/libs/1_50_0/libs/graph/doc/lengauer_tarjan_dominator.htm
-* https://www.cs.princeton.edu/courses/archive/fall03/cs528/handouts/a%20fast%20algorithm%20for%20finding.pdf
-* https://www.boost.org/doc/libs/1_64_0/libs/graph/doc/two_graphs_common_spanning_trees.html
+* `Boost: lengauerTarjanDominatorTree algorithm documentation <https://www.boost.org/doc/libs/1_50_0/libs/graph/doc/lengauer_tarjan_dominator.htm>`__
+* `Wikipedia: dominator tree <https://en.wikipedia.org/wiki/Dominator_(graph_theory)>`__
 * :doc:`sampledata` network.
 
 .. rubric:: Indices and tables
