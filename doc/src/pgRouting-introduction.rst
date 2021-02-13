@@ -95,7 +95,7 @@ Kai Behncke, Kishore Kumar, Ko Nagase,
 Mahmoud SAKR, Esteban Zimanyi
 Manikata Kondeti, Mario Basa, Martin Wiesenhaan,  Maxim Dubinin, Maoguang Wang, Mohamed Zia, Mohamed Bakli, Mukul Priya,
 Razequl Islam,
-Regina Obe, Rohith Reddy,
+Regina Obe, Riya Singh, Rohith Reddy,
 Sarthak Agarwal, Sourabh Garg, Stephen Woodbridge, Sylvain Housseman, Sylvain Pasche,
 Vidhan Jain, Virginia Vergara
 
