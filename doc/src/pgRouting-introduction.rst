@@ -61,6 +61,7 @@ Daniel Kastl,
 Himanshu Raj,
 Martha Vergara,
 Regina Obe,
+Saurav Uppoor,
 Virginia Vergara
 
 
@@ -101,7 +102,7 @@ Mahmoud Sakr,
 Manikata Kondeti, Mario Basa, Martin Wiesenhaan,  Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya,
 Razequl Islam,
 Regina Obe, Rohith Reddy,
-Sarthak Agarwal, Sourabh Garg, Stephen Woodbridge, Sylvain Housseman, Sylvain Pasche,
+Sarthak Agarwal, Saurav Uppoor, Sourabh Garg, Stephen Woodbridge, Sylvain Housseman, Sylvain Pasche,
 Vidhan Jain, Virginia Vergara
 
 Corporate Sponsors (in alphabetical order)
