@@ -85,7 +85,7 @@ Individuals (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Aasheesh Tiwari, Aditya Pratap Singh, Adrien Berchet, Akio Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Ashraf Hossain,
-Ashish Kumar,
+Ashish Kumar, Ayush paliwal
 Cayetano Benavent, Christian Gonzalez,
 Daniel Kastl, Dave Potts, David Techer, Denis Rykov,
 Ema Miyawaki,
