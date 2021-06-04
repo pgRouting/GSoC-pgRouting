@@ -51,7 +51,6 @@ namespace functions {
 template<class G>
 class Mycoloring : public pgrouting::Pgr_messages {
  public:
-
      typedef typename G::V_i V_i;
      std::vector<pgr_bipartite_rt> print_Bipartite(
              G &graph) {
