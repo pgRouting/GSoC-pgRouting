@@ -4,6 +4,8 @@ SET(LOCAL_FILES
     sequentialVertexColoring.sql
     _bipartite.sql
     bipartite.sql
+    _mycoloring.sql
+    mycoloring.sql
     )
 
 # Do not modify below this line
