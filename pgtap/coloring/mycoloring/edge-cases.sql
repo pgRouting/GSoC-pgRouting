@@ -5,6 +5,8 @@ SELECT plan(16);
 
 -- 0 edge, 0 vertex test
 
+SELECT todo_start('needs checking');
+
 PREPARE q1 AS
 SELECT id, source, target, cost, reverse_cost
 FROM edge_table
@@ -188,7 +190,7 @@ INSERT INTO five_vertices_table (source, target, cost, reverse_cost) VALUES
     (3, 4, 1, -1),
     (4, 5, 1, 1),
     (5, 1, 1, -1);
-    
+
 PREPARE q8 AS
 SELECT id, source, target, cost, reverse_cost
 FROM five_vertices_table;
@@ -214,7 +216,7 @@ FROM pgr_mycoloring(
 SELECT is_empty('mycoloring8', '16: Graph with odd lenght cycle -> Empty row is returned');
 
 
-
+SELECT todo_end();
 
 
 SELECT * FROM finish();

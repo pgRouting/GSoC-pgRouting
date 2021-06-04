@@ -12,7 +12,7 @@ SELECT function_returns('pgr_mycoloring', ARRAY['text'],  'setof record');
 -- parameter names
 SELECT bag_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_mycoloring'$$,
-    $$SELECT  '{"","vertex_id","color_id"}'::TEXT[] $$
+    $$SELECT  '{"","edge_id","color_id"}'::TEXT[] $$
 );
 
 -- parameter types
