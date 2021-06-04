@@ -37,7 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #else
 #   include <stddef.h>
 #endif
-#include <c_types/pgr_mycoloring_rt.h>
+#include <c_types/pgr_bipartite_rt.h>
 #include "c_types/pgr_edge_t.h"
 
 #ifdef __cplusplus
@@ -52,7 +52,7 @@ void
 do_pgr_mycoloring(
         pgr_edge_t  *data_edges,
         size_t total_tuples,
-        bipartite_rt **return_tuples,
+        pgr_bipartite_rt **return_tuples,
         size_t *return_count,
         char **log_msg,
         char **notice_msg,

@@ -49,13 +49,14 @@ namespace pgrouting {
 namespace functions {
 
 template<class G>
-class Pgr_Bipartite : public pgrouting::Pgr_messages {
+class Mycoloring : public pgrouting::Pgr_messages {
  public:
 
      typedef typename G::V_i V_i;
-     std::vector<pgr_mycoloring_rt> print_Bipartite(
+     std::vector<pgr_bipartite_rt> print_Bipartite(
              G &graph) {
-         std::vector<pgr_mycoloring_rt> results;
+         std::vector<pgr_bipartite_rt> results;
+#if 0
          std::vector <boost::default_color_type> partition(graph.num_vertices());
          auto partition_map =
              make_iterator_property_map(partition.begin(), boost::get(boost::vertex_index, graph.graph));
@@ -79,14 +80,17 @@ class Pgr_Bipartite : public pgrouting::Pgr_messages {
                  boost::color_traits <boost::default_color_type>::white() ?
                  results.push_back({vid, 0}) :results.push_back({vid, 1});
          }
+#endif
          return results;
      }
 
-     std::vector<pgr_mycoloring_rt> pgr_mycoloring(
+     std::vector<pgr_bipartite_rt> pgr_mycoloring(
              G &graph ){
-         std::vector<pgr_mycoloring_rt> results;
+         std::vector<pgr_bipartite_rt> results;
+#if 0
          bool mycoloring = boost::is_mycoloring(graph.graph);
          if (mycoloring) results = print_Bipartite(graph);
+#endif
          return results;
      }
 };

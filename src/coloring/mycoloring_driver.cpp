@@ -41,8 +41,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/basePath_SSEC.hpp"
 #include "cpp_common/pgr_base_graph.hpp"
 #include "drivers/coloring/mycoloring_driver.h"
-#include "coloring/pgr_mycoloring_driver.hpp"
-#include "c_types/pgr_mycoloring_rt.h"
+#include "coloring/mycoloring.hpp"
+#include "c_types/pgr_bipartite_rt.h"
 
 
 /************************************************************
@@ -52,7 +52,7 @@ void
 do_pgr_mycoloring(
         pgr_edge_t  *data_edges,
         size_t total_edges,
-        pgr_mycoloring_rt **return_tuples,
+        pgr_bipartite_rt **return_tuples,
         size_t *return_count,
         char **log_msg,
         char **notice_msg,
@@ -75,11 +75,11 @@ do_pgr_mycoloring(
         pgrouting::UndirectedGraph undigraph(gType);
 
         undigraph.insert_edges(data_edges, total_edges);
-        std::vector<pgr_mycoloring_rt> results;
-        pgrouting::functions::Pgr_Bipartite <pgrouting::UndirectedGraph> fn_Bipartite;
+        std::vector<pgr_bipartite_rt> results;
+        pgrouting::functions::Mycoloring <pgrouting::UndirectedGraph> fn;
 
-        results = fn_Bipartite.pgr_mycoloring(undigraph);
-        logstr += fn_Bipartite.get_log();
+        results = fn.pgr_mycoloring(undigraph);
+        logstr += fn.get_log();
         log << logstr;
         auto count = results.size();
         if (count == 0) {

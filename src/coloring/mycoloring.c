@@ -37,7 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
-#include "c_types/pgr_mycoloring_rt.h"
+#include "c_types/pgr_bipartite_rt.h"
 #include "c_common/edges_input.h"
 #include "c_common/arrays_input.h"
 #include "drivers/coloring/mycoloring_driver.h"
@@ -51,7 +51,7 @@ PG_FUNCTION_INFO_V1(_pgr_mycoloring);
 static
 void
 process(char* edges_sql,
-        pgr_mycoloring_rt **result_tuples,
+        pgr_bipartite_rt **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
 
@@ -97,7 +97,7 @@ PGDLLEXPORT Datum
 _pgr_mycoloring(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
-    pgr_mycoloring_rt *result_tuples = NULL;
+    pgr_bipartite_rt *result_tuples = NULL;
     size_t result_count = 0;
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
@@ -127,7 +127,7 @@ _pgr_mycoloring(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (pgr_mycoloring_rt*) funcctx->user_fctx;
+    result_tuples = (pgr_bipartite_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple   tuple;
