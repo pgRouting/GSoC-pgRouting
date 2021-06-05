@@ -9,10 +9,10 @@
 
 |
 
-* `Documentation <https://vrp.pgrouting.org/>`__ → `vrpRouting 0 <https://vrp.pgrouting.org/0>`__
+* `Documentation <https://vrp.pgrouting.org/>`__ → `vrpRouting v0 <https://vrp.pgrouting.org/v0>`__
 * Supported Versions
   `Latest <https://vrp.pgrouting.org/latest/en/vrp_vroom.html>`__
-  (`0.0 <https://vrp.pgrouting.org/0/en/vrp_vroom.html>`__)
+  (`v0 <https://vrp.pgrouting.org/v0/en/vrp_vroom.html>`__)
 
 
 vrp_vroom - Experimental
@@ -26,7 +26,7 @@ vrp_vroom - Experimental
 
 .. rubric:: Availability
 
-Version 0.1.0
+Version 0.2.0
 
 * New **experimental** function
 
@@ -487,4 +487,3 @@ See Also
 
 * :ref:`genindex`
 * :ref:`search`
-
