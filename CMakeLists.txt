@@ -295,7 +295,7 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
   add_compile_options(
-    "$<$<CONFIG:Debug>:-Wall;-Wextra;-Werror;-Wpedantic;-W;-Wunused;-Wuninitialized;-Wextra;-Wdouble-promotion;-Wconversion>"
+    "$<$<CONFIG:Debug>:-Wall;-Wextra;-Wpedantic;-W;-Wunused;-Wuninitialized;-Wextra;-Wdouble-promotion;-Wconversion>"
     "$<$<CXX_COMPILER_ID:GNU>:-frounding-math>"
     )
 endif()
