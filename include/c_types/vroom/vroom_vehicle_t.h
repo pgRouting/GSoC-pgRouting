@@ -1,0 +1,79 @@
+/*PGR-GNU*****************************************************************
+File: vroom_vehicle_t.h
+
+Copyright (c) 2021 pgRouting developers
+Mail: project@pgrouting.org
+
+Function's developer:
+Copyright (c) 2021 Ashish Kumar
+Mail: ashishkr23438@gmail.com
+
+------
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+ ********************************************************************PGR-GNU*/
+/*! @file */
+
+#ifndef INCLUDE_C_TYPES_VROOM_VROOM_VEHICLES_T_H_
+#define INCLUDE_C_TYPES_VROOM_VROOM_VEHICLES_T_H_
+#pragma once
+
+#include "c_types/typedefs.h"
+#include "c_types/vroom/vroom_break_t.h"
+#include "c_types/vroom/vroom_step_t.h"
+
+/** @brief Vehicles's attributes
+
+@note C/C++/postgreSQL connecting structure for input
+name | description
+:----- | :-------
+id | The vehicle's identifier
+start_index | Start location index in matrix
+end_index | End location index in matrix
+capacity | Vehicle's capacity array
+capacity_size | Vehicle's capacity array size
+skills | Vehicle's skills
+skills_size | Number of vehicle's skills
+time_window_start | Time window start time
+time_window_end | Time window end time
+breaks | Vehicle's breaks
+breaks_size | Number of breaks
+steps | Steps describing custom routes of vehicle
+steps_size | Steps size
+*/
+struct Vroom_vehicle_t {
+  Idx id; /** The vehicle's identifier */
+  MatrixIndex start_index; /** Start location index in matrix */
+  MatrixIndex end_index; /** End location index in matrix */
+
+  Amount *capacity; /** Vehicle's capacity array */
+  size_t capacity_size; /** Vehicle's capacity array size */
+
+  Skill *skills; /** Vehicle's skills */
+  size_t skills_size; /** Number of vehicle's skills */
+
+  Duration time_window_start; /** Time window start time */
+  Duration time_window_end; /** Time window end time */
+
+  Vroom_break_t *breaks; /** Vehicle's breaks */
+  size_t breaks_size; /** Number of breaks */
+
+  Vroom_step_t *steps; /** Steps describing custom routes of vehicle */
+  size_t steps_size; /** Steps size */
+};
+
+
+#endif  // INCLUDE_C_TYPES_VROOM_VROOM_VEHICLES_T_H_
