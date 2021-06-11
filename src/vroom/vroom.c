@@ -43,10 +43,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/vroom/vroom_shipment_t.h"
 #include "c_types/vroom/vroom_vehicle_t.h"
 
+#if 0
 #include "c_common/vroom/jobs_input.h"
 #include "c_common/vroom/shipments_input.h"
 #include "c_common/vroom/vehicles_input.h"
 #include "c_common/vroom/matrix_input.h"
+#endif
 
 #include "drivers/vroom/vroom_driver.h"
 
@@ -78,7 +80,6 @@ process(
 
   (*result_tuples) = NULL;
   (*result_count) = 0;
-
 
 
   pgr_SPI_finish();
