@@ -10,67 +10,71 @@
 |
 
 * **Supported versions:**
-  `Latest <https://docs.pgrouting.org/latest/en/pgr_bipartite.html>`__
-  (`3.2 <https://docs.pgrouting.org/3.2/en/pgr_bipartite.html>`__)
+  `Latest <https://docs.pgrouting.org/latest/en/pgr_edgeColoring.html>`__
+  (`3.3 <https://docs.pgrouting.org/3.3/en/pgr_edgeColoring.html>`__)
 
-pgr_bipartite -Experimental
+pgr_edgeColoring - Experimental
 ===============================================================================
 
-``pgr_bipartite`` — If graph is bipartite then function returns the vertex id along with color (0 and 1) else it will return an empty set.
-In particular, the is_bipartite() algorithm implemented by Boost.Graph.
+``pgr_edgeColoring`` — Returns the edge coloring of an undirected and loop-free (i.e *no self-loops and no parallel edges*) graph.
 
 .. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/is_bipartite.html
+   :target: https://www.boost.org/libs/graph/doc/edge_coloring.html
 
    Boost Graph Inside
 
 .. include:: experimental.rst
    :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :end-before: end-warn-exp
 
 .. rubric:: Availability
 
-* Version 3.2.0
+* Version 3.3.0
 
   * New **experimental** function
 
 
 Description
 -------------------------------------------------------------------------------
-A bipartite graph is a graph with two sets of vertices which are connected to each other, but not within themselves.
-A bipartite graph is possible if the graph coloring is possible using two colors such that vertices in a set are colored with the same color.
+
+Edge Coloring is an algorithm used for coloring of the edges for the vertices in the graph. It
+is an assignment of colors to the edges of the graph so that no two adjacent edges have the same
+color.
 
 **The main Characteristics are:**
 
-- The algorithm works in undirected graph only.
-- The returned values are not ordered.
-- The algorithm checks graph is bipartite or not. If it is bipartite then it returns the node along with two colors `0` and `1` which represents two different sets.
-- If graph is not bipartite then algorithm returns empty set.
-- Running time: :math:`O(V + E)`
+- The implementation is applicable only for **undirected** and **loop-free** (i.e *no self-loops and no parallel edges*) graphs.
+- Provides the color to be assigned to all the edges present in the graph.
+- At most **Δ + 1** colors are used, where **Δ** is the degree of the graph. This is optimal for some graphs, and by Vizing's theorem it uses at most one color more than the optimal for all others.
+- It can tell us whether a graph is **Bipartite**. If in a graph, the chromatic number **χ′(G)** i.e. minimum number of colors needed for proper edge coloring of graph is equal to degree **Δ** of the graph, (i.e. **χ′(G) = Δ**) then graph is said to be Bipartite. But, the vice-versa is not always true.
+- The algorithm tries to assign the least possible color to every edge.
+- Efficient graph coloring is an NP-Hard problem, and therefore, this algorithm
+  does not always produce optimal coloring.
+- The returned rows are ordered in ascending order of the edge value.
+- This algorithm is the fastest known almost-optimal algorithm for edge coloring.
+- Edge Coloring Running Time: :math:`O(|E||V|)`
+
+  - where :math:`|E|` is the number of edges in the graph,
+  - :math:`|V|` is the number of vertices in the graph.
 
 Signatures
--------------------------------------------------------------------------------
-
+------------------------------------------------------------------------------
 
 .. code-block:: sql
 
-    pgr_bipartite(Edges SQL) -- Experimental on v3.2
+    pgr_edgeColoring(Edges SQL) -- Experimental on v3.3
 
-    RETURNS SET OF (vertex_id, color_id)
+    RETURNS SET OF (edge_id, color_id)
     OR EMPTY SET
 
+:Example: Graph coloring of pgRouting :doc:`sampledata`
 
-
-:Example: The pgr_bipartite algorithm with and edge_sql as a parameter when graph is bipartite:
-
-.. literalinclude:: doc-bipartite.queries
-   :start-after: --q1
-   :end-before: --q2
-
+.. literalinclude:: doc-edgeColoring.queries
+   :start-after: -- q1
+   :end-before: -- q2
 
 .. index::
-    single: bipartite (Single Vertex) - Experimental on v3.2
-
+    single: edgeColoring -- Experimental on v3.3
 
 .. Parameters, Inner query & result columns
 
@@ -95,47 +99,21 @@ Result Columns
 -------------------------------------------------------------------------------
 
 .. include:: coloring-family.rst
-    :start-after: result columns start
-    :end-before: result columns end
-
-
-Additional Example
-------------------------------------------------------------------------------------------
-
-:Example: The odd length cyclic graph can not be bipartite.
-
-The following edge will make subgraph with vertices {1, 2, 5, 7, 8} an odd length cyclic graph.
-
-
-.. literalinclude:: doc-bipartite.queries
-   :start-after: --q2
-   :end-before: --q3
-
-The new graph is not bipartite because it has a odd length cycle of 5 vertices. Edges in blue represent odd length cycle.
-
-.. image:: images/bipartite.png
-   :scale: 60%
-
-.. literalinclude:: doc-bipartite.queries
-    :start-after: --q3
-    :end-before: --q4
-
-
-
-
+    :start-after: result columns start edgeColoring
+    :end-before: result columns end edgeColoring
 
 
 See Also
 -------------------------------------------------------------------------------
 
+* The queries use the :doc:`sampledata` network.
+
 .. see also start
 
-* `Boost: is_bipartite algorithm documentation <https://www.boost.org/libs/graph/doc/is_bipartite.html>`__
-* `Wikipedia: bipartite graph <https://en.wikipedia.org/wiki/Bipartite_graph>`__
+* `Boost: Edge Coloring Algorithm documentation <https://www.boost.org/libs/graph/doc/edge_coloring.html>`__
+* `Wikipedia: Graph Coloring <https://en.wikipedia.org/wiki/Graph_coloring>`__
 
 .. see also end
-
-* :doc:`sampledata` network.
 
 .. rubric:: Indices and tables
 
