@@ -57,10 +57,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * @returns results, when results are found
  */
 
-template < class G >
-std::vector < pgr_vertex_color_rt >
+template <class G>
+std::vector<pgr_vertex_color_rt>
 pgr_edgeColoring(G &graph) {
-    pgrouting::functions::Pgr_edgeColoring < G > fn_edgeColoring;
+    pgrouting::functions::Pgr_edgeColoring<G> fn_edgeColoring;
     auto results = fn_edgeColoring.edgeColoring(graph);
     return results;
 }
@@ -110,7 +110,7 @@ do_pgr_edgeColoring(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-        std::vector < pgr_vertex_color_rt > results;
+        std::vector<pgr_vertex_color_rt> results;
 
         graphType gType = UNDIRECTED;
         pgrouting::UndirectedGraph undigraph(gType);
