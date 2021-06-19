@@ -63,7 +63,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * @returns results, when results are found
  */
 
-#if 0
 char*
 vrp_vroom(
     std::string problem_instance_json,
@@ -72,12 +71,14 @@ vrp_vroom(
     bool plan,
     bool geometry,
     std::string &log) {
+  char *result;
+#if 0
   pgrouting::functions::Vrp_vroom fn_vroom;
-  char *result = fn_vroom.vroom(problem_instance_json, server_host, server_port, plan, geometry);
+  result = fn_vroom.vroom(problem_instance_json, server_host, server_port, plan, geometry);
   log += fn_vroom.get_log();
+#endif
   return result;
 }
-#endif
 
 /** @brief Performs exception handling and converts the results to postgres.
  *
@@ -126,8 +127,6 @@ do_vrp_vroom(
     pgassert(!(*err_msg));
     pgassert(!(*result));
 
-#if 0
-
     std::string problem_instance_json(vrp_json);
     std::string server_host(osrm_host);
     std::string server_port(osrm_port);
@@ -135,7 +134,6 @@ do_vrp_vroom(
     std::string logstr;
     (*result) = vrp_vroom(problem_instance_json, server_host, server_port, plan, geometry, logstr);
     log << logstr;
-#endif
 
     pgassert(*err_msg == NULL);
     *log_msg = log.str().empty()?
