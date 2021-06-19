@@ -52,24 +52,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * of the respective boost function.
  */
 
+#if 0
 using namespace boost;
 using namespace std;
+#endif
 
 namespace pgrouting {
 namespace functions {
 
 //*************************************************************
 
-template < class G >
+template <class G>
 class Pgr_edgeColoring {
 public:
     typedef typename G::V V;
     typedef typename G::E E;
 
-    typedef adjacency_list<vecS, vecS, undirectedS, no_property, size_t,
-            no_property>
+    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property,
+            boost::no_property>
             Graph;
-    typedef boost::graph_traits <Graph> ::edges_size_type edges_size_type;
+    typedef boost::graph_traits<Graph> ::edges_size_type edges_size_type;
 
     /** @name EdgeColoring
      * @{
@@ -82,13 +84,13 @@ public:
      * (https://www.boost.org/libs/graph/doc/edge_coloring.html)
      */
 
-    std::vector <pgr_vertex_color_rt> edgeColoring(G &graph) {
-        std::vector <pgr_vertex_color_rt> results;
+    std::vector<pgr_vertex_color_rt> edgeColoring(G &graph) {
+        std::vector<pgr_vertex_color_rt> results;
 
-        auto i_map = boost::get(boost::edge_all, graph.graph);
+        auto i_map = boost::get(boost::edge_bundle, graph.graph);
 
         // vector which will store the color of all the edges in the graph
-        std::vector <edges_size_type> colors(boost::num_edges(graph.graph));
+        std::vector<edges_size_type> colors(boost::num_edges(graph.graph));
 
         // An iterator property map which records the color of each edge
         auto color_map = boost::make_iterator_property_map(colors.begin(), i_map);
@@ -119,12 +121,12 @@ private:
      * @returns `results` vector
      */
 
-    std::vector <pgr_vertex_color_rt> get_results(
-        std::vector <edges_size_type> &colors,
+    std::vector<pgr_vertex_color_rt> get_results(
+        std::vector<edges_size_type> &colors,
         const G &graph) {
-        std::vector <pgr_vertex_color_rt> results;
+        std::vector<pgr_vertex_color_rt> results;
 
-        typename boost::graph_traits <Graph> ::edge_iterator e_i, e_end;
+        typename boost::graph_traits<Graph>::edge_iterator e_i, e_end;
 
         for (boost::tie(e_i, e_end) = edges(graph.graph); e_i != e_end; ++e_i) {
             int64_t edge = graph[*e_i].id;
@@ -133,7 +135,7 @@ private:
             auto tgt = target(*e_i, graph.graph);
 #endif
             int64_t color = colors[edge];
-            results.push_back({ edge, (color + 1) });
+            results.push_back({edge, (color + 1)});
         }
         return results;
     }
