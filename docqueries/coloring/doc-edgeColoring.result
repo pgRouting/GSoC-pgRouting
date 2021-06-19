@@ -29,19 +29,6 @@ SELECT * FROM pgr_edgeColoring(
       18 |        1
 (18 rows)
 
---q2
-INSERT INTO edge_table (source, target, cost, reverse_cost) VALUES
-(1, 7, 1, 1);
-INSERT 0 1
---q3
-SELECT * FROM pgr_edgeColoring(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table
-    ORDER BY id'
-);
- edge_id | color_id
----------+----------
-(0 rows)
-
---q4
+-- q2
 ROLLBACK;
 ROLLBACK
