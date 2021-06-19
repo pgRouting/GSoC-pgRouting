@@ -81,11 +81,11 @@ process(
   (*result_tuples) = NULL;
   (*result_count) = 0;
 
+#if 0
   Vroom_job_t *jobs = NULL;
   size_t total_jobs = 0;
   get_vroom_jobs(jobs_sql, &jobs, &total_jobs);
 
-#if 0
   PGR_DBG("---------------JOBS INPUT------------------");
   PGR_DBG("Total jobs found: %lu", total_jobs);
 
