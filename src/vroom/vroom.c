@@ -43,12 +43,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/vroom/vroom_shipment_t.h"
 #include "c_types/vroom/vroom_vehicle_t.h"
 
-#if 0
 #include "c_common/vroom/jobs_input.h"
 #include "c_common/vroom/shipments_input.h"
 #include "c_common/vroom/vehicles_input.h"
 #include "c_common/vroom/matrix_input.h"
-#endif
 
 #include "drivers/vroom/vroom_driver.h"
 
@@ -81,6 +79,149 @@ process(
   (*result_tuples) = NULL;
   (*result_count) = 0;
 
+  Vroom_job_t *jobs = NULL;
+  size_t total_jobs = 0;
+  get_vroom_jobs(jobs_sql, &jobs, &total_jobs);
+
+#if 0
+  PGR_DBG("---------------JOBS INPUT------------------");
+  PGR_DBG("Total jobs found: %lu", total_jobs);
+
+  PGR_DBG("id: %ld", jobs->id);
+  PGR_DBG("location_index: %d", jobs->location_index);
+  PGR_DBG("service: %u", jobs->service);
+  PGR_DBG("delivery: %ld", *(jobs->delivery));
+  PGR_DBG("pickup: %ld", *(jobs->pickup));
+  PGR_DBG("skills: %u", *(jobs->skills));
+  PGR_DBG("priority: %u", jobs->priority);
+
+  for (size_t i = 0; i < jobs->time_windows_size; i++) {
+    PGR_DBG("(%lu) time_windows start: %u", i, (*(jobs->time_windows + i)).start_time);
+    PGR_DBG("(%lu) time_windows end: %u", i, (*(jobs->time_windows + i)).end_time);
+  }
+#endif
+
+#if 0
+  PGR_DBG("---------------SHIPMENTS INPUT------------------");
+  Vroom_shipment_t *shipments = NULL;
+  size_t total_shipments = 0;
+  get_vroom_shipments(shipments_sql, &shipments, &total_shipments);
+
+  PGR_DBG("Total shipments found: %lu", total_shipments);
+
+  PGR_DBG("p_id: %ld", shipments->p_id);
+  PGR_DBG("p_location_index: %d", shipments->p_location_index);
+  PGR_DBG("p_service: %u", shipments->p_service);
+  for (size_t i = 0; i < shipments->p_time_windows_size; i++) {
+    PGR_DBG("(%lu) p_time_windows start: %u", i, (*(shipments->p_time_windows + i)).start_time);
+    PGR_DBG("(%lu) p_time_windows end: %u", i, (*(shipments->p_time_windows + i)).end_time);
+  }
+  PGR_DBG("d_id: %ld", shipments->d_id);
+  PGR_DBG("d_location_index: %d", shipments->d_location_index);
+  PGR_DBG("d_service: %u", shipments->d_service);
+  for (size_t i = 0; i < shipments->d_time_windows_size; i++) {
+    PGR_DBG("(%lu) d_time_windows start: %u", i, (*(shipments->d_time_windows + i)).start_time);
+    PGR_DBG("(%lu) d_time_windows end: %u", i, (*(shipments->d_time_windows + i)).end_time);
+  }
+  PGR_DBG("amount: %ld", *(shipments->amount));
+  PGR_DBG("skills: %u", *(shipments->skills));
+  PGR_DBG("priority: %u", shipments->priority);
+#endif
+
+#if 0
+  PGR_DBG("---------------VEHICLES INPUT------------------");
+  Vroom_vehicle_t *vehicles = NULL;
+  size_t total_vehicles = 0;
+  get_vroom_vehicles(vehicles_sql, &vehicles, &total_vehicles);
+
+  PGR_DBG("Total vehicles found: %lu", total_vehicles);
+
+  PGR_DBG("id: %ld", vehicles->id);
+  PGR_DBG("start_index: %d", vehicles->start_index);
+  PGR_DBG("end_index: %d", vehicles->end_index);
+  for (size_t i = 0; i < vehicles->capacity_size; i++) {
+    PGR_DBG("capacity (%lu): %lu", i, *(vehicles->capacity + i));
+  }
+  for (size_t i = 0; i < vehicles->skills_size; i++) {
+    PGR_DBG("skills (%lu): %u", i, *(vehicles->skills + i));
+  }
+  PGR_DBG("time_window_start: %u", vehicles->time_window_start);
+  PGR_DBG("time_window_end: %u", vehicles->time_window_end);
+
+  PGR_DBG("breaks size: %ld", vehicles->breaks_size);
+  for (size_t i = 0; i < vehicles->breaks_size; i++) {
+    Vroom_break_t *breaks = vehicles->breaks + i;
+    PGR_DBG("breaks (%lu): %ld, %u", i, breaks->id, breaks->service);
+
+    PGR_DBG("breaks tw size (%lu): %ld", i, breaks->time_windows_size);
+    for (size_t j = 0; j < breaks->time_windows_size; j++) {
+      Vroom_time_window_t *tw = breaks->time_windows + j;
+      PGR_DBG("breaks tw (%lu)(%lu): %u, %u", i, j, tw->start_time, tw->end_time);
+    }
+  }
+
+  PGR_DBG("steps size: %ld", vehicles->steps_size);
+  for (size_t i = 0; i < vehicles->steps_size; i++) {
+    Vroom_step_t *steps = vehicles->steps + i;
+    PGR_DBG("steps (%lu): %ld, %lu, %u, %u, %u", i, steps->id,
+        steps->type, steps->service_at, steps->service_after,
+        steps->service_before);
+  }
+#endif
+
+#if 0
+  PGR_DBG("---------------MATRIX INPUT------------------");
+  Vroom_matrix_cell_t *distances = NULL;
+  size_t total_distances = 0;
+  get_vroom_matrix_cell(matrix_sql, &distances, &total_distances);
+  PGR_DBG("total distances: %ld", total_distances);
+  for (size_t i = 0; i < total_distances; i++) {
+    PGR_DBG("distance from %d to %d: %u", (distances + i)->start_index,
+      (distances + i)->end_index, (distances + i)->cost);
+  }
+#endif
+
+
+
+#if 0
+
+  get_vroom_shipments(shipments_sql, &shipments, &total_shipments);
+  get_vroom_vehicles(vehicles_sql, &vehicles, &total_vehicles);
+  get_vroom_matrix(matrix_sql, &matrix_cells, &total_cells);
+
+  clock_t start_t = clock();
+  char *log_msg = NULL;
+  char *notice_msg = NULL;
+  char *err_msg = NULL;
+
+  do_pgr_depthFirstSearch(
+      edges, total_edges,
+      rootsArr, size_rootsArr,
+
+      directed,
+      max_depth,
+
+      result_tuples,
+      result_count,
+      &log_msg,
+      &notice_msg,
+      &err_msg);
+
+  time_msg("processing vrp_vroom", start_t, clock());
+
+  if (err_msg && (*result_tuples)) {
+    pfree(*result_tuples);
+    (*result_tuples) = NULL;
+    (*result_count) = 0;
+  }
+
+  pgr_global_report(log_msg, notice_msg, err_msg);
+
+  if (log_msg) pfree(log_msg);
+  if (notice_msg) pfree(notice_msg);
+  if (err_msg) pfree(err_msg);
+  if (edges) pfree(edges);
+#endif
 
   pgr_SPI_finish();
 }
@@ -152,9 +293,10 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
 
   if (funcctx->call_cntr < funcctx->max_calls) {
     HeapTuple  tuple;
-    Datum    result;
-    Datum    *values;
-    bool*    nulls;
+    Datum      result;
+    Datum      *values;
+    bool*      nulls;
+    size_t     call_cntr = funcctx->call_cntr;
 
     /***********************************************************************
      *
@@ -183,16 +325,16 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
     }
 
     values[0] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[1] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[2] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[3] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[4] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[5] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[6] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[7] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[8] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[9] = Int64GetDatum(funcctx->call_cntr + 1);
-    values[10] = Int64GetDatum(funcctx->call_cntr + 1);
+    values[1] = Int32GetDatum(result_tuples[call_cntr].vehicle_seq);
+    values[2] = Int32GetDatum(result_tuples[call_cntr].vehicle_id);
+    values[3] = Int32GetDatum(result_tuples[call_cntr].step_seq);
+    values[4] = Int32GetDatum(result_tuples[call_cntr].step_type);
+    values[5] = Int32GetDatum(result_tuples[call_cntr].task_id);
+    values[6] = Int32GetDatum(result_tuples[call_cntr].arrival_time);
+    values[7] = Int32GetDatum(result_tuples[call_cntr].travel_time);
+    values[8] = Int32GetDatum(result_tuples[call_cntr].service_time);
+    values[9] = Int32GetDatum(result_tuples[call_cntr].waiting_time);
+    values[10] = Int32GetDatum(result_tuples[call_cntr].load);
 
     /**********************************************************************/
 
