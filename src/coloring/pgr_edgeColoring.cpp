@@ -58,16 +58,14 @@ namespace functions {
 
 
 std::vector<pgr_vertex_color_rt>
-EDGECOLORING::edgeColoring() {
+Pgr_edgeColoring::edgeColoring() {
 
     std::vector<pgr_vertex_color_rt> results;
 
     auto i_map = boost::get(boost::edge_bundle, graph);
 
-    // vector which will store the color of all the edges in the graph
     std::vector<size_t> colors(boost::num_edges(graph));
 
-    // An iterator property map which records the color of each edge
     auto color_map = boost::make_iterator_property_map(colors.begin(), i_map);
 
 #if 0
@@ -98,11 +96,11 @@ EDGECOLORING::edgeColoring() {
 }
 
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, Basic_vertex, size_t,
-        Basic_edge> EDGECOLORING_Graph;
+        Basic_edge> EdgeColoring_Graph;
 
 #if 0
 //adding edges
-EDGECOLORING::graph_add_edge(const T &edge, bool normal) {
+Pgr_edgeColoring::graph_add_edge(const T &edge, bool normal) {
     bool inserted;
     typename Pgr_base_graph< G, T_V, T_E >::E e;
     if ((edge.cost < 0) && (edge.reverse_cost < 0))
@@ -137,12 +135,12 @@ EDGECOLORING::graph_add_edge(const T &edge, bool normal) {
 #endif
 
 bool
-EDGECOLORING::has_vertex(int64_t id) const {
+Pgr_edgeColoring::has_vertex(int64_t id) const {
     return id_to_V.find(id) != id_to_V.end();
 }
 
-EDGECOLORING::V
-EDGECOLORING::get_boost_vertex(int64_t id) const {
+Pgr_edgeColoring::V
+Pgr_edgeColoring::get_boost_vertex(int64_t id) const {
     try {
         return id_to_V.at(id);
     } catch (...) {
@@ -152,7 +150,7 @@ EDGECOLORING::get_boost_vertex(int64_t id) const {
 }
 
 int64_t
-EDGECOLORING::get_vertex_id(V v) const {
+Pgr_edgeColoring::get_vertex_id(V v) const {
     try {
         return V_to_id.at(v);
     } catch (...) {
@@ -162,7 +160,7 @@ EDGECOLORING::get_vertex_id(V v) const {
 }
 
 int64_t
-EDGECOLORING::get_edge_id(E e) const {
+Pgr_edgeColoring::get_edge_id(E e) const {
     try {
         return E_to_id.at(e);
     } catch (...) {
