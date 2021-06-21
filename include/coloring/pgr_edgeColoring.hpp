@@ -43,103 +43,62 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <map>
 
-#include "cpp_common/pgr_base_graph.hpp"
 #include "cpp_common/interruption.h"
 
-/** @file pgr_edgeColoring.hpp
- * @brief The main file which calls the respective boost function.
- * Contains actual implementation of the function and the calling
- * of the respective boost function.
- */
+#include "cpp_common/pgr_messages.h"
+#include "cpp_common/pgr_assert.h"
 
-#if 0
-using namespace boost;
-using namespace std;
-#endif
 
 namespace pgrouting {
 namespace functions {
 
-//*************************************************************
+class EDGECOLORING : public Pgr_messages {
 
-template <class G>
-class Pgr_edgeColoring {
+    using EDGECOLORING_Graph =
+        boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, size_t,
+        boost::no_property>;
+
+
+    using V       = boost::graph_traits<EDGECOLORING_Graph>::vertex_descriptor;
+    using E       = boost::graph_traits<EDGECOLORING_Graph>::edge_descriptor;
+    using V_it    = boost::graph_traits<EDGECOLORING_Graph>::vertex_iterator;
+    using E_it    = boost::graph_traits<EDGECOLORING_Graph>::edge_iterator;
+    using Eout_it = boost::graph_traits<EDGECOLORING_Graph>::out_edge_iterator;
+
 public:
-    typedef typename G::V V;
-    typedef typename G::E E;
+    /** @brief just a EDGECOLORING value **/
+    //std::deque<std::pair<int64_t, double>> tsp();
 
-    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property,
-            boost::no_property>
-            Graph;
-    typedef boost::graph_traits<Graph> ::edges_size_type edges_size_type;
+    std::vector<pgr_vertex_color_rt> edgeColoring();
 
-    /** @name EdgeColoring
-     * @{
-     */
-    /** @brief edgeColoring function
-     * It does all the processing and returns the results.
-     * @param graph      the graph containing the edges
-     * @returns results, when results are found
-     * @see [boost::edge_coloring]
-     * (https://www.boost.org/libs/graph/doc/edge_coloring.html)
-     */
+#if 0
 
-    std::vector<pgr_vertex_color_rt> edgeColoring(G &graph) {
-        std::vector<pgr_vertex_color_rt> results;
+    EDGECOLORING() = delete;
+#endif
 
-        auto i_map = boost::get(boost::edge_bundle, graph.graph);
+#if 0
+#if Boost_VERSION_MACRO >= 106800
+    friend std::ostream& operator<<(std::ostream &, const EDGECOLORING&);
+#endif
 
-        // vector which will store the color of all the edges in the graph
-        std::vector<edges_size_type> colors(boost::num_edges(graph.graph));
+#endif
 
-        // An iterator property map which records the color of each edge
-        auto color_map = boost::make_iterator_property_map(colors.begin(), i_map);
-
-        CHECK_FOR_INTERRUPTS();
-
-        try {
-            boost::edge_coloring(graph.graph, color_map);
-        } catch (boost::exception const& ex) {
-            (void)ex;
-            throw;
-        } catch (std::exception &e) {
-            (void)e;
-            throw;
-        } catch (...) {
-            throw;
-        }
-        results = get_results(colors, graph);
-        return results;
-    }
-    //@}
+    bool has_vertex(int64_t id) const;
 
 private:
-    /** @brief to get the results
-     * Uses the `colors` vector to get the results i.e. the color of every edge.
-     * @param colors      vector which contains the color of every edge
-     * @param graph       the graph containing the edges
-     * @returns `results` vector
-     */
+    V get_boost_vertex(int64_t id) const;
+    int64_t get_vertex_id(V v) const;
+    int64_t get_edge_id(E e) const;
 
-    std::vector<pgr_vertex_color_rt> get_results(
-        std::vector<edges_size_type> &colors,
-        const G &graph) {
-        std::vector<pgr_vertex_color_rt> results;
 
-        typename boost::graph_traits<Graph>::edge_iterator e_i, e_end;
-
-        for (boost::tie(e_i, e_end) = edges(graph.graph); e_i != e_end; ++e_i) {
-            int64_t edge = graph[*e_i].id;
-#if 0
-            auto src = source(*e_i, graph.graph);
-            auto tgt = target(*e_i, graph.graph);
-#endif
-            int64_t color = colors[edge];
-            results.push_back({edge, (color + 1)});
-        }
-        return results;
-    }
+private:
+    EDGECOLORING_Graph graph;
+    std::map<int64_t, V> id_to_V;
+    std::map<V, int64_t> V_to_id;
+    std::map<E, int64_t> E_to_id;
 };
+
 }  // namespace functions
 }  // namespace pgrouting
+
 #endif  // INCLUDE_COLORING_PGR_EDGECOLORING_HPP_
