@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: edgeColoring_driver.cpp
+File: pgr_edgeColoring.cpp
 
 Generated with Template by:
 Copyright (c) 2021 pgRouting developers
@@ -51,6 +51,106 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/iteration_macros.hpp>
 #include <boost/graph/properties.hpp>
 
+//today
+#include "cpp_common/basic_vertex.h"
+#include "cpp_common/xy_vertex.h"
+#include "cpp_common/basic_edge.h"
+
+
+#include <boost/graph/iteration_macros.hpp>
+#include <boost/config.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graph_utility.hpp>
+
+#include <deque>
+#include <vector>
+#include <set>
+#include <map>
+#include <limits>
+
+#include "c_types/graph_enum.h"
+
+#include "cpp_common/basic_vertex.h"
+#include "cpp_common/xy_vertex.h"
+#include "cpp_common/basic_edge.h"
+
+#include "cpp_common/pgr_assert.h"
+//today's end
+
+namespace {
+
+typedef typename boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex, size_t,
+        pgrouting::Basic_edge> EdgeColoring_Graph;
+
+typedef typename boost::graph_traits<EdgeColoring_Graph>::vertex_descriptor V;
+typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_descriptor E;
+typedef typename boost::graph_traits<EdgeColoring_Graph>::vertex_iterator V_it;
+typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_iterator E_it;
+
+
+EdgeColoring_Graph graph;
+
+std::map<int64_t, V> id_to_V;
+
+#if 0
+id_to_V vertices_map;
+#endif
+
+
+typedef std::map<V, size_t> IndexMap;
+boost::associative_property_map<IndexMap> propmapIndex;
+
+V get_V(const pgrouting::Basic_vertex &vertex) {
+    auto vm_s(id_to_V.find(vertex.id));
+    if (vm_s == id_to_V.end()) {
+        auto v =  boost::add_vertex(graph);
+        graph[v].cp_members(vertex);
+        id_to_V[vertex.id] =  v;
+        put(propmapIndex, v, boost::num_vertices(graph));
+        return v;
+    }
+    return vm_s->second;
+}
+
+graphType m_gType;
+
+//adding edges
+void graph_add_edge(const pgr_edge_t &edge, bool normal) {
+    bool inserted;
+    E e;
+    if ((edge.cost < 0) && (edge.reverse_cost < 0))
+        return;
+
+    /*
+     * true: for source
+     * false: for target
+     */
+
+    auto vm_s = get_V(pgrouting::Basic_vertex(edge, true));
+    auto vm_t = get_V(pgrouting::Basic_vertex(edge, false));
+
+    pgassert(id_to_V.find(edge.source) != id_to_V.end());
+    pgassert(id_to_V.find(edge.target) != id_to_V.end());
+    if (edge.cost >= 0) {
+        boost::tie(e, inserted) =
+            boost::add_edge(vm_s, vm_t, graph);
+        // graph[e].cost = edge.cost;
+        //graph[e].id = edge.id;
+    }
+
+    if (edge.reverse_cost >= 0
+            && (m_gType == DIRECTED
+                || (m_gType == UNDIRECTED && edge.cost != edge.reverse_cost))) {
+        boost::tie(e, inserted) =
+            boost::add_edge(vm_t, vm_s, graph);
+
+        //graph[e].cost = edge.reverse_cost;
+        //graph[e].id = normal ? edge.id : -edge.id;
+    }
+}
+
+
+} //namespace
 
 
 namespace pgrouting {
@@ -95,44 +195,20 @@ Pgr_edgeColoring::edgeColoring() {
     return results;
 }
 
-typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, Basic_vertex, size_t,
-        Basic_edge> EdgeColoring_Graph;
+void
+Pgr_edgeColoring::insert_edges(pgr_edge_t *edges, size_t count, bool) {
 
-#if 0
-//adding edges
-Pgr_edgeColoring::graph_add_edge(const T &edge, bool normal) {
-    bool inserted;
-    typename Pgr_base_graph< G, T_V, T_E >::E e;
-    if ((edge.cost < 0) && (edge.reverse_cost < 0))
-        return;
+    for (size_t i = 0; i < count; i++)
+        add_edge(edges[i].source, edges[i].target, graph);
 
-    /*
-     * true: for source
-     * false: for target
-     */
-    auto vm_s = get_V(T_V(edge, true));
-    auto vm_t = get_V(T_V(edge, false));
-
-    pgassert(vertices_map.find(edge.source) != vertices_map.end());
-    pgassert(vertices_map.find(edge.target) != vertices_map.end());
-    if (edge.cost >= 0) {
-        boost::tie(e, inserted) =
-            boost::add_edge(vm_s, vm_t, graph);
-        graph[e].cost = edge.cost;
-        graph[e].id = edge.id;
-    }
-
-    if (edge.reverse_cost >= 0
-            && (m_gType == DIRECTED
-                || (m_gType == UNDIRECTED && edge.cost != edge.reverse_cost))) {
-        boost::tie(e, inserted) =
-            boost::add_edge(vm_t, vm_s, graph);
-
-        graph[e].cost = edge.reverse_cost;
-        graph[e].id = normal ? edge.id : -edge.id;
-    }
+    // for (const auto edge : edges) {
+    //     graph_add_edge(edge, normal);
+    // }
 }
-#endif
+
+
+
+
 
 bool
 Pgr_edgeColoring::has_vertex(int64_t id) const {
