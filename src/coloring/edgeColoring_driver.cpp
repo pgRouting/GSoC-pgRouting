@@ -38,6 +38,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "coloring/pgr_edgeColoring.hpp"
 
+//today
+#include <boost/property_map/property_map.hpp>
+#include <boost/graph/graph_traits.hpp>
+#include <boost/property_map/vector_property_map.hpp>
+#include <boost/type_traits.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/edge_coloring.hpp>
+#include <boost/graph/iteration_macros.hpp>
+#include <boost/graph/properties.hpp>
+#include <boost/config.hpp>
+
+
+#include <boost/graph/iteration_macros.hpp>
+#include <boost/config.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graph_utility.hpp>
+
+//today
+#include "cpp_common/basic_vertex.h"
+#include "cpp_common/xy_vertex.h"
+#include "cpp_common/basic_edge.h"
+#include "c_types/graph_enum.h"
+//today's end
+//today's end
+
 /** @file edgeColoring_driver.cpp
  * @brief Handles actual calling of function in the `pgr_edgeColoring.hpp` file.
  *
@@ -57,13 +82,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * @returns results, when results are found
  */
 
-template <class G>
+#if 0
+
+typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex, size_t,
+        pgrouting::Basic_edge> EdgeColoring_Graph;
+#endif
+
 std::vector<pgr_vertex_color_rt>
-pgr_edgeColoring(G &graph) {
-    pgrouting::functions::Pgr_edgeColoring<G> fn_edgeColoring;
-    auto results = fn_edgeColoring.edgeColoring(graph);
+pgr_edgeColoring() {
+    pgrouting::functions::Pgr_edgeColoring fn_edgeColoring;
+    auto results = fn_edgeColoring.edgeColoring();
     return results;
 }
+
 
 /** @brief Performs exception handling and converts the results to postgres.
  *
@@ -91,15 +122,15 @@ pgr_edgeColoring(G &graph) {
 
 void
 do_pgr_edgeColoring(
-        pgr_edge_t  *data_edges,
-        size_t total_edges,
+    pgr_edge_t  *data_edges,
+    size_t total_edges,
 
-        pgr_vertex_color_rt **return_tuples,
-        size_t *return_count,
+    pgr_vertex_color_rt **return_tuples,
+    size_t *return_count,
 
-        char ** log_msg,
-        char ** notice_msg,
-        char ** err_msg) {
+    char ** log_msg,
+    char ** notice_msg,
+    char ** err_msg) {
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
@@ -113,11 +144,15 @@ do_pgr_edgeColoring(
         std::vector<pgr_vertex_color_rt> results;
 
         graphType gType = UNDIRECTED;
-        pgrouting::UndirectedGraph undigraph(gType);
+        pgrouting::functions::Pgr_edgeColoring::EdgeColoring_Graph undigraph(gType);
+#if 0
+        pgrouting::functions::Pgr_edgeColoring insert_edgeColoring;
 
-        undigraph.insert_edges(data_edges, total_edges);
 
-        results = pgr_edgeColoring(undigraph);
+        undigraph.insert_edges(data_edges, total_edges, true);
+
+#endif
+        results = pgr_edgeColoring();
 
         auto count = results.size();
 
@@ -136,12 +171,12 @@ do_pgr_edgeColoring(
         (*return_count) = count;
 
         pgassert(*err_msg == NULL);
-        *log_msg = log.str().empty()?
-            *log_msg :
-            pgr_msg(log.str().c_str());
-        *notice_msg = notice.str().empty()?
-            *notice_msg :
-            pgr_msg(notice.str().c_str());
+        *log_msg = log.str().empty() ?
+                   *log_msg :
+                   pgr_msg(log.str().c_str());
+        *notice_msg = notice.str().empty() ?
+                      *notice_msg :
+                      pgr_msg(notice.str().c_str());
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
@@ -154,7 +189,7 @@ do_pgr_edgeColoring(
         err << except.what();
         *err_msg = pgr_msg(err.str().c_str());
         *log_msg = pgr_msg(log.str().c_str());
-    } catch(...) {
+    } catch (...) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
         err << "Caught unknown exception!";
