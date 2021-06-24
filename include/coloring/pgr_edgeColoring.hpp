@@ -8,8 +8,8 @@ Mail: project@pgrouting.org
 Function's developer:
 Copyright (c) 2021 Veenit Kumar
 Mail: 123sveenit@gmail.com
-
 ------
+
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -94,10 +94,9 @@ public:
 
     /** @brief just a Pgr_edgeColoring value **/
 
-    std::vector<pgr_vertex_color_rt> edgeColoring();
+    std::vector<pgr_vertex_color_rt> edgeColoring(EdgeColoring_Graph&);
 
     void insert_edges(pgr_edge_t*, size_t, bool);
-
 
 
 
