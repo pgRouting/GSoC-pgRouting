@@ -82,16 +82,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * @returns results, when results are found
  */
 
-#if 0
-
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex, size_t,
-        pgrouting::Basic_edge> EdgeColoring_Graph;
+        pgrouting::Basic_edge> G;
+
+#if 0
+pgrouting::functions::Pgr_edgeColoring::EdgeColoring_Graph G;
 #endif
 
 std::vector<pgr_vertex_color_rt>
-pgr_edgeColoring() {
+pgr_edgeColoring(G &graph) {
     pgrouting::functions::Pgr_edgeColoring fn_edgeColoring;
-    auto results = fn_edgeColoring.edgeColoring();
+    auto results = fn_edgeColoring.edgeColoring(graph);
     return results;
 }
 
@@ -145,14 +146,15 @@ do_pgr_edgeColoring(
 
         graphType gType = UNDIRECTED;
         pgrouting::functions::Pgr_edgeColoring::EdgeColoring_Graph undigraph(gType);
+
 #if 0
-        pgrouting::functions::Pgr_edgeColoring insert_edgeColoring;
-
-
         undigraph.insert_edges(data_edges, total_edges, true);
-
 #endif
-        results = pgr_edgeColoring();
+
+        for (size_t i = 0; i < total_edges; i++)
+            add_edge(data_edges[i].source, data_edges[i].target, undigraph);
+
+        results = pgr_edgeColoring(undigraph);
 
         auto count = results.size();
 
