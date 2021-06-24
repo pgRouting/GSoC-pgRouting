@@ -87,6 +87,7 @@ typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_descriptor E;
 typedef typename boost::graph_traits<EdgeColoring_Graph>::vertex_iterator V_it;
 typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_iterator E_it;
 
+#if 0
 
 EdgeColoring_Graph graph;
 
@@ -148,7 +149,7 @@ void graph_add_edge(const pgr_edge_t &edge, bool normal) {
         //graph[e].id = normal ? edge.id : -edge.id;
     }
 }
-
+#endif
 
 } //namespace
 
@@ -158,7 +159,7 @@ namespace functions {
 
 
 std::vector<pgr_vertex_color_rt>
-Pgr_edgeColoring::edgeColoring() {
+Pgr_edgeColoring::edgeColoring(EdgeColoring_Graph &graph) {
 
     std::vector<pgr_vertex_color_rt> results;
 
@@ -195,6 +196,7 @@ Pgr_edgeColoring::edgeColoring() {
     return results;
 }
 
+#if 0
 void
 Pgr_edgeColoring::insert_edges(pgr_edge_t *edges, size_t count, bool) {
 
@@ -205,8 +207,7 @@ Pgr_edgeColoring::insert_edges(pgr_edge_t *edges, size_t count, bool) {
     //     graph_add_edge(edge, normal);
     // }
 }
-
-
+#endif
 
 
 
