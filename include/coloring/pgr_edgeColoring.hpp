@@ -49,36 +49,67 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_assert.h"
 
 
+//today
+#include "cpp_common/basic_vertex.h"
+#include "cpp_common/xy_vertex.h"
+#include "cpp_common/basic_edge.h"
+//today's end
+
+
+
+
 namespace pgrouting {
 namespace functions {
 
 class Pgr_edgeColoring : public Pgr_messages {
 
-    using EdgeColoring_Graph =
-        boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property, size_t,
-        boost::no_property>;
 
-
-    using V       = boost::graph_traits<EdgeColoring_Graph>::vertex_descriptor;
-    using E       = boost::graph_traits<EdgeColoring_Graph>::edge_descriptor;
-    using V_it    = boost::graph_traits<EdgeColoring_Graph>::vertex_iterator;
-    using E_it    = boost::graph_traits<EdgeColoring_Graph>::edge_iterator;
-    using Eout_it = boost::graph_traits<EdgeColoring_Graph>::out_edge_iterator;
 
 public:
-    /** @brief just a EDGECOLORING value **/
-    //std::deque<std::pair<int64_t, double>> tsp();
+
+    typedef typename boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex, size_t,
+            pgrouting::Basic_edge> EdgeColoring_Graph;
+
+    typedef typename boost::graph_traits<EdgeColoring_Graph>::vertex_descriptor V;
+    typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_descriptor E;
+    typedef typename boost::graph_traits<EdgeColoring_Graph>::vertex_iterator V_it;
+    typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_iterator E_it;
+
+
+#if 0
+    namespace graph {
+    template <class G, typename Vertex, typename Edge>
+    class Pgr_base_graph;
+
+    }  // namespace graph
+
+
+    typedef Pgr_base_graph <
+    boost::adjacency_list < boost::vecS, boost::vecS,
+          boost::undirectedS,
+          Basic_vertex, size_t, Basic_edge >,
+          Basic_vertex, Basic_edge > UndirectedGraph;
+
+#endif
+
+    /** @brief just a Pgr_edgeColoring value **/
 
     std::vector<pgr_vertex_color_rt> edgeColoring();
 
+    void insert_edges(pgr_edge_t*, size_t, bool);
+
+
+
+
+
 #if 0
 
-    EDGECOLORING() = delete;
+    Pgr_edgeColoring() = delete;
 #endif
 
 #if 0
 #if Boost_VERSION_MACRO >= 106800
-    friend std::ostream& operator<<(std::ostream &, const EDGECOLORING&);
+    friend std::ostream& operator<<(std::ostream &, const Pgr_edgeColoring&);
 #endif
 
 #endif
