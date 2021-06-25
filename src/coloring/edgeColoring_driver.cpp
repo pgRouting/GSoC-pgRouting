@@ -28,110 +28,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/coloring/edgeColoring_driver.h"
 
-#include <sstream>
-#include <vector>
 #include <algorithm>
+#include <sstream>
 #include <string>
+#include <vector>
 
+#include "c_types/graph_enum.h"
+#include "coloring/pgr_edgeColoring.hpp"
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
-#include "coloring/pgr_edgeColoring.hpp"
-
-//today
-#include <boost/property_map/property_map.hpp>
-#include <boost/graph/graph_traits.hpp>
-#include <boost/property_map/vector_property_map.hpp>
-#include <boost/type_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/edge_coloring.hpp>
-#include <boost/graph/iteration_macros.hpp>
-#include <boost/graph/properties.hpp>
-#include <boost/config.hpp>
-
-
-#include <boost/graph/iteration_macros.hpp>
-#include <boost/config.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/graph_utility.hpp>
-
-//today
-#include "cpp_common/basic_vertex.h"
-#include "cpp_common/xy_vertex.h"
-#include "cpp_common/basic_edge.h"
-#include "c_types/graph_enum.h"
-//today's end
-//today's end
-
-/** @file edgeColoring_driver.cpp
- * @brief Handles actual calling of function in the `pgr_edgeColoring.hpp` file.
- *
- */
-
-/***********************************************************************
- *
- *   pgr_edgeColoring(edges_sql TEXT);
- *
- ***********************************************************************/
-
-/** @brief Calls the main function defined in the C++ Header file.
- *
- * @param graph      the graph containing the edges
- * @param log        stores the log message
- *
- * @returns results, when results are found
- */
-
-typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex, size_t,
-        pgrouting::Basic_edge> G;
-
-#if 0
-pgrouting::functions::Pgr_edgeColoring::EdgeColoring_Graph G;
-#endif
-
-std::vector<pgr_vertex_color_rt>
-pgr_edgeColoring(G &graph) {
-    pgrouting::functions::Pgr_edgeColoring fn_edgeColoring;
-    auto results = fn_edgeColoring.edgeColoring(graph);
-    return results;
-}
-
-
-/** @brief Performs exception handling and converts the results to postgres.
- *
- * @pre log_msg is empty
- * @pre notice_msg is empty
- * @pre err_msg is empty
- * @pre return_tuples is empty
- * @pre return_count is 0
- *
- * It builds the undirected graph using the `data_edges` variable.
- * Then, it passes the required variables to the template function
- * `pgr_edgeColoring` which calls the main function
- * defined in the C++ Header file. It also does exception handling.
- *
- * @param data_edges     the set of edges from the SQL query
- * @param total_edges    the total number of edges in the SQL query
- * @param return_tuples  the rows in the result
- * @param return_count   the count of rows in the result
- * @param log_msg        stores the log message
- * @param notice_msg     stores the notice message
- * @param err_msg        stores the error message
- *
- * @returns void
- */
-
-void
-do_pgr_edgeColoring(
-    pgr_edge_t  *data_edges,
+/************************************************************
+  edges_sql TEXT
+ ***********************************************************/
+void do_pgr_edgeColoring(
+    pgr_edge_t *data_edges,
     size_t total_edges,
 
     pgr_vertex_color_rt **return_tuples,
     size_t *return_count,
 
-    char ** log_msg,
-    char ** notice_msg,
-    char ** err_msg) {
+    char **log_msg,
+    char **notice_msg,
+    char **err_msg) {
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
@@ -147,14 +66,11 @@ do_pgr_edgeColoring(
         graphType gType = UNDIRECTED;
         pgrouting::functions::Pgr_edgeColoring::EdgeColoring_Graph undigraph(gType);
 
-#if 0
-        undigraph.insert_edges(data_edges, total_edges, true);
-#endif
+        pgrouting::functions::Pgr_edgeColoring fn_edgeColoring;
 
-        for (size_t i = 0; i < total_edges; i++)
-            add_edge(data_edges[i].source, data_edges[i].target, undigraph);
+        fn_edgeColoring.insert_edges(undigraph, data_edges, total_edges);
 
-        results = pgr_edgeColoring(undigraph);
+        results = fn_edgeColoring.edgeColoring(undigraph);
 
         auto count = results.size();
 
@@ -173,12 +89,8 @@ do_pgr_edgeColoring(
         (*return_count) = count;
 
         pgassert(*err_msg == NULL);
-        *log_msg = log.str().empty() ?
-                   *log_msg :
-                   pgr_msg(log.str().c_str());
-        *notice_msg = notice.str().empty() ?
-                      *notice_msg :
-                      pgr_msg(notice.str().c_str());
+        *log_msg = log.str().empty() ? *log_msg : pgr_msg(log.str().c_str());
+        *notice_msg = notice.str().empty() ? *notice_msg : pgr_msg(notice.str().c_str());
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
