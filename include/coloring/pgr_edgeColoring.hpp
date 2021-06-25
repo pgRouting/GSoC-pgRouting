@@ -27,82 +27,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_COLORING_PGR_EDGECOLORING_HPP_
 #pragma once
 
-#include <boost/property_map/property_map.hpp>
-#include <boost/graph/graph_traits.hpp>
-#include <boost/property_map/vector_property_map.hpp>
-#include <boost/type_traits.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/edge_coloring.hpp>
-#include <boost/graph/iteration_macros.hpp>
-#include <boost/graph/properties.hpp>
 #include <boost/config.hpp>
+#include <boost/graph/adjacency_list.hpp>
 
-#include <limits>
 #include <iostream>
-#include <algorithm>
-#include <vector>
+#include <limits>
 #include <map>
+#include <vector>
 
-#include "cpp_common/interruption.h"
-
-#include "cpp_common/pgr_messages.h"
-#include "cpp_common/pgr_assert.h"
-
-
-//today
-#include "cpp_common/basic_vertex.h"
-#include "cpp_common/xy_vertex.h"
 #include "cpp_common/basic_edge.h"
-//today's end
-
-
-
+#include "cpp_common/basic_vertex.h"
+#include "cpp_common/pgr_assert.h"
+#include "cpp_common/pgr_messages.h"
 
 namespace pgrouting {
 namespace functions {
 
 class Pgr_edgeColoring : public Pgr_messages {
+ public:
+    using EdgeColoring_Graph =
+        boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex, size_t,
+        pgrouting::Basic_edge>;
 
-
-
-public:
-
-    typedef typename boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex, size_t,
-            pgrouting::Basic_edge> EdgeColoring_Graph;
-
-    typedef typename boost::graph_traits<EdgeColoring_Graph>::vertex_descriptor V;
-    typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_descriptor E;
-    typedef typename boost::graph_traits<EdgeColoring_Graph>::vertex_iterator V_it;
-    typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_iterator E_it;
-
-
-#if 0
-    namespace graph {
-    template <class G, typename Vertex, typename Edge>
-    class Pgr_base_graph;
-
-    }  // namespace graph
-
-
-    typedef Pgr_base_graph <
-    boost::adjacency_list < boost::vecS, boost::vecS,
-          boost::undirectedS,
-          Basic_vertex, size_t, Basic_edge >,
-          Basic_vertex, Basic_edge > UndirectedGraph;
-
-#endif
-
-    /** @brief just a Pgr_edgeColoring value **/
+    using V       = boost::graph_traits<EdgeColoring_Graph>::vertex_descriptor;
+    using E       = boost::graph_traits<EdgeColoring_Graph>::edge_descriptor;
+    using V_it    = boost::graph_traits<EdgeColoring_Graph>::vertex_iterator;
+    using E_it    = boost::graph_traits<EdgeColoring_Graph>::edge_iterator;
 
     std::vector<pgr_vertex_color_rt> edgeColoring(EdgeColoring_Graph&);
 
-    void insert_edges(pgr_edge_t*, size_t, bool);
-
-
-
+    void insert_edges(EdgeColoring_Graph&, pgr_edge_t*, size_t);
 
 #if 0
-
     Pgr_edgeColoring() = delete;
 #endif
 
@@ -110,18 +66,9 @@ public:
 #if Boost_VERSION_MACRO >= 106800
     friend std::ostream& operator<<(std::ostream &, const Pgr_edgeColoring&);
 #endif
-
 #endif
 
-    bool has_vertex(int64_t id) const;
-
-private:
-    V get_boost_vertex(int64_t id) const;
-    int64_t get_vertex_id(V v) const;
-    int64_t get_edge_id(E e) const;
-
-
-private:
+ private:
     EdgeColoring_Graph graph;
     std::map<int64_t, V> id_to_V;
     std::map<V, int64_t> V_to_id;
