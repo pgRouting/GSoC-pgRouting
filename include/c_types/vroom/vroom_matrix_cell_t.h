@@ -1,8 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: arrays_input.h
+File: vroom_matrix_cell_t.h
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+Copyright (c) 2021 pgRouting developers
+Mail: project@pgrouting.org
+
+Function's developer:
+Copyright (c) 2021 Ashish Kumar
+Mail: ashishkr23438@gmail.com
 
 ------
 
@@ -21,23 +25,27 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
+/*! @file */
 
-#ifndef INCLUDE_C_COMMON_ARRAYS_INPUT_H_
-#define INCLUDE_C_COMMON_ARRAYS_INPUT_H_
+#ifndef INCLUDE_C_TYPES_VROOM_VROOM_MATRIX_CELL_T_H_
+#define INCLUDE_C_TYPES_VROOM_VROOM_MATRIX_CELL_T_H_
 #pragma once
 
+#include "c_types/typedefs.h"
 
-#include <stdint.h>
-#include <postgres.h>
-#include <utils/array.h>
+/** @brief Traveling costs
 
-/** @brief enforces the input array to be @b NOT empty */
-int64_t* pgr_get_bigIntArray(size_t *arrlen, ArrayType *input);
+@note C/C++/postgreSQL connecting structure for input
+name | description
+:----- | :-------
+start_index | Start node identifier
+end_index | End node identifier
+cost | Travel cost from start node to end node
+*/
+struct Vroom_matrix_cell_t {
+  MatrixIndex start_index; /** Start node identifier */
+  MatrixIndex end_index; /** End node identifier */
+  Distance cost; /** Travel cost from start node to end node */
+};
 
-/** @brief Allows the input array to be empty */
-int64_t* pgr_get_bigIntArray_allowEmpty(size_t *arrlen, ArrayType *input);
-
-/** @brief Allows the input array, with non-negative elements to be empty */
-uint32_t* pgr_get_positiveIntArray_allowEmpty(size_t *arrlen, ArrayType *input);
-
-#endif  // INCLUDE_C_COMMON_ARRAYS_INPUT_H_
+#endif  // INCLUDE_C_TYPES_VROOM_VROOM_MATRIX_CELL_T_H_

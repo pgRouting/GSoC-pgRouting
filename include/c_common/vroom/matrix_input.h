@@ -1,8 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: arrays_input.h
+File: matrix_input.h
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+Copyright (c) 2021 pgRouting developers
+Mail: project@pgrouting.org
+
+Function's developer:
+Copyright (c) 2021 Ashish Kumar
+Mail: ashishkr23438@gmail.com
 
 ------
 
@@ -22,22 +26,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_C_COMMON_ARRAYS_INPUT_H_
-#define INCLUDE_C_COMMON_ARRAYS_INPUT_H_
+#ifndef INCLUDE_C_COMMON_VROOM_MATRIX_INPUT_H_
+#define INCLUDE_C_COMMON_VROOM_MATRIX_INPUT_H_
 #pragma once
 
+#include <stddef.h>
+#include "c_types/vroom/vroom_matrix_cell_t.h"
 
-#include <stdint.h>
-#include <postgres.h>
-#include <utils/array.h>
+/** @brief Reads the VROOM matrix */
+void
+get_vroom_matrix_cell(
+    char *matrix_sql,
+    Vroom_matrix_cell_t **distances,
+    size_t *total_distances);
 
-/** @brief enforces the input array to be @b NOT empty */
-int64_t* pgr_get_bigIntArray(size_t *arrlen, ArrayType *input);
-
-/** @brief Allows the input array to be empty */
-int64_t* pgr_get_bigIntArray_allowEmpty(size_t *arrlen, ArrayType *input);
-
-/** @brief Allows the input array, with non-negative elements to be empty */
-uint32_t* pgr_get_positiveIntArray_allowEmpty(size_t *arrlen, ArrayType *input);
-
-#endif  // INCLUDE_C_COMMON_ARRAYS_INPUT_H_
+#endif  // INCLUDE_C_COMMON_VROOM_MATRIX_INPUT_H_
