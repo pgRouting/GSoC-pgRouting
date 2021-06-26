@@ -63,6 +63,14 @@ spi_getBigIntArr_allowEmpty(
     Column_info_t info,
     size_t *the_size);
 
+/** @brief Function returns the values of specified columns in array. */
+uint32_t*
+spi_getPositiveIntArr_allowEmpty(
+    HeapTuple *tuple,
+    TupleDesc *tupdesc,
+    Column_info_t info,
+    size_t *the_size);
+
 /** @brief gets value of specified column in double type. */
 double
 spi_getFloat8(
@@ -113,6 +121,21 @@ TInterval get_PositiveTInterval_plain(HeapTuple*, TupleDesc*, Column_info_t, TIn
 
 /** get Id from data */
 Id get_Id(HeapTuple*, TupleDesc*, Column_info_t, Id);
+
+/** get Idx from data */
+Idx get_Idx(HeapTuple*, TupleDesc*, Column_info_t, Idx);
+
+/** get MatrixIndex from data */
+MatrixIndex get_MatrixIndex(HeapTuple*, TupleDesc*, Column_info_t, MatrixIndex);
+
+/** get Duration from data */
+Duration get_Duration(HeapTuple*, TupleDesc*, Column_info_t, Duration);
+
+/** get Priority from data */
+Priority get_Priority(HeapTuple*, TupleDesc*, Column_info_t, Priority);
+
+/** get Distance from data */
+Distance get_Distance(HeapTuple*, TupleDesc*, Column_info_t, Distance);
 
 /** get Amount from data */
 Amount get_Amount(HeapTuple*, TupleDesc*, Column_info_t, Amount);
