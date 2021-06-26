@@ -9,6 +9,7 @@ on:
     paths-ignore:
       - '**.po'
 
+# TODO: Fix the macOS build for compiling and building VROOM with vrprouting.
 jobs:
   build:
     name: Build
