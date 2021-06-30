@@ -12,13 +12,13 @@ WHERE id > 18;
 
 SELECT is_empty('q1', '1: Graph with 0 edge and 0 vertex');
 
-PREPARE bipartite1 AS
+PREPARE edgeColoring1 AS
 SELECT *
-FROM pgr_bipartite(
+FROM pgr_edgeColoring(
     'q1'
 );
 
-SELECT is_empty('bipartite1', '2: Graph with 0 edge and 0 vertex -> Empty row is returned');
+SELECT is_empty('edgeColoring1', '2: Graph with 0 edge and 0 vertex -> Empty row is returned');
 
 
 -- 1 vertex test
@@ -30,13 +30,13 @@ WHERE id = 2;
 
 SELECT set_eq('q2', $$VALUES (2, 2, 2, -1, 1)$$, '3: Graph with only vertex 2');
 
-PREPARE bipartite2 AS
+PREPARE edgeColoring2 AS
 SELECT *
-FROM pgr_bipartite(
+FROM pgr_edgeColoring(
     'q2'
 );
-SELECT is_empty('bipartite2', '4: One vertex graph can not be bipartite-> Empty row is returned');
 
+SELECT is_empty('edgeColoring2', '4: One vertex graph can not be edgeColored-> Empty row is returned');
 
 
 -- 2 vertices test (connected)
@@ -48,13 +48,13 @@ WHERE id = 7;
 
 SELECT set_eq('q3', $$VALUES (7, 8, 5, 1, 1)$$, '5: Graph with two connected vertices 8 and 5');
 
-PREPARE bipartite3 AS
+PREPARE edgeColoring3 AS
 SELECT *
-FROM pgr_bipartite(
+FROM pgr_edgeColoring(
     'q3'
 );
 
-SELECT set_eq('bipartite3', $$VALUES (8, 0), (5, 1)$$, '6: Graph is bi-partite');
+SELECT set_eq('edgeColoring3', $$VALUES (7, 2)$$, '6: Edge formed by connecting vertices 8 and 5, is colored with color 2');
 
 
 -- linear tests
@@ -68,13 +68,14 @@ WHERE id <= 2;
 
 SELECT set_eq('q4', $$VALUES (1, 1, 2, 1, 1), (2, 2, 3, -1, 1)$$, '7: Graph with three vertices 1, 2 and 3');
 
-PREPARE bipartite4 AS
+PREPARE edgeColoring4 AS
 SELECT *
-FROM pgr_bipartite(
+FROM pgr_edgeColoring(
     'q4'
 );
 
-SELECT set_eq('bipartite4', $$VALUES (1, 0), (2, 1), (3, 0)$$, '8: Bi-partite graph with 3 vertices');
+SELECT set_eq('edgeColoring4', $$VALUES (1, 3), (2, 2)$$,
+    '8: Edge (1, 2) is colored with color 3 and Edge (2, 3) is colored with color 2');
 
 
 -- 4 vertices test
@@ -93,21 +94,20 @@ SELECT set_eq('q5',
     '9: Graph with four vertices 1, 2, 3 and 4'
 );
 
-PREPARE bipartite5 AS
+PREPARE edgeColoring5 AS
 SELECT *
-FROM pgr_bipartite(
+FROM pgr_edgeColoring(
     'q5'
 );
 
-SELECT set_eq('bipartite5', $$VALUES (1, 0), (2, 1), (3, 0), (4, 1)$$, '10: Bi-partite graph with 4 vertices');
+SELECT set_eq('edgeColoring5', $$VALUES (1, 3), (2, 2), (3, 3)$$,
+    '10: Edge (1, 2) is colored with color 3, Edge (2, 3) is colored with color 2 and Edge (3, 4) is colored with color 3');
 
 
-
-
-
--- even lenght cycle test
+-- even length cycle test
 
 -- 4 vertices length
+
 PREPARE q6 AS
 SELECT id, source, target, cost, reverse_cost
 FROM edge_table
@@ -123,13 +123,14 @@ SELECT set_eq('q6',
     '11: Graph with four vertices 5, 6, 10 and 11 (cyclic)'
 );
 
-PREPARE bipartite6 AS
+PREPARE edgeColoring6 AS
 SELECT *
-FROM pgr_bipartite(
+FROM pgr_edgeColoring(
     'q6'
 );
 
-SELECT set_eq('bipartite6', $$VALUES (5, 0), (6, 1), (10, 1), (11, 0)$$, '12: Cyclic and bipartite graph');
+SELECT set_eq('edgeColoring6', $$VALUES (8, 1), (10, 5), (11, 5), (12, 3)$$,
+    '12: Edge (5, 6) is colored with color 1, Edge (5, 10) is colored with color 5, Edge (6, 11) is colored with color 5 and Edge (10, 11) is colored with color 3');
 
 
 -- odd length cycle test
@@ -162,14 +163,14 @@ SELECT set_eq('q7',
     '13: Cyclic Graph with three vertices 3, 6 and 8'
 );
 
-PREPARE bipartite7 AS
+PREPARE edgeColoring7 AS
 SELECT *
-FROM pgr_bipartite(
+FROM pgr_edgeColoring(
     'q7'
 );
 
-
-SELECT is_empty('bipartite7', '14: Graph with odd lenght cycle -> Empty row is returned');
+SELECT set_eq('edgeColoring7', $$VALUES (1, 1), (2, 2), (3, 3)$$,
+    '14: Edge (3, 6) is colored with color 1, Edge (3, 8) is colored with color 2 and Edge (6, 8) is colored with color 3');
 
 
 -- 5 vertices cyclic
@@ -204,17 +205,14 @@ SELECT set_eq('q8',
     '15: Cyclic Graph with 5 vertices 3, 6 and 8'
 );
 
-PREPARE bipartite8 AS
+PREPARE edgeColoring8 AS
 SELECT *
-FROM pgr_bipartite(
+FROM pgr_edgeColoring(
     'q8'
 );
 
-
-SELECT is_empty('bipartite8', '16: Graph with odd lenght cycle -> Empty row is returned');
-
-
-
+SELECT set_eq('edgeColoring8', $$VALUES (1, 1), (2, 2), (3, 1), (4, 2), (5, 3)$$,
+    '16: Edge (1, 2) is colored with color 1, Edge (2, 3) is colored with color 2, Edge (3, 4) is colored with color 1, Edge (4, 5) is colored with color 2 and Edge (5, 1) is colored with color 3');
 
 
 SELECT * FROM finish();
