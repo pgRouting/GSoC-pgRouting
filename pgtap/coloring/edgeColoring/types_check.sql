@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('3.2.0') THEN plan(1) ELSE plan(5) END;
+SELECT CASE WHEN NOT min_version('3.3.0') THEN plan(1) ELSE plan(5) END;
 
 CREATE OR REPLACE FUNCTION types_check()
 RETURNS SETOF TEXT AS
