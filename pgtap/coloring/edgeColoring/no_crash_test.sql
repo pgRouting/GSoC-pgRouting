@@ -24,7 +24,7 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
-    -- bipartite
+    -- edgeColoring
     params = ARRAY[
     '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$'
     ]::TEXT[];
@@ -32,7 +32,7 @@ BEGIN
     'NULL'
     ]::TEXT[];
 
-    RETURN query SELECT * FROM no_crash_test('pgr_bipartite', params, subs);
+    RETURN query SELECT * FROM no_crash_test('pgr_edgeColoring', params, subs);
 
 END
 $BODY$
