@@ -1,6 +1,8 @@
 /*PGR-GNU*****************************************************************
-File: pgr_types.h
 
+File: _version.h.in
+
+Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky_vergara@hotmail.com
 
@@ -21,38 +23,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
-/*! @file */
 
-#ifndef INCLUDE_C_TYPES_COLUMN_INFO_T_H_
-#define INCLUDE_C_TYPES_COLUMN_INFO_T_H_
-#pragma once
+#define	BOOST_VERSION "1.74.0";
+#define CMAKE_BUILD_TYPE "Release";
+#define COMPILER_VERSION "GNU-10.3.0";
+#define COMPILATION_DATE "2021/06/30";
+#define PROJECT_GIT_HASH "aa8d57db3";
+#define PROJECT_LIB_NAME "pgrouting-3.3.0";
+#define CMAKE_SYSTEM_NAME "Linux-5.11.0-22-generic";
+#define POSTGRES_VERSION "PostgreSQL 13.3 (Ubuntu 13.3-0ubuntu0.21.04.1)";
 
-/* for int64_t */
-#ifdef __cplusplus
-#   include <cstdint>
-#else
-#   include <stdbool.h>
-#   include <stdint.h>
-#endif
-
-// used for getting the data
-typedef
-enum {
-    ANY_INTEGER,
-    ANY_NUMERICAL,
-    TEXT,
-    CHAR1,
-    ANY_INTEGER_ARRAY
-} expectType;
-
-
-struct Column_info_t {
-    int colNumber;
-    uint64_t type;
-    bool strict;
-    char *name;
-    expectType eType;
-};
-
-
-#endif  // INCLUDE_C_TYPES_COLUMN_INFO_T_H_
