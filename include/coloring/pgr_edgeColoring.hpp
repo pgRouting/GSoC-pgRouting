@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 
 #include "c_types/pgr_edge_t.h"
+#include "c_types/pgr_vertex_color_rt.h"
 #include "cpp_common/pgr_assert.h"
 #include "cpp_common/pgr_messages.h"
 
