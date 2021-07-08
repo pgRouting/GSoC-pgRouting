@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 /*! @file */
 
-#ifndef INCLUDE_C_TYPES_VROOM_RT_H_
-#define INCLUDE_C_TYPES_VROOM_RT_H_
+#ifndef INCLUDE_C_TYPES_VROOM_VROOM_RT_H_
+#define INCLUDE_C_TYPES_VROOM_VROOM_RT_H_
 #pragma once
 
 #include "c_types/typedefs.h"
@@ -63,4 +63,4 @@ struct Vroom_rt {
   Amount load; /** Vehicle load after step completion */
 };
 
-#endif  // INCLUDE_C_TYPES_VROOM_RT_H_
+#endif  // INCLUDE_C_TYPES_VROOM_VROOM_RT_H_

@@ -69,8 +69,7 @@ vrp_vroom(
     std::string server_host,
     std::string server_port,
     bool plan,
-    bool geometry,
-    std::string &log) {
+    bool geometry) {
   char *result;
 #if 0
   pgrouting::functions::Vrp_vroom fn_vroom;
@@ -132,7 +131,7 @@ do_vrp_vroom(
     std::string server_port(osrm_port);
 
     std::string logstr;
-    (*result) = vrp_vroom(problem_instance_json, server_host, server_port, plan, geometry, logstr);
+    (*result) = vrp_vroom(problem_instance_json, server_host, server_port, plan, geometry);
     log << logstr;
 
     pgassert(*err_msg == NULL);

@@ -175,10 +175,10 @@ get_vroom_shipments(
     char *sql,
     Vroom_shipment_t **rows,
     size_t *total_rows) {
-  const int column_count = 11;
-  Column_info_t info[column_count];
+  const int kColumnCount = 11;
+  Column_info_t info[kColumnCount];
 
-  for (int i = 0; i < column_count; ++i) {
+  for (int i = 0; i < kColumnCount; ++i) {
     info[i].colNumber = -1;
     info[i].type = 0;
     info[i].strict = false;
@@ -222,5 +222,5 @@ get_vroom_shipments(
   info[4].strict = true;
   info[5].strict = true;
 
-  db_get_shipments(sql, rows, total_rows, info, column_count);
+  db_get_shipments(sql, rows, total_rows, info, kColumnCount);
 }

@@ -142,10 +142,10 @@ get_vroom_steps(
     char *sql,
     Vroom_step_t **rows,
     size_t *total_rows) {
-  const int column_count = 5;
-  Column_info_t info[column_count];
+  const int kColumnCount = 5;
+  Column_info_t info[kColumnCount];
 
-  for (int i = 0; i < column_count; ++i) {
+  for (int i = 0; i < kColumnCount; ++i) {
     info[i].colNumber = -1;
     info[i].type = 0;
     info[i].strict = false;
@@ -153,7 +153,7 @@ get_vroom_steps(
   }
 
   info[0].name = "id";
-  info[1].name = "type"; // TODO(ashish): Add constraint checks
+  info[1].name = "type";  // TODO(ashish): Add constraint checks
 
   /* constraints on service time */
   info[2].name = "service_at";
@@ -172,5 +172,5 @@ get_vroom_steps(
   info[0].strict = true;
   info[1].strict = true;
 
-  db_get_steps(sql, rows, total_rows, info, column_count);
+  db_get_steps(sql, rows, total_rows, info, kColumnCount);
 }
