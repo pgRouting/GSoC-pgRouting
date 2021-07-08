@@ -31,12 +31,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/adjacency_list.hpp>
 
 #include <iostream>
-#include <limits>
 #include <map>
 #include <vector>
 
-#include "cpp_common/basic_edge.h"
-#include "cpp_common/basic_vertex.h"
+#include "c_types/pgr_edge_t.h"
 #include "cpp_common/pgr_assert.h"
 #include "cpp_common/pgr_messages.h"
 
@@ -44,23 +42,21 @@ namespace pgrouting {
 namespace functions {
 
 class Pgr_edgeColoring : public Pgr_messages {
- public:
     using EdgeColoring_Graph =
-        boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex, size_t,
-        pgrouting::Basic_edge>;
+        boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property,
+        size_t, boost::no_property>;
 
     using V       = boost::graph_traits<EdgeColoring_Graph>::vertex_descriptor;
     using E       = boost::graph_traits<EdgeColoring_Graph>::edge_descriptor;
     using V_it    = boost::graph_traits<EdgeColoring_Graph>::vertex_iterator;
     using E_it    = boost::graph_traits<EdgeColoring_Graph>::edge_iterator;
 
-    std::vector<pgr_vertex_color_rt> edgeColoring(EdgeColoring_Graph&);
+public:
 
-    void insert_edges(EdgeColoring_Graph&, pgr_edge_t*, size_t);
+    std::vector<pgr_vertex_color_rt> edgeColoring();
 
-#if 0
+    Pgr_edgeColoring(pgr_edge_t*, size_t);
     Pgr_edgeColoring() = delete;
-#endif
 
 #if 0
 #if Boost_VERSION_MACRO >= 106800
@@ -68,7 +64,13 @@ class Pgr_edgeColoring : public Pgr_messages {
 #endif
 #endif
 
- private:
+private:
+    V get_boost_vertex(int64_t id) const;
+    int64_t get_vertex_id(V v) const;
+    int64_t get_edge_id(E e) const;
+
+
+private:
     EdgeColoring_Graph graph;
     std::map<int64_t, V> id_to_V;
     std::map<V, int64_t> V_to_id;
