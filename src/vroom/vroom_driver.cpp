@@ -36,8 +36,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_assert.h"
 #include "cpp_common/vrp_vroom_problem.hpp"
 
-#include "vroom/vrp_vroom.hpp"
-
 /** @file vroom_driver.cpp
  * @brief Handles actual calling of function in the `vrp_vroom.hpp` file.
  *
@@ -65,7 +63,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * @returns results, when results are found
  */
-
+#if 0
 char*
 vrp_vroom(
     std::string problem_instance_json,
@@ -78,6 +76,7 @@ vrp_vroom(
   // log += fn_vroom.get_log();
   return result;
 }
+#endif
 
 /** @brief Performs exception handling and converts the results to postgres.
  *
@@ -136,6 +135,7 @@ do_vrp_vroom(
     pgassert(total_cells);
 
     vrprouting::Vrp_vroom_problem problem;
+#if 0
     for (int i = 0; i < total_jobs; i++) {
       log << jobs[i].id << ": id\n";
       log << jobs[i].location_index << ": location_index\n";
@@ -150,6 +150,7 @@ do_vrp_vroom(
       log << jobs[i].time_windows << ": time_windows\n";
       log << jobs[i].time_windows_size << ": time_windows_size\n";
     }
+#endif
     problem.add_jobs(jobs, total_jobs);
     problem.add_shipments(shipments, total_shipments);
     problem.add_vehicles(vehicles, total_vehicles);
