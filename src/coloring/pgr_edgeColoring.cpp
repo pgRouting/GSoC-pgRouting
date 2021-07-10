@@ -26,53 +26,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include <boost/graph/adjacency_list.hpp>
+#include "coloring/pgr_edgeColoring.hpp"
 #include <boost/graph/edge_coloring.hpp>
 #include <boost/graph/graph_utility.hpp>
-#include <boost/graph/iteration_macros.hpp>
 
-#include <sstream>
-#include <string>
 #include <vector>
-#include <algorithm>
 
-#include "drivers/coloring/edgeColoring_driver.h"
-#include "coloring/pgr_edgeColoring.hpp"
-
-#include "cpp_common/pgr_alloc.hpp"
+#include "cpp_common/identifiers.hpp"
 #include "cpp_common/pgr_assert.h"
 
-namespace {
-
-typedef typename boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex, size_t,
-                                       pgrouting::Basic_edge>
-    EdgeColoring_Graph;
-typedef typename boost::graph_traits<EdgeColoring_Graph>::vertex_descriptor V;
-typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_descriptor E;
-typedef typename boost::graph_traits<EdgeColoring_Graph>::vertex_iterator V_it;
-typedef typename boost::graph_traits<EdgeColoring_Graph>::edge_iterator E_it;
-
-}  // namespace
 
 namespace pgrouting {
 namespace functions {
 
 std::vector<pgr_vertex_color_rt>
-Pgr_edgeColoring::edgeColoring(EdgeColoring_Graph &graph) {
+Pgr_edgeColoring::edgeColoring() {
     std::vector<pgr_vertex_color_rt> results;
-
-    auto i_map = boost::get(boost::edge_bundle, graph);
-
-    std::vector<size_t> colors(boost::num_edges(graph));
-
-    auto color_map = boost::make_iterator_property_map(colors.begin(), i_map);
 
 #if 0
     CHECK_FOR_INTERRUPTS();
 #endif
 
     try {
-        boost::edge_coloring(graph, color_map);
+        boost::edge_coloring(graph,  boost::get(boost::edge_bundle, graph));
     } catch (boost::exception const &ex) {
         (void)ex;
         throw;
@@ -84,16 +60,48 @@ Pgr_edgeColoring::edgeColoring(EdgeColoring_Graph &graph) {
     }
 
     for (auto e_i : boost::make_iterator_range(boost::edges(graph))) {
-        int64_t edge = E_to_id[e_i];
-        int64_t color = colors[edge];
+        auto edge = E_to_id[e_i];
+        int64_t color = graph[e_i];
         results.push_back({edge, (color + 1)});
     }
     return results;
 }
 
-void Pgr_edgeColoring::insert_edges(EdgeColoring_Graph &graph, pgr_edge_t *edges, size_t count) {
-    for (size_t i = 0; i < count; i++)
-        add_edge(edges[i].source, edges[i].target, graph);
+Pgr_edgeColoring::Pgr_edgeColoring(pgr_edge_t *edges,
+                                   size_t total_edges) {
+    /*
+     * Inserting vertices
+     */
+    Identifiers<int64_t> ids;
+    for (size_t i = 0; i < total_edges; ++i) {
+        ids += edges[i].source;
+        ids += edges[i].target;
+    }
+
+    for (const auto id : ids) {
+        auto v = add_vertex(graph);
+        id_to_V.insert(std::make_pair(id, v));
+        V_to_id.insert(std::make_pair(v, id));
+    }
+
+    /*
+     * Inserting edges
+     */
+    bool added;
+    for (size_t i = 0; i < total_edges; ++i) {
+        auto edge = edges[i];
+        auto v1 = get_boost_vertex(edge.source);
+        auto v2 = get_boost_vertex(edge.target);
+        auto e_exists = boost::edge(v1, v2, graph);
+        if (e_exists.second) continue;
+
+        if (edge.source == edge.target) continue;
+
+        E e;
+        boost::tie(e, added) = boost::add_edge(v1, v2, edge.cost, graph);
+
+        E_to_id.insert(std::make_pair(e, edge.id));
+    }
 }
 
 }  // namespace functions
