@@ -144,10 +144,10 @@ get_vroom_time_windows(
     char *sql,
     Vroom_time_window_t **rows,
     size_t *total_rows) {
-  const int column_count = 2;
-  Column_info_t info[column_count];
+  const int kColumnCount = 2;
+  Column_info_t info[kColumnCount];
 
-  for (int i = 0; i < column_count; ++i) {
+  for (int i = 0; i < kColumnCount; ++i) {
     info[i].colNumber = -1;
     info[i].type = 0;
     info[i].strict = true;
@@ -157,5 +157,5 @@ get_vroom_time_windows(
   info[0].name = "start_time";
   info[1].name = "end_time";
 
-  db_get_time_windows(sql, rows, total_rows, info, column_count);
+  db_get_time_windows(sql, rows, total_rows, info, kColumnCount);
 }

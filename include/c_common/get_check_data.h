@@ -89,7 +89,7 @@ spi_getText(
 /** @name timestamp related
  * @{ */
 /** @brief  Converts timestamp to timestamp without timezone */
-TTimestamp timestamp_without_timezone( TTimestamp timestamp);
+TTimestamp timestamp_without_timezone(TTimestamp timestamp);
 
 /** @brief gets a timestamp value from postgres type TIMESTAMP */
 TTimestamp get_TTimestamp(HeapTuple*, TupleDesc*, Column_info_t, TTimestamp);

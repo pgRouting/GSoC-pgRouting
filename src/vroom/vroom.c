@@ -32,7 +32,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <assert.h>
 #include <stdbool.h>
+
 #include "c_common/postgres_connection.h"
+#include <utils/array.h>  // NOLINT [build/include_order]
+
+// #include "utils/array.h"
+
+#include "catalog/pg_type.h"
+#include "utils/lsyscache.h"
+
+#ifndef INT8ARRAYOID
+#define INT8ARRAYOID    1016
+#endif
 
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
@@ -43,12 +54,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/vroom/vroom_shipment_t.h"
 #include "c_types/vroom/vroom_vehicle_t.h"
 
+// #include "c_common/edges_input.h"
+// #include "c_common/arrays_input.h"
 #include "c_common/vroom/jobs_input.h"
 #include "c_common/vroom/shipments_input.h"
 #include "c_common/vroom/vehicles_input.h"
-#if 0
-#include "c_common/vroom/matrix_input.h"
-#endif
+#include "c_common/matrixRows_input.h"
 
 #include "drivers/vroom/vroom_driver.h"
 
@@ -62,6 +73,15 @@ PG_FUNCTION_INFO_V1(_vrp_vroom);
  * in C types. Then it calls the function `do_vrp_vroom` defined
  * in the `vroom_driver.h` file for further processing.
  * Finally, it frees the memory and disconnects the C function to the SPI manager.
+ *
+ * @param vrp_json     JSON object describing the problem instance
+ * @param osrm_host    OSRM routing server host in the form of PROFILE:HOST
+ * @param osrm_port    OSRM routing server port in the form of PROFILE:PORT.
+ * @param plan       typedef uint32_t Duration;
+whether the mode is plan mode
+ * @param geometry     whether to add detailed route geometry and indicators
+ * @param result_tuples  the rows in the result
+ * @param result_count   the count of rows in the result
  *
  * @returns void
  */
@@ -82,11 +102,10 @@ process(
   (*result_count) = 0;
 
 #if 0
+  PGR_DBG("---------------JOBS INPUT------------------");
   Vroom_job_t *jobs = NULL;
   size_t total_jobs = 0;
   get_vroom_jobs(jobs_sql, &jobs, &total_jobs);
-
-  PGR_DBG("---------------JOBS INPUT------------------");
   PGR_DBG("Total jobs found: %lu", total_jobs);
 
   PGR_DBG("id: %ld", jobs->id);
@@ -185,26 +204,45 @@ process(
 
 
 
-#if 0
+#if 1
+  Vroom_job_t *jobs = NULL;
+  size_t total_jobs = 0;
+  if (jobs_sql) {
+    get_vroom_jobs(jobs_sql, &jobs, &total_jobs);
+  }
 
-  get_vroom_shipments(shipments_sql, &shipments, &total_shipments);
+  Vroom_shipment_t *shipments = NULL;
+  size_t total_shipments = 0;
+  if (shipments_sql) {
+    get_vroom_shipments(shipments_sql, &shipments, &total_shipments);
+  }
+
+  Vroom_vehicle_t *vehicles = NULL;
+  size_t total_vehicles = 0;
   get_vroom_vehicles(vehicles_sql, &vehicles, &total_vehicles);
-  get_vroom_matrix(matrix_sql, &matrix_cells, &total_cells);
+
+  // TODO(ashish): Change naming to matrix_cells_arr and total_cells, at other places
+  // Using the original matrix
+  Matrix_cell_t *matrix_cells_arr = NULL;
+  size_t total_cells = 0;
+  get_matrixRows_vroom_plain(matrix_sql, &matrix_cells_arr, &total_cells);
 
   clock_t start_t = clock();
   char *log_msg = NULL;
   char *notice_msg = NULL;
   char *err_msg = NULL;
 
-  do_pgr_depthFirstSearch(
-      edges, total_edges,
-      rootsArr, size_rootsArr,
+  do_vrp_vroom(
+      jobs, total_jobs,
+      shipments, total_shipments,
+      vehicles, total_vehicles,
+      matrix_cells_arr, total_cells,
 
-      directed,
-      max_depth,
+      plan,
 
       result_tuples,
       result_count,
+
       &log_msg,
       &notice_msg,
       &err_msg);
@@ -222,7 +260,11 @@ process(
   if (log_msg) pfree(log_msg);
   if (notice_msg) pfree(notice_msg);
   if (err_msg) pfree(err_msg);
-  if (edges) pfree(edges);
+
+  if (jobs) pfree(jobs);
+  if (shipments) pfree(shipments);
+  if (vehicles) pfree(vehicles);
+  if (matrix_cells_arr) pfree(matrix_cells_arr);
 #endif
 
   pgr_SPI_finish();
@@ -253,15 +295,37 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
      *     jobs_sql TEXT,
      *     shipments_sql TEXT,
      *     vehicles_sql TEXT,
-     *     matrix ARRAY[ARRAY[INTEGER],
+     *     matrix_sql ARRAY[ARRAY[INTEGER],
      *     plan BOOLEAN DEFAULT FALSE
      *   );
      *
      **********************************************************************/
 
+    // Verify that the last 3 args (vehicles_sql, matrix_sql, plan) are not NULL
+    for (int i = 2; i < 5; i++) {
+      if (PG_ARGISNULL(i)) {
+        elog(ERROR, "Argument %i must not be NULL", i + 1);
+      }
+    }
+
+    char *jobs_sql = NULL;
+    char *shipments_sql = NULL;
+
+    if (!PG_ARGISNULL(0)) {
+      jobs_sql = text_to_cstring(PG_GETARG_TEXT_P(0));
+    }
+    if (!PG_ARGISNULL(1)) {
+      shipments_sql = text_to_cstring(PG_GETARG_TEXT_P(1));
+    }
+
+    // Verify that both the first 2 args (jobs_sql and shipments_sql) are not NULL
+    if (!(jobs_sql || shipments_sql)) {
+      elog(ERROR, "Both Argument 1 and Argument 2 must not be NULL");
+    }
+
     process(
-        text_to_cstring(PG_GETARG_TEXT_P(0)),
-        text_to_cstring(PG_GETARG_TEXT_P(1)),
+        jobs_sql,
+        shipments_sql,
         text_to_cstring(PG_GETARG_TEXT_P(2)),
         text_to_cstring(PG_GETARG_TEXT_P(3)),
         PG_GETARG_BOOL(4),
@@ -298,6 +362,7 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
     Datum      result;
     Datum      *values;
     bool*      nulls;
+    int16      typlen;
     size_t     call_cntr = funcctx->call_cntr;
 
     /***********************************************************************
@@ -326,6 +391,40 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
       nulls[i] = false;
     }
 
+    size_t load_size = (size_t)result_tuples[call_cntr].load_size;
+    Datum* load = (Datum*) palloc(sizeof(Datum) * (size_t)load_size);
+
+    for (i = 0; i < load_size; ++i) {
+        PGR_DBG("Storing load %ld", result_tuples[call_cntr].load[i]);
+        load[i] = Int64GetDatum(result_tuples[call_cntr].load[i]);
+    }
+
+    bool typbyval;
+    char typalign;
+    get_typlenbyvalalign(INT8OID, &typlen, &typbyval, &typalign);
+    ArrayType* arrayType;
+    /*
+      https://doxygen.postgresql.org/arrayfuncs_8c.html
+      ArrayType* construct_array(
+        Datum*      elems,
+        int         nelems,
+        Oid         elmtype, int elmlen, bool elmbyval, char elmalign
+      )
+    */
+    arrayType =  construct_array(load, (int)load_size, INT8OID,  typlen,
+                                typbyval, typalign);
+    /*
+      void TupleDescInitEntry(
+        TupleDesc       desc,
+        AttrNumber      attributeNumber,
+        const char *    attributeName,
+        Oid             oidtypeid,
+        int32           typmod,
+        int             attdim
+      )
+    */
+    TupleDescInitEntry(tuple_desc, (AttrNumber) 11, "load", INT8ARRAYOID, -1, 0);
+
     values[0] = Int64GetDatum(funcctx->call_cntr + 1);
     values[1] = Int32GetDatum(result_tuples[call_cntr].vehicle_seq);
     values[2] = Int32GetDatum(result_tuples[call_cntr].vehicle_id);
@@ -336,7 +435,7 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
     values[7] = Int32GetDatum(result_tuples[call_cntr].travel_time);
     values[8] = Int32GetDatum(result_tuples[call_cntr].service_time);
     values[9] = Int32GetDatum(result_tuples[call_cntr].waiting_time);
-    values[10] = Int32GetDatum(result_tuples[call_cntr].load);
+    values[10] = PointerGetDatum(arrayType);
 
     /**********************************************************************/
 

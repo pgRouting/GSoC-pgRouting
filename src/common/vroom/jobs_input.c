@@ -54,6 +54,8 @@ void fetch_jobs(
 
   job->service = get_Duration(tuple, tupdesc, info[2], 0);
 
+  // TODO(ashish): Imp, check whether all amount size are same
+
   /*
    * The deliveries
    */
@@ -78,6 +80,7 @@ void fetch_jobs(
   job->priority = get_Priority(tuple, tupdesc, info[6], 0);
 
   job->time_windows_size = 0;
+  job->time_windows = NULL;
   if (column_found(info[7].colNumber)) {
     char *time_windows_sql = spi_getText(tuple, tupdesc, info[7]);
     get_vroom_time_windows(time_windows_sql, &job->time_windows,
@@ -171,10 +174,10 @@ get_vroom_jobs(
     char *sql,
     Vroom_job_t **rows,
     size_t *total_rows) {
-  const int column_count = 8;
-  Column_info_t info[column_count];
+  const int kColumnCount = 8;
+  Column_info_t info[kColumnCount];
 
-  for (int i = 0; i < column_count; ++i) {
+  for (int i = 0; i < kColumnCount; ++i) {
     info[i].colNumber = -1;
     info[i].type = 0;
     info[i].strict = false;
@@ -207,5 +210,5 @@ get_vroom_jobs(
   info[0].strict = true;
   info[1].strict = true;
 
-  db_get_jobs(sql, rows, total_rows, info, column_count);
+  db_get_jobs(sql, rows, total_rows, info, kColumnCount);
 }

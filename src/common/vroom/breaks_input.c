@@ -141,10 +141,10 @@ get_vroom_breaks(
     char *sql,
     Vroom_break_t **rows,
     size_t *total_rows) {
-  const int column_count = 3;
-  Column_info_t info[column_count];
+  const int kColumnCount = 3;
+  Column_info_t info[kColumnCount];
 
-  for (int i = 0; i < column_count; ++i) {
+  for (int i = 0; i < kColumnCount; ++i) {
     info[i].colNumber = -1;
     info[i].type = 0;
     info[i].strict = true;
@@ -164,5 +164,5 @@ get_vroom_breaks(
   /* service is not mandatory */
   info[2].strict = false;
 
-  db_get_breaks(sql, rows, total_rows, info, column_count);
+  db_get_breaks(sql, rows, total_rows, info, kColumnCount);
 }

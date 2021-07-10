@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 /*! @file */
 
-#ifndef INCLUDE_C_TYPES_VROOM_VROOM_JOBS_T_H_
-#define INCLUDE_C_TYPES_VROOM_VROOM_JOBS_T_H_
+#ifndef INCLUDE_C_TYPES_VROOM_VROOM_JOB_T_H_
+#define INCLUDE_C_TYPES_VROOM_VROOM_JOB_T_H_
 #pragma once
 
 #include "c_types/typedefs.h"
@@ -73,4 +73,4 @@ struct Vroom_job_t {
   size_t time_windows_size; /** Number of valid slots */
 };
 
-#endif  // INCLUDE_C_TYPES_VROOM_VROOM_JOBS_T_H_
+#endif  // INCLUDE_C_TYPES_VROOM_VROOM_JOB_T_H_

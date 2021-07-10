@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 /*! @file */
 
-#ifndef INCLUDE_C_TYPES_VROOM_VROOM_STEPS_T_H_
-#define INCLUDE_C_TYPES_VROOM_VROOM_STEPS_T_H_
+#ifndef INCLUDE_C_TYPES_VROOM_VROOM_STEP_T_H_
+#define INCLUDE_C_TYPES_VROOM_VROOM_STEP_T_H_
 #pragma once
 
 #include "c_types/typedefs.h"
@@ -39,7 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 name | description
 :----- | :-------
 id | Step's identifier
-type | Type of the step
+type | Type of the step - start, job, pickup, delivery, break, end.
 service_at | Hard constraint on service time
 service_after | Hard constraint on service time lower bound
 service_before | Hard constraint on service time upper bound
@@ -56,4 +56,4 @@ struct Vroom_step_t {
 };
 
 
-#endif  // INCLUDE_C_TYPES_VROOM_VROOM_STEPS_T_H_
+#endif  // INCLUDE_C_TYPES_VROOM_VROOM_STEP_T_H_

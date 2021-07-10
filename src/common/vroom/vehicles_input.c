@@ -65,9 +65,8 @@ void fetch_vehicles(
     spi_getPositiveIntArr_allowEmpty(tuple, tupdesc, info[4], &vehicle->skills_size)
     : NULL;
 
-  // TODO(ashish): Find a better default value for time window start & end.
   vehicle->time_window_start = get_Duration(tuple, tupdesc, info[5], 0);
-  vehicle->time_window_end = get_Duration(tuple, tupdesc, info[6], 0);
+  vehicle->time_window_end = get_Duration(tuple, tupdesc, info[6], UINT_MAX);
 
   vehicle->breaks_size = 0;
   if (column_found(info[7].colNumber)) {
@@ -170,10 +169,10 @@ get_vroom_vehicles(
     char *sql,
     Vroom_vehicle_t **rows,
     size_t *total_rows) {
-  const int column_count = 9;
-  Column_info_t info[column_count];
+  const int kColumnCount = 9;
+  Column_info_t info[kColumnCount];
 
-  for (int i = 0; i < column_count; ++i) {
+  for (int i = 0; i < kColumnCount; ++i) {
     info[i].colNumber = -1;
     info[i].type = 0;
     info[i].strict = false;
@@ -209,5 +208,5 @@ get_vroom_vehicles(
   info[1].strict = true;
   info[2].strict = true;
 
-  db_get_vehicles(sql, rows, total_rows, info, column_count);
+  db_get_vehicles(sql, rows, total_rows, info, kColumnCount);
 }

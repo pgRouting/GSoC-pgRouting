@@ -28,8 +28,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stdbool.h>
 #include <time.h>
 #include "c_common/postgres_connection.h"
-#include <utils/date.h>
-#include <utils/datetime.h>
+#include <utils/date.h>  // NOLINT [build/include_order]
+#include <utils/datetime.h>  // NOLINT [build/include_order]
 
 #include "c_common/get_check_data.h"
 #include "c_common/arrays_input.h"
@@ -244,7 +244,6 @@ spi_getTimeStamp(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info) {
 static
 TInterval
 spi_getInterval(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info) {
-
   Datum binval;
   bool isnull;
   Interval*   interval;
@@ -833,5 +832,3 @@ void pgr_fetch_column_info(
     }
   }
 }
-
-

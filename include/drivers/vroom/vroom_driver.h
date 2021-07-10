@@ -30,41 +30,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_VROOM_VROOM_DRIVER_H_
 #pragma once
 
-/* for size-t */
-#ifdef __cplusplus
-#   include <cstddef>
-#else
-#   include <stddef.h>
-#endif
-
+#include "c_types/typedefs.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    /**************************************************
-     *
-     *   vrp_vroom(
-     *      vrp_json JSON,
-     *      osrm_host TEXT DEFAULT 'car:0.0.0.0',
-     *      osrm_port TEXT DEFAULT 'car:5000',
-     *      plan BOOLEAN DEFAULT FALSE,
-     *      geometry BOOLEAN DEFAULT FALSE
-     *   );
-     *
-     *************************************************/
-    void do_vrp_vroom(
-            char* vrp_json,
-            char* osrm_host,
-            char* osrm_port,
-            bool plan,
-            bool geometry,
+  /**************************************************
+   *
+   *   vrp_vroom(
+   *    vrp_json JSON,
+   *    osrm_host TEXT DEFAULT 'car:0.0.0.0',
+   *    osrm_port TEXT DEFAULT 'car:5000',
+   *    plan BOOLEAN DEFAULT FALSE,
+   *    geometry BOOLEAN DEFAULT FALSE
+   *   );
+   *
+   *************************************************/
+  void do_vrp_vroom(
+      Vroom_job_t *jobs, size_t total_jobs,
+      Vroom_shipment_t *shipments, size_t total_shipments,
+      Vroom_vehicle_t *vehicles, size_t total_vehicles,
+      Matrix_cell_t *matrix_cells_arr, size_t total_cells,
 
-            char **result,
+      bool plan,
 
-            char ** log_msg,
-            char ** notice_msg,
-            char ** err_msg);
+      Vroom_rt **return_tuples,
+      size_t *return_count,
+
+      char ** log_msg,
+      char ** notice_msg,
+      char ** err_msg);
 
 #ifdef __cplusplus
 }
