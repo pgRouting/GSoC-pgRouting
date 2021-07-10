@@ -60,7 +60,8 @@ struct Vroom_rt {
   Duration travel_time; /** Cumulated travel time upon arrival */
   Duration service_time; /** Service time at this step */
   Duration waiting_time; /** Waiting time upon arrival at this step */
-  Amount load; /** Vehicle load after step completion */
+  Amount *load; /** Vehicle's load after step completion array */
+  size_t load_size; /** Vehicle's load array size */
 };
 
 #endif  // INCLUDE_C_TYPES_VROOM_VROOM_RT_H_
