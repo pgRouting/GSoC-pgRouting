@@ -2,7 +2,7 @@
 build
 fix_typos
 code_linter
-src/version/version.h
+src/version/_version.h
 v[0-9]*
 
 # files are ignored on gh-pages

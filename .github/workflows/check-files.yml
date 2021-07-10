@@ -61,4 +61,3 @@ jobs:
       - name: Run linter
         run: |
           bash ./tools/scripts/code_checker.sh
-
