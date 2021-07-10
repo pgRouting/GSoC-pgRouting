@@ -28,13 +28,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/coloring/edgeColoring_driver.h"
 
-#include <algorithm>
-#include <sstream>
-#include <string>
 #include <vector>
 
-#include "c_types/graph_enum.h"
 #include "coloring/pgr_edgeColoring.hpp"
+
+#include "c_types/graph_enum.h"
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
@@ -66,11 +64,9 @@ void do_pgr_edgeColoring(
         graphType gType = UNDIRECTED;
         pgrouting::functions::Pgr_edgeColoring::EdgeColoring_Graph undigraph(gType);
 
-        pgrouting::functions::Pgr_edgeColoring fn_edgeColoring;
+        pgrouting::functions::Pgr_edgeColoring fn_edgeColoring {data_edges, total_edges};
 
-        fn_edgeColoring.insert_edges(undigraph, data_edges, total_edges);
-
-        results = fn_edgeColoring.edgeColoring(undigraph);
+        results = fn_edgeColoring.edgeColoring();
 
         auto count = results.size();
 
