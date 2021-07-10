@@ -34,6 +34,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
+#include "cpp_common/vrp_vroom_problem.hpp"
+
+#include "vroom/vrp_vroom.hpp"
 
 /** @file vroom_driver.cpp
  * @brief Handles actual calling of function in the `vrp_vroom.hpp` file.
@@ -42,13 +45,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 /***********************************************************************
  *
- *   vrp_vroom(
- *    vrp_json JSON,
- *    osrm_host TEXT DEFAULT 'car:0.0.0.0',
- *    osrm_port TEXT DEFAULT 'car:5000',
- *    plan BOOLEAN DEFAULT FALSE,
- *    geometry BOOLEAN DEFAULT FALSE
- *   );
+ * vrp_vroom(
+ *   vrp_json JSON,
+ *   osrm_host TEXT DEFAULT 'car:0.0.0.0',
+ *   osrm_port TEXT DEFAULT 'car:5000',
+ *   plan BOOLEAN DEFAULT FALSE,
+ *   geometry BOOLEAN DEFAULT FALSE
+ * );
  *
  ***********************************************************************/
 
@@ -70,12 +73,9 @@ vrp_vroom(
     std::string server_port,
     bool plan,
     bool geometry) {
-  char *result;
-#if 0
   pgrouting::functions::Vrp_vroom fn_vroom;
-  result = fn_vroom.vroom(problem_instance_json, server_host, server_port, plan, geometry);
-  log += fn_vroom.get_log();
-#endif
+  char *result = fn_vroom.vroom(problem_instance_json, server_host, server_port, plan, geometry);
+  // log += fn_vroom.get_log();
   return result;
 }
 
@@ -106,13 +106,15 @@ vrp_vroom(
  */
 void
 do_vrp_vroom(
-    char *vrp_json,
-    char *osrm_host,
-    char *osrm_port,
-    bool plan,
-    bool geometry,
+    Vroom_job_t *jobs, size_t total_jobs,
+    Vroom_shipment_t *shipments, size_t total_shipments,
+    Vroom_vehicle_t *vehicles, size_t total_vehicles,
+    Matrix_cell_t *matrix_cells_arr, size_t total_cells,
 
-    char **result,
+    bool plan,
+
+    Vroom_rt **return_tuples,
+    size_t *return_count,
 
     char ** log_msg,
     char ** notice_msg,
@@ -124,15 +126,75 @@ do_vrp_vroom(
     pgassert(!(*log_msg));
     pgassert(!(*notice_msg));
     pgassert(!(*err_msg));
-    pgassert(!(*result));
+    pgassert(!(*return_tuples));
+    pgassert(!(*return_count));
+    pgassert(jobs || shipments);
+    pgassert(vehicles);
+    pgassert(matrix_cells_arr);
+    pgassert(total_jobs || total_shipments);
+    pgassert(total_vehicles);
+    pgassert(total_cells);
 
-    std::string problem_instance_json(vrp_json);
-    std::string server_host(osrm_host);
-    std::string server_port(osrm_port);
+    vrprouting::Vrp_vroom_problem problem;
+    for (int i = 0; i < total_jobs; i++) {
+      log << jobs[i].id << ": id\n";
+      log << jobs[i].location_index << ": location_index\n";
+      log << jobs[i].service << ": service\n";
+      log << jobs[i].delivery << ": delivery\n";
+      log << jobs[i].delivery_size << ": delivery_size\n";
+      log << jobs[i].pickup << ": pickup\n";
+      log << jobs[i].pickup_size << ": pickup_size\n";
+      log << jobs[i].skills << ": skills\n";
+      log << jobs[i].skills_size << ": skills_size\n";
+      log << jobs[i].priority << ": priority\n";
+      log << jobs[i].time_windows << ": time_windows\n";
+      log << jobs[i].time_windows_size << ": time_windows_size\n";
+    }
+    problem.add_jobs(jobs, total_jobs);
+    problem.add_shipments(shipments, total_shipments);
+    problem.add_vehicles(vehicles, total_vehicles);
+    problem.add_matrix(matrix_cells_arr, total_cells);
 
+    log << "HERE\n";
+    log << "Done HERE\n";
+
+    std::vector < Vroom_rt > results = problem.solve();
+
+    log << "Problem solved\n";
+
+    log << problem.get_log();
+
+    auto count = results.size();
+    if (count == 0) {
+      (*return_tuples) = NULL;
+      (*return_count) = 0;
+      notice << "No results found";
+      *log_msg = log.str().empty()?
+        *log_msg :
+        pgr_msg(log.str().c_str());
+      *notice_msg = notice.str().empty()?
+        *notice_msg :
+        pgr_msg(notice.str().c_str());
+      return;
+    }
+
+    log << "HERE\n";
+
+    (*return_tuples) = pgr_alloc(count, (*return_tuples));
+    for (size_t i = 0; i < count; i++) {
+      *((*return_tuples) + i) = results[i];
+      log << results[i].vehicle_seq << "\n";       // vehicles_seq
+    }
+
+    log << "HERE\n";
+
+    (*return_count) = count;
+
+#if 0
     std::string logstr;
     (*result) = vrp_vroom(problem_instance_json, server_host, server_port, plan, geometry);
     log << logstr;
+#endif
 
     pgassert(*err_msg == NULL);
     *log_msg = log.str().empty()?
@@ -142,17 +204,20 @@ do_vrp_vroom(
       *notice_msg :
       pgr_msg(notice.str().c_str());
   } catch (AssertFailedException &except) {
-    result = pgr_free(result);
+    (*return_tuples) = pgr_free(*return_tuples);
+    (*return_count) = 0;
     err << except.what();
     *err_msg = pgr_msg(err.str().c_str());
     *log_msg = pgr_msg(log.str().c_str());
   } catch (std::exception &except) {
-    result = pgr_free(result);
+    (*return_tuples) = pgr_free(*return_tuples);
+    (*return_count) = 0;
     err << except.what();
     *err_msg = pgr_msg(err.str().c_str());
     *log_msg = pgr_msg(log.str().c_str());
   } catch(...) {
-    result = pgr_free(result);
+    (*return_tuples) = pgr_free(*return_tuples);
+    (*return_count) = 0;
     err << "Caught unknown exception!";
     *err_msg = pgr_msg(err.str().c_str());
     *log_msg = pgr_msg(log.str().c_str());

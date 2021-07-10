@@ -43,6 +43,7 @@ using MatrixIndex = uint16_t;
 using Duration = uint32_t;
 using Priority = uint32_t;
 using Distance = uint32_t;
+// TODO(ashish): Decide whether to declare pointer as new type
 using Skill = uint32_t;
 using PickDeliveryOrders_t = struct PickDeliveryOrders_t;
 using Vehicle_t = struct Vehicle_t;
@@ -52,7 +53,6 @@ using Solution_rt = struct Solution_rt;
 using Short_vehicle_rt = struct Short_vehicle_rt;
 using Vroom_break_t = struct Vroom_break_t;
 using Vroom_job_t = struct Vroom_job_t;
-using Vroom_matrix_cell_t = struct Vroom_matrix_cell_t;
 using Vroom_rt = struct Vroom_rt;
 using Vroom_shipment_t = struct Vroom_shipment_t;
 using Vroom_step_t = struct Vroom_step_t;

@@ -65,9 +65,8 @@ void fetch_vehicles(
     spi_getPositiveIntArr_allowEmpty(tuple, tupdesc, info[4], &vehicle->skills_size)
     : NULL;
 
-  // TODO(ashish): Find a better default value for time window start & end.
   vehicle->time_window_start = get_Duration(tuple, tupdesc, info[5], 0);
-  vehicle->time_window_end = get_Duration(tuple, tupdesc, info[6], 0);
+  vehicle->time_window_end = get_Duration(tuple, tupdesc, info[6], UINT_MAX);
 
   vehicle->breaks_size = 0;
   if (column_found(info[7].colNumber)) {
