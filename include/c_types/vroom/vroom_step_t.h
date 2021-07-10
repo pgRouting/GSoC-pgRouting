@@ -39,7 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 name | description
 :----- | :-------
 id | Step's identifier
-type | Type of the step
+type | Type of the step - start, job, pickup, delivery, break, end.
 service_at | Hard constraint on service time
 service_after | Hard constraint on service time lower bound
 service_before | Hard constraint on service time upper bound
