@@ -30,7 +30,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-#include <iostream>
 #include <map>
 #include <vector>
 
@@ -43,6 +42,7 @@ namespace pgrouting {
 namespace functions {
 
 class Pgr_edgeColoring : public Pgr_messages {
+public:
     using EdgeColoring_Graph =
         boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property,
         size_t, boost::no_property>;
