@@ -45,7 +45,7 @@ CREATE FUNCTION _vrp_vroom(
     OUT duration INTEGER,
     OUT service_time INTEGER,
     OUT waiting_time INTEGER,
-    OUT load BIGINT)
+    OUT load BIGINT[])
 RETURNS SETOF RECORD AS
  'MODULE_PATHNAME'
 LANGUAGE C VOLATILE;
