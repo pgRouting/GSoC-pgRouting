@@ -34,5 +34,36 @@ FROM vrp_vroom(
 (4 rows)
 
 -- q2
+SELECT *
+FROM vrp_vroom(
+  NULL,
+  $shipments$
+    SELECT * FROM (
+      VALUES (100, 0::SMALLINT, 200, 3::SMALLINT)
+    ) AS C(p_id, p_location_index, d_id, d_location_index)
+  $shipments$,
+  $vehicles$
+    SELECT * FROM (
+      VALUES (0, 0::SMALLINT, 3::SMALLINT)
+    ) AS C(id, start_index, end_index)
+  $vehicles$,
+  $matrix$
+    SELECT * FROM (
+      VALUES (0, 1, 2104), (0, 2, 197), (0, 3, 1299),
+             (1, 0, 2103), (1, 2, 2255), (1, 3, 3152),
+             (2, 0, 197), (2, 1, 2256), (2, 3, 1102),
+             (3, 0, 1299), (3, 1, 3153), (3, 2, 1102)
+    ) AS C(start_vid, end_vid, agg_cost)
+  $matrix$
+);
+ seq | vehicles_seq | vehicles_id | step_seq | step_type | task_id | arrival | duration | service_time | waiting_time | load
+-----+--------------+-------------+----------+-----------+---------+---------+----------+--------------+--------------+------
+   1 |            1 |           0 |        1 |         1 |      -1 |       0 |        0 |            0 |            0 | {}
+   2 |            1 |           0 |        1 |         3 |     100 |       0 |        0 |            0 |            0 | {}
+   3 |            1 |           0 |        1 |         4 |     200 |    1299 |     1299 |            0 |            0 | {}
+   4 |            1 |           0 |        1 |         6 |      -1 |    1299 |     1299 |            0 |            0 | {}
+(4 rows)
+
+-- q3
 ROLLBACK;
 ROLLBACK
