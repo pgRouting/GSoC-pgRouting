@@ -15,27 +15,28 @@ IF NOT min_version('3.3.0') THEN
 END IF;
 
 RETURN QUERY
-SELECT has_function('pgr_edgeColoring');
+SELECT has_function('pgr_edgecoloring');
 
 RETURN QUERY
-SELECT has_function('pgr_edgeColoring', ARRAY['text']);
+SELECT has_function('pgr_edgecoloring', ARRAY['text']);
 
 RETURN QUERY
-SELECT function_returns('pgr_edgeColoring', ARRAY['text'],  'setof record');
+SELECT function_returns('pgr_edgecoloring', ARRAY['text'],  'setof record');
 
 RETURN QUERY
 SELECT bag_has(
-    $$SELECT  proargnames from pg_proc where proname = 'pgr_edgeColoring'$$,
+    $$SELECT  proargnames from pg_proc where proname = 'pgr_edgecoloring'$$,
     $$SELECT  '{"","edge_id","color_id"}'::TEXT[] $$
 );
 
 RETURN QUERY
 SELECT set_eq(
-    $$SELECT  proallargtypes from pg_proc where proname = 'pgr_edgeColoring'$$,
+    $$SELECT  proallargtypes from pg_proc where proname = 'pgr_edgecoloring'$$,
     $$VALUES
         ('{25,20,20}'::OID[])
     $$
 );
+
 END;
 $BODY$
 LANGUAGE plpgsql;
