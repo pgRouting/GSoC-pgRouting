@@ -43,7 +43,7 @@ namespace pgrouting {
 namespace functions {
 
 class Pgr_edgeColoring : public Pgr_messages {
-public:
+ public:
     using EdgeColoring_Graph =
         boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, boost::no_property,
         size_t, boost::no_property>;
@@ -53,8 +53,7 @@ public:
     using V_it    = boost::graph_traits<EdgeColoring_Graph>::vertex_iterator;
     using E_it    = boost::graph_traits<EdgeColoring_Graph>::edge_iterator;
 
-public:
-
+ public:
     std::vector<pgr_vertex_color_rt> edgeColoring();
 
     Pgr_edgeColoring(pgr_edge_t*, size_t);
@@ -66,13 +65,13 @@ public:
 #endif
 #endif
 
-private:
+ private:
     V get_boost_vertex(int64_t id) const;
     int64_t get_vertex_id(V v) const;
     int64_t get_edge_id(E e) const;
 
 
-private:
+ private:
     EdgeColoring_Graph graph;
     std::map<int64_t, V> id_to_V;
     std::map<V, int64_t> V_to_id;
