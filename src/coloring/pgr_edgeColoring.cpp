@@ -61,7 +61,7 @@ Pgr_edgeColoring::edgeColoring() {
     }
 
     for (auto e_i : boost::make_iterator_range(boost::edges(graph))) {
-        auto edge = E_to_id[e_i];
+        auto edge = get_edge_id(e_i);
         int64_t color = graph[e_i];
         results.push_back({edge, (color + 1)});
     }
@@ -99,9 +99,43 @@ Pgr_edgeColoring::Pgr_edgeColoring(pgr_edge_t *edges,
         if (edge.source == edge.target) continue;
 
         E e;
+#if 1
         boost::tie(e, added) = boost::add_edge(v1, v2, edge.cost, graph);
+#else
+        boost::tie(e, added) = boost::add_edge(v1, v2, graph);
+#endif
 
         E_to_id.insert(std::make_pair(e, edge.id));
+    }
+}
+
+Pgr_edgeColoring::V
+Pgr_edgeColoring::get_boost_vertex(int64_t id) const {
+    try {
+        return id_to_V.at(id);
+    } catch (...) {
+        pgassert(false);
+        throw;
+    }
+}
+
+int64_t
+Pgr_edgeColoring::get_vertex_id(V v) const {
+    try {
+        return V_to_id.at(v);
+    } catch (...) {
+        pgassert(false);
+        throw;
+    }
+}
+
+int64_t
+Pgr_edgeColoring::get_edge_id(E e) const {
+    try {
+        return E_to_id.at(e);
+    } catch (...) {
+        pgassert(false);
+        throw;
     }
 }
 
