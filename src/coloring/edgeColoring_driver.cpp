@@ -58,7 +58,9 @@ void do_pgr_edgeColoring(
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
+#if 0
         pgassert(total_edges != 0);
+#endif
 
         std::vector<pgr_vertex_color_rt> results;
 
