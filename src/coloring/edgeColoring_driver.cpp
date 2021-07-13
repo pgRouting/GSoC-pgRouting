@@ -58,11 +58,9 @@ void do_pgr_edgeColoring(
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
+        pgassert(total_edges != 0);
 
         std::vector<pgr_vertex_color_rt> results;
-
-        graphType gType = UNDIRECTED;
-        pgrouting::functions::Pgr_edgeColoring::EdgeColoring_Graph undigraph(gType);
 
         pgrouting::functions::Pgr_edgeColoring fn_edgeColoring {data_edges, total_edges};
 
@@ -73,7 +71,7 @@ void do_pgr_edgeColoring(
         if (count == 0) {
             (*return_tuples) = NULL;
             (*return_count) = 0;
-            notice << "No traversal found";
+            notice << "No results found";
             *log_msg = pgr_msg(notice.str().c_str());
             return;
         }
