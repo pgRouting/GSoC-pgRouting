@@ -1,16 +1,11 @@
 \echo -- q1
 SELECT *
-FROM vrp_vroom(
+FROM vrp_vroomJobs(
   $jobs$
     SELECT * FROM (
       VALUES (1414, 5), (1515, 10)
     ) AS C(id, location_index)
   $jobs$,
-  $shipments$
-    SELECT * FROM (
-      VALUES (100, 1, 200, 30)
-    ) AS C(p_id, p_location_index, d_id, d_location_index)
-  $shipments$,
   $vehicles$
     SELECT * FROM (
       VALUES (500, 1, 30)

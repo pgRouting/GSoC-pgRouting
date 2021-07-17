@@ -1,6 +1,8 @@
 # Do not use extensions
 SET(LOCAL_FILES
     doc-vrp_vroom
+    doc-vrp_vroomJobs
+    doc-vrp_vroomShipments
     )
 
 foreach (f ${LOCAL_FILES})
