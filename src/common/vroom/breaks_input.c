@@ -37,8 +37,10 @@ void fetch_breaks(
   vroom_break->id = get_Idx(tuple, tupdesc, info[0], 0);
 
   char *time_windows_sql = spi_getText(tuple, tupdesc, info[1]);
-  get_vroom_time_windows(time_windows_sql,
-    &vroom_break->time_windows, &vroom_break->time_windows_size);
+  if (time_windows_sql) {
+    get_vroom_time_windows(time_windows_sql,
+      &vroom_break->time_windows, &vroom_break->time_windows_size);
+  }
 
   vroom_break->service = get_Duration(tuple, tupdesc, info[2], 0);
 }

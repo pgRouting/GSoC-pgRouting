@@ -65,8 +65,10 @@ void fetch_jobs(
   job->time_windows = NULL;
   if (column_found(info[7].colNumber)) {
     char *time_windows_sql = spi_getText(tuple, tupdesc, info[7]);
-    get_vroom_time_windows(time_windows_sql, &job->time_windows,
-                   &job->time_windows_size);
+    if (time_windows_sql) {
+      get_vroom_time_windows(time_windows_sql, &job->time_windows,
+                    &job->time_windows_size);
+    }
   }
 }
 

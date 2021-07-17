@@ -52,21 +52,27 @@ void fetch_vehicles(
   vehicle->time_window_end = get_Duration(tuple, tupdesc, info[6], UINT_MAX);
 
   vehicle->breaks_size = 0;
+  vehicle->breaks = NULL;
   if (column_found(info[7].colNumber)) {
     char *breaks_sql = spi_getText(tuple, tupdesc, info[7]);
-    get_vroom_breaks(breaks_sql,
-      &vehicle->breaks, &vehicle->breaks_size);
+    if (breaks_sql) {
+      get_vroom_breaks(breaks_sql,
+        &vehicle->breaks, &vehicle->breaks_size);
+    }
   }
 
-  vehicle->speed_factor = column_found(info[8].colNumber)
-                              ? spi_getFloat8(tuple, tupdesc, info[8])
-                              : 1.0;
+  vehicle->speed_factor = column_found(info[8].colNumber) ?
+    spi_getFloat8(tuple, tupdesc, info[8])
+    : 1.0;
 
   vehicle->steps_size = 0;
+  vehicle->steps = NULL;
   if (column_found(info[9].colNumber)) {
     char *steps_sql = spi_getText(tuple, tupdesc, info[9]);
-    get_vroom_steps(steps_sql,
-      &vehicle->steps, &vehicle->steps_size);
+    if (steps_sql) {
+      get_vroom_steps(steps_sql,
+        &vehicle->steps, &vehicle->steps_size);
+    }
   }
 }
 

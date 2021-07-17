@@ -240,6 +240,6 @@ void get_matrixRows_vroom_plain(char *sql, Matrix_cell_t **rows, size_t *total_r
   info[1].name = "end_vid";
   info[2].name = "agg_cost";
 
-  // info[2].eType = INTEGER;
+  info[2].eType = INTEGER;
   get_matrixRows_general(sql, info, 1, rows, total_rows);
 }

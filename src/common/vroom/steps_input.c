@@ -34,6 +34,7 @@ void fetch_steps(
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_step_t *step) {
+  // TODO(ashish): Last three fields are not required, find their default value.
   step->id = get_Idx(tuple, tupdesc, info[0], 0);
   step->type = get_StepType(tuple, tupdesc, info[1], 0);
   step->service_at = get_Duration(tuple, tupdesc, info[2], 0);

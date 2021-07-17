@@ -41,10 +41,13 @@ void fetch_shipments(
   shipment->p_location_index = get_MatrixIndex(tuple, tupdesc, info[1], 0);
   shipment->p_service = get_Duration(tuple, tupdesc, info[2], 0);
   shipment->p_time_windows_size = 0;
+  shipment->p_time_windows = NULL;
   if (column_found(info[3].colNumber)) {
     char *p_time_windows_sql = spi_getText(tuple, tupdesc, info[3]);
-    get_vroom_time_windows(p_time_windows_sql,
-      &shipment->p_time_windows, &shipment->p_time_windows_size);
+    if (p_time_windows_sql) {
+      get_vroom_time_windows(p_time_windows_sql,
+        &shipment->p_time_windows, &shipment->p_time_windows_size);
+    }
   }
 
   /*
@@ -54,10 +57,13 @@ void fetch_shipments(
   shipment->d_location_index = get_MatrixIndex(tuple, tupdesc, info[5], 0);
   shipment->d_service = get_Duration(tuple, tupdesc, info[6], 0);
   shipment->d_time_windows_size = 0;
+  shipment->d_time_windows = NULL;
   if (column_found(info[7].colNumber)) {
     char *d_time_windows_sql = spi_getText(tuple, tupdesc, info[7]);
-    get_vroom_time_windows(d_time_windows_sql,
-      &shipment->d_time_windows, &shipment->d_time_windows_size);
+    if (d_time_windows_sql) {
+      get_vroom_time_windows(d_time_windows_sql,
+        &shipment->d_time_windows, &shipment->d_time_windows_size);
+    }
   }
 
   shipment->amount_size = 0;
