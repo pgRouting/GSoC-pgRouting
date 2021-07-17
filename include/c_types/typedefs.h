@@ -44,6 +44,7 @@ using Duration = uint32_t;
 using Priority = uint32_t;
 using Distance = uint32_t;
 using Skill = uint32_t;
+using StepType = int32_t;
 using PickDeliveryOrders_t = struct PickDeliveryOrders_t;
 using Vehicle_t = struct Vehicle_t;
 using Matrix_cell_t = struct Matrix_cell_t;
@@ -78,6 +79,7 @@ typedef uint32_t Duration;
 typedef uint32_t Priority;
 typedef uint32_t Distance;
 typedef uint32_t Skill;
+typedef int32_t StepType;
 typedef struct PickDeliveryOrders_t PickDeliveryOrders_t;
 typedef struct Vehicle_t Vehicle_t;
 typedef struct Matrix_cell_t Matrix_cell_t;
@@ -93,7 +95,6 @@ typedef struct Vroom_step_t Vroom_step_t;
 typedef struct Vroom_time_window_t Vroom_time_window_t;
 typedef struct Vroom_vehicle_t Vroom_vehicle_t;
 #endif
-
 
 /*************************************************************************/
 

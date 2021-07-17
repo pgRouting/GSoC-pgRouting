@@ -36,10 +36,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 // used for getting the data
 typedef
 enum {
+    INTEGER,
     ANY_INTEGER,
     ANY_NUMERICAL,
     TEXT,
     CHAR1,
+    INTEGER_ARRAY,
     ANY_INTEGER_ARRAY,
     TIMESTAMP,
     INTERVAL

@@ -106,7 +106,6 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
   }
   ///@}
 
-  // TODO(ashish): Complete this
   template < typename T >
   vroom::VehicleStep
   get_vroom_step(const T &step) const {
@@ -488,7 +487,7 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
       Idx vehicle_seq = 1;
       for (auto step : route.steps) {
         Idx step_seq = 1;
-        Idx step_type = 0;
+        int32_t step_type = 0;
         Idx task_id = step.id;
         switch (step.step_type) {
           case vroom::STEP_TYPE::START:
@@ -542,58 +541,62 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
   }
 
   std::vector < Vroom_rt > solve() {
-    log << "Inside SOLVE\n";
-    const unsigned int amount_size =
-        m_vehicles.size()
-            ? static_cast<unsigned int>(m_vehicles[0].capacity.size())
-            : 0;
-    vroom::Input problem_instance(amount_size);
-
-    for (const auto &vehicle : m_vehicles) {
-      log << "Adding vehicle\n";
-      log << vehicle.id << "\n";
-      log << vehicle.start->index() << "\n";
-      log << vehicle.end->index() << "\n";
-      problem_instance.add_vehicle(vehicle);
-    }
-    for (const auto &job : m_jobs) {
-      log << "Adding job\n";
-      log << job.id << "\n";
-      log << job.location.index() << "\n";
-      problem_instance.add_job(job);
-    }
-    for (const auto &shipment : m_shipments) {
-      log << "Adding shipment\n";
-      problem_instance.add_shipment(shipment.first, shipment.second);
-    }
-    vroom::Matrix<vroom::Cost> matrix = m_matrix.get_vroom_matrix();
-
-    size_t matrix_size = matrix.size();
-    log << "Matrix size: " << matrix_size << "\n";
-    for (size_t i = 0; i < matrix_size; i++) {
-      for (size_t j = 0; j < matrix_size; j++) {
-        log << matrix[i][j] << ", ";
-      }
-      log << "\n";
-    }
-
-    log << "Amount size: " << amount_size << "\n";
-
-    log << "Matrix also created\n";
-
-    problem_instance.set_matrix(vroom::DEFAULT_PROFILE, std::move(matrix));
-    log << "Solving...\n";
     std::vector <Vroom_rt> results;
     try {
+      log << "Inside SOLVE\n";
+      const unsigned int amount_size =
+          m_vehicles.size()
+              ? static_cast<unsigned int>(m_vehicles[0].capacity.size())
+              : 0;
+      vroom::Input problem_instance(amount_size);
+
+      for (const auto &vehicle : m_vehicles) {
+        log << "Adding vehicle\n";
+        log << vehicle.id << "\n";
+        log << vehicle.start->index() << "\n";
+        log << vehicle.end->index() << "\n";
+        problem_instance.add_vehicle(vehicle);
+      }
+      for (const auto &job : m_jobs) {
+        log << "Adding job\n";
+        log << job.id << "\n";
+        log << job.location.index() << "\n";
+        problem_instance.add_job(job);
+      }
+      for (const auto &shipment : m_shipments) {
+        log << "Adding shipment\n";
+        problem_instance.add_shipment(shipment.first, shipment.second);
+      }
+      vroom::Matrix<vroom::Cost> matrix = m_matrix.get_vroom_matrix();
+
+      size_t matrix_size = matrix.size();
+      log << "Matrix size: " << matrix_size << "\n";
+      for (size_t i = 0; i < matrix_size; i++) {
+        for (size_t j = 0; j < matrix_size; j++) {
+          log << matrix[i][j] << ", ";
+        }
+        log << "\n";
+      }
+
+      log << "Amount size: " << amount_size << "\n";
+
+      log << "Matrix also created\n";
+
+      problem_instance.set_matrix(vroom::DEFAULT_PROFILE, std::move(matrix));
+      log << "Solving...\n";
+
       auto solution = problem_instance.solve(5, 4);
       log_solution(solution, false);
       results = get_results(solution);
     } catch (const vroom::Exception &ex) {
       log << "EXCEPTION: " << ex.message << "\n";
+      throw;
     } catch (const std::exception &ex) {
       log << "STD EXCEPTION\n";
+      throw;
     } catch (...) {
       log << "Unknown Exception\n";
+      throw;
     }
     log << "Solving DONE!!!\n";
     return results;

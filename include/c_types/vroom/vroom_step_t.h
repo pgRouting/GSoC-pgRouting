@@ -47,8 +47,7 @@ service_before | Hard constraint on service time upper bound
 struct Vroom_step_t {
   Idx id; /** Step's identifier */
 
-  // TODO(ashish): Change to enum
-  uint64_t type; /** Type of the step */
+  StepType type; /** Type of the step */
 
   Duration service_at; /** Hard constraint on service time */
   Duration service_after; /** Hard constraint on service time lower bound */
