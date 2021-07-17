@@ -353,7 +353,7 @@ Base_Matrix::get_vroom_matrix() const {
   vroom::Matrix<vroom::Cost> vroom_matrix(matrix_size);
   for (size_t i = 0; i < matrix_size; i++) {
     for (size_t j = 0; j < matrix_size; j++) {
-      vroom_matrix[i][j] = m_time_matrix[i][j];
+      vroom_matrix[i][j] = static_cast<vroom::Cost>(m_time_matrix[i][j]);
     }
   }
   return vroom_matrix;

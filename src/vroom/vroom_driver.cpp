@@ -64,6 +64,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * @returns results, when results are found
  */
 #if 0
+// TODO(ashish): Remove this
 char*
 vrp_vroom(
     std::string problem_instance_json,
@@ -90,13 +91,13 @@ vrp_vroom(
  * function `vrp_vroom` which calls the main function defined in the
  * C++ Header file. It also does exception handling.
  *
- * @param vrp_json     JSON object describing the problem instance
- * @param osrm_host    OSRM routing server host in the form of PROFILE:HOST
- * @param osrm_port    OSRM routing server port in the form of PROFILE:PORT.
- * @param plan       whether the mode is plan mode
- * @param geometry     whether to add detailed route geometry and indicators
- * @param return_tuples  the rows in the result
- * @param return_count   the count of rows in the result
+ * @param jobs_sql       SQL query describing the jobs
+ * @param shipments_sql  SQL query describing the shipments
+ * @param vehicles_sql   SQL query describing the vehicles
+ * @param matrix_sql     SQL query describing the cells of the cost matrix
+ * @param plan           whether the mode is plan mode
+ * @param result_tuples  the rows in the result
+ * @param result_count   the count of rows in the result
  * @param log_msg    stores the log message
  * @param notice_msg   stores the notice message
  * @param err_msg    stores the error message
@@ -110,6 +111,7 @@ do_vrp_vroom(
     Vroom_vehicle_t *vehicles, size_t total_vehicles,
     Matrix_cell_t *matrix_cells_arr, size_t total_cells,
 
+    // TODO(ashish): Use or remove plan
     bool plan,
 
     Vroom_rt **return_tuples,
@@ -150,27 +152,38 @@ do_vrp_vroom(
       location_ids += vehicles[i].end_index;
     }
 
-    vrprouting::base::Base_Matrix cost_matrix(matrix_cells_arr, total_cells, location_ids);
+    vrprouting::base::Base_Matrix time_matrix(matrix_cells_arr, total_cells, location_ids);
 
     /*
      * Verify matrix cells preconditions
      */
-    if (!cost_matrix.has_no_infinity()) {
+    if (!time_matrix.has_no_infinity()) {
       (*return_tuples) = NULL;
       (*return_count) = 0;
       err << "An Infinity value was found on the Matrix";
       *err_msg = pgr_msg(err.str());
-      *log_msg = log.str().empty()?
-        *log_msg :
-        pgr_msg(log.str().c_str());
-      *notice_msg = notice.str().empty()?
-        *notice_msg :
-        pgr_msg(notice.str().c_str());
+      *log_msg = log.str().empty() ? *log_msg : pgr_msg(log.str().c_str());
+      *notice_msg =
+          notice.str().empty() ? *notice_msg : pgr_msg(notice.str().c_str());
       return;
     }
 
-    vrprouting::Vrp_vroom_problem problem;
-    problem.add_matrix(cost_matrix);
+    /*
+     * Verify size of matrix cell lies in the limit
+     */
+    if (time_matrix.size() > (std::numeric_limits<vroom::Index>::max)()) {
+      (*return_tuples) = NULL;
+      (*return_count) = 0;
+      err << "The size of time matrix exceeds the limit";
+      *err_msg = pgr_msg(err.str());
+      *log_msg = log.str().empty() ? *log_msg : pgr_msg(log.str().c_str());
+      *notice_msg =
+          notice.str().empty() ? *notice_msg : pgr_msg(notice.str().c_str());
+      return;
+    }
+
+      vrprouting::Vrp_vroom_problem problem;
+    problem.add_matrix(time_matrix);
     problem.add_jobs(jobs, total_jobs);
     problem.add_shipments(shipments, total_shipments);
     problem.add_vehicles(vehicles, total_vehicles);

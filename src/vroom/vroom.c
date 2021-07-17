@@ -74,12 +74,11 @@ PG_FUNCTION_INFO_V1(_vrp_vroom);
  * in the `vroom_driver.h` file for further processing.
  * Finally, it frees the memory and disconnects the C function to the SPI manager.
  *
- * @param vrp_json     JSON object describing the problem instance
- * @param osrm_host    OSRM routing server host in the form of PROFILE:HOST
- * @param osrm_port    OSRM routing server port in the form of PROFILE:PORT.
- * @param plan       typedef uint32_t Duration;
-whether the mode is plan mode
- * @param geometry     whether to add detailed route geometry and indicators
+ * @param jobs_sql       SQL query describing the jobs
+ * @param shipments_sql  SQL query describing the shipments
+ * @param vehicles_sql   SQL query describing the vehicles
+ * @param matrix_sql     SQL query describing the cells of the cost matrix
+ * @param plan           whether the mode is plan mode
  * @param result_tuples  the rows in the result
  * @param result_count   the count of rows in the result
  *
