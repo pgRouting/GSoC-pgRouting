@@ -483,10 +483,10 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
   std::vector < Vroom_rt > get_results(vroom::Solution solution) {
     std::vector < Vroom_rt > results;
     std::vector<vroom::Route> routes = solution.routes;
+    Idx vehicle_seq = 1;
     for (auto route : routes) {
-      Idx vehicle_seq = 1;
+      Idx step_seq = 1;
       for (auto step : route.steps) {
-        Idx step_seq = 1;
         int32_t step_type = 0;
         Idx task_id = step.id;
         switch (step.step_type) {
