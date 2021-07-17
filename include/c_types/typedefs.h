@@ -43,7 +43,6 @@ using MatrixIndex = int64_t;
 using Duration = uint32_t;
 using Priority = uint32_t;
 using Distance = uint32_t;
-// TODO(ashish): Decide whether to declare pointer as new type
 using Skill = uint32_t;
 using PickDeliveryOrders_t = struct PickDeliveryOrders_t;
 using Vehicle_t = struct Vehicle_t;
