@@ -292,7 +292,7 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
      *     jobs_sql TEXT,
      *     shipments_sql TEXT,
      *     vehicles_sql TEXT,
-     *     matrix_sql ARRAY[ARRAY[INTEGER],
+     *     matrix_sql TEXT,
      *     plan BOOLEAN DEFAULT FALSE
      *   );
      *

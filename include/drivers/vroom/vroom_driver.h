@@ -39,11 +39,11 @@ extern "C" {
   /**************************************************
    *
    *   vrp_vroom(
-   *    vrp_json JSON,
-   *    osrm_host TEXT DEFAULT 'car:0.0.0.0',
-   *    osrm_port TEXT DEFAULT 'car:5000',
-   *    plan BOOLEAN DEFAULT FALSE,
-   *    geometry BOOLEAN DEFAULT FALSE
+   *     jobs_sql TEXT,
+   *     shipments_sql TEXT,
+   *     vehicles_sql TEXT,
+   *     matrix_sql TEXT,
+   *     plan BOOLEAN DEFAULT FALSE
    *   );
    *
    *************************************************/
