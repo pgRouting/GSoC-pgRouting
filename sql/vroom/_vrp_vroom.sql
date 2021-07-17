@@ -42,7 +42,7 @@ CREATE FUNCTION _vrp_vroom(
     OUT step_type INTEGER,
     OUT task_id BIGINT,
     OUT arrival INTEGER,
-    OUT duration INTEGER,
+    OUT travel_time INTEGER,
     OUT service_time INTEGER,
     OUT waiting_time INTEGER,
     OUT load BIGINT[])
