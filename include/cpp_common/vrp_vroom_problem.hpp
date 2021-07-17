@@ -270,8 +270,9 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
         get_vroom_skills(job.skills, job.skills_size);
     std::vector < vroom::TimeWindow > time_windows =
         get_vroom_time_windows(job.time_windows, job.time_windows_size);
-    return vroom::Job(job.id, job.location_index, job.service,
-                      delivery, pickup, skills, job.priority, time_windows);
+    vroom::Index location_index = m_matrix.get_index(job.location_index);
+    return vroom::Job(job.id, location_index, job.service, delivery, pickup,
+                      skills, job.priority, time_windows);
   }
 
   /**
@@ -314,16 +315,14 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
     std::vector < vroom::TimeWindow > d_time_windows =
         get_vroom_time_windows(shipment.d_time_windows,
                                shipment.d_time_windows_size);
-    vroom::Job pickup =
-        vroom::Job(shipment.p_id, vroom::JOB_TYPE::PICKUP,
-                   shipment.p_location_index, shipment.p_service,
-                   amount, skills, shipment.priority,
-                   p_time_windows);
-    vroom::Job delivery =
-        vroom::Job(shipment.d_id, vroom::JOB_TYPE::DELIVERY,
-                   shipment.d_location_index, shipment.d_service,
-                   amount, skills, shipment.priority,
-                   d_time_windows);
+    vroom::Index p_location_index = m_matrix.get_index(shipment.p_location_index);
+    vroom::Index d_location_index = m_matrix.get_index(shipment.d_location_index);
+    vroom::Job pickup = vroom::Job(shipment.p_id, vroom::JOB_TYPE::PICKUP,
+                                   p_location_index, shipment.p_service, amount,
+                                   skills, shipment.priority, p_time_windows);
+    vroom::Job delivery = vroom::Job(
+        shipment.d_id, vroom::JOB_TYPE::DELIVERY, d_location_index,
+        shipment.d_service, amount, skills, shipment.priority, d_time_windows);
     return std::make_pair(pickup, delivery);
   }
 
@@ -360,10 +359,11 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
     std::vector < vroom::VehicleStep > steps =
         get_vroom_steps(vehicle.steps, vehicle.steps_size);
 
-    // TODO(ashish): Change "car" to a custom profile
-    return vroom::Vehicle(vehicle.id, vehicle.start_index, vehicle.end_index,
-                         "car", capacity, skills, time_window, breaks,
-                          "", 1.0, steps);
+    vroom::Index start_index = m_matrix.get_index(vehicle.start_index);
+    vroom::Index end_index = m_matrix.get_index(vehicle.end_index);
+    return vroom::Vehicle(vehicle.id, start_index, end_index,
+                          vroom::DEFAULT_PROFILE, capacity, skills, time_window,
+                          breaks, "", 1.0, steps);
   }
 
   template < typename T >
@@ -386,8 +386,8 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
   }
 
   // template <typename T>
-  void add_matrix(Matrix_cell_t *matrix_cells_arr, size_t total_cells) {
-    m_matrix = vrprouting::base::Base_Matrix(matrix_cells_arr, total_cells);
+  void add_matrix(vrprouting::base::Base_Matrix cost_matrix) {
+    m_matrix = cost_matrix;
   }
 
   void log_solution(const vroom::Solution &sol, bool geometry) {
@@ -574,8 +574,7 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
 
     log << "Matrix also created\n";
 
-    // TODO(ashish): Change the profile
-    problem_instance.set_matrix("car", std::move(matrix));
+    problem_instance.set_matrix(vroom::DEFAULT_PROFILE, std::move(matrix));
     log << "Solving...\n";
     std::vector <Vroom_rt> results;
     try {
