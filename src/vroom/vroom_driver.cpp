@@ -134,27 +134,46 @@ do_vrp_vroom(
     pgassert(total_vehicles);
     pgassert(total_cells);
 
-    vrprouting::Vrp_vroom_problem problem;
-#if 0
-    for (int i = 0; i < total_jobs; i++) {
-      log << jobs[i].id << ": id\n";
-      log << jobs[i].location_index << ": location_index\n";
-      log << jobs[i].service << ": service\n";
-      log << jobs[i].delivery << ": delivery\n";
-      log << jobs[i].delivery_size << ": delivery_size\n";
-      log << jobs[i].pickup << ": pickup\n";
-      log << jobs[i].pickup_size << ": pickup_size\n";
-      log << jobs[i].skills << ": skills\n";
-      log << jobs[i].skills_size << ": skills_size\n";
-      log << jobs[i].priority << ": priority\n";
-      log << jobs[i].time_windows << ": time_windows\n";
-      log << jobs[i].time_windows_size << ": time_windows_size\n";
+    Identifiers<Id> location_ids;
+
+    for (size_t i = 0; i < total_jobs; ++i) {
+      location_ids += jobs[i].location_index;
     }
-#endif
+
+    for (size_t i = 0; i < total_shipments; ++i) {
+      location_ids += shipments[i].p_location_index;
+      location_ids += shipments[i].d_location_index;
+    }
+
+    for (size_t i = 0; i < total_vehicles; ++i) {
+      location_ids += vehicles[i].start_index;
+      location_ids += vehicles[i].end_index;
+    }
+
+    vrprouting::base::Base_Matrix cost_matrix(matrix_cells_arr, total_cells, location_ids);
+
+    /*
+     * Verify matrix cells preconditions
+     */
+    if (!cost_matrix.has_no_infinity()) {
+      (*return_tuples) = NULL;
+      (*return_count) = 0;
+      err << "An Infinity value was found on the Matrix";
+      *err_msg = pgr_msg(err.str());
+      *log_msg = log.str().empty()?
+        *log_msg :
+        pgr_msg(log.str().c_str());
+      *notice_msg = notice.str().empty()?
+        *notice_msg :
+        pgr_msg(notice.str().c_str());
+      return;
+    }
+
+    vrprouting::Vrp_vroom_problem problem;
+    problem.add_matrix(cost_matrix);
     problem.add_jobs(jobs, total_jobs);
     problem.add_shipments(shipments, total_shipments);
     problem.add_vehicles(vehicles, total_vehicles);
-    problem.add_matrix(matrix_cells_arr, total_cells);
 
     log << "HERE\n";
     log << "Done HERE\n";

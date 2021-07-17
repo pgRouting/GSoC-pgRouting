@@ -221,8 +221,6 @@ process(
   size_t total_vehicles = 0;
   get_vroom_vehicles(vehicles_sql, &vehicles, &total_vehicles);
 
-  // TODO(ashish): Change naming to matrix_cells_arr and total_cells, at other places
-  // Using the original matrix
   Matrix_cell_t *matrix_cells_arr = NULL;
   size_t total_cells = 0;
   get_matrixRows_vroom_plain(matrix_sql, &matrix_cells_arr, &total_cells);

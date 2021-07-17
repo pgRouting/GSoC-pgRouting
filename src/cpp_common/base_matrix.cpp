@@ -250,6 +250,7 @@ Base_Matrix::Base_Matrix(
  *
  * @param [in] data_costs  The set of costs
  * @param [in] size_matrix The size of the set of costs
+ * @param [in] location_ids The location identifiers
  *
  * @pre data_costs is not empty
  * @post ids has all the ids of node_ids
@@ -259,30 +260,23 @@ Base_Matrix::Base_Matrix(
  * @post costs[from_vid, to_vid] = 0 when from_vid = to_vid
  *
  */
-Base_Matrix::Base_Matrix(
-    Matrix_cell_t *data_costs, size_t size_matrix) {
+Base_Matrix::Base_Matrix(Matrix_cell_t *data_costs, size_t size_matrix,
+                         const Identifiers<Id> &location_ids) {
   /*
    * Sets the selected nodes identifiers
    */
-  Identifiers<Id> node_ids;
-  for (size_t i = 0; i < size_matrix; ++i) {
-    auto data = data_costs[i];
-    node_ids += data.from_vid;
-    node_ids += data.to_vid;
-  }
-  m_ids.insert(m_ids.begin(), node_ids.begin(), node_ids.end());
+  m_ids.insert(m_ids.begin(), location_ids.begin(), location_ids.end());
 
   /*
    * Create matrix
    */
   m_time_matrix.resize(
       m_ids.size(),
-      std::vector<TInterval>(
-        m_ids.size(),
-        /*
-         * Set initial values to infinity
-         */
-        0));
+      std::vector<TInterval>(m_ids.size(),
+                             /*
+                              * Set initial values to infinity
+                              */
+                             (std::numeric_limits<TInterval>::max)()));
 
   Identifiers<Idx> inserted;
   /*
@@ -348,6 +342,11 @@ Base_Matrix::Base_Matrix(const std::map<std::pair<Coordinate, Coordinate>, Id> &
   }
 }
 
+/**
+ * @brief Get VROOM matrix from vrprouting Base Matrix
+ *
+ * @return vroom::Matrix<vroom::Cost> The vroom cost matrix
+ */
 vroom::Matrix<vroom::Cost>
 Base_Matrix::get_vroom_matrix() const {
   size_t matrix_size = m_ids.size();
