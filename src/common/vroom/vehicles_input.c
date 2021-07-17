@@ -58,9 +58,13 @@ void fetch_vehicles(
       &vehicle->breaks, &vehicle->breaks_size);
   }
 
+  vehicle->speed_factor = column_found(info[8].colNumber)
+                              ? spi_getFloat8(tuple, tupdesc, info[8])
+                              : 1.0;
+
   vehicle->steps_size = 0;
-  if (column_found(info[8].colNumber)) {
-    char *steps_sql = spi_getText(tuple, tupdesc, info[8]);
+  if (column_found(info[9].colNumber)) {
+    char *steps_sql = spi_getText(tuple, tupdesc, info[9]);
     get_vroom_steps(steps_sql,
       &vehicle->steps, &vehicle->steps_size);
   }
@@ -170,7 +174,8 @@ get_vroom_vehicles(
   info[5].name = "time_window_start";
   info[6].name = "time_window_end";
   info[7].name = "breaks_sql";
-  info[8].name = "steps_sql";
+  info[8].name = "speed_factor";
+  info[9].name = "steps_sql";
 
   info[3].eType = ANY_INTEGER_ARRAY;
   info[4].eType = INTEGER_ARRAY;
@@ -178,7 +183,8 @@ get_vroom_vehicles(
   info[6].eType = INTEGER;
 
   info[7].eType = TEXT;
-  info[8].eType = TEXT;
+  info[8].eType = ANY_NUMERICAL;
+  info[9].eType = TEXT;
 
   /* id, stand and end index are mandatory */
   info[0].strict = true;
