@@ -187,8 +187,6 @@ Column                Type                       Default     Description
                                                              for job service start.
 ====================  =========================  =========== ================================================
 
-.. TODO: Fix location_index, changed SMALLINT TO ANY-INTEGER
-
 Where:
 
 :ANY-INTEGER: SMALLINT, INTEGER, BIGINT
