@@ -295,13 +295,15 @@ Column                  Type                              Description
 
 **breaks_sql**          ``TEXT``                           `Breaks SQL`_ query describing the driver breaks.
 
+**speed_factor**        ``ANY-NUMERICAL``                  Vehicle travel time multiplier.
+
 **steps_sql**           ``TEXT``                           `Steps SQL`_ query describing a custom route for
                                                            the vehicle
 
                                                            - Makes sense only when the ``plan`` flag is ``true``.
 ======================  ================================= ================================================
 
-.. TODO(ashish): Add speed_factor and profile in vehicle column
+.. TODO(ashish): Move documentation in the code
 
 .. TODO(ashish): At the end, match this documentation with VROOM API documentation.
 
