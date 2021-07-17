@@ -36,8 +36,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/postgres_connection.h"
 #include <utils/array.h>  // NOLINT [build/include_order]
 
-// #include "utils/array.h"
-
 #include "catalog/pg_type.h"
 #include "utils/lsyscache.h"
 
@@ -54,8 +52,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/vroom/vroom_shipment_t.h"
 #include "c_types/vroom/vroom_vehicle_t.h"
 
-// #include "c_common/edges_input.h"
-// #include "c_common/arrays_input.h"
 #include "c_common/vroom/jobs_input.h"
 #include "c_common/vroom/shipments_input.h"
 #include "c_common/vroom/vehicles_input.h"
@@ -78,7 +74,6 @@ PG_FUNCTION_INFO_V1(_vrp_vroom);
  * @param shipments_sql  SQL query describing the shipments
  * @param vehicles_sql   SQL query describing the vehicles
  * @param matrix_sql     SQL query describing the cells of the cost matrix
- * @param plan           whether the mode is plan mode
  * @param result_tuples  the rows in the result
  * @param result_count   the count of rows in the result
  *
@@ -91,7 +86,6 @@ process(
     char *shipments_sql,
     char *vehicles_sql,
     char *matrix_sql,
-    bool plan,
 
     Vroom_rt **result_tuples,
     size_t *result_count) {
@@ -100,110 +94,6 @@ process(
   (*result_tuples) = NULL;
   (*result_count) = 0;
 
-#if 0
-  PGR_DBG("---------------JOBS INPUT------------------");
-  Vroom_job_t *jobs = NULL;
-  size_t total_jobs = 0;
-  get_vroom_jobs(jobs_sql, &jobs, &total_jobs);
-  PGR_DBG("Total jobs found: %lu", total_jobs);
-
-  PGR_DBG("id: %ld", jobs->id);
-  PGR_DBG("location_index: %d", jobs->location_index);
-  PGR_DBG("service: %u", jobs->service);
-  PGR_DBG("delivery: %ld", *(jobs->delivery));
-  PGR_DBG("pickup: %ld", *(jobs->pickup));
-  PGR_DBG("skills: %u", *(jobs->skills));
-  PGR_DBG("priority: %u", jobs->priority);
-
-  for (size_t i = 0; i < jobs->time_windows_size; i++) {
-    PGR_DBG("(%lu) time_windows start: %u", i, (*(jobs->time_windows + i)).start_time);
-    PGR_DBG("(%lu) time_windows end: %u", i, (*(jobs->time_windows + i)).end_time);
-  }
-#endif
-
-#if 0
-  PGR_DBG("---------------SHIPMENTS INPUT------------------");
-  Vroom_shipment_t *shipments = NULL;
-  size_t total_shipments = 0;
-  get_vroom_shipments(shipments_sql, &shipments, &total_shipments);
-
-  PGR_DBG("Total shipments found: %lu", total_shipments);
-
-  PGR_DBG("p_id: %ld", shipments->p_id);
-  PGR_DBG("p_location_index: %d", shipments->p_location_index);
-  PGR_DBG("p_service: %u", shipments->p_service);
-  for (size_t i = 0; i < shipments->p_time_windows_size; i++) {
-    PGR_DBG("(%lu) p_time_windows start: %u", i, (*(shipments->p_time_windows + i)).start_time);
-    PGR_DBG("(%lu) p_time_windows end: %u", i, (*(shipments->p_time_windows + i)).end_time);
-  }
-  PGR_DBG("d_id: %ld", shipments->d_id);
-  PGR_DBG("d_location_index: %d", shipments->d_location_index);
-  PGR_DBG("d_service: %u", shipments->d_service);
-  for (size_t i = 0; i < shipments->d_time_windows_size; i++) {
-    PGR_DBG("(%lu) d_time_windows start: %u", i, (*(shipments->d_time_windows + i)).start_time);
-    PGR_DBG("(%lu) d_time_windows end: %u", i, (*(shipments->d_time_windows + i)).end_time);
-  }
-  PGR_DBG("amount: %ld", *(shipments->amount));
-  PGR_DBG("skills: %u", *(shipments->skills));
-  PGR_DBG("priority: %u", shipments->priority);
-#endif
-
-#if 0
-  PGR_DBG("---------------VEHICLES INPUT------------------");
-  Vroom_vehicle_t *vehicles = NULL;
-  size_t total_vehicles = 0;
-  get_vroom_vehicles(vehicles_sql, &vehicles, &total_vehicles);
-
-  PGR_DBG("Total vehicles found: %lu", total_vehicles);
-
-  PGR_DBG("id: %ld", vehicles->id);
-  PGR_DBG("start_index: %d", vehicles->start_index);
-  PGR_DBG("end_index: %d", vehicles->end_index);
-  for (size_t i = 0; i < vehicles->capacity_size; i++) {
-    PGR_DBG("capacity (%lu): %lu", i, *(vehicles->capacity + i));
-  }
-  for (size_t i = 0; i < vehicles->skills_size; i++) {
-    PGR_DBG("skills (%lu): %u", i, *(vehicles->skills + i));
-  }
-  PGR_DBG("time_window_start: %u", vehicles->time_window_start);
-  PGR_DBG("time_window_end: %u", vehicles->time_window_end);
-
-  PGR_DBG("breaks size: %ld", vehicles->breaks_size);
-  for (size_t i = 0; i < vehicles->breaks_size; i++) {
-    Vroom_break_t *breaks = vehicles->breaks + i;
-    PGR_DBG("breaks (%lu): %ld, %u", i, breaks->id, breaks->service);
-
-    PGR_DBG("breaks tw size (%lu): %ld", i, breaks->time_windows_size);
-    for (size_t j = 0; j < breaks->time_windows_size; j++) {
-      Vroom_time_window_t *tw = breaks->time_windows + j;
-      PGR_DBG("breaks tw (%lu)(%lu): %u, %u", i, j, tw->start_time, tw->end_time);
-    }
-  }
-
-  PGR_DBG("steps size: %ld", vehicles->steps_size);
-  for (size_t i = 0; i < vehicles->steps_size; i++) {
-    Vroom_step_t *steps = vehicles->steps + i;
-    PGR_DBG("steps (%lu): %ld, %lu, %u, %u, %u", i, steps->id,
-        steps->type, steps->service_at, steps->service_after,
-        steps->service_before);
-  }
-#endif
-
-#if 0
-  PGR_DBG("---------------MATRIX INPUT------------------");
-  Vroom_matrix_cell_t *distances = NULL;
-  size_t total_distances = 0;
-  get_vroom_matrix_cell(matrix_sql, &distances, &total_distances);
-  PGR_DBG("total distances: %ld", total_distances);
-  for (size_t i = 0; i < total_distances; i++) {
-    PGR_DBG("distance from %d to %d: %u", (distances + i)->start_index,
-      (distances + i)->end_index, (distances + i)->cost);
-  }
-#endif
-
-
-
-#if 1
   Vroom_job_t *jobs = NULL;
   size_t total_jobs = 0;
   if (jobs_sql) {
@@ -235,8 +125,6 @@ process(
       vehicles, total_vehicles,
       matrix_cells_arr, total_cells,
 
-      plan,
-
       result_tuples,
       result_count,
 
@@ -262,7 +150,6 @@ process(
   if (shipments) pfree(shipments);
   if (vehicles) pfree(vehicles);
   if (matrix_cells_arr) pfree(matrix_cells_arr);
-#endif
 
   pgr_SPI_finish();
 }
@@ -292,14 +179,13 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
      *     jobs_sql TEXT,
      *     shipments_sql TEXT,
      *     vehicles_sql TEXT,
-     *     matrix_sql TEXT,
-     *     plan BOOLEAN DEFAULT FALSE
+     *     matrix_sql TEXT
      *   );
      *
      **********************************************************************/
 
-    // Verify that the last 3 args (vehicles_sql, matrix_sql, plan) are not NULL
-    for (int i = 2; i < 5; i++) {
+    // Verify that the last 2 args (vehicles_sql, matrix_sql) are not NULL
+    for (int i = 2; i < 4; i++) {
       if (PG_ARGISNULL(i)) {
         elog(ERROR, "Argument %i must not be NULL", i + 1);
       }
@@ -325,7 +211,6 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
         shipments_sql,
         text_to_cstring(PG_GETARG_TEXT_P(2)),
         text_to_cstring(PG_GETARG_TEXT_P(3)),
-        PG_GETARG_BOOL(4),
         &result_tuples,
         &result_count);
 
@@ -392,8 +277,7 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
     Datum* load = (Datum*) palloc(sizeof(Datum) * (size_t)load_size);
 
     for (i = 0; i < load_size; ++i) {
-        PGR_DBG("Storing load %ld", result_tuples[call_cntr].load[i]);
-        load[i] = Int64GetDatum(result_tuples[call_cntr].load[i]);
+      load[i] = Int64GetDatum(result_tuples[call_cntr].load[i]);
     }
 
     bool typbyval;
