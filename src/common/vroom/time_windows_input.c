@@ -28,17 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/vroom/time_windows_input.h"
 
-#include "c_types/column_info_t.h"
-
-#include "c_common/get_check_data.h"
-
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
-
-
-
 static
 void fetch_time_windows(
     HeapTuple *tuple,

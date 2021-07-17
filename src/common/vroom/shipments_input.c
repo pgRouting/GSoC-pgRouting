@@ -27,19 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "c_common/vroom/shipments_input.h"
-#include "c_common/vroom/time_windows_input.h"
-
-#include "c_types/column_info_t.h"
-
-#include "c_common/get_check_data.h"
-
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
-
-
-// TODO(ashish): At the end, check and remove all unnecessary includes
 
 static
 void fetch_shipments(
@@ -47,9 +34,6 @@ void fetch_shipments(
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_shipment_t *shipment) {
-  // TODO(ashish): Change BigInt to Int, wherever required.
-  // TODO(ashish): Check for null in optional columns
-
   /*
    * The pickups
    */
@@ -201,20 +185,13 @@ get_vroom_shipments(
   info[9].name = "skills";
   info[10].name = "priority";
 
-  // TODO(ashish): Check for ANY_INTEGER, INTEGER, etc types in info[x].name.
-  //         Better change INTEGER to ANY_INTEGER
-
-  // info[2].eType = INTEGER;
+  info[2].eType = INTEGER;
   info[3].eType = TEXT;
-
-  // info[6].eType = INTEGER;
+  info[6].eType = INTEGER;
   info[7].eType = TEXT;
   info[8].eType = ANY_INTEGER_ARRAY;
-
-  // info[9].eType = INTEGER_ARRAY;
-  info[9].eType = ANY_INTEGER_ARRAY;
-  // info[10].eType = INTEGER;
-
+  info[9].eType = INTEGER_ARRAY;
+  info[10].eType = INTEGER;
 
   /* id and location_index of pickup and delivery are mandatory */
   info[0].strict = true;

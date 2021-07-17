@@ -27,20 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "c_common/vroom/vehicles_input.h"
-#include "c_common/vroom/breaks_input.h"
-#include "c_common/vroom/steps_input.h"
-
-#include "c_types/column_info_t.h"
-
-#include "c_common/get_check_data.h"
-
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
-
-
-// TODO(ashish): At the end, check and remove all unnecessary includes
 
 static
 void fetch_vehicles(
@@ -48,9 +34,6 @@ void fetch_vehicles(
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_vehicle_t *vehicle) {
-  // TODO(ashish): Change BigInt to Int, wherever required.
-  // TODO(ashish): Check for null in optional columns
-
   vehicle->id = get_Idx(tuple, tupdesc, info[0], 0);
   vehicle->start_index = get_MatrixIndex(tuple, tupdesc, info[1], 0);
   vehicle->end_index = get_MatrixIndex(tuple, tupdesc, info[2], 0);
@@ -189,16 +172,10 @@ get_vroom_vehicles(
   info[7].name = "breaks_sql";
   info[8].name = "steps_sql";
 
-  // TODO(ashish): Check for ANY_INTEGER, INTEGER, etc types in info[x].name.
-  //               Better change INTEGER to ANY_INTEGER
-
   info[3].eType = ANY_INTEGER_ARRAY;
-
-  // info[4].eType = INTEGER_ARRAY;
-  info[4].eType = ANY_INTEGER_ARRAY;
-
-  // info[5].eType = INTEGER;
-  // info[6].eType = INTEGER;
+  info[4].eType = INTEGER_ARRAY;
+  info[5].eType = INTEGER;
+  info[6].eType = INTEGER;
 
   info[7].eType = TEXT;
   info[8].eType = TEXT;

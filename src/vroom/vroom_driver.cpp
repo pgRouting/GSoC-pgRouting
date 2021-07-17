@@ -182,7 +182,7 @@ do_vrp_vroom(
       return;
     }
 
-      vrprouting::Vrp_vroom_problem problem;
+    vrprouting::Vrp_vroom_problem problem;
     problem.add_matrix(time_matrix);
     problem.add_jobs(jobs, total_jobs);
     problem.add_shipments(shipments, total_shipments);
@@ -240,6 +240,13 @@ do_vrp_vroom(
     (*return_tuples) = pgr_free(*return_tuples);
     (*return_count) = 0;
     err << except.what();
+    *err_msg = pgr_msg(err.str().c_str());
+    *log_msg = pgr_msg(log.str().c_str());
+  } catch (const vroom::Exception &except) {
+    (*return_tuples) = pgr_free(*return_tuples);
+    (*return_count) = 0;
+    err << except.what() << "\n";
+    err << except.message << "\n";
     *err_msg = pgr_msg(err.str().c_str());
     *log_msg = pgr_msg(log.str().c_str());
   } catch (std::exception &except) {

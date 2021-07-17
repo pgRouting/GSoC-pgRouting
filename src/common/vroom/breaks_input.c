@@ -27,17 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "c_common/vroom/breaks_input.h"
-#include "c_common/vroom/time_windows_input.h"
-
-#include "c_types/column_info_t.h"
-
-#include "c_common/get_check_data.h"
-
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
-
 
 static
 void fetch_breaks(
@@ -155,11 +144,8 @@ get_vroom_breaks(
   info[1].name = "time_windows_sql";
   info[2].name = "service";
 
-  // TODO(ashish): Check for ANY_INTEGER, INTEGER, etc types in info[x].name.
-  //         Better change INTEGER to ANY_INTEGER
-
   info[1].eType = TEXT;
-  // info[2].eType = INTEGER;
+  info[2].eType = INTEGER;
 
   /* service is not mandatory */
   info[2].strict = false;

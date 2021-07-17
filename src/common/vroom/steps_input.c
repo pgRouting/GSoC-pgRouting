@@ -28,29 +28,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/vroom/steps_input.h"
 
-#include "c_types/column_info_t.h"
-
-#include "c_common/get_check_data.h"
-
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
-
-
-
 static
 void fetch_steps(
     HeapTuple *tuple,
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_step_t *step) {
-  // TODO(ashish): Add constraint check for id = -1 and type, etc.
   step->id = get_Idx(tuple, tupdesc, info[0], 0);
-
-  // TODO(ashish): Change to enum
-  step->type = get_Idx(tuple, tupdesc, info[1], 0);
-
+  step->type = get_StepType(tuple, tupdesc, info[1], 0);
   step->service_at = get_Duration(tuple, tupdesc, info[2], 0);
   step->service_after = get_Duration(tuple, tupdesc, info[3], 0);
   step->service_before = get_Duration(tuple, tupdesc, info[4], 0);
@@ -153,20 +138,17 @@ get_vroom_steps(
   }
 
   info[0].name = "id";
-  info[1].name = "type";  // TODO(ashish): Add constraint checks
+  info[1].name = "type";
 
   /* constraints on service time */
   info[2].name = "service_at";
   info[3].name = "service_after";
   info[4].name = "service_before";
 
-  // TODO(ashish): Check for ANY_INTEGER, INTEGER, etc types in info[x].name.
-  //         Better change INTEGER to ANY_INTEGER
-
-  // info[1].eType = INTEGER;
-  // info[2].eType = INTEGER;
-  // info[3].eType = INTEGER;
-  // info[4].eType = INTEGER;
+  info[1].eType = INTEGER;
+  info[2].eType = INTEGER;
+  info[3].eType = INTEGER;
+  info[4].eType = INTEGER;
 
   /* id and type are mandatory */
   info[0].strict = true;

@@ -71,6 +71,16 @@ check_text_type(Column_info_t info) {
 
 static
 void
+check_integer_type(Column_info_t info) {
+  if (!(info.type == INT2OID || info.type == INT4OID)) {
+    ereport(ERROR,
+            (errmsg_internal("Unexpected type in column '%s'.", info.name),
+             errhint("Expected SMALLINT or INTEGER")));
+  }
+}
+
+static
+void
 check_any_integer_type(Column_info_t info) {
   if (!(info.type == INT2OID
         || info.type == INT4OID
@@ -78,6 +88,17 @@ check_any_integer_type(Column_info_t info) {
     ereport(ERROR,
         (errmsg_internal("Unexpected type in column '%s'.", info.name),
          errhint("Expected ANY-INTEGER")));
+  }
+}
+
+static
+void
+check_integerarray_type(Column_info_t info) {
+  if (!(info.type == INT2ARRAYOID
+        || info.type == INT4ARRAYOID)) {
+    elog(ERROR,
+        "Unexpected Column '%s' type. Expected SMALLINT-ARRAY or INTEGER-ARRAY",
+        info.name);
   }
 }
 
@@ -535,6 +556,28 @@ get_Idx(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Idx opt_value)
  * @returns The value found
  * @returns opt_value when the column does not exist
  */
+StepType get_StepType(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info,
+                  StepType opt_value) {
+  StepType step_type = column_found(info.colNumber)
+                           ? spi_getInt(tuple, tupdesc, info)
+                           : opt_value;
+  StepType min_value = 1;
+  StepType max_value = 6;
+  if (step_type < min_value || step_type > max_value) {
+    elog(ERROR, "Step value should lie between %d and %d", min_value, max_value);
+  }
+  return step_type;
+}
+
+/**
+ * @params [in] tuple
+ * @params [in] tupdesc
+ * @params [in] info about the column been fetched
+ * @params [in] opt_value default value when the column does not exist
+ *
+ * @returns The value found
+ * @returns opt_value when the column does not exist
+ */
 Amount
 get_Amount(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Amount opt_value) {
   return (Amount) column_found(info.colNumber)?
@@ -625,6 +668,7 @@ get_Priority(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Priority 
   if (column_found(info.colNumber)) {
     int32_t value = spi_getInt(tuple, tupdesc, info);
     if (value < 0) elog(ERROR, "Unexpected Negative value in column %s", info.name);
+    if (value > 100) elog(ERROR, "Priority exceeds the max priority 100");
     return (Priority) value;
   }
   return opt_value;
@@ -783,6 +827,9 @@ void pgr_fetch_column_info(
   for (int i = 0; i < info_size; ++i) {
     if (fetch_column_info(&info[i])) {
       switch (info[i].eType) {
+        case INTEGER:
+          check_integer_type(info[i]);
+          break;
         case ANY_INTEGER:
           check_any_integer_type(info[i]);
           break;
@@ -794,6 +841,9 @@ void pgr_fetch_column_info(
           break;
         case CHAR1:
           check_char_type(info[i]);
+          break;
+        case INTEGER_ARRAY:
+          check_integerarray_type(info[i]);
           break;
         case ANY_INTEGER_ARRAY:
           check_any_integerarray_type(info[i]);
