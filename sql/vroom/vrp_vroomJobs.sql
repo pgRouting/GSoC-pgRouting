@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: vrp_vroom.sql
+File: vrp_vroomJobs.sql
 
 Copyright (c) 2021 pgRouting developers
 Mail: project@pgrouting.org
@@ -27,9 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 -- v0.2
-CREATE FUNCTION vrp_vroom(
+CREATE FUNCTION vrp_vroomJobs(
     TEXT,  -- jobs_sql (required)
-    TEXT,  -- shipments_sql (required)
     TEXT,  -- vehicles_sql (required)
     TEXT,  -- matrix_sql (required)
 
@@ -47,23 +46,20 @@ CREATE FUNCTION vrp_vroom(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _vrp_vroom(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-                    _pgr_get_statement($4));
+    FROM _vrp_vroom(_pgr_get_statement($1), NULL, _pgr_get_statement($2),
+                    _pgr_get_statement($3));
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 
 -- COMMENTS
 
-COMMENT ON FUNCTION vrp_vroom(TEXT, TEXT, TEXT, TEXT)
+COMMENT ON FUNCTION vrp_vroomJobs(TEXT, TEXT, TEXT)
 IS 'vrp_vroom
  - EXPERIMENTAL
  - Parameters:
    - Jobs SQL with columns:
        id, location_index [, service, delivery, pickup, skills, priority, time_windows]
-   - Shipments SQL with columns:
-       p_id, p_location_index [, p_service, p_time_windows],
-       d_id, d_location_index [, d_service, d_time_windows] [, amount, skills, priority]
    - Vehicles SQL with columns:
        id, start_index, end_index
        [, service, delivery, pickup, skills, priority, time_window, breaks_sql, steps_sql]

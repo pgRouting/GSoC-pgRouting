@@ -1,6 +1,8 @@
 SET(LOCAL_FILES
     _vrp_vroom.sql
     vrp_vroom.sql
+    vrp_vroomJobs.sql
+    vrp_vroomShipments.sql
     )
 
 foreach (f ${LOCAL_FILES})
