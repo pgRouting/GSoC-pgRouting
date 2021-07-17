@@ -44,7 +44,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "structures/vroom/input/input.h"
 #include "structures/vroom/job.h"
-// #include "structures/vroom/shipment.h"
 #include "structures/vroom/vehicle.h"
 
 namespace vrprouting {
@@ -52,8 +51,9 @@ namespace vrprouting {
 class Vrp_vroom_problem : public vrprouting::Pgr_messages {
  public:
   std::vector<vroom::Job> jobs() const { return m_jobs; }
-  // std::vector<vroom::Shipment> shipments() const { return m_shipments; }
+  std::vector<std::pair<vroom::Job, vroom::Job>> shipments() const { return m_shipments; }
   std::vector<vroom::Vehicle> vehicles() const { return m_vehicles; }
+  vrprouting::base::Base_Matrix matrix() const { return m_matrix; }
 
   /**
    * @name vroom time window wrapper
@@ -105,51 +105,6 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
                                        time_windows + count));
   }
   ///@}
-
-  template < typename T >
-  vroom::VehicleStep
-  get_vroom_step(const T &step) const {
-    vroom::ForcedService forced_service =
-        vroom::ForcedService(std::move(step.service_at),
-                             std::move(step.service_after),
-                             std::move(step.service_before));
-    if (step.id == 0) {
-      // Start or end task
-      if (step.type == 1) {
-        return vroom::VehicleStep(vroom::STEP_TYPE::START, std::move(forced_service));
-      } else {
-        return vroom::VehicleStep(vroom::STEP_TYPE::END, std::move(forced_service));
-      }
-    } else {
-      if (step.type == 2) {
-        return vroom::VehicleStep(vroom::JOB_TYPE::SINGLE, step.id, std::move(forced_service));
-      } else if (step.type == 3) {
-        return vroom::VehicleStep(vroom::JOB_TYPE::PICKUP, step.id, std::move(forced_service));
-      } else if (step.type == 4) {
-        return vroom::VehicleStep(vroom::JOB_TYPE::DELIVERY, step.id, std::move(forced_service));
-      } else {
-        return vroom::VehicleStep(vroom::STEP_TYPE::BREAK, step.id, std::move(forced_service));
-      }
-    }
-  }
-
-  template < typename T >
-  std::vector < vroom::VehicleStep >
-  get_vroom_steps(const std::vector < T > &v_steps) const {
-    std::vector < vroom::VehicleStep > steps;
-    for (auto v_step : v_steps) {
-      steps.push_back(get_vroom_step(v_step));
-    }
-    return steps;
-  }
-
-  template < typename T >
-  std::vector < vroom::VehicleStep >
-  get_vroom_steps(const T *steps, size_t count) const {
-    return
-    get_vroom_steps(std::vector < T >(steps,
-                                 steps + count));
-  }
 
   /**
    * @name vroom breaks wrapper
@@ -296,9 +251,7 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
 
   template < typename T >
   void add_jobs(const T *jobs, size_t count) {
-    log << "Adding vroom jobs\n";
     add_jobs(std::vector < T >(jobs, jobs + count));
-    log << "Done adding vroom jobs\n";
   }
   ///@}
 
@@ -342,9 +295,7 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
 
   template < typename T >
   void add_shipments(const T *shipments, size_t count) {
-    log << "Adding vroom shipments\n";
     add_shipments(std::vector < T >(shipments, shipments + count));
-    log << "Done adding vroom shipments\n";
   }
 
   template < typename T >
@@ -358,8 +309,6 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
                               vehicle.time_window_end);
     std::vector < vroom::Break > breaks =
         get_vroom_breaks(vehicle.breaks, vehicle.breaks_size);
-    std::vector < vroom::VehicleStep > steps =
-        get_vroom_steps(vehicle.steps, vehicle.steps_size);
 
     vroom::Index start_index =
         static_cast<vroom::Index>(m_matrix.get_index(vehicle.start_index));
@@ -367,7 +316,7 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
         static_cast<vroom::Index>(m_matrix.get_index(vehicle.end_index));
     return vroom::Vehicle(vehicle.id, start_index, end_index,
                           vroom::DEFAULT_PROFILE, capacity, skills, time_window,
-                          breaks, "", vehicle.speed_factor, steps);
+                          breaks, "", vehicle.speed_factor);
   }
 
   template < typename T >
@@ -384,93 +333,12 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
 
   template < typename T >
   void add_vehicles(const T *vehicles, size_t count) {
-    log << "Adding vroom vehicles\n";
     add_vehicles(std::vector < T >(vehicles, vehicles + count));
-    log << "Done adding vroom vehicles\n";
   }
 
   // template <typename T>
   void add_matrix(vrprouting::base::Base_Matrix time_matrix) {
     m_matrix = time_matrix;
-  }
-
-  void log_solution(const vroom::Solution &sol, bool geometry) {
-    log << "Total cost: " << sol.summary.cost << std::endl;
-    log << "Unassigned: " << sol.summary.unassigned << std::endl;
-
-    // Log unassigned jobs if any.
-    log << "Unassigned job ids: ";
-    for (const auto &j : sol.unassigned) {
-      log << j.id << ", ";
-    }
-    log << std::endl;
-
-    // Describe routes in solution.
-    for (const auto &route : sol.routes) {
-      log << "Steps for vehicle " << route.vehicle
-                << " (cost: " << route.cost;
-      log << " - duration: " << route.duration;
-      log << " - service: " << route.service;
-      if (geometry) {
-        log << " - distance: " << route.distance;
-      }
-
-      log << ")" << std::endl;
-
-      // Describe all route steps.
-      for (const auto &step : route.steps) {
-        std::string type;
-        switch (step.step_type) {
-          case vroom::STEP_TYPE::START:
-            type = "Start";
-            break;
-          case vroom::STEP_TYPE::END:
-            type = "End";
-            break;
-          case vroom::STEP_TYPE::BREAK:
-            type = "Break";
-            break;
-          case vroom::STEP_TYPE::JOB:
-            switch (step.job_type) {
-              case vroom::JOB_TYPE::SINGLE:
-                type = "Job";
-                break;
-              case vroom::JOB_TYPE::PICKUP:
-                type = "Pickup";
-                break;
-              case vroom::JOB_TYPE::DELIVERY:
-                type = "Delivery";
-                break;
-            }
-            break;
-        }
-        log << type;
-
-        // Add job/pickup/delivery/break ids.
-        if (step.step_type != vroom::STEP_TYPE::START &&
-            step.step_type != vroom::STEP_TYPE::END) {
-          log << " " << step.id;
-        }
-
-        // Add location if known.
-        if (step.location.has_coordinates()) {
-          log << " - " << step.location.lon() << ";"
-                    << step.location.lat();
-        }
-
-        log << " - arrival: " << step.arrival;
-        log << " - duration: " << step.duration;
-        log << " - service: " << step.service;
-
-        // Add extra step info if geometry is required.
-        if (geometry) {
-          log << " - distance: " << step.distance;
-        }
-        log << std::endl;
-      }
-    }
-
-    log << "DONE\n\n";
   }
 
   void get_amount(vroom::Amount vroom_amount, Amount **amount) {
@@ -543,7 +411,6 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
   std::vector < Vroom_rt > solve() {
     std::vector <Vroom_rt> results;
     try {
-      log << "Inside SOLVE\n";
       const unsigned int amount_size =
           m_vehicles.size()
               ? static_cast<unsigned int>(m_vehicles[0].capacity.size())
@@ -551,54 +418,26 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
       vroom::Input problem_instance(amount_size);
 
       for (const auto &vehicle : m_vehicles) {
-        log << "Adding vehicle\n";
-        log << vehicle.id << "\n";
-        log << vehicle.start->index() << "\n";
-        log << vehicle.end->index() << "\n";
         problem_instance.add_vehicle(vehicle);
       }
       for (const auto &job : m_jobs) {
-        log << "Adding job\n";
-        log << job.id << "\n";
-        log << job.location.index() << "\n";
         problem_instance.add_job(job);
       }
       for (const auto &shipment : m_shipments) {
-        log << "Adding shipment\n";
         problem_instance.add_shipment(shipment.first, shipment.second);
       }
       vroom::Matrix<vroom::Cost> matrix = m_matrix.get_vroom_matrix();
-
-      size_t matrix_size = matrix.size();
-      log << "Matrix size: " << matrix_size << "\n";
-      for (size_t i = 0; i < matrix_size; i++) {
-        for (size_t j = 0; j < matrix_size; j++) {
-          log << matrix[i][j] << ", ";
-        }
-        log << "\n";
-      }
-
-      log << "Amount size: " << amount_size << "\n";
-
-      log << "Matrix also created\n";
-
       problem_instance.set_matrix(vroom::DEFAULT_PROFILE, std::move(matrix));
-      log << "Solving...\n";
 
       auto solution = problem_instance.solve(5, 4);
-      log_solution(solution, false);
       results = get_results(solution);
     } catch (const vroom::Exception &ex) {
-      log << "EXCEPTION: " << ex.message << "\n";
       throw;
     } catch (const std::exception &ex) {
-      log << "STD EXCEPTION\n";
       throw;
     } catch (...) {
-      log << "Unknown Exception\n";
       throw;
     }
-    log << "Solving DONE!!!\n";
     return results;
   }
 

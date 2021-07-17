@@ -33,7 +33,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_types/typedefs.h"
 #include "c_types/vroom/vroom_break_t.h"
-#include "c_types/vroom/vroom_step_t.h"
 
 /** @brief Vehicles's attributes
 
@@ -52,8 +51,6 @@ time_window_end | Time window end time
 breaks | Vehicle's breaks
 breaks_size | Number of breaks
 speed_factor | Vehicle travel time multiplier
-steps | Steps describing custom routes of vehicle
-steps_size | Steps size
 */
 struct Vroom_vehicle_t {
   Idx id; /** The vehicle's identifier */
@@ -73,9 +70,6 @@ struct Vroom_vehicle_t {
   size_t breaks_size; /** Number of breaks */
 
   double speed_factor; /** Vehicle travel time multiplier */
-
-  Vroom_step_t *steps; /** Steps describing custom routes of vehicle */
-  size_t steps_size; /** Steps size */
 };
 
 

@@ -42,8 +42,7 @@ extern "C" {
    *     jobs_sql TEXT,
    *     shipments_sql TEXT,
    *     vehicles_sql TEXT,
-   *     matrix_sql TEXT,
-   *     plan BOOLEAN DEFAULT FALSE
+   *     matrix_sql TEXT
    *   );
    *
    *************************************************/
@@ -52,8 +51,6 @@ extern "C" {
       Vroom_shipment_t *shipments, size_t total_shipments,
       Vroom_vehicle_t *vehicles, size_t total_vehicles,
       Matrix_cell_t *matrix_cells_arr, size_t total_cells,
-
-      bool plan,
 
       Vroom_rt **return_tuples,
       size_t *return_count,
