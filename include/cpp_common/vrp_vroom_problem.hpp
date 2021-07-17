@@ -367,7 +367,7 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
         static_cast<vroom::Index>(m_matrix.get_index(vehicle.end_index));
     return vroom::Vehicle(vehicle.id, start_index, end_index,
                           vroom::DEFAULT_PROFILE, capacity, skills, time_window,
-                          breaks, "", 1.0, steps);
+                          breaks, "", vehicle.speed_factor, steps);
   }
 
   template < typename T >

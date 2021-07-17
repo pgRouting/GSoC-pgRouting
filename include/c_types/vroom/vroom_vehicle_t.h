@@ -51,6 +51,7 @@ time_window_start | Time window start time
 time_window_end | Time window end time
 breaks | Vehicle's breaks
 breaks_size | Number of breaks
+speed_factor | Vehicle travel time multiplier
 steps | Steps describing custom routes of vehicle
 steps_size | Steps size
 */
@@ -70,6 +71,8 @@ struct Vroom_vehicle_t {
 
   Vroom_break_t *breaks; /** Vehicle's breaks */
   size_t breaks_size; /** Number of breaks */
+
+  double speed_factor; /** Vehicle travel time multiplier */
 
   Vroom_step_t *steps; /** Steps describing custom routes of vehicle */
   size_t steps_size; /** Steps size */
