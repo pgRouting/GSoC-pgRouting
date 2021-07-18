@@ -28,6 +28,72 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/vroom/shipments_input.h"
 
+/*
+.. vrp_vroom start
+
+A ``SELECT`` statement that returns the following columns:
+
+::
+
+    p_id, p_location_index [, p_service, p_time_windows],
+    d_id, d_location_index [, d_service, d_time_windows]
+    [, amount, skills, priority]
+
+
+======================  =========================  =========== ================================================
+Column                  Type                       Default     Description
+======================  =========================  =========== ================================================
+**p_id**                ``ANY-INTEGER``                         Non-negative unique identifier of the pickup
+                                                                shipment (unique for pickup).
+
+**p_location_index**    ``ANY-INTEGER``                         Non-negative index of relevant row and column
+                                                                in the custom matrix, denoting pickup location.
+
+                                                                - Ranges from ``[0, SIZE[matrix]-1]``
+
+**p_service**           ``INTEGER``                0            Pickup service duration, in seconds
+
+**p_time_windows_sql**  ``TEXT``                                `Time Windows SQL`_ query describing valid slots
+                                                                for pickup service start.
+
+**d_id**                ``ANY-INTEGER``                         Non-negative unique identifier of the delivery
+                                                                shipment (unique for delivery).
+
+**d_location_index**    ``ANY-INTEGER``                         Non-negative index of relevant row and column
+                                                                in the custom matrix, denoting delivery location.
+
+                                                                - Ranges from ``[0, SIZE[matrix]-1]``
+
+**d_service**           ``INTEGER``                0            Delivery service duration, in seconds
+
+**d_time_windows_sql**  ``TEXT``                                `Time Windows SQL`_ query describing valid slots
+                                                                for delivery service start.
+
+**amount**              ``ARRAY[ANY-INTEGER]``                  Array of non-negative integers describing
+                                                                multidimensional quantities such as number
+                                                                of items, weight, volume etc.
+
+                                                                - All shipments must have the same value of
+                                                                  :code:`array_length(amount, 1)`
+
+**skills**              ``ARRAY[INTEGER]``                      Array of non-negative integers defining
+                                                                mandatory skills.
+
+**priority**            ``INTEGER``                0            Priority level of the shipment.
+
+                                                                - Ranges from ``[0, 100]``
+
+======================  =========================  =========== ================================================
+
+Where:
+
+:ANY-INTEGER: SMALLINT, INTEGER, BIGINT
+
+.. TODO(ashish): Change column names to make it consistent.
+
+.. vrp_vroom end
+*/
+
 static
 void fetch_shipments(
     HeapTuple *tuple,

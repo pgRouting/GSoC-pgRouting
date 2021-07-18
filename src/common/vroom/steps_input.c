@@ -28,6 +28,48 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/vroom/steps_input.h"
 
+/*
+.. vrp_vroom start
+
+A ``SELECT`` statement that returns the following columns:
+
+::
+
+    id, type [, service_at, service_before, service_after]
+
+====================  ====================================== ================================================
+Column                Type                                   Description
+====================  ====================================== ================================================
+**id**                ``ANY-INTEGER``                         Unique identifier of the task to be performed
+                                                              at this step.
+
+                                                              - For ``start`` and ``end`` task, id is ``-1``.
+
+**type**              ``INTEGER``                             Kind of the step of the vehicle:
+
+                                                              - ``1``: Starting location.
+                                                              - ``2``: Job location.
+                                                              - ``3``: Pickup location.
+                                                              - ``4``: Delivery location.
+                                                              - ``5``: Break location.
+                                                              - ``6``: Ending location.
+
+**service_at**        ``INTEGER``                             Hard constraint on service time, in seconds
+
+**service_after**     ``INTEGER``                             Hard constraint on service time lower bound,
+                                                              in seconds
+
+**service_before**    ``INTEGER``                             Hard constraint on service time upper bound,
+                                                              in seconds
+====================  ====================================== ================================================
+
+Where:
+
+:ANY-INTEGER: SMALLINT, INTEGER, BIGINT
+
+.. vrp_vroom end
+*/
+
 static
 void fetch_steps(
     HeapTuple *tuple,

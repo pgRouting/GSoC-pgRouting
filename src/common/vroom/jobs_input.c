@@ -28,6 +28,61 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/vroom/jobs_input.h"
 
+/*
+.. vrp_vroom start
+
+A ``SELECT`` statement that returns the following columns:
+
+::
+
+    id, location_index
+    [, service, delivery, pickup, skills, priority, time_windows_sql]
+
+
+====================  =========================  =========== ================================================
+Column                Type                       Default     Description
+====================  =========================  =========== ================================================
+**id**                ``ANY-INTEGER``                        Non-negative unique identifier of the job.
+
+**location_index**    ``ANY-INTEGER``                        Non-negative index of relevant row and column
+                                                             in the custom matrix, denoting job location.
+
+                                                             - Ranges from ``[0, SIZE[matrix]-1]``
+
+**service**           ``INTEGER``                0           Job service duration, in seconds
+
+**delivery**          ``ARRAY[ANY-INTEGER]``                 Array of non-negative integers describing
+                                                             multidimensional quantities for delivery such
+                                                             as number of items, weight, volume etc.
+
+                                                             - All jobs must have the same value of
+                                                               :code:`array_length(delivery, 1)`
+
+**pickup**            ``ARRAY[ANY-INTEGER]``                 Array of non-negative integers describing
+                                                             multidimensional quantities for pickup such as
+                                                             number of items, weight, volume etc.
+
+                                                             - All jobs must have the same value of
+                                                               :code:`array_length(pickup, 1)`
+
+**skills**            ``ARRAY[INTEGER]``                     Array of non-negative integers defining
+                                                             mandatory skills.
+
+**priority**          ``INTEGER``                0           Priority level of the job
+
+                                                             - Ranges from ``[0, 100]``
+
+**time_windows_sql**  ``TEXT``                               `Time Windows SQL`_ query describing valid slots
+                                                             for job service start.
+====================  =========================  =========== ================================================
+
+Where:
+
+:ANY-INTEGER: SMALLINT, INTEGER, BIGINT
+
+.. vrp_vroom end
+*/
+
 static
 void fetch_jobs(
     HeapTuple *tuple,

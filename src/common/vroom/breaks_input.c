@@ -28,6 +28,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/vroom/breaks_input.h"
 
+/*
+.. vrp_vroom start
+
+A ``SELECT`` statement that returns the following columns:
+
+::
+
+    id, time_windows [, service]
+
+====================  =========================  =========== ================================================
+Column                Type                       Default     Description
+====================  =========================  =========== ================================================
+**id**                ``ANY-INTEGER``                         Non-negative unique identifier of the break
+                                                              (unique for the same vehicle).
+
+**time_windows_sql**  ``TEXT``                                `Time Windows SQL`_ query describing valid slots
+                                                              for break start.
+
+**service**           ``INTEGER``                0            The break duration, in seconds
+====================  =========================  =========== ================================================
+
+.. vrp_vroom end
+*/
+
 static
 void fetch_breaks(
     HeapTuple *tuple,

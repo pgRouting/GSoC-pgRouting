@@ -28,6 +28,35 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/vroom/time_windows_input.h"
 
+/*
+.. vrp_vroom start
+
+A ``SELECT`` statement that returns the following columns:
+
+::
+
+    start_time, end_time
+
+====================  ====================================== ================================================
+Column                Type                                   Description
+====================  ====================================== ================================================
+**start_time**        ``INTEGER``                             Start time of the time window.
+
+**end_time**          ``INTEGER``                             End time of the time window.
+====================  ====================================== ================================================
+
+**Note**:
+
+- All timing are in seconds.
+- Every row must satisfy the condition: :code:`start_time ≤ end_time`.
+- It is up to users to decide how to describe time windows:
+
+  - **Relative values**, e.g. [0, 14400] for a 4 hours time window starting at the beginning of the planning horizon. In that case all times reported in output with the arrival column are relative to the start of the planning horizon.
+  - **Absolute values**, "real" timestamps. In that case all times reported in output with the arrival column can be interpreted as timestamps.
+
+.. vrp_vroom end
+*/
+
 static
 void fetch_time_windows(
     HeapTuple *tuple,

@@ -28,6 +28,64 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/vroom/vehicles_input.h"
 
+/*
+.. vrp_vroom start
+
+A ``SELECT`` statement that returns the following columns:
+
+::
+
+    id, start_index, end_index
+    [, service, delivery, pickup, skills, priority, time_window, breaks_sql]
+
+
+======================  ================================= ================================================
+Column                  Type                              Description
+======================  ================================= ================================================
+**id**                  ``ANY-INTEGER``                    Non-negative unique identifier of the job.
+
+**start_index**         ``ANY-INTEGER``                    Non-negative index of relevant row and column
+                                                           in the custom matrix, denoting vehicle start.
+
+                                                           - Ranges from ``[0, SIZE[matrix]-1]``
+
+**end_index**           ``ANY-INTEGER``                    Non-negative index of relevant row and column
+                                                           in the custom matrix, denoting vehicle end.
+
+                                                           - Ranges from ``[0, SIZE[matrix]-1]``
+
+**capacity**            ``ARRAY[ANY-INTEGER]``             Array of non-negative integers describing
+                                                           multidimensional quantities such as
+                                                           number of items, weight, volume etc.
+
+                                                           - All vehicles must have the same value of
+                                                             :code:`array_length(capacity, 1)`
+
+**skills**              ``ARRAY[INTEGER]``                 Array of non-negative integers defining
+                                                           mandatory skills.
+
+**time_window_start**   ``INTEGER``                        Time window start time.
+
+**time_window_end**     ``INTEGER``                        Time window end time.
+
+**breaks_sql**          ``TEXT``                           `Breaks SQL`_ query describing the driver breaks.
+
+**speed_factor**        ``ANY-NUMERICAL``                  Vehicle travel time multiplier.
+======================  ================================= ================================================
+
+**Note**:
+
+- At least one of the start_index or end_index shall be present.
+- If end_index is omitted, the resulting route will stop at the last visited task, whose choice is determined by the optimization process
+- If start_index is omitted, the resulting route will start at the first visited task, whose choice is determined by the optimization process
+- To request a round trip, specify both start_index and end_index with the same index.
+- A vehicle is only allowed to serve a set of tasks if the resulting load at each route step is lower than the matching value in capacity for each metric. When using multiple components for amounts, it is recommended to put the most important/limiting metrics first.
+- It is assumed that all delivery-related amounts for jobs are loaded at vehicle start, while all pickup-related amounts for jobs are brought back at vehicle end.
+- :code:`time_window_start ≤ time_window_end`
+
+.. vrp_vroom end
+*/
+
 static
 void fetch_vehicles(
     HeapTuple *tuple,
