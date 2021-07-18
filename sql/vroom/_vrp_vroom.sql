@@ -34,8 +34,8 @@ CREATE FUNCTION _vrp_vroom(
     matrix_sql TEXT,
 
     OUT seq BIGINT,
-    OUT vehicles_seq BIGINT,
-    OUT vehicles_id BIGINT,
+    OUT vehicle_seq BIGINT,
+    OUT vehicle_id BIGINT,
     OUT step_seq BIGINT,
     OUT step_type INTEGER,
     OUT task_id BIGINT,

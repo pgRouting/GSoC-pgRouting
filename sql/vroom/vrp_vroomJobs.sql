@@ -34,8 +34,8 @@ signature start
     vrp_vroom(Jobs SQL, Vehicles SQL, Matrix SQL)
 
     RETURNS SET OF
-    (seq, vehicle_sql, vehicle_id, step_seq, step_type, task_id,
-     arrival, duration, service_time, waiting_time, load)
+    (seq, vehicle_seq, vehicle_id, step_seq, step_type, task_id,
+     arrival, travel_time, service_time, waiting_time, load)
 
 signature end
 
@@ -61,8 +61,8 @@ CREATE FUNCTION vrp_vroomJobs(
     TEXT,  -- matrix_sql (required)
 
     OUT seq BIGINT,
-    OUT vehicles_seq BIGINT,
-    OUT vehicles_id BIGINT,
+    OUT vehicle_seq BIGINT,
+    OUT vehicle_id BIGINT,
     OUT step_seq BIGINT,
     OUT step_type INTEGER,
     OUT task_id BIGINT,
