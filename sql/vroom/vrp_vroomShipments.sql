@@ -26,6 +26,34 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+/*
+signature start
+
+.. code-block:: none
+
+    vrp_vroom(Shipments SQL, Vehicles SQL, Matrix SQL)
+
+    RETURNS SET OF
+    (seq, vehicle_sql, vehicle_id, step_seq, step_type, task_id,
+     arrival, duration, service_time, waiting_time, load)
+
+signature end
+
+parameters start
+
+=================== ======================== =================================================
+Parameter           Type                     Description
+=================== ======================== =================================================
+**Shipments SQL**   ``TEXT``                 `Shipments SQL`_ query describing pickup and delivery tasks.
+**Vehicles SQL**    ``TEXT``                 `Vehicles SQL`_ query describing the available vehicles.
+**Matrix SQL**      ``TEXT``                 `Time Matrix SQL`_ query containing the distance or
+                                             travel times between the locations.
+=================== ======================== =================================================
+
+parameters end
+
+*/
+
 -- v0.2
 CREATE FUNCTION vrp_vroomShipments(
     TEXT,  -- shipments_sql (required)

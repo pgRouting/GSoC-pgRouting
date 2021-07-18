@@ -26,6 +26,74 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+/*
+signature start
+
+.. code-block:: none
+
+    vrp_vroom(Jobs SQL, Shipments SQL, Vehicles SQL, Matrix SQL)
+
+    RETURNS SET OF
+    (seq, vehicle_sql, vehicle_id, step_seq, step_type, task_id,
+     arrival, duration, service_time, waiting_time, load)
+
+signature end
+
+parameters start
+
+=================== ======================== =================================================
+Parameter           Type                     Description
+=================== ======================== =================================================
+**Jobs SQL**        ``TEXT``                 `Jobs SQL`_ query describing the places to visit.
+**Shipments SQL**   ``TEXT``                 `Shipments SQL`_ query describing pickup and delivery tasks.
+**Vehicles SQL**    ``TEXT``                 `Vehicles SQL`_ query describing the available vehicles.
+**Matrix SQL**      ``TEXT``                 `Time Matrix SQL`_ query containing the distance or
+                                             travel times between the locations.
+=================== ======================== =================================================
+
+parameters end
+
+result start
+
+=================== ============= =================================================
+Column              Type           Description
+=================== ============= =================================================
+**seq**              ``BIGINT``   Sequential value starting from **1**.
+
+**vehicle_seq**      ``BIGINT``   Sequential value starting from **1** for current vehicles.
+                                  The :math:`n^{th}` vehicle in the solution.
+
+**vehicle_id**       ``BIGINT``   Current vehicle identifier.
+
+**step_seq**         ``BIGINT``   Sequential value starting from **1** for the stops
+                                  made by the current vehicle. The :math:`m^{th}` stop
+                                  of the current vehicle.
+
+**step_type**        ``INTEGER``  Kind of the step location the vehicle is at:
+
+                                  - ``1``: Starting location
+                                  - ``2``: Job location
+                                  - ``3``: Pickup location
+                                  - ``4``: Delivery location
+                                  - ``5``: Break location
+                                  - ``6``: Ending location
+
+**task_id**          ``BIGINT``   Identifier of the task performed at this step.
+
+**arrival**          ``INTEGER``  Estimated time of arrival at this step, in seconds.
+
+**travel_time**      ``INTEGER``  Cumulated travel time upon arrival at this step, in seconds
+
+**service_time**     ``INTEGER``  Service time at this step, in seconds
+
+**waiting_time**     ``INTEGER``  Waiting time upon arrival at this step, in seconds.
+
+**load**             ``BIGINT``   Vehicle load after step completion (with capacity constraints)
+=================== ============= =================================================
+
+result end
+*/
+
 -- v0.2
 CREATE FUNCTION vrp_vroom(
     TEXT,  -- jobs_sql (required)
