@@ -27,17 +27,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "c_common/vroom/breaks_input.h"
-#include "c_common/vroom/time_windows_input.h"
 
-#include "c_types/column_info_t.h"
+/*
+.. vrp_vroom start
 
-#include "c_common/get_check_data.h"
+A ``SELECT`` statement that returns the following columns:
 
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
+::
 
+    id, time_windows_sql [, service]
+
+====================  =========================  =========== ================================================
+Column                Type                       Default     Description
+====================  =========================  =========== ================================================
+**id**                ``ANY-INTEGER``                         Non-negative unique identifier of the break
+                                                              (unique for the same vehicle).
+
+**time_windows_sql**  ``TEXT``                                `Time Windows SQL`_ query describing valid slots
+                                                              for break start.
+
+**service**           ``INTEGER``                0            The break duration, in seconds
+====================  =========================  =========== ================================================
+
+.. vrp_vroom end
+*/
 
 static
 void fetch_breaks(
@@ -48,8 +61,10 @@ void fetch_breaks(
   vroom_break->id = get_Idx(tuple, tupdesc, info[0], 0);
 
   char *time_windows_sql = spi_getText(tuple, tupdesc, info[1]);
-  get_vroom_time_windows(time_windows_sql,
-    &vroom_break->time_windows, &vroom_break->time_windows_size);
+  if (time_windows_sql) {
+    get_vroom_time_windows(time_windows_sql,
+      &vroom_break->time_windows, &vroom_break->time_windows_size);
+  }
 
   vroom_break->service = get_Duration(tuple, tupdesc, info[2], 0);
 }
@@ -155,11 +170,8 @@ get_vroom_breaks(
   info[1].name = "time_windows_sql";
   info[2].name = "service";
 
-  // TODO(ashish): Check for ANY_INTEGER, INTEGER, etc types in info[x].name.
-  //         Better change INTEGER to ANY_INTEGER
-
-  info[1].eType = TEXT;
-  // info[2].eType = INTEGER;
+  info[1].eType = TEXT;     // time_windows_sql
+  info[2].eType = INTEGER;  // service
 
   /* service is not mandatory */
   info[2].strict = false;

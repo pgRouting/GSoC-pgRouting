@@ -33,16 +33,14 @@ CREATE FUNCTION _vrp_vroom(
     vehicles_sql TEXT,
     matrix_sql TEXT,
 
-    plan BOOLEAN DEFAULT FALSE,
-
     OUT seq BIGINT,
-    OUT vehicles_seq BIGINT,
-    OUT vehicles_id BIGINT,
+    OUT vehicle_seq BIGINT,
+    OUT vehicle_id BIGINT,
     OUT step_seq BIGINT,
     OUT step_type INTEGER,
     OUT task_id BIGINT,
     OUT arrival INTEGER,
-    OUT duration INTEGER,
+    OUT travel_time INTEGER,
     OUT service_time INTEGER,
     OUT waiting_time INTEGER,
     OUT load BIGINT[])
@@ -52,5 +50,5 @@ LANGUAGE C VOLATILE;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _vrp_vroom(TEXT, TEXT, TEXT, TEXT, BOOLEAN)
+COMMENT ON FUNCTION _vrp_vroom(TEXT, TEXT, TEXT, TEXT)
 IS 'pgRouting internal function';

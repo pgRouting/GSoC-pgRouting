@@ -39,12 +39,12 @@ using Speed = double;
 using Multiplier = double;
 using Id = int64_t;
 using Idx = uint64_t;
-using MatrixIndex = uint16_t;
+using MatrixIndex = int64_t;
 using Duration = uint32_t;
 using Priority = uint32_t;
 using Distance = uint32_t;
-// TODO(ashish): Decide whether to declare pointer as new type
 using Skill = uint32_t;
+using StepType = int32_t;
 using PickDeliveryOrders_t = struct PickDeliveryOrders_t;
 using Vehicle_t = struct Vehicle_t;
 using Matrix_cell_t = struct Matrix_cell_t;
@@ -74,11 +74,12 @@ typedef double Speed;
 typedef double Multiplier;
 typedef int64_t Id;
 typedef uint64_t Idx;
-typedef uint16_t MatrixIndex;
+typedef int64_t MatrixIndex;
 typedef uint32_t Duration;
 typedef uint32_t Priority;
 typedef uint32_t Distance;
 typedef uint32_t Skill;
+typedef int32_t StepType;
 typedef struct PickDeliveryOrders_t PickDeliveryOrders_t;
 typedef struct Vehicle_t Vehicle_t;
 typedef struct Matrix_cell_t Matrix_cell_t;
@@ -94,7 +95,6 @@ typedef struct Vroom_step_t Vroom_step_t;
 typedef struct Vroom_time_window_t Vroom_time_window_t;
 typedef struct Vroom_vehicle_t Vroom_vehicle_t;
 #endif
-
 
 /*************************************************************************/
 

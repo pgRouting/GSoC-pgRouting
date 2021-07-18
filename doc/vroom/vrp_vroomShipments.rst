@@ -11,14 +11,14 @@
 
 * `Documentation <https://vrp.pgrouting.org/>`__ → `vrpRouting v0 <https://vrp.pgrouting.org/v0>`__
 * Supported Versions
-  `Latest <https://vrp.pgrouting.org/latest/en/vrp_vroom.html>`__
-  (`v0 <https://vrp.pgrouting.org/v0/en/vrp_vroom.html>`__)
+  `Latest <https://vrp.pgrouting.org/latest/en/vrp_vroomShipments.html>`__
+  (`v0 <https://vrp.pgrouting.org/v0/en/vrp_vroomShipments.html>`__)
 
 
-vrp_vroom - Experimental
+vrp_vroomShipments - Experimental
 ===============================================================================
 
-``vrp_vroom`` - Vehicle Routing Problem with VROOM, involving both jobs and shipments.
+``vrp_vroomShipments`` - Vehicle Routing Problem with VROOM, involving only shipments.
 
 .. include:: experimental.rst
    :start-after: begin-warn-expr
@@ -36,29 +36,28 @@ Description
 
 VROOM is an open-source optimization engine that aims at providing good solutions
 to various real-life vehicle routing problems (VRP) within a small computing time.
-This function can be used to get the solution to a problem involving both jobs and
-shipments.
+This function can be used to get the solution to a problem involving only shipments.
 
 .. index::
-   single: vrp_vroom -- Experimental on v0.2
+   single: vrp_vroomShipments -- Experimental on v0.2
 
 Signature
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/vroom/vrp_vroom.sql
+.. include:: ../sql/vroom/vrp_vroomShipments.sql
    :start-after: signature start
    :end-before: signature end
 
-**Example**: Problem involving 2 jobs and 1 shipment, using a single vehicle.
+**Example**: Problem involving 1 shipment, using a single vehicle.
 
-.. literalinclude:: doc-vrp_vroom.queries
+.. literalinclude:: doc-vrp_vroomShipments.queries
    :start-after: -- q1
    :end-before: -- q2
 
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/vroom/vrp_vroom.sql
+.. include:: ../sql/vroom/vrp_vroomShipments.sql
    :start-after: parameters start
    :end-before: parameters end
 

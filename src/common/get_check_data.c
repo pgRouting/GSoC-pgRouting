@@ -71,6 +71,16 @@ check_text_type(Column_info_t info) {
 
 static
 void
+check_integer_type(Column_info_t info) {
+  if (!(info.type == INT2OID || info.type == INT4OID)) {
+    ereport(ERROR,
+            (errmsg_internal("Unexpected type in column '%s'.", info.name),
+             errhint("Expected SMALLINT or INTEGER")));
+  }
+}
+
+static
+void
 check_any_integer_type(Column_info_t info) {
   if (!(info.type == INT2OID
         || info.type == INT4OID
@@ -78,6 +88,17 @@ check_any_integer_type(Column_info_t info) {
     ereport(ERROR,
         (errmsg_internal("Unexpected type in column '%s'.", info.name),
          errhint("Expected ANY-INTEGER")));
+  }
+}
+
+static
+void
+check_integerarray_type(Column_info_t info) {
+  if (!(info.type == INT2ARRAYOID
+        || info.type == INT4ARRAYOID)) {
+    elog(ERROR,
+        "Unexpected Column '%s' type. Expected SMALLINT-ARRAY or INTEGER-ARRAY",
+        info.name);
   }
 }
 
@@ -142,28 +163,6 @@ fetch_column_info(
     return true;
   }
   return false;
-}
-
-static
-int16_t
-spi_getSmallInt(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info) {
-  Datum binval;
-  bool isnull;
-  int16_t value = 0;
-  binval = SPI_getbinval(*tuple, *tupdesc, info.colNumber, &isnull);
-
-  if (isnull) elog(ERROR, "Unexpected Null value in column %s", info.name);
-
-  switch (info.type) {
-    case INT2OID:
-      value = (int16_t) DatumGetInt16(binval);
-      break;
-    default:
-    ereport(ERROR,
-        (errmsg_internal("Unexpected type in column '%s'.", info.name),
-         errhint("Found: %lu\nExpected SMALL-INT", info.type)));
-  }
-  return value;
 }
 
 static
@@ -376,7 +375,7 @@ spi_getPositiveIntArr_allowEmpty(
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -392,7 +391,7 @@ get_TTimestamp_plain(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, T
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -411,7 +410,7 @@ get_PositiveTTimestamp_plain(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -427,7 +426,7 @@ get_TTimestamp(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, TTimest
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -446,7 +445,7 @@ get_PositiveTTimestamp(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info,
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -462,7 +461,7 @@ get_TInterval(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, TInterva
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -481,7 +480,7 @@ get_PositiveTInterval(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, 
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -497,7 +496,7 @@ get_TInterval_plain(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, TI
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -516,7 +515,7 @@ get_PositiveTInterval_plain(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t 
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -532,7 +531,7 @@ get_Id(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Id opt_value) {
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -551,7 +550,29 @@ get_Idx(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Idx opt_value)
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
+ * @params [in] opt_value default value when the column does not exist
+ *
+ * @returns The value found
+ * @returns opt_value when the column does not exist
+ */
+StepType get_StepType(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info,
+                  StepType opt_value) {
+  StepType step_type = column_found(info.colNumber)
+                           ? spi_getInt(tuple, tupdesc, info)
+                           : opt_value;
+  StepType min_value = 1;
+  StepType max_value = 6;
+  if (step_type < min_value || step_type > max_value) {
+    elog(ERROR, "Step value should lie between %d and %d", min_value, max_value);
+  }
+  return step_type;
+}
+
+/**
+ * @params [in] tuple
+ * @params [in] tupdesc
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -567,7 +588,7 @@ get_Amount(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Amount opt_
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -587,7 +608,7 @@ get_PositiveAmount(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, PAm
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -599,7 +620,7 @@ get_PositiveAmount(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, PAm
 MatrixIndex
 get_MatrixIndex(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, MatrixIndex opt_value) {
   if (column_found(info.colNumber)) {
-    int16_t value = spi_getSmallInt(tuple, tupdesc, info);
+    int64_t value = spi_getBigInt(tuple, tupdesc, info);
     if (value < 0) elog(ERROR, "Unexpected Negative value in column %s", info.name);
     return (MatrixIndex) value;
   }
@@ -610,7 +631,7 @@ get_MatrixIndex(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Matrix
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -633,7 +654,7 @@ get_Duration(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Duration 
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -647,6 +668,7 @@ get_Priority(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Priority 
   if (column_found(info.colNumber)) {
     int32_t value = spi_getInt(tuple, tupdesc, info);
     if (value < 0) elog(ERROR, "Unexpected Negative value in column %s", info.name);
+    if (value > 100) elog(ERROR, "Priority exceeds the max priority 100");
     return (Priority) value;
   }
   return opt_value;
@@ -656,7 +678,7 @@ get_Priority(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Priority 
 /**
  * @params [in] tuple
  * @params [in] tupdesc
- * @params [in] info  about the colum been fetched
+ * @params [in] info about the column been fetched
  * @params [in] opt_value default value when the column does not exist
  *
  * @returns The value found
@@ -805,6 +827,9 @@ void pgr_fetch_column_info(
   for (int i = 0; i < info_size; ++i) {
     if (fetch_column_info(&info[i])) {
       switch (info[i].eType) {
+        case INTEGER:
+          check_integer_type(info[i]);
+          break;
         case ANY_INTEGER:
           check_any_integer_type(info[i]);
           break;
@@ -816,6 +841,9 @@ void pgr_fetch_column_info(
           break;
         case CHAR1:
           check_char_type(info[i]);
+          break;
+        case INTEGER_ARRAY:
+          check_integerarray_type(info[i]);
           break;
         case ANY_INTEGER_ARRAY:
           check_any_integerarray_type(info[i]);

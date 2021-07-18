@@ -27,20 +27,58 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "c_common/vroom/vehicles_input.h"
-#include "c_common/vroom/breaks_input.h"
-#include "c_common/vroom/steps_input.h"
 
-#include "c_types/column_info_t.h"
+/*
+.. vrp_vroom start
 
-#include "c_common/get_check_data.h"
+A ``SELECT`` statement that returns the following columns:
 
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
+::
+
+    id, start_index, end_index
+    [, capacity, skills, tw_open, tw_close, breaks_sql, speed_factor]
 
 
-// TODO(ashish): At the end, check and remove all unnecessary includes
+======================  ================================= ================================================
+Column                  Type                              Description
+======================  ================================= ================================================
+**id**                  ``ANY-INTEGER``                    Non-negative unique identifier of the job.
+
+**start_index**         ``ANY-INTEGER``                    Non-negative identifier of the vehicle start location.
+
+**end_index**           ``ANY-INTEGER``                    Non-negative identifier of the vehicle end location.
+
+**capacity**            ``ARRAY[ANY-INTEGER]``             Array of non-negative integers describing
+                                                           multidimensional quantities such as
+                                                           number of items, weight, volume etc.
+
+                                                           - All vehicles must have the same value of
+                                                             :code:`array_length(capacity, 1)`
+
+**skills**              ``ARRAY[INTEGER]``                 Array of non-negative integers defining
+                                                           mandatory skills.
+
+**tw_open**             ``INTEGER``                        Time window opening time.
+
+**tw_close**            ``INTEGER``                        Time window closing time.
+
+**breaks_sql**          ``TEXT``                           `Breaks SQL`_ query describing the driver breaks.
+
+**speed_factor**        ``ANY-NUMERICAL``                  Vehicle travel time multiplier.
+======================  ================================= ================================================
+
+**Note**:
+
+- At least one of the ``start_index`` or ``end_index`` shall be present.
+- If ``end_index`` is omitted, the resulting route will stop at the last visited task, whose choice is determined by the optimization process.
+- If ``start_index`` is omitted, the resulting route will start at the first visited task, whose choice is determined by the optimization process.
+- To request a round trip, specify both ``start_index`` and ``end_index`` as the same index.
+- A vehicle is only allowed to serve a set of tasks if the resulting load at each route step is lower than the matching value in capacity for each metric. When using multiple components for amounts, it is recommended to put the most important/limiting metrics first.
+- It is assumed that all delivery-related amounts for jobs are loaded at vehicle start, while all pickup-related amounts for jobs are brought back at vehicle end.
+- :code:`tw_open ≤ tw_close`
+
+.. vrp_vroom end
+*/
 
 static
 void fetch_vehicles(
@@ -48,9 +86,6 @@ void fetch_vehicles(
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_vehicle_t *vehicle) {
-  // TODO(ashish): Change BigInt to Int, wherever required.
-  // TODO(ashish): Check for null in optional columns
-
   vehicle->id = get_Idx(tuple, tupdesc, info[0], 0);
   vehicle->start_index = get_MatrixIndex(tuple, tupdesc, info[1], 0);
   vehicle->end_index = get_MatrixIndex(tuple, tupdesc, info[2], 0);
@@ -69,18 +104,18 @@ void fetch_vehicles(
   vehicle->time_window_end = get_Duration(tuple, tupdesc, info[6], UINT_MAX);
 
   vehicle->breaks_size = 0;
+  vehicle->breaks = NULL;
   if (column_found(info[7].colNumber)) {
     char *breaks_sql = spi_getText(tuple, tupdesc, info[7]);
-    get_vroom_breaks(breaks_sql,
-      &vehicle->breaks, &vehicle->breaks_size);
+    if (breaks_sql) {
+      get_vroom_breaks(breaks_sql,
+        &vehicle->breaks, &vehicle->breaks_size);
+    }
   }
 
-  vehicle->steps_size = 0;
-  if (column_found(info[8].colNumber)) {
-    char *steps_sql = spi_getText(tuple, tupdesc, info[8]);
-    get_vroom_steps(steps_sql,
-      &vehicle->steps, &vehicle->steps_size);
-  }
+  vehicle->speed_factor = column_found(info[8].colNumber) ?
+    spi_getFloat8(tuple, tupdesc, info[8])
+    : 1.0;
 }
 
 
@@ -184,24 +219,18 @@ get_vroom_vehicles(
   info[2].name = "end_index";
   info[3].name = "capacity";
   info[4].name = "skills";
-  info[5].name = "time_window_start";
-  info[6].name = "time_window_end";
+  info[5].name = "tw_open";
+  info[6].name = "tw_close";
   info[7].name = "breaks_sql";
-  info[8].name = "steps_sql";
+  info[8].name = "speed_factor";
 
-  // TODO(ashish): Check for ANY_INTEGER, INTEGER, etc types in info[x].name.
-  //               Better change INTEGER to ANY_INTEGER
+  info[3].eType = ANY_INTEGER_ARRAY;  // capacity
+  info[4].eType = INTEGER_ARRAY;      // skills
+  info[5].eType = INTEGER;            // tw_open
+  info[6].eType = INTEGER;            // tw_close
 
-  info[3].eType = ANY_INTEGER_ARRAY;
-
-  // info[4].eType = INTEGER_ARRAY;
-  info[4].eType = ANY_INTEGER_ARRAY;
-
-  // info[5].eType = INTEGER;
-  // info[6].eType = INTEGER;
-
-  info[7].eType = TEXT;
-  info[8].eType = TEXT;
+  info[7].eType = TEXT;               // breaks_sql
+  info[8].eType = ANY_NUMERICAL;      // speed_factor
 
   /* id, stand and end index are mandatory */
   info[0].strict = true;

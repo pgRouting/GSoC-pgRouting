@@ -11,6 +11,7 @@ SET(LOCAL_FILES
     sampledata.rst
     support.rst
     pgr-category.rst
+    vroom-category.rst
     )
 
 foreach (f ${LOCAL_FILES})

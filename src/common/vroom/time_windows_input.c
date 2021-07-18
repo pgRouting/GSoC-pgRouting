@@ -28,16 +28,34 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/vroom/time_windows_input.h"
 
-#include "c_types/column_info_t.h"
+/*
+.. vrp_vroom start
 
-#include "c_common/get_check_data.h"
+A ``SELECT`` statement that returns the following columns:
 
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
+::
 
+    tw_open, tw_close
 
+====================  ====================================== ================================================
+Column                Type                                   Description
+====================  ====================================== ================================================
+**tw_open**           ``INTEGER``                             Time window opening time.
+
+**tw_close**          ``INTEGER``                             Time window closing time.
+====================  ====================================== ================================================
+
+**Note**:
+
+- All timing are in seconds.
+- Every row must satisfy the condition: :code:`tw_open ≤ tw_close`.
+- It is up to users to decide how to describe time windows:
+
+  - **Relative values**, e.g. [0, 14400] for a 4 hours time window starting at the beginning of the planning horizon. In that case all times reported in output with the arrival column are relative to the start of the planning horizon.
+  - **Absolute values**, "real" timestamps. In that case all times reported in output with the arrival column can be interpreted as timestamps.
+
+.. vrp_vroom end
+*/
 
 static
 void fetch_time_windows(
@@ -151,11 +169,11 @@ get_vroom_time_windows(
     info[i].colNumber = -1;
     info[i].type = 0;
     info[i].strict = true;
-    info[i].eType = ANY_INTEGER;
+    info[i].eType = INTEGER;
   }
 
-  info[0].name = "start_time";
-  info[1].name = "end_time";
+  info[0].name = "tw_open";
+  info[1].name = "tw_close";
 
   db_get_time_windows(sql, rows, total_rows, info, kColumnCount);
 }

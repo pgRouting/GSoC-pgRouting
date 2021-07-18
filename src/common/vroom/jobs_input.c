@@ -27,19 +27,58 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "c_common/vroom/jobs_input.h"
-#include "c_common/vroom/time_windows_input.h"
 
-#include "c_types/column_info_t.h"
+/*
+.. vrp_vroom start
 
-#include "c_common/get_check_data.h"
+A ``SELECT`` statement that returns the following columns:
 
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
+::
+
+    id, location_index
+    [, service, delivery, pickup, skills, priority, time_windows_sql]
 
 
-// TODO(ashish): At the end, check and remove all unnecessary includes
+====================  =========================  =========== ================================================
+Column                Type                       Default     Description
+====================  =========================  =========== ================================================
+**id**                ``ANY-INTEGER``                        Non-negative unique identifier of the job.
+
+**location_index**    ``ANY-INTEGER``                        Non-negative identifier of the job location.
+
+**service**           ``INTEGER``                0           Job service duration, in seconds
+
+**delivery**          ``ARRAY[ANY-INTEGER]``                 Array of non-negative integers describing
+                                                             multidimensional quantities for delivery such
+                                                             as number of items, weight, volume etc.
+
+                                                             - All jobs must have the same value of
+                                                               :code:`array_length(delivery, 1)`
+
+**pickup**            ``ARRAY[ANY-INTEGER]``                 Array of non-negative integers describing
+                                                             multidimensional quantities for pickup such as
+                                                             number of items, weight, volume etc.
+
+                                                             - All jobs must have the same value of
+                                                               :code:`array_length(pickup, 1)`
+
+**skills**            ``ARRAY[INTEGER]``                     Array of non-negative integers defining
+                                                             mandatory skills.
+
+**priority**          ``INTEGER``                0           Priority level of the job
+
+                                                             - Ranges from ``[0, 100]``
+
+**time_windows_sql**  ``TEXT``                               `Time Windows SQL`_ query describing valid slots
+                                                             for job service start.
+====================  =========================  =========== ================================================
+
+Where:
+
+:ANY-INTEGER: SMALLINT, INTEGER, BIGINT
+
+.. vrp_vroom end
+*/
 
 static
 void fetch_jobs(
@@ -47,14 +86,9 @@ void fetch_jobs(
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_job_t *job) {
-  // TODO(ashish): Change BigInt to Int, wherever required.
-  // TODO(ashish): Check for null in optional columns
   job->id = get_Idx(tuple, tupdesc, info[0], 0);
   job->location_index = get_MatrixIndex(tuple, tupdesc, info[1], 0);
-
   job->service = get_Duration(tuple, tupdesc, info[2], 0);
-
-  // TODO(ashish): Imp, check whether all amount size are same
 
   /*
    * The deliveries
@@ -83,8 +117,10 @@ void fetch_jobs(
   job->time_windows = NULL;
   if (column_found(info[7].colNumber)) {
     char *time_windows_sql = spi_getText(tuple, tupdesc, info[7]);
-    get_vroom_time_windows(time_windows_sql, &job->time_windows,
-                   &job->time_windows_size);
+    if (time_windows_sql) {
+      get_vroom_time_windows(time_windows_sql, &job->time_windows,
+                    &job->time_windows_size);
+    }
   }
 }
 
@@ -193,18 +229,12 @@ get_vroom_jobs(
   info[6].name = "priority";
   info[7].name = "time_windows_sql";
 
-  // TODO(ashish): Check for ANY_INTEGER, INTEGER, etc types in info[x].name.
-  //         Better change INTEGER to ANY_INTEGER
-
-  // info[2].eType = INTEGER;
-  info[3].eType = ANY_INTEGER_ARRAY;
-  info[4].eType = ANY_INTEGER_ARRAY;
-
-  // info[5].eType = INTEGER_ARRAY;
-  info[5].eType = ANY_INTEGER_ARRAY;
-
-  // info[6].eType = INTEGER;
-  info[7].eType = TEXT;
+  info[2].eType = INTEGER;            // service
+  info[3].eType = ANY_INTEGER_ARRAY;  // delivery
+  info[4].eType = ANY_INTEGER_ARRAY;  // pickup
+  info[5].eType = INTEGER_ARRAY;      // skills
+  info[6].eType = INTEGER;            // priority
+  info[7].eType = TEXT;               // time_windows_sql
 
   /* Only id and location_index are mandatory */
   info[0].strict = true;

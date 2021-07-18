@@ -16,6 +16,5 @@ ADD_LIBRARY(common OBJECT
     vroom/jobs_input.c
     vroom/shipments_input.c
     vroom/breaks_input.c
-    vroom/steps_input.c
     vroom/vehicles_input.c
     )

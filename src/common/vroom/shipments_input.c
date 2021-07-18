@@ -27,19 +27,64 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "c_common/vroom/shipments_input.h"
-#include "c_common/vroom/time_windows_input.h"
 
-#include "c_types/column_info_t.h"
+/*
+.. vrp_vroom start
 
-#include "c_common/get_check_data.h"
+A ``SELECT`` statement that returns the following columns:
 
-#ifdef PROFILE
-#include "c_common/time_msg.h"
-#include "c_common/debug_macro.h"
-#endif
+::
+
+    p_id, p_location_index [, p_service, p_time_windows_sql],
+    d_id, d_location_index [, d_service, d_time_windows_sql]
+    [, amount, skills, priority]
 
 
-// TODO(ashish): At the end, check and remove all unnecessary includes
+======================  =========================  =========== ================================================
+Column                  Type                       Default     Description
+======================  =========================  =========== ================================================
+**p_id**                ``ANY-INTEGER``                         Non-negative unique identifier of the pickup
+                                                                shipment (unique for pickup).
+
+**p_location_index**    ``ANY-INTEGER``                         Non-negative identifier of the pickup location.
+
+**p_service**           ``INTEGER``                0            Pickup service duration, in seconds
+
+**p_time_windows_sql**  ``TEXT``                                `Time Windows SQL`_ query describing valid slots
+                                                                for pickup service start.
+
+**d_id**                ``ANY-INTEGER``                         Non-negative unique identifier of the delivery
+                                                                shipment (unique for delivery).
+
+**d_location_index**    ``ANY-INTEGER``                         Non-negative identifier of the delivery location.
+
+**d_service**           ``INTEGER``                0            Delivery service duration, in seconds
+
+**d_time_windows_sql**  ``TEXT``                                `Time Windows SQL`_ query describing valid slots
+                                                                for delivery service start.
+
+**amount**              ``ARRAY[ANY-INTEGER]``                  Array of non-negative integers describing
+                                                                multidimensional quantities such as number
+                                                                of items, weight, volume etc.
+
+                                                                - All shipments must have the same value of
+                                                                  :code:`array_length(amount, 1)`
+
+**skills**              ``ARRAY[INTEGER]``                      Array of non-negative integers defining
+                                                                mandatory skills.
+
+**priority**            ``INTEGER``                0            Priority level of the shipment.
+
+                                                                - Ranges from ``[0, 100]``
+
+======================  =========================  =========== ================================================
+
+Where:
+
+:ANY-INTEGER: SMALLINT, INTEGER, BIGINT
+
+.. vrp_vroom end
+*/
 
 static
 void fetch_shipments(
@@ -47,9 +92,6 @@ void fetch_shipments(
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_shipment_t *shipment) {
-  // TODO(ashish): Change BigInt to Int, wherever required.
-  // TODO(ashish): Check for null in optional columns
-
   /*
    * The pickups
    */
@@ -57,10 +99,13 @@ void fetch_shipments(
   shipment->p_location_index = get_MatrixIndex(tuple, tupdesc, info[1], 0);
   shipment->p_service = get_Duration(tuple, tupdesc, info[2], 0);
   shipment->p_time_windows_size = 0;
+  shipment->p_time_windows = NULL;
   if (column_found(info[3].colNumber)) {
     char *p_time_windows_sql = spi_getText(tuple, tupdesc, info[3]);
-    get_vroom_time_windows(p_time_windows_sql,
-      &shipment->p_time_windows, &shipment->p_time_windows_size);
+    if (p_time_windows_sql) {
+      get_vroom_time_windows(p_time_windows_sql,
+        &shipment->p_time_windows, &shipment->p_time_windows_size);
+    }
   }
 
   /*
@@ -70,10 +115,13 @@ void fetch_shipments(
   shipment->d_location_index = get_MatrixIndex(tuple, tupdesc, info[5], 0);
   shipment->d_service = get_Duration(tuple, tupdesc, info[6], 0);
   shipment->d_time_windows_size = 0;
+  shipment->d_time_windows = NULL;
   if (column_found(info[7].colNumber)) {
     char *d_time_windows_sql = spi_getText(tuple, tupdesc, info[7]);
-    get_vroom_time_windows(d_time_windows_sql,
-      &shipment->d_time_windows, &shipment->d_time_windows_size);
+    if (d_time_windows_sql) {
+      get_vroom_time_windows(d_time_windows_sql,
+        &shipment->d_time_windows, &shipment->d_time_windows_size);
+    }
   }
 
   shipment->amount_size = 0;
@@ -201,20 +249,13 @@ get_vroom_shipments(
   info[9].name = "skills";
   info[10].name = "priority";
 
-  // TODO(ashish): Check for ANY_INTEGER, INTEGER, etc types in info[x].name.
-  //         Better change INTEGER to ANY_INTEGER
-
-  // info[2].eType = INTEGER;
-  info[3].eType = TEXT;
-
-  // info[6].eType = INTEGER;
-  info[7].eType = TEXT;
-  info[8].eType = ANY_INTEGER_ARRAY;
-
-  // info[9].eType = INTEGER_ARRAY;
-  info[9].eType = ANY_INTEGER_ARRAY;
-  // info[10].eType = INTEGER;
-
+  info[2].eType = INTEGER;            // p_service
+  info[3].eType = TEXT;               // p_time_windows_sql
+  info[6].eType = INTEGER;            // d_service
+  info[7].eType = TEXT;               // d_time_windows_sql
+  info[8].eType = ANY_INTEGER_ARRAY;  // amount
+  info[9].eType = INTEGER_ARRAY;      // skills
+  info[10].eType = INTEGER;           // priority
 
   /* id and location_index of pickup and delivery are mandatory */
   info[0].strict = true;

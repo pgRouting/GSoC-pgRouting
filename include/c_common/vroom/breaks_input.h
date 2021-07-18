@@ -31,7 +31,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include <stddef.h>
+
+#include "c_common/get_check_data.h"
+#include "c_common/vroom/time_windows_input.h"
+#include "c_types/column_info_t.h"
 #include "c_types/vroom/vroom_break_t.h"
+
+#ifdef PROFILE
+#include "c_common/debug_macro.h"
+#include "c_common/time_msg.h"
+#endif
 
 /** @brief Reads the VROOM breaks */
 void

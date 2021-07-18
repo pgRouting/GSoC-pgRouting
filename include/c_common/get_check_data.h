@@ -125,6 +125,9 @@ Id get_Id(HeapTuple*, TupleDesc*, Column_info_t, Id);
 /** get Idx from data */
 Idx get_Idx(HeapTuple*, TupleDesc*, Column_info_t, Idx);
 
+/** get StepType from data */
+StepType get_StepType(HeapTuple *, TupleDesc *, Column_info_t, StepType);
+
 /** get MatrixIndex from data */
 MatrixIndex get_MatrixIndex(HeapTuple*, TupleDesc*, Column_info_t, MatrixIndex);
 

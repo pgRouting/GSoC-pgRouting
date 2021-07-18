@@ -56,6 +56,24 @@ Column        Type            Description
 
 .. pgr_pickDeliver end
 
+.. vrp_vroom start
+
+A ``SELECT`` statement that returns the following columns:
+
+::
+
+    start_index, end_index, agg_cost
+
+=============== ================= ==================================================
+Column          Type              Description
+=============== ================= ==================================================
+**start_vid**   ``ANY-INTEGER``   Identifier of the start node.
+**end_vid**     ``ANY-INTEGER``   Identifier of the end node.
+**agg_cost**    ``INTEGER``       Time to travel from ``start_vid`` to ``end_vid``
+=============== ================= ==================================================
+
+.. vrp_vroom end
+
 */
 
 static
@@ -240,6 +258,6 @@ void get_matrixRows_vroom_plain(char *sql, Matrix_cell_t **rows, size_t *total_r
   info[1].name = "end_vid";
   info[2].name = "agg_cost";
 
-  // info[2].eType = INTEGER;
+  info[2].eType = INTEGER;
   get_matrixRows_general(sql, info, 1, rows, total_rows);
 }

@@ -53,8 +53,7 @@ struct Vroom_rt {
   Idx vehicle_seq; /** Sequence for ordering a single vehicle */
   Idx vehicle_id; /** The vehicle's identifier */
   Idx step_seq; /** Step sequence of the vehicle */
-  // TODO(ashish): Change to enum
-  uint64_t step_type; /** Type of the step */
+  StepType step_type; /** Type of the step */
   Idx task_id; /** The task's identifier */
   Duration arrival_time; /** Estimated time of arrival */
   Duration travel_time; /** Cumulated travel time upon arrival */

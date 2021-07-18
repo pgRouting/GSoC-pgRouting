@@ -31,6 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <limits>
 
 #include "c_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
@@ -40,43 +41,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * @brief Handles actual calling of function in the `vrp_vroom.hpp` file.
  *
  */
-
-/***********************************************************************
- *
- * vrp_vroom(
- *   vrp_json JSON,
- *   osrm_host TEXT DEFAULT 'car:0.0.0.0',
- *   osrm_port TEXT DEFAULT 'car:5000',
- *   plan BOOLEAN DEFAULT FALSE,
- *   geometry BOOLEAN DEFAULT FALSE
- * );
- *
- ***********************************************************************/
-
-/** @brief Calls the main function defined in the C++ Header file.
- *
- * @param problem_instance_json string describing problem instance
- * @param server_host       OSRM routing server host in the form of PROFILE:HOST
- * @param server_port       OSRM routing server port in the form of PROFILE:PORT
- * @param plan          whether the mode is plan mode
- * @param geometry        whether to add detailed route geometry and indicators
- *
- * @returns results, when results are found
- */
-#if 0
-char*
-vrp_vroom(
-    std::string problem_instance_json,
-    std::string server_host,
-    std::string server_port,
-    bool plan,
-    bool geometry) {
-  pgrouting::functions::Vrp_vroom fn_vroom;
-  char *result = fn_vroom.vroom(problem_instance_json, server_host, server_port, plan, geometry);
-  // log += fn_vroom.get_log();
-  return result;
-}
-#endif
 
 /** @brief Performs exception handling and converts the results to postgres.
  *
@@ -90,13 +54,12 @@ vrp_vroom(
  * function `vrp_vroom` which calls the main function defined in the
  * C++ Header file. It also does exception handling.
  *
- * @param vrp_json     JSON object describing the problem instance
- * @param osrm_host    OSRM routing server host in the form of PROFILE:HOST
- * @param osrm_port    OSRM routing server port in the form of PROFILE:PORT.
- * @param plan       whether the mode is plan mode
- * @param geometry     whether to add detailed route geometry and indicators
- * @param return_tuples  the rows in the result
- * @param return_count   the count of rows in the result
+ * @param jobs_sql       SQL query describing the jobs
+ * @param shipments_sql  SQL query describing the shipments
+ * @param vehicles_sql   SQL query describing the vehicles
+ * @param matrix_sql     SQL query describing the cells of the cost matrix
+ * @param result_tuples  the rows in the result
+ * @param result_count   the count of rows in the result
  * @param log_msg    stores the log message
  * @param notice_msg   stores the notice message
  * @param err_msg    stores the error message
@@ -109,8 +72,6 @@ do_vrp_vroom(
     Vroom_shipment_t *shipments, size_t total_shipments,
     Vroom_vehicle_t *vehicles, size_t total_vehicles,
     Matrix_cell_t *matrix_cells_arr, size_t total_cells,
-
-    bool plan,
 
     Vroom_rt **return_tuples,
     size_t *return_count,
@@ -134,68 +95,71 @@ do_vrp_vroom(
     pgassert(total_vehicles);
     pgassert(total_cells);
 
-    vrprouting::Vrp_vroom_problem problem;
-#if 0
-    for (int i = 0; i < total_jobs; i++) {
-      log << jobs[i].id << ": id\n";
-      log << jobs[i].location_index << ": location_index\n";
-      log << jobs[i].service << ": service\n";
-      log << jobs[i].delivery << ": delivery\n";
-      log << jobs[i].delivery_size << ": delivery_size\n";
-      log << jobs[i].pickup << ": pickup\n";
-      log << jobs[i].pickup_size << ": pickup_size\n";
-      log << jobs[i].skills << ": skills\n";
-      log << jobs[i].skills_size << ": skills_size\n";
-      log << jobs[i].priority << ": priority\n";
-      log << jobs[i].time_windows << ": time_windows\n";
-      log << jobs[i].time_windows_size << ": time_windows_size\n";
+    Identifiers<Id> location_ids;
+
+    for (size_t i = 0; i < total_jobs; ++i) {
+      location_ids += jobs[i].location_index;
     }
-#endif
+
+    for (size_t i = 0; i < total_shipments; ++i) {
+      location_ids += shipments[i].p_location_index;
+      location_ids += shipments[i].d_location_index;
+    }
+
+    for (size_t i = 0; i < total_vehicles; ++i) {
+      location_ids += vehicles[i].start_index;
+      location_ids += vehicles[i].end_index;
+    }
+
+    vrprouting::base::Base_Matrix time_matrix(matrix_cells_arr, total_cells, location_ids);
+
+    /*
+     * Verify matrix cells preconditions
+     */
+    if (!time_matrix.has_no_infinity()) {
+      (*return_tuples) = NULL;
+      (*return_count) = 0;
+      err << "An Infinity value was found on the Matrix";
+      *err_msg = pgr_msg(err.str());
+      return;
+    }
+
+    /*
+     * Verify size of matrix cell lies in the limit
+     */
+    if (time_matrix.size() > (std::numeric_limits<vroom::Index>::max)()) {
+      (*return_tuples) = NULL;
+      (*return_count) = 0;
+      err << "The size of time matrix exceeds the limit";
+      *err_msg = pgr_msg(err.str());
+      return;
+    }
+
+    vrprouting::Vrp_vroom_problem problem;
+    problem.add_matrix(time_matrix);
     problem.add_jobs(jobs, total_jobs);
     problem.add_shipments(shipments, total_shipments);
     problem.add_vehicles(vehicles, total_vehicles);
-    problem.add_matrix(matrix_cells_arr, total_cells);
-
-    log << "HERE\n";
-    log << "Done HERE\n";
 
     std::vector < Vroom_rt > results = problem.solve();
-
-    log << "Problem solved\n";
-
-    log << problem.get_log();
 
     auto count = results.size();
     if (count == 0) {
       (*return_tuples) = NULL;
       (*return_count) = 0;
       notice << "No results found";
-      *log_msg = log.str().empty()?
-        *log_msg :
-        pgr_msg(log.str().c_str());
       *notice_msg = notice.str().empty()?
         *notice_msg :
         pgr_msg(notice.str().c_str());
       return;
     }
 
-    log << "HERE\n";
-
     (*return_tuples) = pgr_alloc(count, (*return_tuples));
     for (size_t i = 0; i < count; i++) {
       *((*return_tuples) + i) = results[i];
-      log << results[i].vehicle_seq << "\n";       // vehicles_seq
     }
 
-    log << "HERE\n";
-
     (*return_count) = count;
-
-#if 0
-    std::string logstr;
-    (*result) = vrp_vroom(problem_instance_json, server_host, server_port, plan, geometry);
-    log << logstr;
-#endif
 
     pgassert(*err_msg == NULL);
     *log_msg = log.str().empty()?
@@ -208,6 +172,12 @@ do_vrp_vroom(
     (*return_tuples) = pgr_free(*return_tuples);
     (*return_count) = 0;
     err << except.what();
+    *err_msg = pgr_msg(err.str().c_str());
+    *log_msg = pgr_msg(log.str().c_str());
+  } catch (const vroom::Exception &except) {
+    (*return_tuples) = pgr_free(*return_tuples);
+    (*return_count) = 0;
+    err << except.message << "\n";
     *err_msg = pgr_msg(err.str().c_str());
     *log_msg = pgr_msg(log.str().c_str());
   } catch (std::exception &except) {

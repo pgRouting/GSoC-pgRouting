@@ -1,11 +1,6 @@
 \echo -- q1
 SELECT *
-FROM vrp_vroom(
-  $jobs$
-    SELECT * FROM (
-      VALUES (1414, 5), (1515, 10)
-    ) AS C(id, location_index)
-  $jobs$,
+FROM vrp_vroomShipments(
   $shipments$
     SELECT * FROM (
       VALUES (100, 1, 200, 30)

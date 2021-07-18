@@ -39,11 +39,10 @@ extern "C" {
   /**************************************************
    *
    *   vrp_vroom(
-   *    vrp_json JSON,
-   *    osrm_host TEXT DEFAULT 'car:0.0.0.0',
-   *    osrm_port TEXT DEFAULT 'car:5000',
-   *    plan BOOLEAN DEFAULT FALSE,
-   *    geometry BOOLEAN DEFAULT FALSE
+   *     jobs_sql TEXT,
+   *     shipments_sql TEXT,
+   *     vehicles_sql TEXT,
+   *     matrix_sql TEXT
    *   );
    *
    *************************************************/
@@ -52,8 +51,6 @@ extern "C" {
       Vroom_shipment_t *shipments, size_t total_shipments,
       Vroom_vehicle_t *vehicles, size_t total_vehicles,
       Matrix_cell_t *matrix_cells_arr, size_t total_cells,
-
-      bool plan,
 
       Vroom_rt **return_tuples,
       size_t *return_count,
