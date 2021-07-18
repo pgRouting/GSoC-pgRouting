@@ -31,7 +31,7 @@ signature start
 
 .. code-block:: none
 
-    vrp_vroom(Shipments SQL, Vehicles SQL, Matrix SQL)
+    vrp_vroom(Shipments SQL, Vehicles SQL, Matrix SQL)  -- Experimental on v0.2
 
     RETURNS SET OF
     (seq, vehicle_seq, vehicle_id, step_seq, step_type, task_id,
