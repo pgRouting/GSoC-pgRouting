@@ -51,13 +51,7 @@ Experimental Functions
   :maxdepth: 2
 
   pgr-category
-
-:doc:`pgr-category`
-
-.. toctree::
-  :maxdepth: 1
-
-  vrp_vroom
+  vroom-category
 
 .. rubric:: See Also
 

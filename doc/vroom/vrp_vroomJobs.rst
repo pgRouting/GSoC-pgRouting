@@ -11,14 +11,14 @@
 
 * `Documentation <https://vrp.pgrouting.org/>`__ → `vrpRouting v0 <https://vrp.pgrouting.org/v0>`__
 * Supported Versions
-  `Latest <https://vrp.pgrouting.org/latest/en/vrp_vroom.html>`__
-  (`v0 <https://vrp.pgrouting.org/v0/en/vrp_vroom.html>`__)
+  `Latest <https://vrp.pgrouting.org/latest/en/vrp_vroomJobs.html>`__
+  (`v0 <https://vrp.pgrouting.org/v0/en/vrp_vroomJobs.html>`__)
 
 
-vrp_vroom - Experimental
+vrp_vroomJobs - Experimental
 ===============================================================================
 
-``vrp_vroom`` - Vehicle Routing Problem with VROOM, involving both jobs and shipments.
+``vrp_vroomJobs`` - Vehicle Routing Problem with VROOM, involving only jobs.
 
 .. include:: experimental.rst
    :start-after: begin-warn-expr
@@ -36,29 +36,28 @@ Description
 
 VROOM is an open-source optimization engine that aims at providing good solutions
 to various real-life vehicle routing problems (VRP) within a small computing time.
-This function can be used to get the solution to a problem involving both jobs and
-shipments.
+This function can be used to get the solution to a problem involving only jobs.
 
 .. index::
-   single: vrp_vroom -- Experimental on v0.2
+   single: vrp_vroomJobs -- Experimental on v0.2
 
 Signature
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/vroom/vrp_vroom.sql
+.. include:: ../sql/vroom/vrp_vroomJobs.sql
    :start-after: signature start
    :end-before: signature end
 
-**Example**: Problem involving 2 jobs and 1 shipment, using a single vehicle.
+**Example**: Problem involving 2 jobs, using a single vehicle.
 
-.. literalinclude:: doc-vrp_vroom.queries
+.. literalinclude:: doc-vrp_vroomJobs.queries
    :start-after: -- q1
    :end-before: -- q2
 
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/vroom/vrp_vroom.sql
+.. include:: ../sql/vroom/vrp_vroomJobs.sql
    :start-after: parameters start
    :end-before: parameters end
 
