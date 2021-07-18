@@ -35,20 +35,20 @@ A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    start_time, end_time
+    tw_open, tw_close
 
 ====================  ====================================== ================================================
 Column                Type                                   Description
 ====================  ====================================== ================================================
-**start_time**        ``INTEGER``                             Start time of the time window.
+**tw_open**           ``INTEGER``                             Time window opening time.
 
-**end_time**          ``INTEGER``                             End time of the time window.
+**tw_close**          ``INTEGER``                             Time window closing time.
 ====================  ====================================== ================================================
 
 **Note**:
 
 - All timing are in seconds.
-- Every row must satisfy the condition: :code:`start_time ≤ end_time`.
+- Every row must satisfy the condition: :code:`tw_open ≤ tw_close`.
 - It is up to users to decide how to describe time windows:
 
   - **Relative values**, e.g. [0, 14400] for a 4 hours time window starting at the beginning of the planning horizon. In that case all times reported in output with the arrival column are relative to the start of the planning horizon.
@@ -169,11 +169,11 @@ get_vroom_time_windows(
     info[i].colNumber = -1;
     info[i].type = 0;
     info[i].strict = true;
-    info[i].eType = ANY_INTEGER;
+    info[i].eType = INTEGER;
   }
 
-  info[0].name = "start_time";
-  info[1].name = "end_time";
+  info[0].name = "tw_open";
+  info[1].name = "tw_close";
 
   db_get_time_windows(sql, rows, total_rows, info, kColumnCount);
 }

@@ -36,7 +36,7 @@ A ``SELECT`` statement that returns the following columns:
 ::
 
     id, start_index, end_index
-    [, service, delivery, pickup, skills, priority, time_window, breaks_sql]
+    [, capacity, skills, tw_open, tw_close, breaks_sql, speed_factor]
 
 
 ======================  ================================= ================================================
@@ -44,15 +44,9 @@ Column                  Type                              Description
 ======================  ================================= ================================================
 **id**                  ``ANY-INTEGER``                    Non-negative unique identifier of the job.
 
-**start_index**         ``ANY-INTEGER``                    Non-negative index of relevant row and column
-                                                           in the custom matrix, denoting vehicle start.
+**start_index**         ``ANY-INTEGER``                    Non-negative identifier of the vehicle start location.
 
-                                                           - Ranges from ``[0, SIZE[matrix]-1]``
-
-**end_index**           ``ANY-INTEGER``                    Non-negative index of relevant row and column
-                                                           in the custom matrix, denoting vehicle end.
-
-                                                           - Ranges from ``[0, SIZE[matrix]-1]``
+**end_index**           ``ANY-INTEGER``                    Non-negative identifier of the vehicle end location.
 
 **capacity**            ``ARRAY[ANY-INTEGER]``             Array of non-negative integers describing
                                                            multidimensional quantities such as
@@ -64,9 +58,9 @@ Column                  Type                              Description
 **skills**              ``ARRAY[INTEGER]``                 Array of non-negative integers defining
                                                            mandatory skills.
 
-**time_window_start**   ``INTEGER``                        Time window start time.
+**tw_open**             ``INTEGER``                        Time window opening time.
 
-**time_window_end**     ``INTEGER``                        Time window end time.
+**tw_close**            ``INTEGER``                        Time window closing time.
 
 **breaks_sql**          ``TEXT``                           `Breaks SQL`_ query describing the driver breaks.
 
@@ -75,13 +69,13 @@ Column                  Type                              Description
 
 **Note**:
 
-- At least one of the start_index or end_index shall be present.
-- If end_index is omitted, the resulting route will stop at the last visited task, whose choice is determined by the optimization process
-- If start_index is omitted, the resulting route will start at the first visited task, whose choice is determined by the optimization process
-- To request a round trip, specify both start_index and end_index with the same index.
+- At least one of the ``start_index`` or ``end_index`` shall be present.
+- If ``end_index`` is omitted, the resulting route will stop at the last visited task, whose choice is determined by the optimization process.
+- If ``start_index`` is omitted, the resulting route will start at the first visited task, whose choice is determined by the optimization process.
+- To request a round trip, specify both ``start_index`` and ``end_index`` as the same index.
 - A vehicle is only allowed to serve a set of tasks if the resulting load at each route step is lower than the matching value in capacity for each metric. When using multiple components for amounts, it is recommended to put the most important/limiting metrics first.
 - It is assumed that all delivery-related amounts for jobs are loaded at vehicle start, while all pickup-related amounts for jobs are brought back at vehicle end.
-- :code:`time_window_start ≤ time_window_end`
+- :code:`tw_open ≤ tw_close`
 
 .. vrp_vroom end
 */
@@ -225,18 +219,18 @@ get_vroom_vehicles(
   info[2].name = "end_index";
   info[3].name = "capacity";
   info[4].name = "skills";
-  info[5].name = "time_window_start";
-  info[6].name = "time_window_end";
+  info[5].name = "tw_open";
+  info[6].name = "tw_close";
   info[7].name = "breaks_sql";
   info[8].name = "speed_factor";
 
-  info[3].eType = ANY_INTEGER_ARRAY;
-  info[4].eType = INTEGER_ARRAY;
-  info[5].eType = INTEGER;
-  info[6].eType = INTEGER;
+  info[3].eType = ANY_INTEGER_ARRAY;  // capacity
+  info[4].eType = INTEGER_ARRAY;      // skills
+  info[5].eType = INTEGER;            // tw_open
+  info[6].eType = INTEGER;            // tw_close
 
-  info[7].eType = TEXT;
-  info[8].eType = ANY_NUMERICAL;
+  info[7].eType = TEXT;               // breaks_sql
+  info[8].eType = ANY_NUMERICAL;      // speed_factor
 
   /* id, stand and end index are mandatory */
   info[0].strict = true;

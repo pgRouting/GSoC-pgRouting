@@ -35,7 +35,7 @@ A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    id, time_windows [, service]
+    id, time_windows_sql [, service]
 
 ====================  =========================  =========== ================================================
 Column                Type                       Default     Description
@@ -170,8 +170,8 @@ get_vroom_breaks(
   info[1].name = "time_windows_sql";
   info[2].name = "service";
 
-  info[1].eType = TEXT;
-  info[2].eType = INTEGER;
+  info[1].eType = TEXT;     // time_windows_sql
+  info[2].eType = INTEGER;  // service
 
   /* service is not mandatory */
   info[2].strict = false;

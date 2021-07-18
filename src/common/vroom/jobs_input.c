@@ -44,10 +44,7 @@ Column                Type                       Default     Description
 ====================  =========================  =========== ================================================
 **id**                ``ANY-INTEGER``                        Non-negative unique identifier of the job.
 
-**location_index**    ``ANY-INTEGER``                        Non-negative index of relevant row and column
-                                                             in the custom matrix, denoting job location.
-
-                                                             - Ranges from ``[0, SIZE[matrix]-1]``
+**location_index**    ``ANY-INTEGER``                        Non-negative identifier of the job location.
 
 **service**           ``INTEGER``                0           Job service duration, in seconds
 
@@ -232,12 +229,12 @@ get_vroom_jobs(
   info[6].name = "priority";
   info[7].name = "time_windows_sql";
 
-  info[2].eType = INTEGER;
-  info[3].eType = ANY_INTEGER_ARRAY;
-  info[4].eType = ANY_INTEGER_ARRAY;
-  info[5].eType = INTEGER_ARRAY;
-  info[6].eType = INTEGER;
-  info[7].eType = TEXT;
+  info[2].eType = INTEGER;            // service
+  info[3].eType = ANY_INTEGER_ARRAY;  // delivery
+  info[4].eType = ANY_INTEGER_ARRAY;  // pickup
+  info[5].eType = INTEGER_ARRAY;      // skills
+  info[6].eType = INTEGER;            // priority
+  info[7].eType = TEXT;               // time_windows_sql
 
   /* Only id and location_index are mandatory */
   info[0].strict = true;

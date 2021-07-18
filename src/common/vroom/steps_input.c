@@ -35,7 +35,7 @@ A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    id, type [, service_at, service_before, service_after]
+    id, type [, service_at, service_after, service_before]
 
 ====================  ====================================== ================================================
 Column                Type                                   Description
@@ -76,7 +76,6 @@ void fetch_steps(
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_step_t *step) {
-  // TODO(ashish): Last three fields are not required, find their default value.
   step->id = get_Idx(tuple, tupdesc, info[0], 0);
   step->type = get_StepType(tuple, tupdesc, info[1], 0);
   step->service_at = get_Duration(tuple, tupdesc, info[2], 0);
@@ -177,7 +176,7 @@ get_vroom_steps(
     info[i].colNumber = -1;
     info[i].type = 0;
     info[i].strict = false;
-    info[i].eType = ANY_INTEGER;
+    info[i].eType = INTEGER;
   }
 
   info[0].name = "id";
@@ -188,10 +187,7 @@ get_vroom_steps(
   info[3].name = "service_after";
   info[4].name = "service_before";
 
-  info[1].eType = INTEGER;
-  info[2].eType = INTEGER;
-  info[3].eType = INTEGER;
-  info[4].eType = INTEGER;
+  info[0].eType = ANY_INTEGER;  // id
 
   /* id and type are mandatory */
   info[0].strict = true;

@@ -35,8 +35,8 @@ A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    p_id, p_location_index [, p_service, p_time_windows],
-    d_id, d_location_index [, d_service, d_time_windows]
+    p_id, p_location_index [, p_service, p_time_windows_sql],
+    d_id, d_location_index [, d_service, d_time_windows_sql]
     [, amount, skills, priority]
 
 
@@ -46,10 +46,7 @@ Column                  Type                       Default     Description
 **p_id**                ``ANY-INTEGER``                         Non-negative unique identifier of the pickup
                                                                 shipment (unique for pickup).
 
-**p_location_index**    ``ANY-INTEGER``                         Non-negative index of relevant row and column
-                                                                in the custom matrix, denoting pickup location.
-
-                                                                - Ranges from ``[0, SIZE[matrix]-1]``
+**p_location_index**    ``ANY-INTEGER``                         Non-negative identifier of the pickup location.
 
 **p_service**           ``INTEGER``                0            Pickup service duration, in seconds
 
@@ -59,10 +56,7 @@ Column                  Type                       Default     Description
 **d_id**                ``ANY-INTEGER``                         Non-negative unique identifier of the delivery
                                                                 shipment (unique for delivery).
 
-**d_location_index**    ``ANY-INTEGER``                         Non-negative index of relevant row and column
-                                                                in the custom matrix, denoting delivery location.
-
-                                                                - Ranges from ``[0, SIZE[matrix]-1]``
+**d_location_index**    ``ANY-INTEGER``                         Non-negative identifier of the delivery location.
 
 **d_service**           ``INTEGER``                0            Delivery service duration, in seconds
 
@@ -88,8 +82,6 @@ Column                  Type                       Default     Description
 Where:
 
 :ANY-INTEGER: SMALLINT, INTEGER, BIGINT
-
-.. TODO(ashish): Change column names to make it consistent.
 
 .. vrp_vroom end
 */
@@ -257,13 +249,13 @@ get_vroom_shipments(
   info[9].name = "skills";
   info[10].name = "priority";
 
-  info[2].eType = INTEGER;
-  info[3].eType = TEXT;
-  info[6].eType = INTEGER;
-  info[7].eType = TEXT;
-  info[8].eType = ANY_INTEGER_ARRAY;
-  info[9].eType = INTEGER_ARRAY;
-  info[10].eType = INTEGER;
+  info[2].eType = INTEGER;            // p_service
+  info[3].eType = TEXT;               // p_time_windows_sql
+  info[6].eType = INTEGER;            // d_service
+  info[7].eType = TEXT;               // d_time_windows_sql
+  info[8].eType = ANY_INTEGER_ARRAY;  // amount
+  info[9].eType = INTEGER_ARRAY;      // skills
+  info[10].eType = INTEGER;           // priority
 
   /* id and location_index of pickup and delivery are mandatory */
   info[0].strict = true;
