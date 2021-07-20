@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <vector>
 #include <utility>
+#include <string>
 
 #include "cpp_common/identifiers.hpp"
 #include "cpp_common/pgr_assert.h"
@@ -50,14 +51,10 @@ Pgr_edgeColoring::edgeColoring() {
 
     try {
         boost::edge_coloring(graph,  boost::get(boost::edge_bundle, graph));
-    } catch (boost::exception const &ex) {
-        (void)ex;
-        throw;
-    } catch (std::exception &e) {
-        (void)e;
-        throw;
     } catch (...) {
-        throw;
+        throw std::make_pair(
+            std::string("INTERNAL: something went wrong while calling boost::edge_coloring"),
+            std::string(__PRETTY_FUNCTION__));
     }
 
     for (auto e_i : boost::make_iterator_range(boost::edges(graph))) {
@@ -97,6 +94,8 @@ Pgr_edgeColoring::Pgr_edgeColoring(pgr_edge_t *edges,
         if (e_exists.second) continue;
 
         if (edge.source == edge.target) continue;
+
+        if (edge.cost < 0 && edge.reverse_cost < 0) continue;
 
         E e;
 #if 1
