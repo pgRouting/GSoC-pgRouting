@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- pgr_edgeColoring
 ---------------
 
---v3.2
+--v3.3
 CREATE FUNCTION pgr_edgeColoring(
     TEXT, -- edges_sql (required)
 
