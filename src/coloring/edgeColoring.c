@@ -61,6 +61,7 @@ PG_FUNCTION_INFO_V1(_pgr_edgecoloring);
  *
  * @returns void
  */
+
 static
 void
 process(
@@ -78,10 +79,21 @@ process(
 
     pgr_get_edges(edges_sql, &edges, &total_edges);
 
+     if (total_edges == 0) {
+        ereport(WARNING,
+                (errmsg("Insufficient data found on inner query."),
+                 errhint("%s", edges_sql)));
+        (*result_count) = 0;
+        (*result_tuples) = NULL;
+        pgr_SPI_finish();
+        return;
+    }
+
     clock_t start_t = clock();
     char *log_msg = NULL;
     char *notice_msg = NULL;
     char *err_msg = NULL;
+
     do_pgr_edgeColoring(
             edges, total_edges,
 
@@ -108,6 +120,7 @@ process(
 
     pgr_SPI_finish();
 }
+
 /*                                                                            */
 /******************************************************************************/
 
