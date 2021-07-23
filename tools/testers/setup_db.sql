@@ -23,5 +23,6 @@ BEGIN;
     \i vrppdtw_data.sql
     \i solomon_100_rc101.data.sql
     \i no_crash_test.sql
+    \i vroomdata.sql
 
 END;
