@@ -39,6 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 /************************************************************
   edges_sql TEXT
  ***********************************************************/
+
 void do_pgr_edgeColoring(
     pgr_edge_t *data_edges,
     size_t total_edges,
@@ -58,9 +59,6 @@ void do_pgr_edgeColoring(
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
-#if 0
-        pgassert(total_edges != 0);
-#endif
 
         std::vector<pgr_vertex_color_rt> results;
 
