@@ -32,9 +32,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <vector>
 #include <utility>
+#include <string>
 
 #include "cpp_common/identifiers.hpp"
 #include "cpp_common/pgr_assert.h"
+#include "cpp_common/interruption.h"
 
 
 namespace pgrouting {
@@ -44,20 +46,14 @@ std::vector<pgr_vertex_color_rt>
 Pgr_edgeColoring::edgeColoring() {
     std::vector<pgr_vertex_color_rt> results;
 
-#if 0
     CHECK_FOR_INTERRUPTS();
-#endif
 
     try {
         boost::edge_coloring(graph,  boost::get(boost::edge_bundle, graph));
-    } catch (boost::exception const &ex) {
-        (void)ex;
-        throw;
-    } catch (std::exception &e) {
-        (void)e;
-        throw;
     } catch (...) {
-        throw;
+        throw std::make_pair(
+            std::string("INTERNAL: something went wrong while calling boost::edge_coloring"),
+            std::string(__PRETTY_FUNCTION__));
     }
 
     for (auto e_i : boost::make_iterator_range(boost::edges(graph))) {
@@ -98,12 +94,10 @@ Pgr_edgeColoring::Pgr_edgeColoring(pgr_edge_t *edges,
 
         if (edge.source == edge.target) continue;
 
+        if (edge.cost < 0 && edge.reverse_cost < 0) continue;
+
         E e;
-#if 1
         boost::tie(e, added) = boost::add_edge(v1, v2, edge.cost, graph);
-#else
-        boost::tie(e, added) = boost::add_edge(v1, v2, graph);
-#endif
 
         E_to_id.insert(std::make_pair(e, edge.id));
     }
@@ -114,8 +108,9 @@ Pgr_edgeColoring::get_boost_vertex(int64_t id) const {
     try {
         return id_to_V.at(id);
     } catch (...) {
-        pgassert(false);
-        throw;
+        throw std::make_pair(
+            std::string("INTERNAL: something went wrong when getting the vertex descriptor"),
+            std::string(__PRETTY_FUNCTION__));
     }
 }
 
@@ -124,8 +119,9 @@ Pgr_edgeColoring::get_vertex_id(V v) const {
     try {
         return V_to_id.at(v);
     } catch (...) {
-        pgassert(false);
-        throw;
+        throw std::make_pair(
+            std::string("INTERNAL: something went wrong when getting the vertex id"),
+            std::string(__PRETTY_FUNCTION__));
     }
 }
 
@@ -134,8 +130,9 @@ Pgr_edgeColoring::get_edge_id(E e) const {
     try {
         return E_to_id.at(e);
     } catch (...) {
-        pgassert(false);
-        throw;
+        throw std::make_pair(
+            std::string("INTERNAL: something went wrong when getting the edge id"),
+            std::string(__PRETTY_FUNCTION__));
     }
 }
 

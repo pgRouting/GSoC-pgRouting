@@ -37,8 +37,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #else
 #   include <stddef.h>
 #endif
+
 #include <c_types/pgr_vertex_color_rt.h>
 #include "c_types/pgr_edge_t.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,12 +50,14 @@ extern "C" {
     edges_sql TEXT,
 
  ********************************************************/
+
 void
 do_pgr_edgeColoring(
         pgr_edge_t  *data_edges,
         size_t total_tuples,
         pgr_vertex_color_rt **return_tuples,
         size_t *return_count,
+
         char **log_msg,
         char **notice_msg,
         char **err_msg);

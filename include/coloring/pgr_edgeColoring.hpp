@@ -59,10 +59,8 @@ class Pgr_edgeColoring : public Pgr_messages {
     Pgr_edgeColoring(pgr_edge_t*, size_t);
     Pgr_edgeColoring() = delete;
 
-#if 0
 #if Boost_VERSION_MACRO >= 106800
     friend std::ostream& operator<<(std::ostream &, const Pgr_edgeColoring&);
-#endif
 #endif
 
  private:
