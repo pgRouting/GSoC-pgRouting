@@ -750,7 +750,11 @@ spi_getCoordinate(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Coor
  */
 char*
 spi_getText(HeapTuple *tuple, TupleDesc *tupdesc,  Column_info_t info) {
-  return DatumGetCString(SPI_getvalue(*tuple, *tupdesc, info.colNumber));
+  char *val = DatumGetCString(SPI_getvalue(*tuple, *tupdesc, info.colNumber));
+  if (!val) {
+    elog(ERROR, "Unexpected Null value in column %s", info.name);
+  }
+  return val;
 }
 
 /**
