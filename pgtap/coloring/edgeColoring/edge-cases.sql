@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('3.3.0') THEN plan(1) ELSE plan(15) END;
+SELECT CASE WHEN NOT min_version('3.3.0') THEN plan(1) ELSE plan(16) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -42,7 +42,7 @@ PREPARE edgeColoring2 AS
 SELECT * FROM pgr_edgeColoring('q2');
 
 RETURN QUERY
-SELECT is_empty('edgeColoring2', 'One vertex graph can not be edgeColored-> Empty row is returned');
+SELECT is_empty('edgeColoring2', 'One vertex graph can not be edgeColored -> Empty row is returned');
 
 
 -- 2 vertices test (connected)
@@ -200,7 +200,7 @@ SELECT set_eq('q8',
         (4, 4, 5, 1, 1),
         (5, 5, 1, 1, -1);
     $$,
-    'Cyclic Graph with 5 vertices 3, 6 and 8'
+    'Cyclic Graph with five vertices 1, 2, 3, 4 and 5'
 );
 
 PREPARE edgeColoring8 AS
@@ -208,6 +208,38 @@ SELECT * FROM pgr_edgeColoring('q8');
 
 RETURN QUERY
 SELECT set_eq('edgeColoring8', $$VALUES (1, 1), (2, 2), (3, 3), (4, 1), (5, 2)$$, 'Three colors are required');
+
+
+-- 1 vertex cyclic
+
+CREATE TABLE one_vertex_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO one_vertex_table (source, target, cost, reverse_cost) VALUES
+    (1, 1, 1, 1);
+
+PREPARE q9 AS
+SELECT id, source, target, cost, reverse_cost
+FROM one_vertex_table;
+
+RETURN QUERY
+SELECT set_eq('q9',
+    $$VALUES
+        (1, 1, 1, 1, 1)
+    $$,
+    'Cyclic Graph with one vertex 1'
+);
+
+PREPARE edgeColoring9 AS
+SELECT * FROM pgr_edgeColoring('q9');
+
+RETURN QUERY
+SELECT is_empty('edgeColoring9', 'One vertex cyclic graph can not be edgeColored -> Empty row is returned');
 
 
 END;
