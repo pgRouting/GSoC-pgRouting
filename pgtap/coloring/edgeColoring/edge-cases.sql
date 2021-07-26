@@ -210,7 +210,9 @@ RETURN QUERY
 SELECT set_eq('edgeColoring8', $$VALUES (1, 1), (2, 2), (3, 3), (4, 1), (5, 2)$$, 'Three colors are required');
 
 
--- 1 vertex cyclic
+-- self loop test
+
+-- 1 vertex self loop
 
 CREATE TABLE one_vertex_table (
     id BIGSERIAL,
@@ -230,16 +232,50 @@ FROM one_vertex_table;
 RETURN QUERY
 SELECT set_eq('q9',
     $$VALUES
-        (1, 1, 1, 1, 1)
+        (1, 1, 1, 1, 1);
     $$,
-    'Cyclic Graph with one vertex 1'
+    'Self loop Graph with one vertex 1'
 );
 
 PREPARE edgeColoring9 AS
 SELECT * FROM pgr_edgeColoring('q9');
 
 RETURN QUERY
-SELECT is_empty('edgeColoring9', 'One vertex cyclic graph can not be edgeColored -> Empty row is returned');
+SELECT is_empty('edgeColoring9', 'One vertex self-loop graph can not be edgeColored -> Empty row is returned');
+
+
+-- 2 vertex self loop
+
+CREATE TABLE two_vertex_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO two_vertex_table (source, target, cost, reverse_cost) VALUES
+    (1, 2, 1, 1),
+    (2, 2, 1, 1);
+
+PREPARE q10 AS
+SELECT id, source, target, cost, reverse_cost
+FROM two_vertex_table;
+
+RETURN QUERY
+SELECT set_eq('q10',
+    $$VALUES
+        (1, 1, 2, 1, 1),
+        (2, 2, 2, 1, 1);
+    $$,
+    'Self loop Graph with two vertex 1 and 2'
+);
+
+PREPARE edgeColoring10 AS
+SELECT * FROM pgr_edgeColoring('q10');
+
+RETURN QUERY
+SELECT is_empty('edgeColoring10', 'Two vertex self-loop graph can not be edgeColored -> Empty row is returned');
 
 
 END;
