@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('3.3.0') THEN plan(1) ELSE plan(19) END;
+SELECT CASE WHEN NOT min_version('3.3.0') THEN plan(1) ELSE plan(21) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -246,7 +246,7 @@ SELECT is_empty('edgeColoring9', 'One vertex self-loop graph can not be edgeColo
 
 -- 2 vertex self loop
 
-CREATE TABLE two_vertex_table (
+CREATE TABLE two_vertices_table (
     id BIGSERIAL,
     source BIGINT,
     target BIGINT,
@@ -254,13 +254,13 @@ CREATE TABLE two_vertex_table (
     reverse_cost FLOAT
 );
 
-INSERT INTO two_vertex_table (source, target, cost, reverse_cost) VALUES
+INSERT INTO two_vertices_table (source, target, cost, reverse_cost) VALUES
     (1, 2, 1, 1),
     (2, 2, 1, 1);
 
 PREPARE q10 AS
 SELECT id, source, target, cost, reverse_cost
-FROM two_vertex_table;
+FROM two_vertices_table;
 
 RETURN QUERY
 SELECT set_eq('q10',
@@ -268,7 +268,7 @@ SELECT set_eq('q10',
         (1, 1, 2, 1, 1),
         (2, 2, 2, 1, 1)
     $$,
-    'Self loop Graph with two vertex 1 and 2'
+    'Self loop Graph with two vertices 1 and 2'
 );
 
 PREPARE edgeColoring10 AS
@@ -276,6 +276,48 @@ SELECT * FROM pgr_edgeColoring('q10');
 
 RETURN QUERY
 SELECT set_eq('edgeColoring10', $$VALUES (1, 1)$$, 'One color is required');
+
+
+-- 7 vertices tree
+
+CREATE TABLE seven_vertices_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO seven_vertices_table (source, target, cost, reverse_cost) VALUES
+    (1, 2, 1, 1),
+    (1, 4, 1, 1),
+    (2, 3, 1, 1),
+    (2, 5, 1, 1),
+    (4, 6, 1, 1),
+    (4, 7, 1, 1);
+
+PREPARE q11 AS
+SELECT id, source, target, cost, reverse_cost
+FROM seven_vertices_table;
+
+RETURN QUERY
+SELECT set_eq('q11',
+    $$VALUES
+    (1, 1, 2, 1, 1),
+    (2, 1, 4, 1, 1),
+    (3, 2, 3, 1, 1),
+    (4, 2, 5, 1, 1),
+    (5, 4, 6, 1, 1),
+    (6, 4, 7, 1, 1)
+    $$,
+    'A tree Graph with seven vertices 1, 2, 3, 4, 5, 6 and 7'
+);
+
+PREPARE edgeColoring11 AS
+SELECT * FROM pgr_edgeColoring('q11');
+
+RETURN QUERY
+SELECT set_eq('edgeColoring11', $$VALUES (1, 1), (2, 2), (3, 3), (4, 2), (5, 3), (6, 1)$$, 'Three colors are required');
 
 
 END;
