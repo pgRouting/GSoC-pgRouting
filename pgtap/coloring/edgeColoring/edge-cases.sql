@@ -198,7 +198,7 @@ SELECT set_eq('q8',
         (2, 2, 3, 1, 1),
         (3, 3, 4, 1, -1),
         (4, 4, 5, 1, 1),
-        (5, 5, 1, 1, -1);
+        (5, 5, 1, 1, -1)
     $$,
     'Cyclic Graph with five vertices 1, 2, 3, 4 and 5'
 );
@@ -232,7 +232,7 @@ FROM one_vertex_table;
 RETURN QUERY
 SELECT set_eq('q9',
     $$VALUES
-        (1, 1, 1, 1, 1);
+        (1, 1, 1, 1, 1)
     $$,
     'Self loop Graph with one vertex 1'
 );
@@ -266,7 +266,7 @@ RETURN QUERY
 SELECT set_eq('q10',
     $$VALUES
         (1, 1, 2, 1, 1),
-        (2, 2, 2, 1, 1);
+        (2, 2, 2, 1, 1)
     $$,
     'Self loop Graph with two vertex 1 and 2'
 );
@@ -275,7 +275,7 @@ PREPARE edgeColoring10 AS
 SELECT * FROM pgr_edgeColoring('q10');
 
 RETURN QUERY
-SELECT is_empty('edgeColoring10', 'Two vertex self-loop graph can not be edgeColored -> Empty row is returned');
+SELECT set_eq('edgeColoring10', $$VALUES (1, 1)$$, 'One color is required');
 
 
 END;
