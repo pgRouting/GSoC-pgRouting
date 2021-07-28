@@ -1,13 +1,14 @@
 BEGIN;
+SET search_path TO 'vroom', 'public';
 
-SELECT plan(166);
+SELECT CASE WHEN min_version('0.2.0') THEN plan (399) ELSE plan(1) END;
 
 /*
 SELECT * FROM vrp_vroom(
-  $$SELECT id, location_index, service, delivery, pickup, skills, priority, time_windows_sql FROM vroom_jobs$$,
-  $$SELECT p_id, p_location_index, p_service, p_time_windows_sql, d_id, d_location_index, d_service, d_time_windows_sql, amount, skills, priority FROM vroom_shipments$$,
-  $$SELECT id, start_index, end_index, capacity, skills, tw_open, tw_close, breaks_sql FROM vroom_vehicles$$,
-  $$SELECT start_vid, end_vid, agg_cost FROM vroom_matrix$$
+  $$SELECT id, location_index, service, delivery, pickup, skills, priority, time_windows_sql FROM jobs$$,
+  $$SELECT p_id, p_location_index, p_service, p_time_windows_sql, d_id, d_location_index, d_service, d_time_windows_sql, amount, skills, priority FROM shipments$$,
+  $$SELECT id, start_index, end_index, capacity, skills, tw_open, tw_close, breaks_sql FROM vehicles$$,
+  $$SELECT start_vid, end_vid, agg_cost FROM matrix$$
 )
 */
 
@@ -116,14 +117,11 @@ END;
 $BODY$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION inner_query_jobs()
+CREATE OR REPLACE FUNCTION inner_query_jobs(fn TEXT, start_sql TEXT, rest_sql TEXT)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-  fn TEXT := 'vrp_vroom';
-  inner_query_table TEXT := 'vroom_jobs';
-  start_sql TEXT := '';
-  rest_sql TEXT := ', $$SELECT * FROM vroom_shipments$$, $$SELECT * FROM vroom_vehicles$$, $$SELECT * FROM vroom_matrix$$)';
+  inner_query_table TEXT := 'jobs';
   params TEXT[] := ARRAY['id', 'location_index', 'service', 'delivery', 'pickup', 'skills', 'priority', 'time_windows_sql'];
 BEGIN
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'id');
@@ -139,14 +137,11 @@ $BODY$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION inner_query_shipments()
+CREATE OR REPLACE FUNCTION inner_query_shipments(fn TEXT, start_sql TEXT, rest_sql TEXT)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-  fn TEXT := 'vrp_vroom';
-  inner_query_table TEXT := 'vroom_shipments';
-  start_sql TEXT := '$$SELECT * FROM vroom_jobs$$, ';
-  rest_sql TEXT := ', $$SELECT * FROM vroom_vehicles$$, $$SELECT * FROM vroom_matrix$$)';
+  inner_query_table TEXT := 'shipments';
   params TEXT[] := ARRAY['p_id', 'p_location_index', 'p_service', 'p_time_windows_sql', 'd_id', 'd_location_index', 'd_service', 'd_time_windows_sql', 'amount', 'skills', 'priority'];
 BEGIN
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'p_id');
@@ -165,14 +160,11 @@ $BODY$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION inner_query_vehicles()
+CREATE OR REPLACE FUNCTION inner_query_vehicles(fn TEXT, start_sql TEXT, rest_sql TEXT)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-  fn TEXT := 'vrp_vroom';
-  inner_query_table TEXT := 'vroom_vehicles';
-  start_sql TEXT := '$$SELECT * FROM vroom_jobs$$, $$SELECT * FROM vroom_shipments$$, ';
-  rest_sql TEXT := ', $$SELECT * FROM vroom_matrix$$)';
+  inner_query_table TEXT := 'vehicles';
   params TEXT[] := ARRAY['id', 'start_index', 'end_index', 'capacity', 'skills', 'tw_open', 'tw_close', 'breaks_sql', 'speed_factor'];
 BEGIN
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'id');
@@ -189,14 +181,11 @@ $BODY$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION inner_query_matrix()
+CREATE OR REPLACE FUNCTION inner_query_matrix(fn TEXT, start_sql TEXT, rest_sql TEXT)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-  fn TEXT := 'vrp_vroom';
-  inner_query_table TEXT := 'vroom_matrix';
-  start_sql TEXT := '$$SELECT * FROM vroom_jobs$$, $$SELECT * FROM vroom_shipments$$, $$SELECT * FROM vroom_vehicles$$, ';
-  rest_sql TEXT := ')';
+  inner_query_table TEXT := 'matrix';
   params TEXT[] := ARRAY['start_vid', 'end_vid', 'agg_cost'];
 BEGIN
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'start_vid');
@@ -206,11 +195,77 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION inner_query()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+  fn TEXT;
+  start_sql TEXT;
+  rest_sql TEXT;
+BEGIN
 
-SELECT inner_query_jobs();
-SELECT inner_query_shipments();
-SELECT inner_query_vehicles();
-SELECT inner_query_matrix();
+  IF NOT min_version('0.2.0') THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function is new on 0.2.0');
+    RETURN;
+  END IF;
 
-SELECT finish();
+  -- vrp_vroom
+
+  fn := 'vrp_vroom';
+  start_sql := '';
+  rest_sql := ', $$SELECT * FROM shipments$$, $$SELECT * FROM vehicles$$, $$SELECT * FROM matrix$$)';
+  RETURN QUERY SELECT inner_query_jobs(fn, start_sql, rest_sql);
+
+  start_sql := '$$SELECT * FROM jobs$$, ';
+  rest_sql := ', $$SELECT * FROM vehicles$$, $$SELECT * FROM matrix$$)';
+  RETURN QUERY SELECT inner_query_shipments(fn, start_sql, rest_sql);
+
+  start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM shipments$$, ';
+  rest_sql := ', $$SELECT * FROM matrix$$)';
+  RETURN QUERY SELECT inner_query_vehicles(fn, start_sql, rest_sql);
+
+  start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM shipments$$, $$SELECT * FROM vehicles$$, ';
+  rest_sql := ')';
+  RETURN QUERY SELECT inner_query_matrix(fn, start_sql, rest_sql);
+
+
+  -- vrp_vroomJobs
+
+  fn := 'vrp_vroomJobs';
+  start_sql := '';
+  rest_sql := ', $$SELECT * FROM vehicles$$, $$SELECT * FROM matrix$$)';
+  RETURN QUERY SELECT inner_query_jobs(fn, start_sql, rest_sql);
+
+  start_sql := '$$SELECT * FROM jobs$$, ';
+  rest_sql := ', $$SELECT * FROM matrix$$)';
+  RETURN QUERY SELECT inner_query_vehicles(fn, start_sql, rest_sql);
+
+  start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM vehicles$$, ';
+  rest_sql := ')';
+  RETURN QUERY SELECT inner_query_matrix(fn, start_sql, rest_sql);
+
+
+  -- vrp_vroomShipments
+
+  fn := 'vrp_vroomShipments';
+  start_sql := '';
+  rest_sql := ', $$SELECT * FROM vehicles$$, $$SELECT * FROM matrix$$)';
+  RETURN QUERY SELECT inner_query_shipments(fn, start_sql, rest_sql);
+
+  start_sql := '$$SELECT * FROM shipments$$, ';
+  rest_sql := ', $$SELECT * FROM matrix$$)';
+  RETURN QUERY SELECT inner_query_vehicles(fn, start_sql, rest_sql);
+
+  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM vehicles$$, ';
+  rest_sql := ')';
+  RETURN QUERY SELECT inner_query_matrix(fn, start_sql, rest_sql);
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+
+SELECT inner_query();
+
+SELECT * FROM finish();
 ROLLBACK;
