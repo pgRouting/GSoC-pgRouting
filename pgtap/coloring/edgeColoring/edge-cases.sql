@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('3.3.0') THEN plan(1) ELSE plan(25) END;
+SELECT CASE WHEN NOT min_version('3.3.0') THEN plan(1) ELSE plan(27) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -356,6 +356,40 @@ RETURN QUERY
 SELECT set_eq('edgeColoring12', $$VALUES (1, 1), (2, 2)$$, 'Two colors are required');
 
 
+-- 2 vertices multiple edge
+
+CREATE TABLE two_vertices_multiple_edge_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO two_vertices_multiple_edge_table (source, target, cost, reverse_cost) VALUES
+    (1, 2, 1, 1),
+    (2, 1, 1, 1);
+
+PREPARE q13 AS
+SELECT id, source, target, cost, reverse_cost
+FROM two_vertices_multiple_edge_table;
+
+RETURN QUERY
+SELECT set_eq('q13',
+    $$VALUES
+        (1, 1, 2, 1, 1),
+        (2, 2, 1, 1, 1)
+    $$,
+    'Multiple edge Graph with two vertices 1 and 2'
+);
+
+PREPARE edgeColoring13 AS
+SELECT * FROM pgr_edgeColoring('q13');
+
+RETURN QUERY
+SELECT set_eq('edgeColoring13', $$VALUES (1, 1)$$, 'One color is required');
+
+
 -- 4 vertices disconnected graph
 
 CREATE TABLE disconnected_graph_table (
@@ -370,12 +404,12 @@ INSERT INTO disconnected_graph_table (source, target, cost, reverse_cost) VALUES
     (1, 2, 1, 1),
     (3, 4, 1, 1);
 
-PREPARE q13 AS
+PREPARE q14 AS
 SELECT id, source, target, cost, reverse_cost
 FROM disconnected_graph_table;
 
 RETURN QUERY
-SELECT set_eq('q13',
+SELECT set_eq('q14',
     $$VALUES
         (1, 1, 2, 1, 1),
         (2, 3, 4, 1, 1)
@@ -383,11 +417,11 @@ SELECT set_eq('q13',
     'Disconnected Graph with four vertices 1, 2, 3 and 4'
 );
 
-PREPARE edgeColoring13 AS
-SELECT * FROM pgr_edgeColoring('q13');
+PREPARE edgeColoring14 AS
+SELECT * FROM pgr_edgeColoring('q14');
 
 RETURN QUERY
-SELECT set_eq('edgeColoring13', $$VALUES (1, 1), (2, 1)$$, 'One color is required');
+SELECT set_eq('edgeColoring14', $$VALUES (1, 1), (2, 1)$$, 'One color is required');
 
 
 END;
