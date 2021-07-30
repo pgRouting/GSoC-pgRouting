@@ -1,7 +1,7 @@
 BEGIN;
 SET search_path TO 'vroom', 'public';
 
-SELECT CASE WHEN min_version('0.2.0') THEN plan (4) ELSE plan(1) END;
+SELECT CASE WHEN min_version('0.2.0') THEN plan (14) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -217,7 +217,7 @@ BEGIN
     'jobs',
     'shipments',
     'vehicles',
-    'SELECT * FROM matrix WHERE start_vid < end_vid'9
+    'SELECT * FROM matrix WHERE start_vid < end_vid'
   );
   RETURN QUERY
   SELECT set_eq('missing_reverse_cost_on_matrix', 'vroom_sql', 'Reverse cost is equal to the cost, if not specified');
