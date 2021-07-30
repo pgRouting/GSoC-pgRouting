@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('3.3.0') THEN plan(1) ELSE plan(15) END;
+SELECT CASE WHEN NOT min_version('3.3.0') THEN plan(1) ELSE plan(27) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -42,7 +42,7 @@ PREPARE edgeColoring2 AS
 SELECT * FROM pgr_edgeColoring('q2');
 
 RETURN QUERY
-SELECT is_empty('edgeColoring2', 'One vertex graph can not be edgeColored-> Empty row is returned');
+SELECT is_empty('edgeColoring2', 'One vertex graph can not be edgeColored -> Empty row is returned');
 
 
 -- 2 vertices test (connected)
@@ -198,9 +198,9 @@ SELECT set_eq('q8',
         (2, 2, 3, 1, 1),
         (3, 3, 4, 1, -1),
         (4, 4, 5, 1, 1),
-        (5, 5, 1, 1, -1);
+        (5, 5, 1, 1, -1)
     $$,
-    'Cyclic Graph with 5 vertices 3, 6 and 8'
+    'Cyclic Graph with five vertices 1, 2, 3, 4 and 5'
 );
 
 PREPARE edgeColoring8 AS
@@ -208,6 +208,220 @@ SELECT * FROM pgr_edgeColoring('q8');
 
 RETURN QUERY
 SELECT set_eq('edgeColoring8', $$VALUES (1, 1), (2, 2), (3, 3), (4, 1), (5, 2)$$, 'Three colors are required');
+
+
+-- self loop test
+
+-- 1 vertex self loop
+
+CREATE TABLE one_vertex_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO one_vertex_table (source, target, cost, reverse_cost) VALUES
+    (1, 1, 1, 1);
+
+PREPARE q9 AS
+SELECT id, source, target, cost, reverse_cost
+FROM one_vertex_table;
+
+RETURN QUERY
+SELECT set_eq('q9',
+    $$VALUES
+        (1, 1, 1, 1, 1)
+    $$,
+    'Self loop Graph with one vertex 1'
+);
+
+PREPARE edgeColoring9 AS
+SELECT * FROM pgr_edgeColoring('q9');
+
+RETURN QUERY
+SELECT is_empty('edgeColoring9', 'One vertex self-loop graph can not be edgeColored -> Empty row is returned');
+
+
+-- 2 vertex self loop
+
+CREATE TABLE two_vertices_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO two_vertices_table (source, target, cost, reverse_cost) VALUES
+    (1, 2, 1, 1),
+    (2, 2, 1, 1);
+
+PREPARE q10 AS
+SELECT id, source, target, cost, reverse_cost
+FROM two_vertices_table;
+
+RETURN QUERY
+SELECT set_eq('q10',
+    $$VALUES
+        (1, 1, 2, 1, 1),
+        (2, 2, 2, 1, 1)
+    $$,
+    'Self loop Graph with two vertices 1 and 2'
+);
+
+PREPARE edgeColoring10 AS
+SELECT * FROM pgr_edgeColoring('q10');
+
+RETURN QUERY
+SELECT set_eq('edgeColoring10', $$VALUES (1, 1)$$, 'One color is required');
+
+
+-- 7 vertices tree
+
+CREATE TABLE seven_vertices_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO seven_vertices_table (source, target, cost, reverse_cost) VALUES
+    (1, 2, 1, 1),
+    (1, 4, 1, 1),
+    (2, 3, 1, 1),
+    (2, 5, 1, 1),
+    (4, 6, 1, 1),
+    (4, 7, 1, 1);
+
+PREPARE q11 AS
+SELECT id, source, target, cost, reverse_cost
+FROM seven_vertices_table;
+
+RETURN QUERY
+SELECT set_eq('q11',
+    $$VALUES
+    (1, 1, 2, 1, 1),
+    (2, 1, 4, 1, 1),
+    (3, 2, 3, 1, 1),
+    (4, 2, 5, 1, 1),
+    (5, 4, 6, 1, 1),
+    (6, 4, 7, 1, 1)
+    $$,
+    'A tree Graph with seven vertices 1, 2, 3, 4, 5, 6 and 7'
+);
+
+PREPARE edgeColoring11 AS
+SELECT * FROM pgr_edgeColoring('q11');
+
+RETURN QUERY
+SELECT set_eq('edgeColoring11', $$VALUES (1, 1), (2, 2), (3, 3), (4, 2), (5, 3), (6, 1)$$, 'Three colors are required');
+
+
+-- 3 vertices multiple edge
+
+CREATE TABLE multiple_edge_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO multiple_edge_table (source, target, cost, reverse_cost) VALUES
+    (1, 2, 1, 1),
+    (2, 3, 1, 1),
+    (3, 2, 1, 1);
+
+PREPARE q12 AS
+SELECT id, source, target, cost, reverse_cost
+FROM multiple_edge_table;
+
+RETURN QUERY
+SELECT set_eq('q12',
+    $$VALUES
+        (1, 1, 2, 1, 1),
+        (2, 2, 3, 1, 1),
+        (3, 3, 2, 1, 1)
+    $$,
+    'Multiple edge Graph with three vertices 1, 2 and 3'
+);
+
+PREPARE edgeColoring12 AS
+SELECT * FROM pgr_edgeColoring('q12');
+
+RETURN QUERY
+SELECT set_eq('edgeColoring12', $$VALUES (1, 1), (2, 2)$$, 'Two colors are required');
+
+
+-- 2 vertices multiple edge
+
+CREATE TABLE two_vertices_multiple_edge_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO two_vertices_multiple_edge_table (source, target, cost, reverse_cost) VALUES
+    (1, 2, 1, 1),
+    (2, 1, 1, 1);
+
+PREPARE q13 AS
+SELECT id, source, target, cost, reverse_cost
+FROM two_vertices_multiple_edge_table;
+
+RETURN QUERY
+SELECT set_eq('q13',
+    $$VALUES
+        (1, 1, 2, 1, 1),
+        (2, 2, 1, 1, 1)
+    $$,
+    'Multiple edge Graph with two vertices 1 and 2'
+);
+
+PREPARE edgeColoring13 AS
+SELECT * FROM pgr_edgeColoring('q13');
+
+RETURN QUERY
+SELECT set_eq('edgeColoring13', $$VALUES (1, 1)$$, 'One color is required');
+
+
+-- 4 vertices disconnected graph
+
+CREATE TABLE disconnected_graph_table (
+    id BIGSERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+    reverse_cost FLOAT
+);
+
+INSERT INTO disconnected_graph_table (source, target, cost, reverse_cost) VALUES
+    (1, 2, 1, 1),
+    (3, 4, 1, 1);
+
+PREPARE q14 AS
+SELECT id, source, target, cost, reverse_cost
+FROM disconnected_graph_table;
+
+RETURN QUERY
+SELECT set_eq('q14',
+    $$VALUES
+        (1, 1, 2, 1, 1),
+        (2, 3, 4, 1, 1)
+    $$,
+    'Disconnected Graph with four vertices 1, 2, 3 and 4'
+);
+
+PREPARE edgeColoring14 AS
+SELECT * FROM pgr_edgeColoring('q14');
+
+RETURN QUERY
+SELECT set_eq('edgeColoring14', $$VALUES (1, 1), (2, 1)$$, 'One color is required');
 
 
 END;
