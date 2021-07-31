@@ -28,6 +28,8 @@
 #  DEALINGS IN THE SOFTWARE.
 ###############################################################################
 
+set -e
+
 if ! test -d code_linter; then
     # Get our fork of codespell that adds --words-white-list and full filename support for -S option
     mkdir code_linter
@@ -39,16 +41,12 @@ if ! test -d code_linter; then
     echo code_linter installed
 fi
 
-# Storing the error code
-error=0
-
 function test_c_files {
     if test -n "$1"; then
         echo "--------------------"
         echo "------   *.c  ------"
         echo "--------------------"
         python2 code_linter/styleguide/cpplint/cpplint.py --extensions=c  --linelength=120 --filter=-readability/casting $1
-        error=$(($error + $?))
     fi
 }
 
@@ -58,7 +56,6 @@ function test_cpp_files {
         echo "------ *.cpp  ------"
         echo "--------------------"
         python2 code_linter/styleguide/cpplint/cpplint.py --linelength=120 $1
-        error=$(($error + $?))
     fi
 }
 
@@ -68,7 +65,6 @@ function test_headers {
         echo "----- HEADERS  -----"
         echo "--------------------"
         python2 code_linter/styleguide/cpplint/cpplint.py --extensions=hpp,h --headers=hpp,h  --linelength=120 --filter=-runtime/references $1
-        error=$(($error + $?))
     fi
 }
 
@@ -90,12 +86,3 @@ else
         test_cpp_files "$(git ls-files | grep -w 'cpp' | grep ${DIRECTORY})"
     fi
 fi
-
-if [ $error -eq 0 ] ; then
-    echo "No errors detected."
-else
-    echo "Errors found in the files, aborting."
-fi
-
-# Exit with an error code, exit 0 in case of no error
-exit $error

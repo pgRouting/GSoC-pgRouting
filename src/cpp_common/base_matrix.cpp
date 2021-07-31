@@ -299,7 +299,7 @@ Base_Matrix::Base_Matrix(Matrix_cell_t *data_costs, size_t size_matrix,
      * If the opposite direction is infinity insert the same cost
      */
     if (m_time_matrix[get_index(data.to_vid)][get_index(data.from_vid)] ==
-        (std::numeric_limits<Distance>::max)()) {
+        (std::numeric_limits<TInterval>::max)()) {
       m_time_matrix[get_index(data.to_vid)][get_index(data.from_vid)] =
         m_time_matrix[get_index(data.from_vid)][get_index(data.to_vid)];
     }

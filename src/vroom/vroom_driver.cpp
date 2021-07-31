@@ -90,10 +90,8 @@ do_vrp_vroom(
     pgassert(!(*return_count));
     pgassert(jobs || shipments);
     pgassert(vehicles);
-    pgassert(matrix_cells_arr);
     pgassert(total_jobs || total_shipments);
     pgassert(total_vehicles);
-    pgassert(total_cells);
 
     Identifiers<Id> location_ids;
 
@@ -119,7 +117,7 @@ do_vrp_vroom(
     if (!time_matrix.has_no_infinity()) {
       (*return_tuples) = NULL;
       (*return_count) = 0;
-      err << "An Infinity value was found on the Matrix";
+      err << "An Infinity value was found on the Matrix. Might be missing information of a node";
       *err_msg = pgr_msg(err.str());
       return;
     }

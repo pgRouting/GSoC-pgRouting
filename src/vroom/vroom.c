@@ -119,7 +119,8 @@ process(
   char *notice_msg = NULL;
   char *err_msg = NULL;
 
-  do_vrp_vroom(
+  if ((jobs || shipments) && vehicles) {
+    do_vrp_vroom(
       jobs, total_jobs,
       shipments, total_shipments,
       vehicles, total_vehicles,
@@ -131,6 +132,7 @@ process(
       &log_msg,
       &notice_msg,
       &err_msg);
+  }
 
   time_msg("processing vrp_vroom", start_t, clock());
 
