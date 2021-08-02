@@ -6,16 +6,31 @@ FROM vrp_vroom(
       VALUES (1414, 2), (1515, 3)
     ) AS C(id, location_index)
   $jobs$,
+  $jobs_tw$
+    SELECT * FROM vroom.jobs_time_windows WHERE id = -1
+  $jobs_tw$,
   $shipments$
     SELECT * FROM (
       VALUES (100, 1, 200, 4)
     ) AS C(p_id, p_location_index, d_id, d_location_index)
   $shipments$,
+  $p_tw$
+    SELECT * FROM vroom.p_time_windows WHERE id = -1
+  $p_tw$,
+  $d_tw$
+    SELECT * FROM vroom.d_time_windows WHERE id = -1
+  $d_tw$,
   $vehicles$
     SELECT * FROM (
       VALUES (1, 1, 4)
     ) AS C(id, start_index, end_index)
   $vehicles$,
+  $breaks$
+    SELECT * FROM vroom.breaks WHERE id = -1
+  $breaks$,
+  $breaks_tw$
+    SELECT * FROM vroom.breaks_time_windows WHERE id = -1
+  $breaks_tw$,
   $matrix$
     SELECT * FROM (
       VALUES (1, 2, 2104), (1, 3, 197), (1, 4, 1299),
@@ -29,8 +44,13 @@ FROM vrp_vroom(
 SELECT *
 FROM vrp_vroom(
   'SELECT * FROM vroom.jobs',
+  'SELECT * FROM vroom.jobs_time_windows',
   'SELECT * FROM vroom.shipments',
+  'SELECT * FROM vroom.p_time_windows',
+  'SELECT * FROM vroom.d_time_windows',
   'SELECT * FROM vroom.vehicles',
+  'SELECT * FROM vroom.breaks',
+  'SELECT * FROM vroom.breaks_time_windows',
   'SELECT * FROM vroom.matrix'
 );
 \echo -- q3
