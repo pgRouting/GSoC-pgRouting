@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_C_COMMON_VROOM_TIME_WINDOWS_INPUT_H_
 #pragma once
 
+#include <stdbool.h>
 #include <stddef.h>
 
 #include "c_common/get_check_data.h"

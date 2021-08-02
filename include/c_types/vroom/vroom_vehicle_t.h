@@ -32,7 +32,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include "c_types/typedefs.h"
-#include "c_types/vroom/vroom_break_t.h"
 
 /** @brief Vehicles's attributes
 
@@ -48,8 +47,6 @@ skills | Vehicle's skills
 skills_size | Number of vehicle's skills
 time_window_start | Time window start time
 time_window_end | Time window end time
-breaks | Vehicle's breaks
-breaks_size | Number of breaks
 speed_factor | Vehicle travel time multiplier
 */
 struct Vroom_vehicle_t {
@@ -65,9 +62,6 @@ struct Vroom_vehicle_t {
 
   Duration time_window_start; /** Time window start time */
   Duration time_window_end; /** Time window end time */
-
-  Vroom_break_t *breaks; /** Vehicle's breaks */
-  size_t breaks_size; /** Number of breaks */
 
   double speed_factor; /** Vehicle travel time multiplier */
 };

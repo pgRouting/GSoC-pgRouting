@@ -54,23 +54,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * function `vrp_vroom` which calls the main function defined in the
  * C++ Header file. It also does exception handling.
  *
- * @param jobs_sql       SQL query describing the jobs
- * @param shipments_sql  SQL query describing the shipments
- * @param vehicles_sql   SQL query describing the vehicles
- * @param matrix_sql     SQL query describing the cells of the cost matrix
- * @param result_tuples  the rows in the result
- * @param result_count   the count of rows in the result
- * @param log_msg    stores the log message
- * @param notice_msg   stores the notice message
- * @param err_msg    stores the error message
+ * @param jobs_sql          SQL query describing the jobs
+ * @param jobs_tw_sql       SQL query describing the time window for jobs
+ * @param shipments_sql     SQL query describing the shipments
+ * @param pickup_tw_sql     SQL query describing the time windows for pickup shipment
+ * @param delivery_tw_sql   SQL query describing the time windows for delivery shipment
+ * @param vehicles_sql      SQL query describing the vehicles
+ * @param breaks_sql        SQL query describing the driver breaks.
+ * @param breaks_tws_sql    SQL query describing the time windows for break start.
+ * @param matrix_sql        SQL query describing the cells of the cost matrix
+ * @param result_tuples     the rows in the result
+ * @param result_count      the count of rows in the result
+ * @param log_msg           stores the log message
+ * @param notice_msg        stores the notice message
+ * @param err_msg           stores the error message
  *
  * @returns void
  */
 void
 do_vrp_vroom(
     Vroom_job_t *jobs, size_t total_jobs,
+    Vroom_time_window_t *jobs_tws, size_t total_jobs_tws,
     Vroom_shipment_t *shipments, size_t total_shipments,
+    Vroom_time_window_t *pickup_tws, size_t total_pickup_tws,
+    Vroom_time_window_t *delivery_tws, size_t total_delivery_tws,
     Vroom_vehicle_t *vehicles, size_t total_vehicles,
+    Vroom_break_t *breaks, size_t total_breaks,
+    Vroom_time_window_t *breaks_tws, size_t total_breaks_tws,
     Matrix_cell_t *matrix_cells_arr, size_t total_cells,
 
     Vroom_rt **return_tuples,
@@ -135,9 +145,14 @@ do_vrp_vroom(
 
     vrprouting::Vrp_vroom_problem problem;
     problem.add_matrix(time_matrix);
-    problem.add_jobs(jobs, total_jobs);
-    problem.add_shipments(shipments, total_shipments);
-    problem.add_vehicles(vehicles, total_vehicles);
+    problem.add_jobs(jobs, total_jobs,
+                     jobs_tws, total_jobs_tws);
+    problem.add_shipments(shipments, total_shipments,
+                          pickup_tws, total_pickup_tws,
+                          delivery_tws, total_delivery_tws);
+    problem.add_vehicles(vehicles, total_vehicles,
+                         breaks, total_breaks,
+                         breaks_tws, total_breaks_tws);
 
     std::vector < Vroom_rt > results = problem.solve();
 

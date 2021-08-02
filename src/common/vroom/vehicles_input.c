@@ -36,7 +36,7 @@ A ``SELECT`` statement that returns the following columns:
 ::
 
     id, start_index, end_index
-    [, capacity, skills, tw_open, tw_close, breaks_sql, speed_factor]
+    [, capacity, skills, tw_open, tw_close, speed_factor]
 
 
 ======================  ================================= ================================================
@@ -61,8 +61,6 @@ Column                  Type                              Description
 **tw_open**             ``INTEGER``                        Time window opening time.
 
 **tw_close**            ``INTEGER``                        Time window closing time.
-
-**breaks_sql**          ``TEXT``                           `Breaks SQL`_ query describing the driver breaks.
 
 **speed_factor**        ``ANY-NUMERICAL``                  Vehicle travel time multiplier.
 ======================  ================================= ================================================
@@ -103,18 +101,8 @@ void fetch_vehicles(
   vehicle->time_window_start = get_Duration(tuple, tupdesc, info[5], 0);
   vehicle->time_window_end = get_Duration(tuple, tupdesc, info[6], UINT_MAX);
 
-  vehicle->breaks_size = 0;
-  vehicle->breaks = NULL;
-  if (column_found(info[7].colNumber)) {
-    char *breaks_sql = spi_getText(tuple, tupdesc, info[7]);
-    if (breaks_sql) {
-      get_vroom_breaks(breaks_sql,
-        &vehicle->breaks, &vehicle->breaks_size);
-    }
-  }
-
-  vehicle->speed_factor = column_found(info[8].colNumber) ?
-    spi_getFloat8(tuple, tupdesc, info[8])
+  vehicle->speed_factor = column_found(info[7].colNumber) ?
+    spi_getFloat8(tuple, tupdesc, info[7])
     : 1.0;
 }
 
@@ -204,7 +192,7 @@ get_vroom_vehicles(
     char *sql,
     Vroom_vehicle_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 9;
+  const int kColumnCount = 8;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {
@@ -221,16 +209,14 @@ get_vroom_vehicles(
   info[4].name = "skills";
   info[5].name = "tw_open";
   info[6].name = "tw_close";
-  info[7].name = "breaks_sql";
-  info[8].name = "speed_factor";
+  info[7].name = "speed_factor";
 
   info[3].eType = ANY_INTEGER_ARRAY;  // capacity
   info[4].eType = INTEGER_ARRAY;      // skills
   info[5].eType = INTEGER;            // tw_open
   info[6].eType = INTEGER;            // tw_close
 
-  info[7].eType = TEXT;               // breaks_sql
-  info[8].eType = ANY_NUMERICAL;      // speed_factor
+  info[7].eType = ANY_NUMERICAL;      // speed_factor
 
   /* id, stand and end index are mandatory */
   info[0].strict = true;

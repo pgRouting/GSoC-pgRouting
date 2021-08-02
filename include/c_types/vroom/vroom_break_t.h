@@ -32,7 +32,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include "c_types/typedefs.h"
-#include "c_types/vroom/vroom_time_window_t.h"
 
 /** @brief Vehicle's break attributes
 
@@ -40,16 +39,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 name | description
 :----- | :-------
 id | Identifier of break
-time_windows | Valid slots for break start
-time_windows_size | Number of valid slots
+vehicle_id | Identifier of vehicle
 service | Duration of break
 */
 struct Vroom_break_t {
   Idx id; /** Identifier of break */
-
-  Vroom_time_window_t *time_windows; /** Valid slots for break start */
-  size_t time_windows_size; /** Number of valid slots */
-
+  Idx vehicle_id;  /** Identifier of vehicle */
   Duration service; /** Duration of break */
 };
 

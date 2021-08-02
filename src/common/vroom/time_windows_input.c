@@ -35,11 +35,14 @@ A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    tw_open, tw_close
+    id, tw_open, tw_close
 
 ====================  ====================================== ================================================
 Column                Type                                   Description
 ====================  ====================================== ================================================
+**id**                ``ANY-INTEGER``                         Non-negative unique identifier of the job,
+                                                              pickup/delivery shipment, or break.
+
 **tw_open**           ``INTEGER``                             Time window opening time.
 
 **tw_close**          ``INTEGER``                             Time window closing time.
@@ -63,8 +66,10 @@ void fetch_time_windows(
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_time_window_t *time_window) {
-  time_window->start_time = get_Duration(tuple, tupdesc, info[0], 0);
-  time_window->end_time = get_Duration(tuple, tupdesc, info[1], 0);
+
+  time_window->id = get_Idx(tuple, tupdesc, info[0], 0);
+  time_window->start_time = get_Duration(tuple, tupdesc, info[1], 0);
+  time_window->end_time = get_Duration(tuple, tupdesc, info[2], 0);
 
   if (time_window->start_time > time_window->end_time) {
     ereport(ERROR,
@@ -162,7 +167,7 @@ get_vroom_time_windows(
     char *sql,
     Vroom_time_window_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 2;
+  const int kColumnCount = 3;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {
@@ -172,8 +177,11 @@ get_vroom_time_windows(
     info[i].eType = INTEGER;
   }
 
-  info[0].name = "tw_open";
-  info[1].name = "tw_close";
+  info[0].name = "id";
+  info[1].name = "tw_open";
+  info[2].name = "tw_close";
+
+  info[0].eType = ANY_INTEGER;  // id
 
   db_get_time_windows(sql, rows, total_rows, info, kColumnCount);
 }

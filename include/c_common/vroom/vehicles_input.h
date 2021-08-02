@@ -33,8 +33,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stddef.h>
 
 #include "c_common/get_check_data.h"
-#include "c_common/vroom/breaks_input.h"
-#include "c_common/vroom/steps_input.h"
 #include "c_types/column_info_t.h"
 #include "c_types/vroom/vroom_vehicle_t.h"
 

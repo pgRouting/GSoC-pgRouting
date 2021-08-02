@@ -35,8 +35,8 @@ A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    p_id, p_location_index [, p_service, p_time_windows_sql],
-    d_id, d_location_index [, d_service, d_time_windows_sql]
+    p_id, p_location_index [, p_service],
+    d_id, d_location_index [, d_service]
     [, amount, skills, priority]
 
 
@@ -50,18 +50,12 @@ Column                  Type                       Default     Description
 
 **p_service**           ``INTEGER``                0            Pickup service duration, in seconds
 
-**p_time_windows_sql**  ``TEXT``                                `Time Windows SQL`_ query describing valid slots
-                                                                for pickup service start.
-
 **d_id**                ``ANY-INTEGER``                         Non-negative unique identifier of the delivery
                                                                 shipment (unique for delivery).
 
 **d_location_index**    ``ANY-INTEGER``                         Non-negative identifier of the delivery location.
 
 **d_service**           ``INTEGER``                0            Delivery service duration, in seconds
-
-**d_time_windows_sql**  ``TEXT``                                `Time Windows SQL`_ query describing valid slots
-                                                                for delivery service start.
 
 **amount**              ``ARRAY[ANY-INTEGER]``                  Array of non-negative integers describing
                                                                 multidimensional quantities such as number
@@ -98,43 +92,25 @@ void fetch_shipments(
   shipment->p_id = get_Idx(tuple, tupdesc, info[0], 0);
   shipment->p_location_index = get_MatrixIndex(tuple, tupdesc, info[1], 0);
   shipment->p_service = get_Duration(tuple, tupdesc, info[2], 0);
-  shipment->p_time_windows_size = 0;
-  shipment->p_time_windows = NULL;
-  if (column_found(info[3].colNumber)) {
-    char *p_time_windows_sql = spi_getText(tuple, tupdesc, info[3]);
-    if (p_time_windows_sql) {
-      get_vroom_time_windows(p_time_windows_sql,
-        &shipment->p_time_windows, &shipment->p_time_windows_size);
-    }
-  }
 
   /*
    * The deliveries
    */
-  shipment->d_id = get_Idx(tuple, tupdesc, info[4], 0);
-  shipment->d_location_index = get_MatrixIndex(tuple, tupdesc, info[5], 0);
-  shipment->d_service = get_Duration(tuple, tupdesc, info[6], 0);
-  shipment->d_time_windows_size = 0;
-  shipment->d_time_windows = NULL;
-  if (column_found(info[7].colNumber)) {
-    char *d_time_windows_sql = spi_getText(tuple, tupdesc, info[7]);
-    if (d_time_windows_sql) {
-      get_vroom_time_windows(d_time_windows_sql,
-        &shipment->d_time_windows, &shipment->d_time_windows_size);
-    }
-  }
+  shipment->d_id = get_Idx(tuple, tupdesc, info[3], 0);
+  shipment->d_location_index = get_MatrixIndex(tuple, tupdesc, info[4], 0);
+  shipment->d_service = get_Duration(tuple, tupdesc, info[5], 0);
 
   shipment->amount_size = 0;
-  shipment->amount = column_found(info[8].colNumber) ?
-    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[8], &shipment->amount_size)
+  shipment->amount = column_found(info[6].colNumber) ?
+    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[6], &shipment->amount_size)
     : NULL;
 
   shipment->skills_size = 0;
-  shipment->skills = column_found(info[9].colNumber) ?
-    spi_getPositiveIntArr_allowEmpty(tuple, tupdesc, info[9], &shipment->skills_size)
+  shipment->skills = column_found(info[7].colNumber) ?
+    spi_getPositiveIntArr_allowEmpty(tuple, tupdesc, info[7], &shipment->skills_size)
     : NULL;
 
-  shipment->priority = get_Priority(tuple, tupdesc, info[10], 0);
+  shipment->priority = get_Priority(tuple, tupdesc, info[8], 0);
 }
 
 
@@ -223,7 +199,7 @@ get_vroom_shipments(
     char *sql,
     Vroom_shipment_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 11;
+  const int kColumnCount = 9;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {
@@ -237,31 +213,27 @@ get_vroom_shipments(
   info[0].name = "p_id";
   info[1].name = "p_location_index";
   info[2].name = "p_service";
-  info[3].name = "p_time_windows_sql";
 
   /* delivery shipments */
-  info[4].name = "d_id";
-  info[5].name = "d_location_index";
-  info[6].name = "d_service";
-  info[7].name = "d_time_windows_sql";
+  info[3].name = "d_id";
+  info[4].name = "d_location_index";
+  info[5].name = "d_service";
 
-  info[8].name = "amount";
-  info[9].name = "skills";
-  info[10].name = "priority";
+  info[6].name = "amount";
+  info[7].name = "skills";
+  info[8].name = "priority";
 
   info[2].eType = INTEGER;            // p_service
-  info[3].eType = TEXT;               // p_time_windows_sql
-  info[6].eType = INTEGER;            // d_service
-  info[7].eType = TEXT;               // d_time_windows_sql
-  info[8].eType = ANY_INTEGER_ARRAY;  // amount
-  info[9].eType = INTEGER_ARRAY;      // skills
-  info[10].eType = INTEGER;           // priority
+  info[5].eType = INTEGER;            // d_service
+  info[6].eType = ANY_INTEGER_ARRAY;  // amount
+  info[7].eType = INTEGER_ARRAY;      // skills
+  info[8].eType = INTEGER;            // priority
 
   /* id and location_index of pickup and delivery are mandatory */
   info[0].strict = true;
   info[1].strict = true;
+  info[3].strict = true;
   info[4].strict = true;
-  info[5].strict = true;
 
   db_get_shipments(sql, rows, total_rows, info, kColumnCount);
 }
