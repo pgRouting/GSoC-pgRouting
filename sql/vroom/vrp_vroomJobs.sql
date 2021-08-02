@@ -31,7 +31,10 @@ signature start
 
 .. code-block:: none
 
-    vrp_vroomJobs(Jobs SQL, Vehicles SQL, Matrix SQL)  -- Experimental on v0.2
+    vrp_vroomJobs(
+      Jobs SQL, Jobs Time Windows SQL,
+      Vehicles SQL, Breaks SQL, Breaks Time Windows SQL,
+      Matrix SQL)  -- Experimental on v0.2
 
     RETURNS SET OF
     (seq, vehicle_seq, vehicle_id, step_seq, step_type, task_id,
@@ -41,14 +44,20 @@ signature end
 
 parameters start
 
-=================== ======================== =================================================
-Parameter           Type                     Description
-=================== ======================== =================================================
-**Jobs SQL**        ``TEXT``                 `Jobs SQL`_ query describing the places to visit.
-**Vehicles SQL**    ``TEXT``                 `Vehicles SQL`_ query describing the available vehicles.
-**Matrix SQL**      ``TEXT``                 `Time Matrix SQL`_ query containing the distance or
-                                             travel times between the locations.
-=================== ======================== =================================================
+============================== =========== =========================================================
+Parameter                      Type        Description
+============================== =========== =========================================================
+**Jobs SQL**                   ``TEXT``    `Jobs SQL`_ query describing the single-location
+                                           pickup and/or delivery tasks.
+**Jobs Time Windows SQL**      ``TEXT``    `Time Windows SQL`_ query describing valid slots
+                                           for job service start.
+**Vehicles SQL**               ``TEXT``    `Vehicles SQL`_ query describing the available vehicles.
+**Breaks SQL**                 ``TEXT``    `Breaks SQL`_ query describing the driver breaks.
+**Breaks Time Windows SQL**    ``TEXT``    `Time Windows SQL`_ query describing valid slots for
+                                           break start.
+**Matrix SQL**                 ``TEXT``    `Time Matrix SQL`_ query containing the distance or
+                                           travel times between the locations.
+============================== =========== =========================================================
 
 parameters end
 
@@ -57,7 +66,10 @@ parameters end
 -- v0.2
 CREATE FUNCTION vrp_vroomJobs(
     TEXT,  -- jobs_sql (required)
+    TEXT,  -- jobs_time_windows_sql (required)
     TEXT,  -- vehicles_sql (required)
+    TEXT,  -- breaks_sql (required)
+    TEXT,  -- breaks_time_windows_sql (required)
     TEXT,  -- matrix_sql (required)
 
     OUT seq BIGINT,
@@ -74,25 +86,32 @@ CREATE FUNCTION vrp_vroomJobs(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _vrp_vroom(_pgr_get_statement($1), NULL, _pgr_get_statement($2),
-                    _pgr_get_statement($3));
+    FROM _vrp_vroom(_pgr_get_statement($1), _pgr_get_statement($2), NULL, NULL, NULL,
+                    _pgr_get_statement($3), _pgr_get_statement($4),
+                    _pgr_get_statement($5), _pgr_get_statement($6));
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 
 -- COMMENTS
 
-COMMENT ON FUNCTION vrp_vroomJobs(TEXT, TEXT, TEXT)
-IS 'vrp_vroom
+COMMENT ON FUNCTION vrp_vroomJobs(TEXT, TEXT, TEXT, TEXT, TEXT, TEXT)
+IS 'vrp_vroomJobs
  - EXPERIMENTAL
  - Parameters:
    - Jobs SQL with columns:
        id, location_index [, service, delivery, pickup, skills, priority, time_windows]
+   - Jobs Time Windows SQL with columns:
+       id, tw_open, tw_close
    - Vehicles SQL with columns:
        id, start_index, end_index
        [, service, delivery, pickup, skills, priority, time_window, breaks_sql, steps_sql]
+   - Breaks SQL with columns:
+       id [, service]
+   - Breaks Time Windows SQL with columns:
+       id, tw_open, tw_close
    - Matrix SQL with columns:
-        start_vid, end_vid, agg_cost
-- Documentation:
-   - ${PROJECT_DOC_LINK}/vrp_vroom.html
+       start_vid, end_vid, agg_cost
+ - Documentation:
+   - ${PROJECT_DOC_LINK}/vrp_vroomJobs.html
 ';
