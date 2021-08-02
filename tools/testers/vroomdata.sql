@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS vroom.matrix;
 
 -- JOBS TABLE start
 CREATE TABLE vroom.jobs (
-  id BIGINT,
+  id BIGSERIAL PRIMARY KEY,
   location_index BIGINT,
   service INTEGER,
   delivery BIGINT[],
@@ -36,7 +36,7 @@ INSERT INTO vroom.jobs (
 
 -- JOBS TIME WINDOWS TABLE start
 CREATE TABLE vroom.jobs_time_windows (
-  id BIGINT,
+  id BIGINT REFERENCES vroom.jobs(id),
   tw_open INTEGER,
   tw_close INTEGER
 );
@@ -54,11 +54,11 @@ INSERT INTO vroom.jobs_time_windows (
 
 -- SHIPMENTS TABLE start
 CREATE TABLE vroom.shipments (
-  id BIGSERIAL,
-  p_id BIGINT,
+  id BIGSERIAL PRIMARY KEY,
+  p_id BIGINT UNIQUE,
   p_location_index BIGINT,
   p_service INTEGER,
-  d_id BIGINT,
+  d_id BIGINT UNIQUE,
   d_location_index BIGINT,
   d_service INTEGER,
   amount BIGINT[],
@@ -91,7 +91,7 @@ INSERT INTO vroom.shipments (
 
 -- PICKUP TIME WINDOWS TABLE start
 CREATE TABLE vroom.p_time_windows (
-  id BIGINT,
+  id BIGINT REFERENCES vroom.shipments(p_id),
   tw_open INTEGER,
   tw_close INTEGER
 );
@@ -109,7 +109,7 @@ INSERT INTO vroom.p_time_windows (
 
 -- DELIVERY TIME WINDOWS TABLE start
 CREATE TABLE vroom.d_time_windows (
-  id BIGINT,
+  id BIGINT REFERENCES vroom.shipments(d_id),
   tw_open INTEGER,
   tw_close INTEGER
 );
@@ -127,7 +127,7 @@ INSERT INTO vroom.d_time_windows (
 
 -- VEHICLES TABLE start
 CREATE TABLE vroom.vehicles (
-  id BIGINT,
+  id BIGSERIAL PRIMARY KEY,
   start_index BIGINT,
   end_index BIGINT,
   capacity BIGINT[],
@@ -150,8 +150,8 @@ INSERT INTO vroom.vehicles (
 
 -- BREAKS TABLE start
 CREATE TABLE vroom.breaks (
-  id BIGINT,
-  vehicle_id BIGINT,
+  id BIGINT PRIMARY KEY,
+  vehicle_id BIGINT REFERENCES vroom.vehicles(id),
   service INTEGER
 );
 
@@ -165,10 +165,9 @@ INSERT INTO vroom.breaks (
 -- BREAKS TABLE end
 
 
-
 -- BREAKS TIME WINDOWS TABLE start
 CREATE TABLE vroom.breaks_time_windows (
-  id BIGINT,
+  id BIGINT REFERENCES vroom.breaks(id),
   tw_open INTEGER,
   tw_close INTEGER
 );
