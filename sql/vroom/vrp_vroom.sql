@@ -95,6 +95,8 @@ Column              Type           Description
 
 **task_id**          ``BIGINT``   Identifier of the task performed at this step.
 
+                                  - ``-1``: If the step is starting/ending location.
+
 **arrival**          ``INTEGER``  Estimated time of arrival at this step, in seconds.
 
 **travel_time**      ``INTEGER``  Cumulated travel time upon arrival at this step, in seconds
