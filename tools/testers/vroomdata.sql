@@ -2,11 +2,14 @@ DROP SCHEMA IF EXISTS vroom CASCADE;
 CREATE SCHEMA vroom;
 
 DROP TABLE IF EXISTS vroom.jobs;
+DROP TABLE IF EXISTS vroom.jobs_time_windows;
 DROP TABLE IF EXISTS vroom.shipments;
+DROP TABLE IF EXISTS vroom.p_time_windows;
+DROP TABLE IF EXISTS vroom.d_time_windows;
 DROP TABLE IF EXISTS vroom.vehicles;
-DROP TABLE IF EXISTS vroom.matrix;
-DROP TABLE IF EXISTS vroom.time_windows;
 DROP TABLE IF EXISTS vroom.breaks;
+DROP TABLE IF EXISTS vroom.breaks_time_windows;
+DROP TABLE IF EXISTS vroom.matrix;
 
 
 -- JOBS TABLE start
@@ -17,19 +20,36 @@ CREATE TABLE vroom.jobs (
   delivery BIGINT[],
   pickup BIGINT[],
   skills INTEGER[],
-  priority INTEGER,
-  time_windows_sql TEXT
+  priority INTEGER
 );
 
 INSERT INTO vroom.jobs (
-  id, location_index, service, delivery, pickup, skills, priority, time_windows_sql)
+  id, location_index, service, delivery, pickup, skills, priority)
   VALUES
-(1, 1, 250, ARRAY[20], ARRAY[20], ARRAY[0], 0, $$SELECT * FROM vroom.time_windows WHERE id = 1$$),
-(2, 2, 250, ARRAY[30], ARRAY[30], ARRAY[0], 0, $$SELECT * FROM vroom.time_windows WHERE id = 2$$),
-(3, 3, 250, ARRAY[10], ARRAY[10], ARRAY[0], 0, $$SELECT * FROM vroom.time_windows WHERE id = 3$$),
-(4, 3, 250, ARRAY[40], ARRAY[40], ARRAY[0], 0, $$SELECT * FROM vroom.time_windows WHERE id = 4$$),
-(5, 4, 250, ARRAY[20], ARRAY[20], ARRAY[0], 0, $$SELECT * FROM vroom.time_windows WHERE id = 5$$);
+(1, 1, 250, ARRAY[20], ARRAY[20], ARRAY[0], 0),
+(2, 2, 250, ARRAY[30], ARRAY[30], ARRAY[0], 0),
+(3, 3, 250, ARRAY[10], ARRAY[10], ARRAY[0], 0),
+(4, 3, 250, ARRAY[40], ARRAY[40], ARRAY[0], 0),
+(5, 4, 250, ARRAY[20], ARRAY[20], ARRAY[0], 0);
 -- JOBS TABLE end
+
+
+-- JOBS TIME WINDOWS TABLE start
+CREATE TABLE vroom.jobs_time_windows (
+  id BIGINT,
+  tw_open INTEGER,
+  tw_close INTEGER
+);
+
+INSERT INTO vroom.jobs_time_windows (
+  id, tw_open, tw_close)
+  VALUES
+(1, 3625, 4375),
+(2, 1250, 2000),
+(3, 2725, 3475),
+(4, 3525, 4275),
+(5, 1025, 1775);
+-- JOBS TIME WINDOWS TABLE end
 
 
 -- SHIPMENTS TABLE start
@@ -38,37 +58,71 @@ CREATE TABLE vroom.shipments (
   p_id BIGINT,
   p_location_index BIGINT,
   p_service INTEGER,
-  p_time_windows_sql TEXT,
   d_id BIGINT,
   d_location_index BIGINT,
   d_service INTEGER,
-  d_time_windows_sql TEXT,
   amount BIGINT[],
   skills INTEGER[],
   priority INTEGER
 );
 
 INSERT INTO vroom.shipments (
-  p_id, p_location_index, p_service, p_time_windows_sql,
-  d_id, d_location_index, d_service, d_time_windows_sql,
+  p_id, p_location_index, p_service,
+  d_id, d_location_index, d_service,
   amount, skills, priority)
   VALUES
-(6, 3, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 6$$,
-  7, 5, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 7$$,
+(1, 3, 2250,
+  1, 5, 2250,
   ARRAY[10], ARRAY[0], 0),
-(8, 5, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 8$$,
-  9, 6, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 9$$,
+(2, 5, 2250,
+  2, 6, 2250,
   ARRAY[10], ARRAY[0], 0),
-(10, 1, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 10$$,
-  11, 2, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 11$$,
+(3, 1, 2250,
+  3, 2, 2250,
   ARRAY[20], ARRAY[0], 0),
-(12, 1, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 12$$,
-  13, 4, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 13$$,
+(4, 1, 2250,
+  4, 4, 2250,
   ARRAY[20], ARRAY[0], 0),
-(14, 2, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 14$$,
-  15, 2, 2250, $$SELECT * FROM vroom.time_windows WHERE id = 15$$,
+(5, 2, 2250,
+  5, 2, 2250,
   ARRAY[10], ARRAY[0], 0);
 -- SHIPMENTS TABLE end
+
+
+-- PICKUP TIME WINDOWS TABLE start
+CREATE TABLE vroom.p_time_windows (
+  id BIGINT,
+  tw_open INTEGER,
+  tw_close INTEGER
+);
+
+INSERT INTO vroom.p_time_windows (
+  id, tw_open, tw_close)
+  VALUES
+(1, 1625, 3650),
+(2, 375, 1675),
+(3, 15525, 17550),
+(4, 6375, 8100),
+(5, 13350, 15125);
+-- PICKUP TIME WINDOWS TABLE end
+
+
+-- DELIVERY TIME WINDOWS TABLE start
+CREATE TABLE vroom.d_time_windows (
+  id BIGINT,
+  tw_open INTEGER,
+  tw_close INTEGER
+);
+
+INSERT INTO vroom.d_time_windows (
+  id, tw_open, tw_close)
+  VALUES
+(1, 24925, 26700),
+(2, 4250, 5625),
+(3, 20625, 21750),
+(4, 8925, 10250),
+(5, 18175, 19550);
+-- DELIVERY TIME WINDOWS TABLE end
 
 
 -- VEHICLES TABLE start
@@ -80,19 +134,53 @@ CREATE TABLE vroom.vehicles (
   skills INTEGER[],
   tw_open INTEGER,
   tw_close INTEGER,
-  breaks_sql TEXT,
   speed_factor FLOAT
 );
 
 INSERT INTO vroom.vehicles (
   id, start_index, end_index, capacity, skills,
-  tw_open, tw_close, breaks_sql, speed_factor)
+  tw_open, tw_close, speed_factor)
   VALUES
-(1, 1, 1, ARRAY[200], ARRAY[0], 0, 30900, $$SELECT * FROM vroom.breaks WHERE id = 16$$, 1.0),
-(2, 1, 3, ARRAY[200], ARRAY[0], 100, 30900, $$SELECT * FROM vroom.breaks WHERE id = 17$$, 1.0),
-(3, 1, 1, ARRAY[200], ARRAY[0], 0, 30900, $$SELECT * FROM vroom.breaks WHERE id = 18$$, 1.0),
-(4, 3, 3, ARRAY[200], ARRAY[0], 0, 30900, $$SELECT * FROM vroom.breaks WHERE id = 19$$, 1.0);
+(1, 1, 1, ARRAY[200], ARRAY[0], 0, 30900, 1.0),
+(2, 1, 3, ARRAY[200], ARRAY[0], 100, 30900, 1.0),
+(3, 1, 1, ARRAY[200], ARRAY[0], 0, 30900, 1.0),
+(4, 3, 3, ARRAY[200], ARRAY[0], 0, 30900, 1.0);
 -- VEHICLES TABLE end
+
+
+-- BREAKS TABLE start
+CREATE TABLE vroom.breaks (
+  id BIGINT,
+  vehicle_id BIGINT,
+  service INTEGER
+);
+
+INSERT INTO vroom.breaks (
+  id, vehicle_id, service)
+  VALUES
+(1, 1, 0),
+(2, 2, 10),
+(3, 3, 0),
+(4, 4, 0);
+-- BREAKS TABLE end
+
+
+
+-- BREAKS TIME WINDOWS TABLE start
+CREATE TABLE vroom.breaks_time_windows (
+  id BIGINT,
+  tw_open INTEGER,
+  tw_close INTEGER
+);
+
+INSERT INTO vroom.breaks_time_windows (
+  id, tw_open, tw_close)
+  VALUES
+(1, 250, 300),
+(2, 250, 275),
+(3, 0, 0),
+(4, 250, 250);
+-- BREAKS TIME WINDOWS TABLE end
 
 
 -- MATRIX TABLE start
@@ -112,52 +200,3 @@ INSERT INTO vroom.matrix (
 (5, 1, 106), (5, 2, 145), (5, 3, 25), (5, 4, 75), (5, 5, 0), (5, 6, 111),
 (6, 1, 127), (6, 2, 127), (6, 3, 90), (6, 4, 55), (6, 5, 111), (6, 6, 0);
 -- MATRIX TABLE end
-
-
--- TIME WINDOWS TABLE start
-CREATE TABLE vroom.time_windows (
-  id BIGINT,
-  tw_open INTEGER,
-  tw_close INTEGER
-);
-
-INSERT INTO vroom.time_windows (
-  id, tw_open, tw_close)
-  VALUES
-(1, 3625, 4375),
-(2, 1250, 2000),
-(3, 2725, 3475),
-(4, 3525, 4275),
-(5, 1025, 1775),
-(6, 1625, 3650),
-(7, 24925, 26700),
-(8, 375, 1675),
-(9, 4250, 5625),
-(10, 15525, 17550),
-(11, 20625, 21750),
-(12, 6375, 8100),
-(13, 8925, 10250),
-(14, 13350, 15125),
-(15, 18175, 19550),
-(16, 250, 300),
-(17, 250, 275),
-(18, 0, 0),
-(19, 250, 250);
--- TIME WINDOWS TABLE end
-
-
--- BREAKS TABLE start
-CREATE TABLE vroom.breaks (
-  id BIGINT,
-  time_windows_sql TEXT,
-  service INTEGER
-);
-
-INSERT INTO vroom.breaks (
-  id, time_windows_sql, service)
-  VALUES
-(16, $$SELECT * FROM vroom.time_windows WHERE id = 16$$, 0),
-(17, $$SELECT * FROM vroom.time_windows WHERE id = 17$$, 10),
-(18, $$SELECT * FROM vroom.time_windows WHERE id = 18$$, 0),
-(19, $$SELECT * FROM vroom.time_windows WHERE id = 19$$, 0);
--- BREAKS TABLE end
