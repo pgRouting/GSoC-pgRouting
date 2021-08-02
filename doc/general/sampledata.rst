@@ -77,12 +77,33 @@ Jobs
    :start-after: -- JOBS TABLE start
    :end-before: -- JOBS TABLE end
 
+Jobs Time Windows
+...............................................................................
+
+.. literalinclude:: ../../tools/testers/vroomdata.sql
+   :start-after: -- JOBS TIME WINDOWS TABLE start
+   :end-before: -- JOBS TIME WINDOWS TABLE end
+
 Shipments
 ...............................................................................
 
 .. literalinclude:: ../../tools/testers/vroomdata.sql
    :start-after: -- SHIPMENTS TABLE start
    :end-before: -- SHIPMENTS TABLE end
+
+Pickup Time Windows
+...............................................................................
+
+.. literalinclude:: ../../tools/testers/vroomdata.sql
+   :start-after: -- PICKUP TIME WINDOWS TABLE start
+   :end-before: -- PICKUP TIME WINDOWS TABLE end
+
+Delivery Time Windows
+...............................................................................
+
+.. literalinclude:: ../../tools/testers/vroomdata.sql
+   :start-after: -- DELIVERY TIME WINDOWS TABLE start
+   :end-before: -- DELIVERY TIME WINDOWS TABLE end
 
 Vehicles
 ...............................................................................
@@ -91,6 +112,20 @@ Vehicles
    :start-after: -- VEHICLES TABLE start
    :end-before: -- VEHICLES TABLE end
 
+Breaks
+...............................................................................
+
+.. literalinclude:: ../../tools/testers/vroomdata.sql
+   :start-after: -- BREAKS TABLE start
+   :end-before: -- BREAKS TABLE end
+
+Breaks Time Windows
+...............................................................................
+
+.. literalinclude:: ../../tools/testers/vroomdata.sql
+   :start-after: -- BREAKS TIME WINDOWS TABLE start
+   :end-before: -- BREAKS TIME WINDOWS TABLE end
+
 Matrix
 ...............................................................................
 
@@ -98,20 +133,6 @@ Matrix
    :start-after: -- MATRIX TABLE start
    :end-before: -- MATRIX TABLE end
 
-
-Time Windows
-...............................................................................
-
-.. literalinclude:: ../../tools/testers/vroomdata.sql
-   :start-after: -- TIME WINDOWS TABLE start
-   :end-before: -- TIME WINDOWS TABLE end
-
-Breaks
-...............................................................................
-
-.. literalinclude:: ../../tools/testers/vroomdata.sql
-   :start-after: -- BREAKS TABLE start
-   :end-before: -- BREAKS TABLE end
 
 Images
 -------------------------------------------------------------------------------
