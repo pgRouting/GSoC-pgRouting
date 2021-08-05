@@ -86,11 +86,11 @@ CREATE FUNCTION vrp_vroomJobs(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _vrp_vroom(_pgr_get_statement($1), _pgr_get_statement($2), NULL, NULL, NULL,
+    FROM _vrp_vroom(_pgr_get_statement($1), _pgr_get_statement($2), NULL, NULL,
                     _pgr_get_statement($3), _pgr_get_statement($4),
-                    _pgr_get_statement($5), _pgr_get_statement($6));
+                    _pgr_get_statement($5), _pgr_get_statement($6), 1::SMALLINT);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE SQL VOLATILE;
 
 
 -- COMMENTS
