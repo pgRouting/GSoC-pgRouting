@@ -1,15 +1,14 @@
 BEGIN;
 SET search_path TO 'vroom', 'public';
 
-SELECT CASE WHEN min_version('0.2.0') THEN plan (606) ELSE plan(1) END;
+SELECT CASE WHEN min_version('0.2.0') THEN plan (564) ELSE plan(1) END;
 
 /*
 SELECT * FROM vrp_vroom(
   $$SELECT id, location_index, service, delivery, pickup, skills, priority FROM jobs$$,
   $$SELECT id, tw_open, tw_close FROM jobs_time_windows$$,
-  $$SELECT p_id, p_location_index, p_service, d_id, d_location_index, d_service, amount, skills, priority FROM shipments$$,
-  $$SELECT id, tw_open, tw_close FROM p_time_windows$$,
-  $$SELECT id, tw_open, tw_close FROM d_time_windows$$,
+  $$SELECT id, p_location_index, p_service, d_location_index, d_service, amount, skills, priority FROM shipments$$,
+  $$SELECT id, kind, tw_open, tw_close FROM shipments_time_windows$$,
   $$SELECT id, start_index, end_index, capacity, skills, tw_open, tw_close FROM vehicles$$,
   $$SELECT id, vehicle_id, service FROM breaks$$,
   $$SELECT id, tw_open, tw_close FROM breaks_time_windows$$,
@@ -110,6 +109,18 @@ END;
 $BODY$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION test_Char(fn TEXT, inner_query_table TEXT, start_sql TEXT, rest_sql TEXT, params TEXT[], parameter TEXT)
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+  accept TEXT[] := ARRAY['CHAR'];
+  reject TEXT[] := ARRAY['VARCHAR', 'TEXT']::TEXT[];
+BEGIN
+  RETURN query SELECT test_value(fn, inner_query_table, start_sql, rest_sql, params, parameter, accept, reject);
+END;
+$BODY$ LANGUAGE plpgsql;
+
+
 CREATE OR REPLACE FUNCTION inner_query_jobs(fn TEXT, start_sql TEXT, rest_sql TEXT)
 RETURNS SETOF TEXT AS
 $BODY$
@@ -134,10 +145,9 @@ RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
   inner_query_table TEXT := 'shipments';
-  params TEXT[] := ARRAY['p_id', 'p_location_index', 'p_service', 'd_id', 'd_location_index', 'd_service', 'amount', 'skills', 'priority'];
+  params TEXT[] := ARRAY['id', 'p_location_index', 'p_service', 'd_location_index', 'd_service', 'amount', 'skills', 'priority'];
 BEGIN
-  RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'p_id');
-  RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'd_id');
+  RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'id');
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'p_location_index');
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'd_location_index');
   RETURN QUERY SELECT test_Integer(fn, inner_query_table, start_sql, rest_sql, params, 'p_service');
@@ -214,6 +224,21 @@ $BODY$
 LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION inner_query_shipments_time_windows(fn TEXT, inner_query_table TEXT, start_sql TEXT, rest_sql TEXT)
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+  params TEXT[] := ARRAY['id', 'kind', 'tw_open', 'tw_close'];
+BEGIN
+  RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'id');
+  RETURN QUERY SELECT test_Char(fn, inner_query_table, start_sql, rest_sql, params, 'kind');
+  RETURN QUERY SELECT test_Integer(fn, inner_query_table, start_sql, rest_sql, params, 'tw_open');
+  RETURN QUERY SELECT test_Integer(fn, inner_query_table, start_sql, rest_sql, params, 'tw_close');
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+
 CREATE OR REPLACE FUNCTION inner_query()
 RETURNS SETOF TEXT AS
 $BODY$
@@ -234,57 +259,50 @@ BEGIN
 
   fn := 'vrp_vroom';
   start_sql := '';
-  rest_sql := ', $$SELECT * FROM jobs_time_windows$$, $$SELECT * FROM shipments$$, $$SELECT * FROM p_time_windows$$, ' ||
-              '$$SELECT * FROM d_time_windows$$, $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
+  rest_sql := ', $$SELECT * FROM jobs_time_windows$$, $$SELECT * FROM shipments$$, $$SELECT * FROM shipments_time_windows$$, ' ||
+              '$$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
               '$$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
   RETURN QUERY SELECT inner_query_jobs(fn, start_sql, rest_sql);
 
   start_sql := '$$SELECT * FROM jobs$$, ';
-  rest_sql := ', $$SELECT * FROM shipments$$, $$SELECT * FROM p_time_windows$$, ' ||
-              '$$SELECT * FROM d_time_windows$$, $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
+  rest_sql := ', $$SELECT * FROM shipments$$, $$SELECT * FROM shipments_time_windows$$, ' ||
+              '$$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
               '$$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
   inner_query_table := 'jobs_time_windows';
   RETURN QUERY SELECT inner_query_time_windows(fn, inner_query_table, start_sql, rest_sql);
 
   start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM jobs_time_windows$$, ';
-  rest_sql := ', $$SELECT * FROM p_time_windows$$, ' ||
-              '$$SELECT * FROM d_time_windows$$, $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
+  rest_sql := ', $$SELECT * FROM shipments_time_windows$$, ' ||
+              '$$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
               '$$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
   RETURN QUERY SELECT inner_query_shipments(fn, start_sql, rest_sql);
 
   start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM jobs_time_windows$$, $$SELECT * FROM shipments$$, ';
-  rest_sql := ', $$SELECT * FROM d_time_windows$$, $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
-              '$$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
-  inner_query_table := 'p_time_windows';
-  RETURN QUERY SELECT inner_query_time_windows(fn, inner_query_table, start_sql, rest_sql);
-
-  start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM jobs_time_windows$$, $$SELECT * FROM shipments$$, ' ||
-               '$$SELECT * FROM p_time_windows$$, ';
   rest_sql := ', $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
               '$$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
-  inner_query_table := 'd_time_windows';
-  RETURN QUERY SELECT inner_query_time_windows(fn, inner_query_table, start_sql, rest_sql);
+  inner_query_table := 'shipments_time_windows';
+  RETURN QUERY SELECT inner_query_shipments_time_windows(fn, inner_query_table, start_sql, rest_sql);
 
   start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM jobs_time_windows$$, $$SELECT * FROM shipments$$, ' ||
-               '$$SELECT * FROM p_time_windows$$, $$SELECT * FROM d_time_windows$$, ';
+               '$$SELECT * FROM shipments_time_windows$$, ';
   rest_sql := ', $$SELECT * FROM breaks$$, ' ||
               '$$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
   RETURN QUERY SELECT inner_query_vehicles(fn, start_sql, rest_sql);
 
   start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM jobs_time_windows$$, $$SELECT * FROM shipments$$, ' ||
-               '$$SELECT * FROM p_time_windows$$, $$SELECT * FROM d_time_windows$$, $$SELECT * FROM vehicles$$, ';
+               '$$SELECT * FROM shipments_time_windows$$, $$SELECT * FROM vehicles$$, ';
   rest_sql := ', $$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
   RETURN QUERY SELECT inner_query_breaks(fn, start_sql, rest_sql);
 
   start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM jobs_time_windows$$, $$SELECT * FROM shipments$$, ' ||
-               '$$SELECT * FROM p_time_windows$$, $$SELECT * FROM d_time_windows$$, $$SELECT * FROM vehicles$$, ' ||
+               '$$SELECT * FROM shipments_time_windows$$, $$SELECT * FROM vehicles$$, ' ||
                '$$SELECT * FROM breaks$$, ';
   rest_sql := ', $$SELECT * FROM matrix$$)';
   inner_query_table := 'breaks_time_windows';
   RETURN QUERY SELECT inner_query_time_windows(fn, inner_query_table, start_sql, rest_sql);
 
   start_sql := '$$SELECT * FROM jobs$$, $$SELECT * FROM jobs_time_windows$$, $$SELECT * FROM shipments$$, ' ||
-               '$$SELECT * FROM p_time_windows$$, $$SELECT * FROM d_time_windows$$, $$SELECT * FROM vehicles$$, ' ||
+               '$$SELECT * FROM shipments_time_windows$$, $$SELECT * FROM vehicles$$, ' ||
                '$$SELECT * FROM breaks$$, $$SELECT * FROM breaks_time_windows$$, ';
   rest_sql := ')';
   RETURN QUERY SELECT inner_query_matrix(fn, start_sql, rest_sql);
@@ -330,39 +348,32 @@ BEGIN
 
   fn := 'vrp_vroomShipments';
   start_sql := '';
-  rest_sql := ', $$SELECT * FROM p_time_windows$$, ' ||
-              '$$SELECT * FROM d_time_windows$$, $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
+  rest_sql := ', $$SELECT * FROM shipments_time_windows$$, $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
               '$$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
   RETURN QUERY SELECT inner_query_shipments(fn, start_sql, rest_sql);
 
   start_sql := '$$SELECT * FROM shipments$$, ';
-  rest_sql := ', $$SELECT * FROM d_time_windows$$, $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
-              '$$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
-  inner_query_table := 'p_time_windows';
-  RETURN QUERY SELECT inner_query_time_windows(fn, inner_query_table, start_sql, rest_sql);
-
-  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM p_time_windows$$, ';
   rest_sql := ', $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ' ||
               '$$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
-  inner_query_table := 'd_time_windows';
-  RETURN QUERY SELECT inner_query_time_windows(fn, inner_query_table, start_sql, rest_sql);
+  inner_query_table := 'shipments_time_windows';
+  RETURN QUERY SELECT inner_query_shipments_time_windows(fn, inner_query_table, start_sql, rest_sql);
 
-  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM p_time_windows$$, $$SELECT * FROM d_time_windows$$, ';
+  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM shipments_time_windows$$, ';
   rest_sql := ', $$SELECT * FROM breaks$$, $$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
   RETURN QUERY SELECT inner_query_vehicles(fn, start_sql, rest_sql);
 
-  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM p_time_windows$$, $$SELECT * FROM d_time_windows$$, ' ||
+  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM shipments_time_windows$$, ' ||
                '$$SELECT * FROM vehicles$$, ';
   rest_sql := ', $$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
   RETURN QUERY SELECT inner_query_breaks(fn, start_sql, rest_sql);
 
-  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM p_time_windows$$, $$SELECT * FROM d_time_windows$$, ' ||
+  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM shipments_time_windows$$, ' ||
                '$$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, ';
   rest_sql := ', $$SELECT * FROM matrix$$)';
   inner_query_table := 'breaks_time_windows';
   RETURN QUERY SELECT inner_query_time_windows(fn, inner_query_table, start_sql, rest_sql);
 
-  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM p_time_windows$$, $$SELECT * FROM d_time_windows$$, ' ||
+  start_sql := '$$SELECT * FROM shipments$$, $$SELECT * FROM shipments_time_windows$$, ' ||
                '$$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$, $$SELECT * FROM breaks_time_windows$$, ';
   rest_sql := ')';
   RETURN QUERY SELECT inner_query_matrix(fn, start_sql, rest_sql);

@@ -4,8 +4,7 @@ CREATE SCHEMA vroom;
 DROP TABLE IF EXISTS vroom.jobs;
 DROP TABLE IF EXISTS vroom.jobs_time_windows;
 DROP TABLE IF EXISTS vroom.shipments;
-DROP TABLE IF EXISTS vroom.p_time_windows;
-DROP TABLE IF EXISTS vroom.d_time_windows;
+DROP TABLE IF EXISTS vroom.shipments_time_windows;
 DROP TABLE IF EXISTS vroom.vehicles;
 DROP TABLE IF EXISTS vroom.breaks;
 DROP TABLE IF EXISTS vroom.breaks_time_windows;
@@ -55,10 +54,8 @@ INSERT INTO vroom.jobs_time_windows (
 -- SHIPMENTS TABLE start
 CREATE TABLE vroom.shipments (
   id BIGSERIAL PRIMARY KEY,
-  p_id BIGINT UNIQUE,
   p_location_index BIGINT,
   p_service INTEGER,
-  d_id BIGINT UNIQUE,
   d_location_index BIGINT,
   d_service INTEGER,
   amount BIGINT[],
@@ -67,62 +64,39 @@ CREATE TABLE vroom.shipments (
 );
 
 INSERT INTO vroom.shipments (
-  p_id, p_location_index, p_service,
-  d_id, d_location_index, d_service,
+  id, p_location_index, p_service, d_location_index, d_service,
   amount, skills, priority)
   VALUES
-(1, 3, 2250,
-  1, 5, 2250,
-  ARRAY[10], ARRAY[0], 0),
-(2, 5, 2250,
-  2, 6, 2250,
-  ARRAY[10], ARRAY[0], 0),
-(3, 1, 2250,
-  3, 2, 2250,
-  ARRAY[20], ARRAY[0], 0),
-(4, 1, 2250,
-  4, 4, 2250,
-  ARRAY[20], ARRAY[0], 0),
-(5, 2, 2250,
-  5, 2, 2250,
-  ARRAY[10], ARRAY[0], 0);
+(1, 3, 2250, 5, 2250, ARRAY[10], ARRAY[0], 0),
+(2, 5, 2250, 6, 2250, ARRAY[10], ARRAY[0], 0),
+(3, 1, 2250, 2, 2250, ARRAY[20], ARRAY[0], 0),
+(4, 1, 2250, 4, 2250, ARRAY[20], ARRAY[0], 0),
+(5, 2, 2250, 2, 2250, ARRAY[10], ARRAY[0], 0);
 -- SHIPMENTS TABLE end
 
 
--- PICKUP TIME WINDOWS TABLE start
-CREATE TABLE vroom.p_time_windows (
-  id BIGINT REFERENCES vroom.shipments(p_id),
+-- SHIPMENTS TIME WINDOWS TABLE start
+CREATE TABLE vroom.shipments_time_windows (
+  id BIGINT REFERENCES vroom.shipments(id),
+  kind CHAR(1),
   tw_open INTEGER,
   tw_close INTEGER
 );
 
-INSERT INTO vroom.p_time_windows (
-  id, tw_open, tw_close)
+INSERT INTO vroom.shipments_time_windows (
+  id, kind, tw_open, tw_close)
   VALUES
-(1, 1625, 3650),
-(2, 375, 1675),
-(3, 15525, 17550),
-(4, 6375, 8100),
-(5, 13350, 15125);
--- PICKUP TIME WINDOWS TABLE end
-
-
--- DELIVERY TIME WINDOWS TABLE start
-CREATE TABLE vroom.d_time_windows (
-  id BIGINT REFERENCES vroom.shipments(d_id),
-  tw_open INTEGER,
-  tw_close INTEGER
-);
-
-INSERT INTO vroom.d_time_windows (
-  id, tw_open, tw_close)
-  VALUES
-(1, 24925, 26700),
-(2, 4250, 5625),
-(3, 20625, 21750),
-(4, 8925, 10250),
-(5, 18175, 19550);
--- DELIVERY TIME WINDOWS TABLE end
+(1, 'p', 1625, 3650),
+(1, 'd', 24925, 26700),
+(2, 'p', 375, 1675),
+(2, 'd', 4250, 5625),
+(3, 'p', 15525, 17550),
+(3, 'd', 20625, 21750),
+(4, 'p', 6375, 8100),
+(4, 'd', 8925, 10250),
+(5, 'p', 13350, 15125),
+(5, 'd', 18175, 19550);
+-- SHIPMENTS TIME WINDOWS TABLE end
 
 
 -- VEHICLES TABLE start

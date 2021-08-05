@@ -1,5 +1,6 @@
 BEGIN;
 SET search_path TO 'vroom', 'public';
+SET client_min_messages TO ERROR;
 
 SELECT CASE WHEN min_version('0.2.0') THEN plan (19) ELSE plan(1) END;
 
@@ -27,11 +28,8 @@ BEGIN
   PREPARE shipments AS SELECT * FROM shipments;
   PREPARE empty_shipments AS SELECT * FROM shipments WHERE id = -1;
 
-  PREPARE p_time_windows AS SELECT * FROM p_time_windows;
-  PREPARE empty_p_time_windows AS SELECT * FROM p_time_windows WHERE id = -1;
-
-  PREPARE d_time_windows AS SELECT * FROM d_time_windows;
-  PREPARE empty_d_time_windows AS SELECT * FROM d_time_windows WHERE id = -1;
+  PREPARE shipments_time_windows AS SELECT * FROM shipments_time_windows;
+  PREPARE empty_shipments_time_windows AS SELECT * FROM shipments_time_windows WHERE id = -1;
 
   PREPARE vehicles AS SELECT * FROM vehicles;
   PREPARE empty_vehicles AS SELECT * FROM vehicles WHERE id = -1;
@@ -50,8 +48,7 @@ BEGIN
     'jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -66,8 +63,7 @@ BEGIN
     'empty_jobs',
     'jobs_time_windows',
     'empty_shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -81,8 +77,7 @@ BEGIN
     'jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'empty_vehicles',
     'breaks',
     'breaks_time_windows',
@@ -96,20 +91,14 @@ BEGIN
     'jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
     'empty_matrix'
   );
   RETURN QUERY
-  SELECT throws_ok(
-    'no_matrix',
-    'XX000',
-    'An Infinity value was found on the Matrix. Might be missing information of a node',
-    'Problem with no cost matrix'
-  );
+  SELECT is_empty('no_matrix', 'Problem with no cost matrix');
 
 
   -- priority range test (jobs)
@@ -119,8 +108,7 @@ BEGIN
     'SELECT id, location_index, service, delivery, pickup, skills, -1 AS priority FROM jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -139,8 +127,7 @@ BEGIN
     'SELECT id, location_index, service, delivery, pickup, skills, 101 AS priority FROM jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -159,8 +146,7 @@ BEGIN
     'SELECT id, location_index, service, delivery, pickup, skills, 0 AS priority FROM jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -174,8 +160,7 @@ BEGIN
     'SELECT id, location_index, service, delivery, pickup, skills, 0 AS priority FROM jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -191,10 +176,9 @@ BEGIN
   SELECT * FROM vrp_vroom(
     'jobs',
     'jobs_time_windows',
-    'SELECT p_id, p_location_index, p_service, d_id, d_location_index,
-    d_service, amount, skills, -1 AS priority FROM shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'SELECT id, p_location_index, p_service, d_location_index, d_service,
+    amount, skills, -1 AS priority FROM shipments',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -212,10 +196,9 @@ BEGIN
   SELECT * FROM vrp_vroom(
     'jobs',
     'jobs_time_windows',
-    'SELECT p_id, p_location_index, p_service, d_id, d_location_index,
-    d_service, amount, skills, 101 AS priority FROM shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'SELECT id, p_location_index, p_service, d_location_index, d_service,
+    amount, skills, 101 AS priority FROM shipments',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -233,10 +216,9 @@ BEGIN
   SELECT * FROM vrp_vroom(
     'jobs',
     'jobs_time_windows',
-    'SELECT p_id, p_location_index, p_service, d_id, d_location_index,
-    d_service, amount, skills, 0 AS priority FROM shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'SELECT id, p_location_index, p_service, d_location_index, d_service,
+    amount, skills, 0 AS priority FROM shipments',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -249,10 +231,9 @@ BEGIN
   SELECT * FROM vrp_vroom(
     'jobs',
     'jobs_time_windows',
-    'SELECT p_id, p_location_index, p_service, d_id, d_location_index,
-    d_service, amount, skills, 100 AS priority FROM shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'SELECT id, p_location_index, p_service, d_location_index, d_service,
+    amount, skills, 100 AS priority FROM shipments',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -269,8 +250,7 @@ BEGIN
     'jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -289,8 +269,7 @@ BEGIN
     'jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -304,8 +283,7 @@ BEGIN
     'jobs',
     'jobs_time_windows',
     'shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -325,8 +303,7 @@ BEGIN
     'SELECT * FROM jobs WHERE id = 1',
     'jobs_time_windows',
     'empty_shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -349,8 +326,7 @@ BEGIN
     'SELECT * FROM jobs WHERE id = 5',
     'jobs_time_windows',
     'empty_shipments',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -373,8 +349,7 @@ BEGIN
     'empty_jobs',
     'jobs_time_windows',
     'SELECT * FROM shipments WHERE id = 1',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -398,8 +373,7 @@ BEGIN
     'empty_jobs',
     'jobs_time_windows',
     'SELECT * FROM shipments WHERE id = 5',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',
@@ -423,8 +397,7 @@ BEGIN
     'SELECT * FROM jobs WHERE id = 2',
     'jobs_time_windows',
     'SELECT * FROM shipments WHERE id = 2',
-    'p_time_windows',
-    'd_time_windows',
+    'shipments_time_windows',
     'vehicles',
     'breaks',
     'breaks_time_windows',

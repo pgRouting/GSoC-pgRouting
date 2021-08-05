@@ -1,5 +1,6 @@
 BEGIN;
 SET search_path TO 'vroom', 'public';
+SET client_min_messages TO ERROR;
 
 SELECT CASE WHEN min_version('0.2.0') THEN plan (22) ELSE plan(1) END;
 
@@ -10,7 +11,7 @@ DECLARE
   ids BIGINT[] := ARRAY[1, 2, 3, 4, 5];
   jobs_sql TEXT := '$$SELECT * FROM jobs WHERE id = -1$$, $$SELECT * FROM jobs_time_windows WHERE id = -1$$, ';
   shipments_sql TEXT;
-  empty_time_windows TEXT := '$$SELECT * FROM p_time_windows WHERE id = -1$$, $$SELECT * FROM d_time_windows WHERE id = -1$$';
+  empty_time_windows TEXT := '$$SELECT * FROM shipments_time_windows WHERE id = -1$$';
   rest_sql TEXT := ', $$SELECT * FROM vehicles$$, $$SELECT * FROM breaks$$' ||
                    ', $$SELECT * FROM breaks_time_windows$$, $$SELECT * FROM matrix$$)';
   vroom_sql TEXT;
