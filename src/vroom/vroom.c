@@ -75,12 +75,12 @@ PG_FUNCTION_INFO_V1(_vrp_vroom);
  * @param jobs_sql          SQL query describing the jobs
  * @param jobs_tw_sql       SQL query describing the time window for jobs
  * @param shipments_sql     SQL query describing the shipments
- * @param pickup_tw_sql     SQL query describing the time windows for pickup shipment
- * @param delivery_tw_sql   SQL query describing the time windows for delivery shipment
+ * @param shipments_tw_sql  SQL query describing the time windows for shipment
  * @param vehicles_sql      SQL query describing the vehicles
  * @param breaks_sql        SQL query describing the driver breaks.
  * @param breaks_tws_sql    SQL query describing the time windows for break start.
  * @param matrix_sql        SQL query describing the cells of the cost matrix
+ * @param fn                Value denoting the function used.
  * @param result_tuples     the rows in the result
  * @param result_count      the count of rows in the result
  *
@@ -92,12 +92,12 @@ process(
     char *jobs_sql,
     char *jobs_tws_sql,
     char *shipments_sql,
-    char *pickup_tws_sql,
-    char *delivery_tws_sql,
+    char *shipments_tws_sql,
     char *vehicles_sql,
     char *breaks_sql,
     char *breaks_tws_sql,
     char *matrix_sql,
+    int16_t fn,
 
     Vroom_rt **result_tuples,
     size_t *result_count) {
@@ -112,33 +112,53 @@ process(
     get_vroom_jobs(jobs_sql, &jobs, &total_jobs);
   }
 
-  Vroom_time_window_t *jobs_tws = NULL;
-  size_t total_jobs_tws = 0;
-  if (jobs_tws_sql) {
-    get_vroom_time_windows(jobs_tws_sql, &jobs_tws, &total_jobs_tws);
-  }
-
   Vroom_shipment_t *shipments = NULL;
   size_t total_shipments = 0;
   if (shipments_sql) {
     get_vroom_shipments(shipments_sql, &shipments, &total_shipments);
   }
 
-  Vroom_time_window_t *pickup_tws = NULL;
-  size_t total_pickup_tws = 0;
-  if (pickup_tws_sql) {
-    get_vroom_time_windows(pickup_tws_sql, &pickup_tws, &total_pickup_tws);
+  if (total_jobs == 0 && total_shipments == 0) {
+    if (fn == 0) {
+      ereport(WARNING, (errmsg("Insufficient data found on Jobs SQL and Shipments SQL query."),
+                        errhint("%s, %s", jobs_sql, shipments_sql)));
+    } else if (fn == 1) {
+      ereport(WARNING, (errmsg("Insufficient data found on Jobs SQL query."),
+                        errhint("%s", jobs_sql)));
+    } else if (fn == 2) {
+      ereport(WARNING, (errmsg("Insufficient data found on Shipments SQL query."),
+                        errhint("%s", shipments_sql)));
+    }
+    (*result_count) = 0;
+    (*result_tuples) = NULL;
+    pgr_SPI_finish();
+    return;
   }
 
-  Vroom_time_window_t *delivery_tws = NULL;
-  size_t total_delivery_tws = 0;
-  if (delivery_tws_sql) {
-    get_vroom_time_windows(delivery_tws_sql, &delivery_tws, &total_delivery_tws);
+  Vroom_time_window_t *jobs_tws = NULL;
+  size_t total_jobs_tws = 0;
+  if (jobs_tws_sql) {
+    get_vroom_time_windows(jobs_tws_sql, &jobs_tws, &total_jobs_tws);
+  }
+
+  Vroom_time_window_t *shipments_tws = NULL;
+  size_t total_shipments_tws = 0;
+  if (shipments_tws_sql) {
+    get_vroom_shipments_time_windows(shipments_tws_sql, &shipments_tws, &total_shipments_tws);
   }
 
   Vroom_vehicle_t *vehicles = NULL;
   size_t total_vehicles = 0;
   get_vroom_vehicles(vehicles_sql, &vehicles, &total_vehicles);
+
+  if (total_vehicles == 0) {
+    ereport(WARNING, (errmsg("Insufficient data found on Vehicles SQL query."),
+                      errhint("%s", vehicles_sql)));
+    (*result_count) = 0;
+    (*result_tuples) = NULL;
+    pgr_SPI_finish();
+    return;
+  }
 
   Vroom_break_t *breaks = NULL;
   size_t total_breaks = 0;
@@ -156,30 +176,36 @@ process(
   size_t total_cells = 0;
   get_matrixRows_vroom_plain(matrix_sql, &matrix_cells_arr, &total_cells);
 
+  if (total_cells == 0) {
+    ereport(WARNING, (errmsg("Insufficient data found on Matrix SQL query."),
+                      errhint("%s", matrix_sql)));
+    (*result_count) = 0;
+    (*result_tuples) = NULL;
+    pgr_SPI_finish();
+    return;
+  }
+
   clock_t start_t = clock();
   char *log_msg = NULL;
   char *notice_msg = NULL;
   char *err_msg = NULL;
 
-  if ((jobs || shipments) && vehicles) {
-    do_vrp_vroom(
-      jobs, total_jobs,
-      jobs_tws, total_jobs_tws,
-      shipments, total_shipments,
-      pickup_tws, total_pickup_tws,
-      delivery_tws, total_delivery_tws,
-      vehicles, total_vehicles,
-      breaks, total_breaks,
-      breaks_tws, total_breaks_tws,
-      matrix_cells_arr, total_cells,
+  do_vrp_vroom(
+    jobs, total_jobs,
+    jobs_tws, total_jobs_tws,
+    shipments, total_shipments,
+    shipments_tws, total_shipments_tws,
+    vehicles, total_vehicles,
+    breaks, total_breaks,
+    breaks_tws, total_breaks_tws,
+    matrix_cells_arr, total_cells,
 
-      result_tuples,
-      result_count,
+    result_tuples,
+    result_count,
 
-      &log_msg,
-      &notice_msg,
-      &err_msg);
-  }
+    &log_msg,
+    &notice_msg,
+    &err_msg);
 
   time_msg("processing vrp_vroom", start_t, clock());
 
@@ -228,25 +254,18 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
      *     jobs_sql TEXT,
      *     jobs_time_windows_sql TEXT,
      *     shipments_sql TEXT,
-     *     pickup_time_windows_sql TEXT,
-     *     delivery_time_windows_sql TEXT,
+     *     shipments_time_windows_sql TEXT,
      *     vehicles_sql TEXT,
      *     breaks_sql TEXT,
      *     breaks_time_windows_sql TEXT,
-     *     matrix_sql TEXT
+     *     matrix_sql TEXT,
+     *     fn SMALLINT
      *   );
      *
      **********************************************************************/
 
-    // Verify that the last 4 arguments are not NULL
-    for (int i = 5; i < 9; i++) {
-      if (PG_ARGISNULL(i)) {
-        elog(ERROR, "Argument %i must not be NULL", i + 1);
-      }
-    }
-
-    char *args[5];
-    for (int i = 0; i < 5; i++) {
+    char *args[8];
+    for (int i = 0; i < 8; i++) {
       if (PG_ARGISNULL(i)) {
         args[i] = NULL;
       } else {
@@ -254,9 +273,25 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
       }
     }
 
+    int16_t fn = PG_GETARG_INT16(8);
+
     // Verify that both jobs_sql and shipments_sql are not NULL
-    if (!(args[0] || args[2])) {
-      elog(ERROR, "Both jobs_sql and shipments_sql must not be NULL");
+    if (args[0] == NULL && args[2] == NULL) {
+      if (fn == 0) {
+        elog(ERROR, "Both Jobs SQL and Shipments NULL must not be NULL");
+      } else if (fn == 1) {
+        elog(ERROR, "Jobs SQL must not be NULL");
+      } else if (fn == 2) {
+        elog(ERROR, "Shipments SQL must not be NULL");
+      }
+    }
+
+    if (args[4] == NULL) {
+      elog(ERROR, "Vehicles SQL must not be NULL");
+    }
+
+    if (args[7] == NULL) {
+      elog(ERROR, "Matrix SQL must not be NULL");
     }
 
     process(
@@ -265,10 +300,10 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
         args[2],
         args[3],
         args[4],
-        text_to_cstring(PG_GETARG_TEXT_P(5)),
-        text_to_cstring(PG_GETARG_TEXT_P(6)),
-        text_to_cstring(PG_GETARG_TEXT_P(7)),
-        text_to_cstring(PG_GETARG_TEXT_P(8)),
+        args[5],
+        args[6],
+        args[7],
+        fn,
         &result_tuples,
         &result_count);
 
@@ -324,7 +359,6 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
     size_t num  = 11;
     values = palloc(num * sizeof(Datum));
     nulls = palloc(num * sizeof(bool));
-
 
     size_t i;
     for (i = 0; i < num; ++i) {

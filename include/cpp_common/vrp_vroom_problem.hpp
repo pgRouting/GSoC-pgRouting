@@ -239,11 +239,11 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
         m_matrix.get_index(shipment.p_location_index));
     vroom::Index d_location_index = static_cast<vroom::Index>(
         m_matrix.get_index(shipment.d_location_index));
-    vroom::Job pickup = vroom::Job(shipment.p_id, vroom::JOB_TYPE::PICKUP,
+    vroom::Job pickup = vroom::Job(shipment.id, vroom::JOB_TYPE::PICKUP,
                                    p_location_index, shipment.p_service, amount,
                                    skills, shipment.priority, p_time_windows);
     vroom::Job delivery = vroom::Job(
-        shipment.d_id, vroom::JOB_TYPE::DELIVERY, d_location_index,
+        shipment.id, vroom::JOB_TYPE::DELIVERY, d_location_index,
         shipment.d_service, amount, skills, shipment.priority, d_time_windows);
     return std::make_pair(pickup, delivery);
   }
@@ -257,37 +257,34 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
   }
 
   void add_shipments(const std::vector <Vroom_shipment_t> &shipments,
-                     const std::vector <Vroom_time_window_t> &pickup_tws,
-                     const std::vector <Vroom_time_window_t> &delivery_tws) {
+                     const std::vector <Vroom_time_window_t> &shipments_tws) {
     std::map<Idx, std::vector<Vroom_time_window_t>> pickup_tws_map;
     std::map<Idx, std::vector<Vroom_time_window_t>> delivery_tws_map;
-    for (auto pickup_tw : pickup_tws) {
-      Idx id = pickup_tw.id;
-      if (pickup_tws_map.find(id) == pickup_tws_map.end()) {
-        pickup_tws_map[id] = std::vector<Vroom_time_window_t>();
+    for (auto shipment_tw : shipments_tws) {
+      Idx id = shipment_tw.id;
+      if (shipment_tw.kind == 'p') {
+        if (pickup_tws_map.find(id) == pickup_tws_map.end()) {
+          pickup_tws_map[id] = std::vector<Vroom_time_window_t>();
+        }
+        pickup_tws_map[id].push_back(shipment_tw);
+      } else if (shipment_tw.kind == 'd') {
+        if (delivery_tws_map.find(id) == delivery_tws_map.end()) {
+          delivery_tws_map[id] = std::vector<Vroom_time_window_t>();
+        }
+        delivery_tws_map[id].push_back(shipment_tw);
       }
-      pickup_tws_map[id].push_back(pickup_tw);
-    }
-    for (auto delivery_tw : delivery_tws) {
-      Idx id = delivery_tw.id;
-      if (delivery_tws_map.find(id) == delivery_tws_map.end()) {
-        delivery_tws_map[id] = std::vector<Vroom_time_window_t>();
-      }
-      delivery_tws_map[id].push_back(delivery_tw);
     }
     for (auto shipment : shipments) {
-      problem_add_shipment(shipment, pickup_tws_map[shipment.p_id],
-                           delivery_tws_map[shipment.d_id]);
+      problem_add_shipment(shipment, pickup_tws_map[shipment.id],
+                           delivery_tws_map[shipment.id]);
     }
   }
 
   void add_shipments(const Vroom_shipment_t *shipments, size_t count,
-                     const Vroom_time_window_t *pickup_tws, size_t total_pickup_tws,
-                     const Vroom_time_window_t *delivery_tws, size_t total_delivery_tws) {
+                     const Vroom_time_window_t *shipment_tws, size_t total_shipment_tws) {
     add_shipments(
         std::vector<Vroom_shipment_t>(shipments, shipments + count),
-        std::vector<Vroom_time_window_t>(pickup_tws, pickup_tws + total_pickup_tws),
-        std::vector<Vroom_time_window_t>(delivery_tws, delivery_tws + total_delivery_tws));
+        std::vector<Vroom_time_window_t>(shipment_tws, shipment_tws + total_shipment_tws));
   }
   ///@}
 
@@ -305,12 +302,9 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
    */
   vroom::Break
   get_vroom_break(
-    const Vroom_break_t &v_break,
-    const std::vector<Vroom_time_window_t> &break_tws) const {
-    std::vector < vroom::TimeWindow > tws;
-    for (auto break_tw : break_tws) {
-      tws.push_back(get_vroom_time_window(break_tw));
-    }
+      const Vroom_break_t &v_break,
+      const std::vector<Vroom_time_window_t> &break_tws) const {
+    std::vector <vroom::TimeWindow> tws = get_vroom_time_windows(break_tws);
     return vroom::Break(v_break.id, tws, v_break.service);
   }
 

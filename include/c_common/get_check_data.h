@@ -44,7 +44,6 @@ spi_getChar(
     HeapTuple *tuple,
     TupleDesc *tupdesc,
     Column_info_t info,
-    bool strict,
     char default_value);
 
 /** @brief Function returns the values of specified columns in array.  */
@@ -133,6 +132,9 @@ MatrixIndex get_MatrixIndex(HeapTuple*, TupleDesc*, Column_info_t, MatrixIndex);
 
 /** get Duration from data */
 Duration get_Duration(HeapTuple*, TupleDesc*, Column_info_t, Duration);
+
+/** get Kind from data */
+char get_Kind(HeapTuple*, TupleDesc*, Column_info_t, char);
 
 /** get Priority from data */
 Priority get_Priority(HeapTuple*, TupleDesc*, Column_info_t, Priority);

@@ -35,23 +35,18 @@ A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    p_id, p_location_index [, p_service],
-    d_id, d_location_index [, d_service]
+    id, p_location_index [, p_service], d_location_index [, d_service]
     [, amount, skills, priority]
 
 
 ======================  =========================  =========== ================================================
 Column                  Type                       Default     Description
 ======================  =========================  =========== ================================================
-**p_id**                ``ANY-INTEGER``                         Non-negative unique identifier of the pickup
-                                                                shipment (unique for pickup).
+**id**                  ``ANY-INTEGER``                         Non-negative unique identifier of the shipment.
 
 **p_location_index**    ``ANY-INTEGER``                         Non-negative identifier of the pickup location.
 
 **p_service**           ``INTEGER``                0            Pickup service duration, in seconds
-
-**d_id**                ``ANY-INTEGER``                         Non-negative unique identifier of the delivery
-                                                                shipment (unique for delivery).
 
 **d_location_index**    ``ANY-INTEGER``                         Non-negative identifier of the delivery location.
 
@@ -86,31 +81,31 @@ void fetch_shipments(
     TupleDesc *tupdesc,
     Column_info_t *info,
     Vroom_shipment_t *shipment) {
+  shipment->id = get_Idx(tuple, tupdesc, info[0], 0);
+
   /*
    * The pickups
    */
-  shipment->p_id = get_Idx(tuple, tupdesc, info[0], 0);
   shipment->p_location_index = get_MatrixIndex(tuple, tupdesc, info[1], 0);
   shipment->p_service = get_Duration(tuple, tupdesc, info[2], 0);
 
   /*
    * The deliveries
    */
-  shipment->d_id = get_Idx(tuple, tupdesc, info[3], 0);
-  shipment->d_location_index = get_MatrixIndex(tuple, tupdesc, info[4], 0);
-  shipment->d_service = get_Duration(tuple, tupdesc, info[5], 0);
+  shipment->d_location_index = get_MatrixIndex(tuple, tupdesc, info[3], 0);
+  shipment->d_service = get_Duration(tuple, tupdesc, info[4], 0);
 
   shipment->amount_size = 0;
-  shipment->amount = column_found(info[6].colNumber) ?
-    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[6], &shipment->amount_size)
+  shipment->amount = column_found(info[5].colNumber) ?
+    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[5], &shipment->amount_size)
     : NULL;
 
   shipment->skills_size = 0;
-  shipment->skills = column_found(info[7].colNumber) ?
-    spi_getPositiveIntArr_allowEmpty(tuple, tupdesc, info[7], &shipment->skills_size)
+  shipment->skills = column_found(info[6].colNumber) ?
+    spi_getPositiveIntArr_allowEmpty(tuple, tupdesc, info[6], &shipment->skills_size)
     : NULL;
 
-  shipment->priority = get_Priority(tuple, tupdesc, info[8], 0);
+  shipment->priority = get_Priority(tuple, tupdesc, info[7], 0);
 }
 
 
@@ -209,31 +204,30 @@ get_vroom_shipments(
     info[i].eType = ANY_INTEGER;
   }
 
+  info[0].name = "id";
+
   /* pickup shipments */
-  info[0].name = "p_id";
   info[1].name = "p_location_index";
   info[2].name = "p_service";
 
   /* delivery shipments */
-  info[3].name = "d_id";
-  info[4].name = "d_location_index";
-  info[5].name = "d_service";
+  info[3].name = "d_location_index";
+  info[4].name = "d_service";
 
-  info[6].name = "amount";
-  info[7].name = "skills";
-  info[8].name = "priority";
+  info[5].name = "amount";
+  info[6].name = "skills";
+  info[7].name = "priority";
 
   info[2].eType = INTEGER;            // p_service
-  info[5].eType = INTEGER;            // d_service
-  info[6].eType = ANY_INTEGER_ARRAY;  // amount
-  info[7].eType = INTEGER_ARRAY;      // skills
-  info[8].eType = INTEGER;            // priority
+  info[4].eType = INTEGER;            // d_service
+  info[5].eType = ANY_INTEGER_ARRAY;  // amount
+  info[6].eType = INTEGER_ARRAY;      // skills
+  info[7].eType = INTEGER;            // priority
 
   /* id and location_index of pickup and delivery are mandatory */
   info[0].strict = true;
   info[1].strict = true;
   info[3].strict = true;
-  info[4].strict = true;
 
   db_get_shipments(sql, rows, total_rows, info, kColumnCount);
 }

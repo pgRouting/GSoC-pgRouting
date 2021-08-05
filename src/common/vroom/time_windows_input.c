@@ -35,18 +35,24 @@ A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    id, tw_open, tw_close
+    id [, kind], tw_open, tw_close
 
-====================  ====================================== ================================================
+====================  ====================================== =====================================================
 Column                Type                                   Description
-====================  ====================================== ================================================
+====================  ====================================== =====================================================
 **id**                ``ANY-INTEGER``                         Non-negative unique identifier of the job,
                                                               pickup/delivery shipment, or break.
+
+**kind**              ``CHAR``                                **Only required for shipments**. Value in ['p', 'd']
+                                                              indicating whether the time window is for:
+
+                                                              - Pickup shipment, or
+                                                              - Delivery shipment.
 
 **tw_open**           ``INTEGER``                             Time window opening time.
 
 **tw_close**          ``INTEGER``                             Time window closing time.
-====================  ====================================== ================================================
+====================  ====================================== =====================================================
 
 **Note**:
 
@@ -65,11 +71,24 @@ void fetch_time_windows(
     HeapTuple *tuple,
     TupleDesc *tupdesc,
     Column_info_t *info,
-    Vroom_time_window_t *time_window) {
+    Vroom_time_window_t *time_window,
+    bool is_shipment) {
 
   time_window->id = get_Idx(tuple, tupdesc, info[0], 0);
-  time_window->start_time = get_Duration(tuple, tupdesc, info[1], 0);
-  time_window->end_time = get_Duration(tuple, tupdesc, info[2], 0);
+
+  if (is_shipment) {
+    char kind = get_Kind(tuple, tupdesc, info[1], ' ');
+    if (kind != 'p' && kind != 'd') {
+      ereport(ERROR, (errmsg("Invalid kind %c", kind),
+                      errhint("Kind must be either 'p' or 'd'")));
+    }
+    time_window->kind = kind;
+    time_window->start_time = get_Duration(tuple, tupdesc, info[2], 0);
+    time_window->end_time = get_Duration(tuple, tupdesc, info[3], 0);
+  } else {
+    time_window->start_time = get_Duration(tuple, tupdesc, info[1], 0);
+    time_window->end_time = get_Duration(tuple, tupdesc, info[2], 0);
+  }
 
   if (time_window->start_time > time_window->end_time) {
     ereport(ERROR,
@@ -89,7 +108,8 @@ void db_get_time_windows(
     size_t *total_time_windows,
 
     Column_info_t *info,
-    const int column_count) {
+    const int column_count,
+    bool is_shipment) {
 #ifdef PROFILE
   clock_t start_t = clock();
   PGR_DBG("%s", time_windows_sql);
@@ -135,7 +155,7 @@ void db_get_time_windows(
       for (t = 0; t < ntuples; t++) {
         HeapTuple tuple = tuptable->vals[t];
         fetch_time_windows(&tuple, &tupdesc, info,
-            &(*time_windows)[total_tuples - ntuples + t]);
+            &(*time_windows)[total_tuples - ntuples + t], is_shipment);
       }
       SPI_freetuptable(tuptable);
     } else {
@@ -183,5 +203,36 @@ get_vroom_time_windows(
 
   info[0].eType = ANY_INTEGER;  // id
 
-  db_get_time_windows(sql, rows, total_rows, info, kColumnCount);
+  db_get_time_windows(sql, rows, total_rows, info, kColumnCount, 0);
+}
+
+/**
+ * @param[in] sql SQL query to execute
+ * @param[out] rows C Container that holds the data
+ * @param[out] total_rows Total rows recieved
+ */
+void
+get_vroom_shipments_time_windows(
+    char *sql,
+    Vroom_time_window_t **rows,
+    size_t *total_rows) {
+  const int kColumnCount = 4;
+  Column_info_t info[kColumnCount];
+
+  for (int i = 0; i < kColumnCount; ++i) {
+    info[i].colNumber = -1;
+    info[i].type = 0;
+    info[i].strict = true;
+    info[i].eType = INTEGER;
+  }
+
+  info[0].name = "id";
+  info[1].name = "kind";
+  info[2].name = "tw_open";
+  info[3].name = "tw_close";
+
+  info[0].eType = ANY_INTEGER;  // id
+  info[1].eType = CHAR1;        // kind
+
+  db_get_time_windows(sql, rows, total_rows, info, kColumnCount, 1);
 }

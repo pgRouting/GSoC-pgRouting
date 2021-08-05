@@ -274,7 +274,6 @@ spi_getInterval(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info) {
   @param[in]  tuple         input row to be examined.
   @param[in]  tupdesc       input row description.
   @param[in]  info          contain column information.
-  @param[in]  strict        boolean value of strict.
   @param[in]  default_value returned when column contain NULL value.
 
   @throw ERROR Unexpected Column type. Expected column type is CHAR.
@@ -289,8 +288,7 @@ spi_getInterval(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info) {
  */
 char
 spi_getChar(
-    HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info,
-    bool strict, char default_value) {
+    HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, char default_value) {
   Datum binval;
   bool isNull;
   char value = default_value;
@@ -302,7 +300,7 @@ spi_getChar(
   if (!isNull) {
     value =  ((char*)binval)[1];
   } else {
-    if (strict) {
+    if (info.strict) {
       elog(ERROR, "Unexpected Null value in column %s", info.name);
     }
     value = default_value;
@@ -646,6 +644,25 @@ get_Duration(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, Duration 
     int32_t value = spi_getInt(tuple, tupdesc, info);
     if (value < 0) elog(ERROR, "Unexpected Negative value in column %s", info.name);
     return (Duration) value;
+  }
+  return opt_value;
+}
+
+/**
+ * @params [in] tuple
+ * @params [in] tupdesc
+ * @params [in] info about the column been fetched
+ * @params [in] opt_value default value when the column does not exist
+ *
+ * @returns The value found
+ * @returns opt_value when the column does not exist
+ *
+ */
+char
+get_Kind(HeapTuple *tuple, TupleDesc *tupdesc, Column_info_t info, char opt_value) {
+  if (column_found(info.colNumber)) {
+    char value = spi_getChar(tuple, tupdesc, info, opt_value);
+    return value;
   }
   return opt_value;
 }

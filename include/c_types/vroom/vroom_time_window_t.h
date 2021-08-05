@@ -38,12 +38,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 @note C/C++/postgreSQL connecting structure for input
 name | description
 :----- | :-------
-Idx | Identifier of the job/shipment/break
+id | Identifier of the job/shipment/break
+kind | Whether the shipment is a pickup ('p') or a delivery ('d')
 start_time | Time window start time
 end_time | Time window end time
 */
 struct Vroom_time_window_t {
   Idx id;
+  char kind;
   Duration start_time;
   Duration end_time;
 };

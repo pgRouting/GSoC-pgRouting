@@ -38,10 +38,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 @note C/C++/postgreSQL connecting structure for input
 name | description
 :----- | :-------
-p_id | Pickup identifier
+id | Shipment identifier
 p_location_index | Pickup location index in matrix
 p_service | Pickup service time
-d_id | Delivery identifier
 d_location_index | Delivery location index in matrix
 d_service | Delivery service time
 amount | Quantities for shipment
@@ -51,13 +50,13 @@ skills_size | Number of skills
 priority | Priority level of shipment
 */
 struct Vroom_shipment_t {
+  Idx id; /** Shipment identifier */
+
   /** pickup shipment */
-  Idx p_id; /** Pickup identifier */
   MatrixIndex p_location_index; /** Pickup location index in matrix */
   Duration p_service; /** Pickup service time */
 
   /** delivery shipment */
-  Idx d_id; /** Delivery identifier */
   MatrixIndex d_location_index; /** Delivery location index in matrix */
   Duration d_service; /** Delivery service time */
 
