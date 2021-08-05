@@ -91,19 +91,12 @@ Shipments
    :start-after: -- SHIPMENTS TABLE start
    :end-before: -- SHIPMENTS TABLE end
 
-Pickup Time Windows
+Shipments Time Windows
 ...............................................................................
 
 .. literalinclude:: ../../tools/testers/vroomdata.sql
-   :start-after: -- PICKUP TIME WINDOWS TABLE start
-   :end-before: -- PICKUP TIME WINDOWS TABLE end
-
-Delivery Time Windows
-...............................................................................
-
-.. literalinclude:: ../../tools/testers/vroomdata.sql
-   :start-after: -- DELIVERY TIME WINDOWS TABLE start
-   :end-before: -- DELIVERY TIME WINDOWS TABLE end
+   :start-after: -- SHIPMENTS TIME WINDOWS TABLE start
+   :end-before: -- SHIPMENTS TIME WINDOWS TABLE end
 
 Vehicles
 ...............................................................................

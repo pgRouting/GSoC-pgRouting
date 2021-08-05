@@ -1,25 +1,29 @@
 \echo -- q1
 SELECT *
 FROM vrp_vroomJobs(
+  'SELECT * FROM vroom.jobs',
+  'SELECT * FROM vroom.jobs_time_windows',
+  'SELECT * FROM vroom.vehicles',
+  'SELECT * FROM vroom.breaks',
+  'SELECT * FROM vroom.breaks_time_windows',
+  'SELECT * FROM vroom.matrix'
+);
+\echo -- q2
+SELECT *
+FROM vrp_vroomJobs(
   $jobs$
     SELECT * FROM (
       VALUES (1414, 2), (1515, 3)
     ) AS C(id, location_index)
   $jobs$,
-  $jobs_tw$
-    SELECT * FROM vroom.jobs_time_windows WHERE id = -1
-  $jobs_tw$,
+  NULL,
   $vehicles$
     SELECT * FROM (
       VALUES (1, 1, 4)
     ) AS C(id, start_index, end_index)
   $vehicles$,
-  $breaks$
-    SELECT * FROM vroom.breaks WHERE id = -1
-  $breaks$,
-  $breaks_tw$
-    SELECT * FROM vroom.breaks_time_windows WHERE id = -1
-  $breaks_tw$,
+  NULL,
+  NULL,
   $matrix$
     SELECT * FROM (
       VALUES (1, 2, 2104), (1, 3, 197), (1, 4, 1299),
@@ -28,15 +32,5 @@ FROM vrp_vroomJobs(
              (4, 1, 1299), (4, 2, 3153), (4, 3, 1102)
     ) AS C(start_vid, end_vid, agg_cost)
   $matrix$
-);
-\echo -- q2
-SELECT *
-FROM vrp_vroomJobs(
-  'SELECT * FROM vroom.jobs',
-  'SELECT * FROM vroom.jobs_time_windows',
-  'SELECT * FROM vroom.vehicles',
-  'SELECT * FROM vroom.breaks',
-  'SELECT * FROM vroom.breaks_time_windows',
-  'SELECT * FROM vroom.matrix'
 );
 \echo -- q3

@@ -49,8 +49,7 @@ Signature
    :start-after: signature start
    :end-before: signature end
 
-**Example**: Problem involving 2 jobs and 1 shipment, using a single vehicle, similar to the VROOM Documentation
-`Example 2 <https://github.com/VROOM-Project/vroom/blob/master/docs/example_2.json>`__ with a shipment.
+**Example**: This example is based on the VROOM Data of the :doc:`sampledata` network:
 
 .. literalinclude:: doc-vrp_vroom.queries
    :start-after: -- q1
@@ -91,10 +90,11 @@ Result Columns
    :start-after: result_columns_start
    :end-before: result_columns_end
 
-Example
+Additional Example
 -------------------------------------------------------------------------------
 
-This example is based on the VROOM Data of the :doc:`sampledata` network:
+Problem involving 2 jobs and 1 shipment, using a single vehicle, similar to the VROOM Documentation
+`Example 2 <https://github.com/VROOM-Project/vroom/blob/master/docs/example_2.json>`__ with a shipment.
 
 .. literalinclude:: doc-vrp_vroom.queries
    :start-after: -- q2
