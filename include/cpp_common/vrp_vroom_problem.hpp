@@ -437,7 +437,7 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
       Idx step_seq = 1;
       for (auto step : route.steps) {
         int32_t step_type = 0;
-        Idx task_id = step.id;
+        Id task_id = static_cast<Id> (step.id);
         switch (step.step_type) {
           case vroom::STEP_TYPE::START:
             step_type = 1;
