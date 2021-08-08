@@ -62,6 +62,14 @@ spi_getBigIntArr_allowEmpty(
     Column_info_t info,
     size_t *the_size);
 
+/** @brief Function returns the values of specified columns in array.  */
+int64_t*
+spi_getPositiveBigIntArr_allowEmpty(
+    HeapTuple *tuple,
+    TupleDesc *tupdesc,
+    Column_info_t info,
+    size_t *the_size);
+
 /** @brief Function returns the values of specified columns in array. */
 uint32_t*
 spi_getPositiveIntArr_allowEmpty(

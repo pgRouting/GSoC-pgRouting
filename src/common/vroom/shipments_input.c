@@ -97,7 +97,7 @@ void fetch_shipments(
 
   shipment->amount_size = 0;
   shipment->amount = column_found(info[5].colNumber) ?
-    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[5], &shipment->amount_size)
+    spi_getPositiveBigIntArr_allowEmpty(tuple, tupdesc, info[5], &shipment->amount_size)
     : NULL;
 
   shipment->skills_size = 0;

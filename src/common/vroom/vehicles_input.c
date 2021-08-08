@@ -85,12 +85,12 @@ void fetch_vehicles(
     Column_info_t *info,
     Vroom_vehicle_t *vehicle) {
   vehicle->id = get_Idx(tuple, tupdesc, info[0], 0);
-  vehicle->start_index = get_MatrixIndex(tuple, tupdesc, info[1], 0);
-  vehicle->end_index = get_MatrixIndex(tuple, tupdesc, info[2], 0);
+  vehicle->start_index = get_MatrixIndex(tuple, tupdesc, info[1], -1);
+  vehicle->end_index = get_MatrixIndex(tuple, tupdesc, info[2], -1);
 
   vehicle->capacity_size = 0;
   vehicle->capacity = column_found(info[3].colNumber) ?
-    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[3], &vehicle->capacity_size)
+    spi_getPositiveBigIntArr_allowEmpty(tuple, tupdesc, info[3], &vehicle->capacity_size)
     : NULL;
 
   vehicle->skills_size = 0;
@@ -100,6 +100,15 @@ void fetch_vehicles(
 
   vehicle->time_window_start = get_Duration(tuple, tupdesc, info[5], 0);
   vehicle->time_window_end = get_Duration(tuple, tupdesc, info[6], UINT_MAX);
+
+  if (vehicle->time_window_start > vehicle->time_window_end) {
+    ereport(ERROR,
+        (errmsg("Invalid time window (%d, %d)",
+            vehicle->time_window_start, vehicle->time_window_end),
+         errhint("Time window start time %d must be "
+             "less than or equal to time window end time %d",
+             vehicle->time_window_start, vehicle->time_window_end)));
+  }
 
   vehicle->speed_factor = column_found(info[7].colNumber) ?
     spi_getFloat8(tuple, tupdesc, info[7])
@@ -137,6 +146,12 @@ void db_get_vehicles(
   while (moredata == true) {
     SPI_cursor_fetch(SPIportal, true, tuple_limit);
     if (total_tuples == 0) {
+      /* Atleast one out of start_index or end_index must be present */
+      info[1].colNumber = SPI_fnumber(SPI_tuptable->tupdesc, "start_index");
+      info[2].colNumber = SPI_fnumber(SPI_tuptable->tupdesc, "end_index");
+      if (!column_found(info[1].colNumber) && !column_found(info[2].colNumber)) {
+        elog(ERROR, "At least one out of start_index or end_index must be present");
+      }
       pgr_fetch_column_info(info, column_count);
     }
     size_t ntuples = SPI_processed;
@@ -218,10 +233,11 @@ get_vroom_vehicles(
 
   info[7].eType = ANY_NUMERICAL;      // speed_factor
 
-  /* id, stand and end index are mandatory */
+  /**
+   * id is mandatory.
+   * At least one out of start_index or end_index must be present, but that is checked later.
+   */
   info[0].strict = true;
-  info[1].strict = true;
-  info[2].strict = true;
 
   db_get_vehicles(sql, rows, total_rows, info, kColumnCount);
 }

@@ -92,7 +92,7 @@ void fetch_jobs(
    */
   job->delivery_size = 0;
   job->delivery = column_found(info[3].colNumber) ?
-    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[3], &job->delivery_size)
+    spi_getPositiveBigIntArr_allowEmpty(tuple, tupdesc, info[3], &job->delivery_size)
     : NULL;
 
   /*
@@ -100,7 +100,7 @@ void fetch_jobs(
    */
   job->pickup_size = 0;
   job->pickup = column_found(info[4].colNumber) ?
-    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[4], &job->pickup_size)
+    spi_getPositiveBigIntArr_allowEmpty(tuple, tupdesc, info[4], &job->pickup_size)
     : NULL;
 
   job->skills_size = 0;

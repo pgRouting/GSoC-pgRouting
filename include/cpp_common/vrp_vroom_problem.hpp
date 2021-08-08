@@ -106,26 +106,30 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
    *
    * @param[in]  amounts  The amounts array (pickup or delivery)
    *
-   * @tparam     T        { Amount }
-   *
    * @return     The vroom amounts.
    */
-  template < typename T >
   vroom::Amount
-  get_vroom_amounts(const std::vector < T > &amounts) const {
+  get_vroom_amounts(const std::vector <Amount> &amounts) const {
     vroom::Amount amt;
-    for (auto amount : amounts) {
-      amt.push_back(amount);
+    if (amounts.size()) {
+      for (auto amount : amounts) {
+        amt.push_back(amount);
+      }
+    } else {
+      const unsigned int amount_size =
+          m_vehicles.size() ? static_cast<unsigned int>(m_vehicles[0].capacity.size()) : 0;
+      // Default to zero amount with provided size.
+      amt = vroom::Amount(amount_size);
+      for (size_t i = 0; i < amounts.size(); i++) {
+        amt[i] = amounts[i];
+      }
     }
     return amt;
   }
 
-  template < typename T >
   vroom::Amount
-  get_vroom_amounts(const T *amounts, size_t count) const {
-    return
-    get_vroom_amounts(std::vector < T >(amounts,
-                                  amounts + count));
+  get_vroom_amounts(const Amount *amounts, size_t count) const {
+    return get_vroom_amounts(std::vector <Amount>(amounts, amounts + count));
   }
   ///@}
 
@@ -140,14 +144,11 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
    * @param[in]  skills  The skills array
    * @param[in]  count   The size of skills array
    *
-   * @tparam     T       { Skill  or uint32_t }
-   *
    * @return     The vroom skills.
    */
-  template < typename T >
   vroom::Skills
-  get_vroom_skills(const T *skills, size_t count) const {
-    return std::unordered_set < T >(skills, skills + count);
+  get_vroom_skills(const Skill *skills, size_t count) const {
+    return std::unordered_set <Skill>(skills, skills + count);
   }
   ///@}
 
@@ -354,10 +355,15 @@ class Vrp_vroom_problem : public vrprouting::Pgr_messages {
                               vehicle.time_window_end);
     std::vector<vroom::Break> v_breaks = get_vroom_breaks(breaks, breaks_tws);
 
-    vroom::Index start_index =
-        static_cast<vroom::Index>(m_matrix.get_index(vehicle.start_index));
-    vroom::Index end_index =
-        static_cast<vroom::Index>(m_matrix.get_index(vehicle.end_index));
+    std::optional<vroom::Location> start_index;
+    std::optional<vroom::Location> end_index;
+    // Set the value of start or end index only if they are present
+    if (vehicle.start_index != -1) {
+      start_index = static_cast<vroom::Index>(m_matrix.get_index(vehicle.start_index));
+    }
+    if (vehicle.end_index != -1) {
+      end_index = static_cast<vroom::Index>(m_matrix.get_index(vehicle.end_index));
+    }
     return vroom::Vehicle(vehicle.id, start_index, end_index,
                           vroom::DEFAULT_PROFILE, capacity, skills, time_window,
                           v_breaks, "", vehicle.speed_factor);

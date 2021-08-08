@@ -115,8 +115,12 @@ do_vrp_vroom(
     }
 
     for (size_t i = 0; i < total_vehicles; ++i) {
-      location_ids += vehicles[i].start_index;
-      location_ids += vehicles[i].end_index;
+      if (vehicles[i].start_index != -1) {
+        location_ids += vehicles[i].start_index;
+      }
+      if (vehicles[i].end_index != -1) {
+        location_ids += vehicles[i].end_index;
+      }
     }
 
     vrprouting::base::Base_Matrix time_matrix(matrix_cells_arr, total_cells, location_ids);
@@ -145,13 +149,13 @@ do_vrp_vroom(
 
     vrprouting::Vrp_vroom_problem problem;
     problem.add_matrix(time_matrix);
+    problem.add_vehicles(vehicles, total_vehicles,
+                         breaks, total_breaks,
+                         breaks_tws, total_breaks_tws);
     problem.add_jobs(jobs, total_jobs,
                      jobs_tws, total_jobs_tws);
     problem.add_shipments(shipments, total_shipments,
                           shipments_tws, total_shipments_tws);
-    problem.add_vehicles(vehicles, total_vehicles,
-                         breaks, total_breaks,
-                         breaks_tws, total_breaks_tws);
 
     std::vector < Vroom_rt > results = problem.solve();
 
@@ -189,7 +193,7 @@ do_vrp_vroom(
   } catch (const vroom::Exception &except) {
     (*return_tuples) = pgr_free(*return_tuples);
     (*return_count) = 0;
-    err << except.message << "\n";
+    err << except.message;
     *err_msg = pgr_msg(err.str().c_str());
     *log_msg = pgr_msg(log.str().c_str());
   } catch (std::exception &except) {

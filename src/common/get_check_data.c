@@ -349,6 +349,21 @@ spi_getBigIntArr_allowEmpty(
   return pgr_get_bigIntArray_allowEmpty(the_size, pg_array);
 }
 
+int64_t*
+spi_getPositiveBigIntArr_allowEmpty(
+    HeapTuple *tuple,
+    TupleDesc *tupdesc,
+    Column_info_t info,
+    size_t *the_size) {
+  int64_t *array = spi_getBigIntArr_allowEmpty(tuple, tupdesc, info, the_size);
+  for (size_t i = 0; i < *the_size; i++) {
+    if (array[i] < 0) {
+      elog(ERROR, "Unexpected Negative value %ld in array", array[i]);
+    }
+  }
+  return array;
+}
+
 
 uint32_t*
 spi_getPositiveIntArr_allowEmpty(
