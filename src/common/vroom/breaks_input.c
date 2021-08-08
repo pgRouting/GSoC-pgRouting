@@ -35,16 +35,15 @@ A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    id, time_windows_sql [, service]
+    id, vehicle_id [, service]
 
 ====================  =========================  =========== ================================================
 Column                Type                       Default     Description
 ====================  =========================  =========== ================================================
-**id**                ``ANY-INTEGER``                         Non-negative unique identifier of the break
+**id**                ``ANY-INTEGER``                         Non-negative unique identifier of the break.
                                                               (unique for the same vehicle).
 
-**time_windows_sql**  ``TEXT``                                `Time Windows SQL`_ query describing valid slots
-                                                              for break start.
+**vehicle_id**        ``ANY-INTEGER``                         Non-negative unique identifier of the vehicle.
 
 **service**           ``INTEGER``                0            The break duration, in seconds
 ====================  =========================  =========== ================================================
@@ -59,13 +58,7 @@ void fetch_breaks(
     Column_info_t *info,
     Vroom_break_t *vroom_break) {
   vroom_break->id = get_Idx(tuple, tupdesc, info[0], 0);
-
-  char *time_windows_sql = spi_getText(tuple, tupdesc, info[1]);
-  if (time_windows_sql) {
-    get_vroom_time_windows(time_windows_sql,
-      &vroom_break->time_windows, &vroom_break->time_windows_size);
-  }
-
+  vroom_break->vehicle_id = get_Idx(tuple, tupdesc, info[1], 0);
   vroom_break->service = get_Duration(tuple, tupdesc, info[2], 0);
 }
 
@@ -156,7 +149,7 @@ get_vroom_breaks(
     char *sql,
     Vroom_break_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 3;
+  int kColumnCount = 3;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {
@@ -167,10 +160,9 @@ get_vroom_breaks(
   }
 
   info[0].name = "id";
-  info[1].name = "time_windows_sql";
+  info[1].name = "vehicle_id";
   info[2].name = "service";
 
-  info[1].eType = TEXT;     // time_windows_sql
   info[2].eType = INTEGER;  // service
 
   /* service is not mandatory */

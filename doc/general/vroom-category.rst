@@ -95,8 +95,6 @@ Terminologies
 Inner Queries
 -------------------------------------------------------------------------------
 
-.. inner_queries_start
-
 Jobs SQL
 ...............................................................................
 
@@ -111,6 +109,8 @@ Shipments SQL
    :start-after: vrp_vroom start
    :end-before: vrp_vroom end
 
+.. inner_queries_start
+
 Vehicles SQL
 ...............................................................................
 
@@ -119,14 +119,14 @@ Vehicles SQL
    :end-before: vrp_vroom end
 
 Breaks SQL
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...............................................................................
 
 .. include:: ../../src/common/vroom/breaks_input.c
    :start-after: vrp_vroom start
    :end-before: vrp_vroom end
 
 Time Windows SQL
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...............................................................................
 
 .. include:: ../../src/common/vroom/time_windows_input.c
    :start-after: vrp_vroom start

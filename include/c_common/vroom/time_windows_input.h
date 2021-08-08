@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_C_COMMON_VROOM_TIME_WINDOWS_INPUT_H_
 #pragma once
 
+#include <stdbool.h>
 #include <stddef.h>
 
 #include "c_common/get_check_data.h"
@@ -44,6 +45,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 /** @brief Reads the VROOM time windows */
 void
 get_vroom_time_windows(
+    char *time_windows_sql,
+    Vroom_time_window_t **time_windows,
+    size_t *total_time_windows);
+
+/** @brief Reads the VROOM shipments time windows */
+void
+get_vroom_shipments_time_windows(
     char *time_windows_sql,
     Vroom_time_window_t **time_windows,
     size_t *total_time_windows);

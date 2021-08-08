@@ -32,7 +32,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include "c_types/typedefs.h"
-#include "c_types/vroom/vroom_time_window_t.h"
 
 /** @brief Job's attributes
 
@@ -49,8 +48,6 @@ pickup_size | Number of pickup quantities
 skills | Mandatory skills
 skills_size | Number of mandatory skills
 priority | Priority level of job
-time_windows | Valid slots for job service start
-time_windows_size | Number of valid slots
 */
 struct Vroom_job_t {
   Idx id; /** The job's identifier */
@@ -68,9 +65,6 @@ struct Vroom_job_t {
   size_t skills_size; /** Number of mandatory skills */
 
   Priority priority; /** Priority level of job */
-
-  Vroom_time_window_t *time_windows; /**Valid slots for job service start*/
-  size_t time_windows_size; /** Number of valid slots */
 };
 
 #endif  // INCLUDE_C_TYPES_VROOM_VROOM_JOB_T_H_

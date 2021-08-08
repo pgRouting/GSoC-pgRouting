@@ -31,7 +31,11 @@ signature start
 
 .. code-block:: none
 
-    vrp_vroom(Jobs SQL, Shipments SQL, Vehicles SQL, Matrix SQL)  -- Experimental on v0.2
+    vrp_vroom(
+      Jobs SQL, Jobs Time Windows SQL,
+      Shipments SQL, Shipments Time Windows SQL,
+      Vehicles SQL, Breaks SQL, Breaks Time Windows SQL,
+      Matrix SQL)  -- Experimental on v0.2
 
     RETURNS SET OF
     (seq, vehicle_seq, vehicle_id, step_seq, step_type, task_id,
@@ -41,15 +45,24 @@ signature end
 
 parameters start
 
-=================== ======================== =================================================
-Parameter           Type                     Description
-=================== ======================== =================================================
-**Jobs SQL**        ``TEXT``                 `Jobs SQL`_ query describing the places to visit.
-**Shipments SQL**   ``TEXT``                 `Shipments SQL`_ query describing pickup and delivery tasks.
-**Vehicles SQL**    ``TEXT``                 `Vehicles SQL`_ query describing the available vehicles.
-**Matrix SQL**      ``TEXT``                 `Time Matrix SQL`_ query containing the distance or
-                                             travel times between the locations.
-=================== ======================== =================================================
+============================== =========== =========================================================
+Parameter                      Type        Description
+============================== =========== =========================================================
+**Jobs SQL**                   ``TEXT``    `Jobs SQL`_ query describing the single-location
+                                           pickup and/or delivery tasks.
+**Jobs Time Windows SQL**      ``TEXT``    `Time Windows SQL`_ query describing valid slots
+                                           for job service start.
+**Shipments SQL**              ``TEXT``    `Shipments SQL`_ query describing pickup and delivery
+                                           tasks that should happen within same route.
+**Shipments Time Windows SQL** ``TEXT``    `Time Windows SQL`_ query describing valid slots
+                                           for pickup and delivery service start.
+**Vehicles SQL**               ``TEXT``    `Vehicles SQL`_ query describing the available vehicles.
+**Breaks SQL**                 ``TEXT``    `Breaks SQL`_ query describing the driver breaks.
+**Breaks Time Windows SQL**    ``TEXT``    `Time Windows SQL`_ query describing valid slots for
+                                           break start.
+**Matrix SQL**                 ``TEXT``    `Time Matrix SQL`_ query containing the distance or
+                                           travel times between the locations.
+============================== =========== =========================================================
 
 parameters end
 
@@ -80,6 +93,8 @@ Column              Type           Description
 
 **task_id**          ``BIGINT``   Identifier of the task performed at this step.
 
+                                  - ``-1``: If the step is starting/ending location.
+
 **arrival**          ``INTEGER``  Estimated time of arrival at this step, in seconds.
 
 **travel_time**      ``INTEGER``  Cumulated travel time upon arrival at this step, in seconds
@@ -97,8 +112,12 @@ result end
 -- v0.2
 CREATE FUNCTION vrp_vroom(
     TEXT,  -- jobs_sql (required)
+    TEXT,  -- jobs_time_windows_sql (required)
     TEXT,  -- shipments_sql (required)
+    TEXT,  -- shipments_time_windows_sql (required)
     TEXT,  -- vehicles_sql (required)
+    TEXT,  -- breaks_sql (required)
+    TEXT,  -- breaks_time_windows_sql (required)
     TEXT,  -- matrix_sql (required)
 
     OUT seq BIGINT,
@@ -116,27 +135,36 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
     FROM _vrp_vroom(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-                    _pgr_get_statement($4));
+                    _pgr_get_statement($4), _pgr_get_statement($5), _pgr_get_statement($6),
+                    _pgr_get_statement($7), _pgr_get_statement($8), 0::SMALLINT);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE SQL VOLATILE;
 
 
 -- COMMENTS
 
-COMMENT ON FUNCTION vrp_vroom(TEXT, TEXT, TEXT, TEXT)
+COMMENT ON FUNCTION vrp_vroom(TEXT, TEXT, TEXT, TEXT, TEXT, TEXT, TEXT, TEXT)
 IS 'vrp_vroom
  - EXPERIMENTAL
  - Parameters:
    - Jobs SQL with columns:
        id, location_index [, service, delivery, pickup, skills, priority, time_windows]
+   - Jobs Time Windows SQL with columns:
+       id, tw_open, tw_close
    - Shipments SQL with columns:
        p_id, p_location_index [, p_service, p_time_windows],
        d_id, d_location_index [, d_service, d_time_windows] [, amount, skills, priority]
+   - Shipments Time Windows SQL with columns:
+       id, kind, tw_open, tw_close
    - Vehicles SQL with columns:
        id, start_index, end_index
        [, service, delivery, pickup, skills, priority, time_window, breaks_sql, steps_sql]
+   - Breaks SQL with columns:
+       id [, service]
+   - Breaks Time Windows SQL with columns:
+       id, tw_open, tw_close
    - Matrix SQL with columns:
-        start_vid, end_vid, agg_cost
-- Documentation:
+       start_vid, end_vid, agg_cost
+ - Documentation:
    - ${PROJECT_DOC_LINK}/vrp_vroom.html
 ';

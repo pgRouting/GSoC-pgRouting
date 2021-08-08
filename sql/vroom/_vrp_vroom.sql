@@ -29,9 +29,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- v0.2
 CREATE FUNCTION _vrp_vroom(
     jobs_sql TEXT,
+    jobs_time_windows_sql TEXT,
     shipments_sql TEXT,
+    shipments_time_windows_sql TEXT,
     vehicles_sql TEXT,
+    breaks_sql TEXT,
+    breaks_time_windows_sql TEXT,
     matrix_sql TEXT,
+    fn SMALLINT,
 
     OUT seq BIGINT,
     OUT vehicle_seq BIGINT,
@@ -50,5 +55,5 @@ LANGUAGE C VOLATILE;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _vrp_vroom(TEXT, TEXT, TEXT, TEXT)
+COMMENT ON FUNCTION _vrp_vroom(TEXT, TEXT, TEXT, TEXT, TEXT, TEXT, TEXT, TEXT, SMALLINT)
 IS 'pgRouting internal function';

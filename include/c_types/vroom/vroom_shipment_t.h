@@ -32,23 +32,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include "c_types/typedefs.h"
-#include "c_types/vroom/vroom_time_window_t.h"
 
 /** @brief Vehicles's attributes
 
 @note C/C++/postgreSQL connecting structure for input
 name | description
 :----- | :-------
-p_id | Pickup identifier
+id | Shipment identifier
 p_location_index | Pickup location index in matrix
 p_service | Pickup service time
-p_time_windows | Valid slots for pickup service start
-p_time_windows_size | Number of slots for pickup service start
-d_id | Delivery identifier
 d_location_index | Delivery location index in matrix
 d_service | Delivery service time
-d_time_windows | Valid slots for delivery service start
-d_time_windows_size | Number of slots for delivery service start
 amount | Quantities for shipment
 amount_size | Number of quantities
 skills | Mandatory skills
@@ -56,19 +50,15 @@ skills_size | Number of skills
 priority | Priority level of shipment
 */
 struct Vroom_shipment_t {
+  Idx id; /** Shipment identifier */
+
   /** pickup shipment */
-  Idx p_id; /** Pickup identifier */
   MatrixIndex p_location_index; /** Pickup location index in matrix */
   Duration p_service; /** Pickup service time */
-  Vroom_time_window_t *p_time_windows; /** Pickup time windows */
-  size_t p_time_windows_size; /** Number of pickup time windows */
 
   /** delivery shipment */
-  Idx d_id; /** Delivery identifier */
   MatrixIndex d_location_index; /** Delivery location index in matrix */
   Duration d_service; /** Delivery service time */
-  Vroom_time_window_t *d_time_windows; /** Delivery time windows */
-  size_t d_time_windows_size; /** Number of delivery time windows */
 
   Amount *amount; /** Quantities for shipment */
   size_t amount_size; /** Number of quantities */

@@ -48,8 +48,7 @@ Signature
    :start-after: signature start
    :end-before: signature end
 
-**Example**: Problem involving 2 jobs, using a single vehicle, corresponding to the VROOM Documentation
-`Example 2 <https://github.com/VROOM-Project/vroom/blob/master/docs/example_2.json>`__.
+**Example**: This example is based on the VROOM Data of the :doc:`sampledata` network:
 
 .. literalinclude:: doc-vrp_vroomJobs.queries
    :start-after: -- q1
@@ -65,6 +64,13 @@ Parameters
 Inner Queries
 -------------------------------------------------------------------------------
 
+Jobs SQL
+...............................................................................
+
+.. include:: ../../src/common/vroom/jobs_input.c
+   :start-after: vrp_vroom start
+   :end-before: vrp_vroom end
+
 .. include:: vroom-category.rst
    :start-after: inner_queries_start
    :end-before: inner_queries_end
@@ -76,10 +82,11 @@ Result Columns
    :start-after: result_columns_start
    :end-before: result_columns_end
 
-Example
+Additional Example
 -------------------------------------------------------------------------------
 
-This example is based on the VROOM Data of the :doc:`sampledata` network:
+Problem involving 2 jobs, using a single vehicle, corresponding to the VROOM Documentation
+`Example 2 <https://github.com/VROOM-Project/vroom/blob/master/docs/example_2.json>`__.
 
 .. literalinclude:: doc-vrp_vroomJobs.queries
    :start-after: -- q2

@@ -36,7 +36,7 @@ A ``SELECT`` statement that returns the following columns:
 ::
 
     id, location_index
-    [, service, delivery, pickup, skills, priority, time_windows_sql]
+    [, service, delivery, pickup, skills, priority]
 
 
 ====================  =========================  =========== ================================================
@@ -68,9 +68,6 @@ Column                Type                       Default     Description
 **priority**          ``INTEGER``                0           Priority level of the job
 
                                                              - Ranges from ``[0, 100]``
-
-**time_windows_sql**  ``TEXT``                               `Time Windows SQL`_ query describing valid slots
-                                                             for job service start.
 ====================  =========================  =========== ================================================
 
 Where:
@@ -95,7 +92,7 @@ void fetch_jobs(
    */
   job->delivery_size = 0;
   job->delivery = column_found(info[3].colNumber) ?
-    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[3], &job->delivery_size)
+    spi_getPositiveBigIntArr_allowEmpty(tuple, tupdesc, info[3], &job->delivery_size)
     : NULL;
 
   /*
@@ -103,7 +100,7 @@ void fetch_jobs(
    */
   job->pickup_size = 0;
   job->pickup = column_found(info[4].colNumber) ?
-    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[4], &job->pickup_size)
+    spi_getPositiveBigIntArr_allowEmpty(tuple, tupdesc, info[4], &job->pickup_size)
     : NULL;
 
   job->skills_size = 0;
@@ -112,16 +109,6 @@ void fetch_jobs(
     : NULL;
 
   job->priority = get_Priority(tuple, tupdesc, info[6], 0);
-
-  job->time_windows_size = 0;
-  job->time_windows = NULL;
-  if (column_found(info[7].colNumber)) {
-    char *time_windows_sql = spi_getText(tuple, tupdesc, info[7]);
-    if (time_windows_sql) {
-      get_vroom_time_windows(time_windows_sql, &job->time_windows,
-                    &job->time_windows_size);
-    }
-  }
 }
 
 
@@ -210,7 +197,7 @@ get_vroom_jobs(
     char *sql,
     Vroom_job_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 8;
+  int kColumnCount = 7;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {
@@ -227,14 +214,12 @@ get_vroom_jobs(
   info[4].name = "pickup";
   info[5].name = "skills";
   info[6].name = "priority";
-  info[7].name = "time_windows_sql";
 
   info[2].eType = INTEGER;            // service
   info[3].eType = ANY_INTEGER_ARRAY;  // delivery
   info[4].eType = ANY_INTEGER_ARRAY;  // pickup
   info[5].eType = INTEGER_ARRAY;      // skills
   info[6].eType = INTEGER;            // priority
-  info[7].eType = TEXT;               // time_windows_sql
 
   /* Only id and location_index are mandatory */
   info[0].strict = true;

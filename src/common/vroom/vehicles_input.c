@@ -36,7 +36,7 @@ A ``SELECT`` statement that returns the following columns:
 ::
 
     id, start_index, end_index
-    [, capacity, skills, tw_open, tw_close, breaks_sql, speed_factor]
+    [, capacity, skills, tw_open, tw_close, speed_factor]
 
 
 ======================  ================================= ================================================
@@ -62,8 +62,6 @@ Column                  Type                              Description
 
 **tw_close**            ``INTEGER``                        Time window closing time.
 
-**breaks_sql**          ``TEXT``                           `Breaks SQL`_ query describing the driver breaks.
-
 **speed_factor**        ``ANY-NUMERICAL``                  Vehicle travel time multiplier.
 ======================  ================================= ================================================
 
@@ -87,12 +85,12 @@ void fetch_vehicles(
     Column_info_t *info,
     Vroom_vehicle_t *vehicle) {
   vehicle->id = get_Idx(tuple, tupdesc, info[0], 0);
-  vehicle->start_index = get_MatrixIndex(tuple, tupdesc, info[1], 0);
-  vehicle->end_index = get_MatrixIndex(tuple, tupdesc, info[2], 0);
+  vehicle->start_index = get_MatrixIndex(tuple, tupdesc, info[1], -1);
+  vehicle->end_index = get_MatrixIndex(tuple, tupdesc, info[2], -1);
 
   vehicle->capacity_size = 0;
   vehicle->capacity = column_found(info[3].colNumber) ?
-    spi_getBigIntArr_allowEmpty(tuple, tupdesc, info[3], &vehicle->capacity_size)
+    spi_getPositiveBigIntArr_allowEmpty(tuple, tupdesc, info[3], &vehicle->capacity_size)
     : NULL;
 
   vehicle->skills_size = 0;
@@ -103,18 +101,17 @@ void fetch_vehicles(
   vehicle->time_window_start = get_Duration(tuple, tupdesc, info[5], 0);
   vehicle->time_window_end = get_Duration(tuple, tupdesc, info[6], UINT_MAX);
 
-  vehicle->breaks_size = 0;
-  vehicle->breaks = NULL;
-  if (column_found(info[7].colNumber)) {
-    char *breaks_sql = spi_getText(tuple, tupdesc, info[7]);
-    if (breaks_sql) {
-      get_vroom_breaks(breaks_sql,
-        &vehicle->breaks, &vehicle->breaks_size);
-    }
+  if (vehicle->time_window_start > vehicle->time_window_end) {
+    ereport(ERROR,
+        (errmsg("Invalid time window (%d, %d)",
+            vehicle->time_window_start, vehicle->time_window_end),
+         errhint("Time window start time %d must be "
+             "less than or equal to time window end time %d",
+             vehicle->time_window_start, vehicle->time_window_end)));
   }
 
-  vehicle->speed_factor = column_found(info[8].colNumber) ?
-    spi_getFloat8(tuple, tupdesc, info[8])
+  vehicle->speed_factor = column_found(info[7].colNumber) ?
+    spi_getFloat8(tuple, tupdesc, info[7])
     : 1.0;
 }
 
@@ -149,6 +146,12 @@ void db_get_vehicles(
   while (moredata == true) {
     SPI_cursor_fetch(SPIportal, true, tuple_limit);
     if (total_tuples == 0) {
+      /* Atleast one out of start_index or end_index must be present */
+      info[1].colNumber = SPI_fnumber(SPI_tuptable->tupdesc, "start_index");
+      info[2].colNumber = SPI_fnumber(SPI_tuptable->tupdesc, "end_index");
+      if (!column_found(info[1].colNumber) && !column_found(info[2].colNumber)) {
+        elog(ERROR, "At least one out of start_index or end_index must be present");
+      }
       pgr_fetch_column_info(info, column_count);
     }
     size_t ntuples = SPI_processed;
@@ -204,7 +207,7 @@ get_vroom_vehicles(
     char *sql,
     Vroom_vehicle_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 9;
+  int kColumnCount = 8;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {
@@ -221,21 +224,20 @@ get_vroom_vehicles(
   info[4].name = "skills";
   info[5].name = "tw_open";
   info[6].name = "tw_close";
-  info[7].name = "breaks_sql";
-  info[8].name = "speed_factor";
+  info[7].name = "speed_factor";
 
   info[3].eType = ANY_INTEGER_ARRAY;  // capacity
   info[4].eType = INTEGER_ARRAY;      // skills
   info[5].eType = INTEGER;            // tw_open
   info[6].eType = INTEGER;            // tw_close
 
-  info[7].eType = TEXT;               // breaks_sql
-  info[8].eType = ANY_NUMERICAL;      // speed_factor
+  info[7].eType = ANY_NUMERICAL;      // speed_factor
 
-  /* id, stand and end index are mandatory */
+  /**
+   * id is mandatory.
+   * At least one out of start_index or end_index must be present, but that is checked later.
+   */
   info[0].strict = true;
-  info[1].strict = true;
-  info[2].strict = true;
 
   db_get_vehicles(sql, rows, total_rows, info, kColumnCount);
 }

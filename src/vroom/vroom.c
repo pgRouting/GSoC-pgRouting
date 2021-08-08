@@ -53,6 +53,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/vroom/vroom_vehicle_t.h"
 
 #include "c_common/vroom/jobs_input.h"
+#include "c_common/vroom/breaks_input.h"
+#include "c_common/vroom/time_windows_input.h"
 #include "c_common/vroom/shipments_input.h"
 #include "c_common/vroom/vehicles_input.h"
 #include "c_common/matrixRows_input.h"
@@ -70,12 +72,17 @@ PG_FUNCTION_INFO_V1(_vrp_vroom);
  * in the `vroom_driver.h` file for further processing.
  * Finally, it frees the memory and disconnects the C function to the SPI manager.
  *
- * @param jobs_sql       SQL query describing the jobs
- * @param shipments_sql  SQL query describing the shipments
- * @param vehicles_sql   SQL query describing the vehicles
- * @param matrix_sql     SQL query describing the cells of the cost matrix
- * @param result_tuples  the rows in the result
- * @param result_count   the count of rows in the result
+ * @param jobs_sql          SQL query describing the jobs
+ * @param jobs_tw_sql       SQL query describing the time window for jobs
+ * @param shipments_sql     SQL query describing the shipments
+ * @param shipments_tw_sql  SQL query describing the time windows for shipment
+ * @param vehicles_sql      SQL query describing the vehicles
+ * @param breaks_sql        SQL query describing the driver breaks.
+ * @param breaks_tws_sql    SQL query describing the time windows for break start.
+ * @param matrix_sql        SQL query describing the cells of the cost matrix
+ * @param fn                Value denoting the function used.
+ * @param result_tuples     the rows in the result
+ * @param result_count      the count of rows in the result
  *
  * @returns void
  */
@@ -83,9 +90,14 @@ static
 void
 process(
     char *jobs_sql,
+    char *jobs_tws_sql,
     char *shipments_sql,
+    char *shipments_tws_sql,
     char *vehicles_sql,
+    char *breaks_sql,
+    char *breaks_tws_sql,
     char *matrix_sql,
+    int16_t fn,
 
     Vroom_rt **result_tuples,
     size_t *result_count) {
@@ -106,33 +118,94 @@ process(
     get_vroom_shipments(shipments_sql, &shipments, &total_shipments);
   }
 
+  if (total_jobs == 0 && total_shipments == 0) {
+    if (fn == 0) {
+      ereport(WARNING, (errmsg("Insufficient data found on Jobs SQL and Shipments SQL query."),
+                        errhint("%s, %s", jobs_sql, shipments_sql)));
+    } else if (fn == 1) {
+      ereport(WARNING, (errmsg("Insufficient data found on Jobs SQL query."),
+                        errhint("%s", jobs_sql)));
+    } else if (fn == 2) {
+      ereport(WARNING, (errmsg("Insufficient data found on Shipments SQL query."),
+                        errhint("%s", shipments_sql)));
+    }
+    (*result_count) = 0;
+    (*result_tuples) = NULL;
+    pgr_SPI_finish();
+    return;
+  }
+
+  Vroom_time_window_t *jobs_tws = NULL;
+  size_t total_jobs_tws = 0;
+  if (jobs_tws_sql) {
+    get_vroom_time_windows(jobs_tws_sql, &jobs_tws, &total_jobs_tws);
+  }
+
+  Vroom_time_window_t *shipments_tws = NULL;
+  size_t total_shipments_tws = 0;
+  if (shipments_tws_sql) {
+    get_vroom_shipments_time_windows(shipments_tws_sql, &shipments_tws, &total_shipments_tws);
+  }
+
   Vroom_vehicle_t *vehicles = NULL;
   size_t total_vehicles = 0;
   get_vroom_vehicles(vehicles_sql, &vehicles, &total_vehicles);
 
+  if (total_vehicles == 0) {
+    ereport(WARNING, (errmsg("Insufficient data found on Vehicles SQL query."),
+                      errhint("%s", vehicles_sql)));
+    (*result_count) = 0;
+    (*result_tuples) = NULL;
+    pgr_SPI_finish();
+    return;
+  }
+
+  Vroom_break_t *breaks = NULL;
+  size_t total_breaks = 0;
+  if (breaks_sql) {
+    get_vroom_breaks(breaks_sql, &breaks, &total_breaks);
+  }
+
+  Vroom_time_window_t *breaks_tws = NULL;
+  size_t total_breaks_tws = 0;
+  if (breaks_tws_sql) {
+    get_vroom_time_windows(breaks_tws_sql, &breaks_tws, &total_breaks_tws);
+  }
+
   Matrix_cell_t *matrix_cells_arr = NULL;
   size_t total_cells = 0;
   get_matrixRows_vroom_plain(matrix_sql, &matrix_cells_arr, &total_cells);
+
+  if (total_cells == 0) {
+    ereport(WARNING, (errmsg("Insufficient data found on Matrix SQL query."),
+                      errhint("%s", matrix_sql)));
+    (*result_count) = 0;
+    (*result_tuples) = NULL;
+    pgr_SPI_finish();
+    return;
+  }
 
   clock_t start_t = clock();
   char *log_msg = NULL;
   char *notice_msg = NULL;
   char *err_msg = NULL;
 
-  if ((jobs || shipments) && vehicles) {
-    do_vrp_vroom(
-      jobs, total_jobs,
-      shipments, total_shipments,
-      vehicles, total_vehicles,
-      matrix_cells_arr, total_cells,
+  do_vrp_vroom(
+    jobs, total_jobs,
+    jobs_tws, total_jobs_tws,
+    shipments, total_shipments,
+    shipments_tws, total_shipments_tws,
+    vehicles, total_vehicles,
+    breaks, total_breaks,
+    breaks_tws, total_breaks_tws,
+    matrix_cells_arr, total_cells,
 
-      result_tuples,
-      result_count,
+    result_tuples,
+    result_count,
 
-      &log_msg,
-      &notice_msg,
-      &err_msg);
-  }
+    &log_msg,
+    &notice_msg,
+    &err_msg);
 
   time_msg("processing vrp_vroom", start_t, clock());
 
@@ -177,42 +250,60 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
 
     /***********************************************************************
      *
-     *   vrp_vroom(
+     *   _vrp_vroom(
      *     jobs_sql TEXT,
+     *     jobs_time_windows_sql TEXT,
      *     shipments_sql TEXT,
+     *     shipments_time_windows_sql TEXT,
      *     vehicles_sql TEXT,
-     *     matrix_sql TEXT
+     *     breaks_sql TEXT,
+     *     breaks_time_windows_sql TEXT,
+     *     matrix_sql TEXT,
+     *     fn SMALLINT
      *   );
      *
      **********************************************************************/
 
-    // Verify that the last 2 args (vehicles_sql, matrix_sql) are not NULL
-    for (int i = 2; i < 4; i++) {
+    char *args[8];
+    for (int i = 0; i < 8; i++) {
       if (PG_ARGISNULL(i)) {
-        elog(ERROR, "Argument %i must not be NULL", i + 1);
+        args[i] = NULL;
+      } else {
+        args[i] = text_to_cstring(PG_GETARG_TEXT_P(i));
       }
     }
 
-    char *jobs_sql = NULL;
-    char *shipments_sql = NULL;
+    int16_t fn = PG_GETARG_INT16(8);
 
-    if (!PG_ARGISNULL(0)) {
-      jobs_sql = text_to_cstring(PG_GETARG_TEXT_P(0));
-    }
-    if (!PG_ARGISNULL(1)) {
-      shipments_sql = text_to_cstring(PG_GETARG_TEXT_P(1));
+    // Verify that both jobs_sql and shipments_sql are not NULL
+    if (args[0] == NULL && args[2] == NULL) {
+      if (fn == 0) {
+        elog(ERROR, "Both Jobs SQL and Shipments NULL must not be NULL");
+      } else if (fn == 1) {
+        elog(ERROR, "Jobs SQL must not be NULL");
+      } else if (fn == 2) {
+        elog(ERROR, "Shipments SQL must not be NULL");
+      }
     }
 
-    // Verify that both the first 2 args (jobs_sql and shipments_sql) are not NULL
-    if (!(jobs_sql || shipments_sql)) {
-      elog(ERROR, "Both Argument 1 and Argument 2 must not be NULL");
+    if (args[4] == NULL) {
+      elog(ERROR, "Vehicles SQL must not be NULL");
+    }
+
+    if (args[7] == NULL) {
+      elog(ERROR, "Matrix SQL must not be NULL");
     }
 
     process(
-        jobs_sql,
-        shipments_sql,
-        text_to_cstring(PG_GETARG_TEXT_P(2)),
-        text_to_cstring(PG_GETARG_TEXT_P(3)),
+        args[0],
+        args[1],
+        args[2],
+        args[3],
+        args[4],
+        args[5],
+        args[6],
+        args[7],
+        fn,
         &result_tuples,
         &result_count);
 
@@ -268,7 +359,6 @@ PGDLLEXPORT Datum _vrp_vroom(PG_FUNCTION_ARGS) {
     size_t num  = 11;
     values = palloc(num * sizeof(Datum));
     nulls = palloc(num * sizeof(bool));
-
 
     size_t i;
     for (i = 0; i < num; ++i) {

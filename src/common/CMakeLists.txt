@@ -13,8 +13,8 @@ ADD_LIBRARY(common OBJECT
     pgr_alloc.cpp
 
     vroom/time_windows_input.c
+    vroom/breaks_input.c
     vroom/jobs_input.c
     vroom/shipments_input.c
-    vroom/breaks_input.c
     vroom/vehicles_input.c
     )
