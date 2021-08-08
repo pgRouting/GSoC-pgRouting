@@ -2,7 +2,7 @@ BEGIN;
 SET search_path TO 'vroom', 'public';
 SET client_min_messages TO ERROR;
 
-SELECT CASE WHEN min_version('0.2.0') THEN plan (19) ELSE plan(1) END;
+SELECT CASE WHEN min_version('0.2.0') THEN plan (38) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -291,6 +291,380 @@ BEGIN
   );
   RETURN QUERY
   SELECT set_eq('missing_reverse_cost_on_matrix', 'vroom_sql', 'Reverse cost is equal to the cost, if not specified');
+
+
+  -- jobs time windows validate
+
+  PREPARE jobs_equal_tw AS SELECT id, 3000 AS tw_open, 3000 AS tw_close FROM jobs_time_windows;
+  PREPARE jobs_invalid_tw AS SELECT id, 3001 AS tw_open, 3000 AS tw_close FROM jobs_time_windows;
+
+  PREPARE jobs_equal_tw_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_equal_tw',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  RETURN QUERY
+  SELECT lives_ok('jobs_equal_tw_problem', 'Problem with jobs having equal time windows');
+
+  PREPARE jobs_invalid_tw_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_invalid_tw',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  RETURN QUERY
+  SELECT throws_ok(
+    'jobs_invalid_tw_problem',
+    'XX000',
+    'Invalid time window (3001, 3000)',
+    'Problem with jobs having invalid time windows'
+  );
+
+
+  -- shipments time windows validate
+
+  PREPARE shipments_equal_tw AS SELECT id, kind, 3000 AS tw_open, 3000 AS tw_close FROM shipments_time_windows;
+  PREPARE shipments_invalid_tw AS SELECT id, kind, 3001 AS tw_open, 3000 AS tw_close FROM shipments_time_windows;
+
+  PREPARE shipments_equal_tw_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_equal_tw',
+    'vehicles',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  RETURN QUERY
+  SELECT lives_ok('shipments_equal_tw_problem', 'Problem with shipments having equal time windows');
+
+  PREPARE shipments_invalid_tw_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_invalid_tw',
+    'vehicles',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  RETURN QUERY
+  SELECT throws_ok(
+    'shipments_invalid_tw_problem',
+    'XX000',
+    'Invalid time window (3001, 3000)',
+    'Problem with shipments having invalid time windows'
+  );
+
+
+  -- breaks time windows validate
+
+  PREPARE breaks_equal_tw AS SELECT id, 3000 AS tw_open, 3000 AS tw_close FROM breaks_time_windows;
+  PREPARE breaks_invalid_tw AS SELECT id, 3001 AS tw_open, 3000 AS tw_close FROM breaks_time_windows;
+
+  PREPARE breaks_equal_tw_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles',
+    'breaks',
+    'breaks_equal_tw',
+    'matrix'
+  );
+  RETURN QUERY
+  SELECT lives_ok('breaks_equal_tw_problem', 'Problem with breaks having equal time windows');
+
+  PREPARE breaks_invalid_tw_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles',
+    'breaks',
+    'breaks_invalid_tw',
+    'matrix'
+  );
+  RETURN QUERY
+  SELECT throws_ok(
+    'breaks_invalid_tw_problem',
+    'XX000',
+    'Invalid time window (3001, 3000)',
+    'Problem with breaks having invalid time windows'
+  );
+
+
+  -- vehicles time windows validate
+
+  PREPARE vehicles_equal_tw AS
+  SELECT id, start_index, end_index, capacity, skills, 3000 AS tw_open, 3000 AS tw_close, speed_factor FROM vehicles;
+  PREPARE vehicles_invalid_tw AS
+  SELECT id, start_index, end_index, capacity, skills, 3001 AS tw_open, 3000 AS tw_close, speed_factor FROM vehicles;
+
+  PREPARE vehicles_equal_tw_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles_equal_tw',
+    'empty_breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  RETURN QUERY
+  SELECT lives_ok('vehicles_equal_tw_problem', 'Problem with vehicles having equal time windows');
+
+  PREPARE vehicles_invalid_tw_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles_invalid_tw',
+    'empty_breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  RETURN QUERY
+  SELECT throws_ok(
+    'vehicles_invalid_tw_problem',
+    'XX000',
+    'Invalid time window (3001, 3000)',
+    'Problem with vehicles having invalid time windows'
+  );
+
+
+  -- Query with jobs having only one of delivery or pickup amount should succeed
+
+  PREPARE jobs_only_delivery AS SELECT id, location_index, service, delivery, skills, priority FROM jobs;
+  PREPARE jobs_only_pickup AS SELECT id, location_index, service, pickup, skills, priority FROM jobs;
+  PREPARE jobs_only_delivery_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs_only_delivery',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  PREPARE jobs_only_pickup_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs_only_pickup',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  RETURN QUERY SELECT lives_ok('jobs_only_delivery_problem', 'Problem with jobs having only delivery amount');
+  RETURN QUERY SELECT lives_ok('jobs_only_pickup_problem', 'Problem with jobs having only pickup amount');
+
+
+  -- Query with vehicles having only one of start_index or end_index should succeed
+
+  PREPARE vehicles_only_start_index AS SELECT id, start_index, capacity, skills, tw_open, tw_close, speed_factor FROM vehicles;
+  PREPARE vehicles_only_end_index AS SELECT id, end_index, capacity, skills, tw_open, tw_close, speed_factor FROM vehicles;
+  PREPARE vehicles_only_start_index_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles_only_start_index',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  PREPARE vehicles_only_end_index_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles_only_end_index',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  RETURN QUERY SELECT lives_ok('vehicles_only_start_index_problem', 'Problem with vehicles having only start_index');
+  RETURN QUERY SELECT lives_ok('vehicles_only_end_index_problem', 'Problem with vehicles having only end_index');
+
+
+  -- Query with vehicles having neither start_index nor end_index must fail
+
+  PREPARE vehicles_no_index AS SELECT id, capacity, skills, tw_open, tw_close, speed_factor FROM vehicles;
+  PREPARE vehicles_no_index_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles_no_index',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  RETURN QUERY
+  SELECT throws_ok(
+    'vehicles_no_index_problem',
+    'XX000',
+    'At least one out of start_index or end_index must be present',
+    'Problem with vehicles having neither start_index nor end_index'
+  );
+
+
+  -- Number of quantities of delivery, pickup, amount and capacity must be the same
+
+  PREPARE jobs_inconsistent_delivery AS
+  SELECT id, location_index, service, ARRAY[10, 20]::BIGINT[] AS delivery, pickup, skills, priority FROM jobs;
+  PREPARE jobs_inconsistent_pickup AS
+  SELECT id, location_index, service, delivery, ARRAY[10, 20]::BIGINT[] AS pickup, skills, priority FROM jobs;
+  PREPARE shipments_inconsistent_amount AS
+  SELECT id, p_location_index, p_service, d_location_index, d_service, ARRAY[10, 20]::BIGINT[] AS amount, skills, priority FROM shipments;
+  PREPARE vehicles_inconsistent_capacity AS
+  SELECT id, start_index, end_index, ARRAY[10, 20]::BIGINT[] AS capacity, skills, tw_open, tw_close, speed_factor FROM vehicles;
+
+  PREPARE jobs_inconsistent_delivery_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs_inconsistent_delivery',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  PREPARE jobs_inconsistent_pickup_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs_inconsistent_pickup',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  PREPARE shipments_inconsistent_amount_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments_inconsistent_amount',
+    'shipments_time_windows',
+    'vehicles',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+  PREPARE vehicles_inconsistent_capacity_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles_inconsistent_capacity',
+    'breaks',
+    'breaks_time_windows',
+    'matrix'
+  );
+
+
+  RETURN QUERY
+  SELECT throws_ok(
+    'jobs_inconsistent_delivery_problem',
+    'XX000',
+    'Inconsistent delivery length: 2 instead of 1.',
+    'Problem with jobs having inconsistent delivery length'
+  );
+
+  RETURN QUERY
+  SELECT throws_ok(
+    'jobs_inconsistent_pickup_problem',
+    'XX000',
+    'Inconsistent pickup length: 2 instead of 1.',
+    'Problem with jobs having inconsistent pickup length'
+  );
+
+  RETURN QUERY
+  SELECT throws_ok(
+    'shipments_inconsistent_amount_problem',
+    'XX000',
+    'Inconsistent delivery length: 2 instead of 1.',
+    'Problem with shipments having inconsistent amount length'
+  );
+
+  -- Length is determined by vehicle capacity, so this error message
+  -- denotes that job delivery has inconsistent length
+  RETURN QUERY
+  SELECT throws_ok(
+    'vehicles_inconsistent_capacity_problem',
+    'XX000',
+    'Inconsistent delivery length: 1 instead of 2.',
+    'Problem with vehicles having inconsistent capacity length'
+  );
+
+
+  -- If speed_factor and agg_cost are multiplied by same number, result should be same
+
+  PREPARE vehicles_2x_speed AS
+  SELECT id, start_index, end_index, capacity, skills, tw_open, tw_close, 2 * speed_factor AS speed_factor FROM vehicles;
+  PREPARE matrix_2x_distance AS
+  SELECT start_vid, end_vid, 2 * agg_cost AS agg_cost FROM matrix;
+
+  PREPARE vehicles_4x_speed AS
+  SELECT id, start_index, end_index, capacity, skills, tw_open, tw_close, 4 * speed_factor AS speed_factor FROM vehicles;
+  PREPARE matrix_4x_distance AS
+  SELECT start_vid, end_vid, 4 * agg_cost AS agg_cost FROM matrix;
+
+  PREPARE vehicles_2x_speed_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles_2x_speed',
+    'breaks',
+    'breaks_time_windows',
+    'matrix_2x_distance'
+  );
+  PREPARE vehicles_4x_speed_problem AS
+  SELECT * FROM vrp_vroom(
+    'jobs',
+    'jobs_time_windows',
+    'shipments',
+    'shipments_time_windows',
+    'vehicles_4x_speed',
+    'breaks',
+    'breaks_time_windows',
+    'matrix_4x_distance'
+  );
+  RETURN QUERY
+  SELECT set_eq('vehicles_2x_speed_problem', 'vroom_sql', 'Problem with 2x vehicle speed and distance');
+  RETURN QUERY
+  SELECT set_eq('vehicles_4x_speed_problem', 'vroom_sql', 'Problem with 4x vehicle speed and distance');
+
 
   -- one job/shipment tests
 
