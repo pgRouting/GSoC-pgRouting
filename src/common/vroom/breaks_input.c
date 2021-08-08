@@ -149,7 +149,7 @@ get_vroom_breaks(
     char *sql,
     Vroom_break_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 3;
+  int kColumnCount = 3;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {

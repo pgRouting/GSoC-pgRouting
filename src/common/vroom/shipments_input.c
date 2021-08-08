@@ -194,7 +194,7 @@ get_vroom_shipments(
     char *sql,
     Vroom_shipment_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 8;
+  int kColumnCount = 8;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {

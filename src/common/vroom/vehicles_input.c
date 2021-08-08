@@ -207,7 +207,7 @@ get_vroom_vehicles(
     char *sql,
     Vroom_vehicle_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 8;
+  int kColumnCount = 8;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {

@@ -187,7 +187,7 @@ get_vroom_time_windows(
     char *sql,
     Vroom_time_window_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 3;
+  int kColumnCount = 3;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {
@@ -216,7 +216,7 @@ get_vroom_shipments_time_windows(
     char *sql,
     Vroom_time_window_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 4;
+  int kColumnCount = 4;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {

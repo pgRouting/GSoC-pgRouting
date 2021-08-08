@@ -197,7 +197,7 @@ get_vroom_jobs(
     char *sql,
     Vroom_job_t **rows,
     size_t *total_rows) {
-  const int kColumnCount = 7;
+  int kColumnCount = 7;
   Column_info_t info[kColumnCount];
 
   for (int i = 0; i < kColumnCount; ++i) {
