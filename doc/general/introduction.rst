@@ -56,10 +56,13 @@ This Release Contributors
 Individuals (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Ashana Sharan
+- Virginia Vergara
 
   - Porting the code from pgRouting
 
+- Ashana Sharan
+
+  - Porting the code from pgRouting
 
 And all the people that give us a little of their time making comments, finding issues, making pull requests etc.
 
