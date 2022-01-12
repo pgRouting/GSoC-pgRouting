@@ -72,6 +72,7 @@ This Release Contributors
 Individuals (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Ashana Sharan,
 Ashish Kumar,
 Cayetano Benavent,
 Daniel Kastl,
