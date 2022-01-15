@@ -74,8 +74,9 @@ Individuals (in alphabetical order)
 
 Ashish Kumar,
 Cayetano Benavent,
-Daniel Kastl,
+Daniel Kastl.
 Himanshu Raj,
+Manas Sivakumar
 Martha Vergara,
 Regina Obe,
 Veenit Kumar,
