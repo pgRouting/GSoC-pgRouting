@@ -78,6 +78,7 @@ Daniel Kastl,
 Himanshu Raj,
 Martha Vergara,
 Regina Obe,
+Rishi Sethia,
 Veenit Kumar,
 Virginia Vergara
 
@@ -118,7 +119,7 @@ Kai Behncke, Kishore Kumar, Ko Nagase,
 Mahmoud Sakr,
 Manikata Kondeti, Mario Basa, Martin Wiesenhaan,  Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya,
 Razequl Islam,
-Regina Obe, Rohith Reddy,
+Regina Obe, Rishi Sethia, Rohith Reddy,
 Sarthak Agarwal, Sourabh Garg, Stephen Woodbridge, Sylvain Housseman, Sylvain Pasche,
 Veenit Kumar, Vidhan Jain, Virginia Vergara
 
