@@ -16,3 +16,6 @@ Save your program as a .cc file inside the root folder.
 ```
 make run SOURCE=/relative/pathto/root
 ```
+
+### Sample output images can be found here:
+https://drive.google.com/drive/folders/1ohbTNOe78cWOZCREXC6Bj-xpYAJ6K0Ax?usp=sharing
