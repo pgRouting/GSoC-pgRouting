@@ -78,7 +78,8 @@ Daniel Kastl,
 Rajat Shinde,
 Regina Obe,
 Swapnil Joshi,
-Virginia Vergara
+Virginia Vergara,
+Vicky Vergara
 
 
 And all the people that give us a little of their time making comments, finding issues, making pull requests etc.
@@ -120,7 +121,7 @@ Rajat Shinde,
 Razequl Islam,
 Regina Obe, Rohith Reddy,
 Sarthak Agarwal, Sourabh Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche,
-Veenit Kumar, Vidhan Jain, Virginia Vergara
+Veenit Kumar, Vidhan Jain, Virginia Vergara, Vicky Vergara
 
 Corporate Sponsors (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
