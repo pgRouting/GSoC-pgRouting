@@ -77,7 +77,8 @@ Daniel Kastl,
 Himanshu Raj,
 Martha Vergara,
 Regina Obe,
-Virginia Vergara
+Virginia Vergara,
+Manas Sivakumar
 
 
 And all the people that give us a little of their time making comments, finding issues, making pull requests etc.
