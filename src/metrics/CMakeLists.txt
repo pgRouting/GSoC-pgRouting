@@ -1,4 +1,4 @@
-ADD_LIBRARY(metrics OBJECT
+#[[ADD_LIBRARY(metrics OBJECT
     edgeBetweennessCentrality.c
     edgeBetweennessCentrality_driver.cpp
 
@@ -6,4 +6,4 @@ ADD_LIBRARY(metrics OBJECT
     ithBandwidth_driver.cpp
     
     vertexBetweennessCentrality.c
-    vertexBetweennessCentrality_driver.cpp)
+    vertexBetweennessCentrality_driver.cpp)]]
