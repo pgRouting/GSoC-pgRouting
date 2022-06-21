@@ -5,8 +5,7 @@ Copyright (c) 2021 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2021 Celia Virginia Vergara Castillo
-Copyright (c) 2021 Joseph Emile Honour Percival
+Copyright (c) 2022 Manas Sivakumar
 
 ------
 
