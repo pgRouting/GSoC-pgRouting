@@ -75,7 +75,6 @@ void do_cuthillMckeeOrdering(
         undigraph.insert_edges(data_edges, total_edges);
 
         results = _cuthillMckeeOrdering(undigraph);
-        
         auto count = results.size();
 
         if (count == 0) {
@@ -93,12 +92,12 @@ void do_cuthillMckeeOrdering(
         (*return_count) = count;
 
         pgassert(*err_msg == NULL);
-        *log_msg = log.str().empty() ? 
-           *log_msg : 
-           pgr_msg(log.str().c_str());
-        *notice_msg = notice.str().empty() ? 
-           *notice_msg : 
-           pgr_msg(notice.str().c_str());
+        *log_msg = log.str().empty() ?
+        *log_msg :
+        pgr_msg(log.str().c_str());
+        *notice_msg = notice.str().empty() ?
+        *notice_msg :
+        pgr_msg(notice.str().c_str());
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
