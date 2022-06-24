@@ -1,8 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: cuthillMckeeOrdering.c
+
 Generated with Template by:
 Copyright (c) 2022 pgRouting developers
 Mail: project@pgrouting.org
+
 Function's developer:
 Copyright (c) 2022 Shobhit Chaurasia
 Mail: 000shobhitchaurasia@gmail.com
@@ -11,20 +13,22 @@ This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
+
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
  ********************************************************************PGR-GNU*/
 
 /** @file cuthillMckeeOrdering.c
  * @brief Connecting code with postgres.
  *
  */
-
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 #include "utils/array.h"
@@ -36,6 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/edges_input.h"
 #include "c_common/arrays_input.h"
 #include "c_types/ii_t_rt.h"
+
 
 #include "drivers/ordering/cuthillMckeeOrdering_driver.h"
 
