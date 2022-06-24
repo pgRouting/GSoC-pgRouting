@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 
-CREATE OR REPLACE FUNCTION _vrp_or_knapsack_0-1(
+CREATE OR REPLACE FUNCTION vrp_knapsack(
   TEXT, -- weights SQL
   TEXT, -- values  SQL
   
@@ -41,11 +41,11 @@ CREATE OR REPLACE FUNCTION _vrp_or_knapsack_0-1(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _vrp_or_knapsack_0-1(_pgr_get_statement($1), _pgr_get_statement($2), $3);
+    FROM vrp_knapsack(_pgr_get_statement($1), _pgr_get_statement($2), $3);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION __vrp_or_knapsack_0-1(TEXT, TEXT, INTEGER)
-IS 'vrp_or_knapsack_0-1';
+COMMENT ON FUNCTION vrp_knapsack(TEXT, TEXT, INTEGER)
+IS 'vrp_knapsack';
