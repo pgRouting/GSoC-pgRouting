@@ -47,10 +47,10 @@ extern "C" {
 
 void
 do_cuthillMckeeOrdering(
-        Edge_t  *,  //data_edges
-        size_t ,   //total_tuples
-        II_t_rt **,  //return_tuples
-        size_t *,  //return_count
+        Edge_t  *,  // data_edges
+        size_t ,   // total_tuples
+        II_t_rt **,  // return_tuples
+        size_t *,  // return_count
 
         char **log_msg,
         char **notice_msg,
