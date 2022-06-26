@@ -34,6 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/postgres_connection.h"
 #include "utils/array.h"
 
+#include "c_types/circuits_rt.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
@@ -42,7 +43,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/arrays_input.h"
 
 
-#include "drivers/hawickCircuits/hawickCircuits_driver.h"
+#include "drivers/circuits/hawickCircuits_driver.h"
 
 PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_hawickCircuits);
@@ -52,7 +53,7 @@ void
 process(
         char* edges_sql,
 
-        pgr_Circuits_rt **result_tuples,
+        circuits_rt **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
 
@@ -68,7 +69,7 @@ process(
         return;
     }
 
-
+    PGR_DBG("Starting timer");
     clock_t start_t = clock();
     char *log_msg = NULL;
     char *notice_msg = NULL;
@@ -160,11 +161,11 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
         HeapTuple    tuple;
         Datum        result;
         Datum        *values;
-        bool*        nulls;
-
+        bool         *nulls;
+        int16 typlen;
 
         size_t num  = 2;
-        values = palloc(num * sizeof(Datum));
+        values = (Datun *)palloc(num * sizeof(Datum));
         nulls = palloc(num * sizeof(bool));
 
 
@@ -173,16 +174,62 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
+        size_t target_array_size =
+            (size_t)result_tuples[call_cntr].circuit_size;
 
+        Datum* target_array_array;
+        target_array_array = (Datum*) palloc(sizeof(Datum) *
+                (size_t)target_array_size);
+
+        for (i = 0; i < target_array_size; ++i) {
+            PGR_DBG("Storing target_array vertex %ld",
+                    result_tuples[call_cntr].circuits[i]);
+            target_array_array[i] =
+                Int64GetDatum(result_tuples[call_cntr].circuits[i]);
+        }
+
+        bool typbyval;
+        char typalign;
+        get_typlenbyvalalign(INT8OID, &typlen, &typbyval, &typalign);
+        ArrayType* arrayType;
         /*
-        values[0] = Int64GetDatum(result_tuples[funcctx->call_cntr].id);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].circuits);
-        */
+         * https://doxygen.postgresql.org/arrayfuncs_8c.html
+         ArrayType* construct_array(
+         Datum*     elems,
+         int     nelems,
+         Oid     elmtype, int elmlen, bool elmbyval, char elmalign
+         )
+         */
+        arrayType =  construct_array(
+                target_array_array,
+                (int)target_array_size,
+                INT8OID,  typlen, typbyval, typalign);
+        /*
+           void TupleDescInitEntry(
+           TupleDesc   desc,
+           AttrNumber      attributeNumber,
+           const char *    attributeName,
+           Oid     oidtypeid,
+           int32   typmod,
+           int     attdim
+           )
+           */
+        TupleDescInitEntry(tuple_desc, (AttrNumber) 2, "circuit",
+                INT8ARRAYOID, -1, 0);
 
-        /**********************************************************************/
+        values[0] = Int32GetDatum(call_cntr + 1);
+        values[1] = PointerGetDatum(arrayType);
 
+        /*********************************************************************/
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
+
+        /*
+         *  cleaning up the circuit array
+         */
+        if (result_tuples[funcctx->call_cntr].circuit) {
+            pfree(result_tuples[funcctx->call_cntr].circuit);
+        }
         SRF_RETURN_NEXT(funcctx, result);
     } else {
         SRF_RETURN_DONE(funcctx);
