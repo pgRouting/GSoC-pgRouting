@@ -1,13 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: _hawickCircuits.sql
+File: circuits_rt.h
 
-Generated with Template by:
 Copyright (c) 2022 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2022 Nitish Chauhan
-Mail: nitishchauhan0022 at gmail.com
+mail: nitishchauhan002@gmail.com
 
 ------
 
@@ -26,36 +25,26 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
----------------
--- _pgr_hawickCircuits
----------------
+/*! @file */
 
-CREATE FUNCTION _pgr_hawickCircuits(
-    edges_sql TEXT,
-    directed BOOLEAN DEFAULT true,
+#ifndef INCLUDE_C_TYPES_CIRCUITS_RT_H_
+#define INCLUDE_C_TYPES_CIRCUITS_RT_H_
+#pragma once
 
-    OUT seq INTEGER,
-    OUT circuits BIGINT[])
+/* for int64_t */
+#ifdef __cplusplus
+#   include <cstdint>
+#else
+#   include <stdint.h>
+#endif
 
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C IMMUTABLE STRICT;
+/**************************************************************************
+ * return type for circuit
+ * ***********************************************************************/
+struct circuits_rt {
+    int seq;
+    int64_t *circuit;
+    int circuit_size;
+};
 
-CREATE FUNCTION _pgr_hawickCircuits_Unique(
-    edges_sql TEXT,
-    directed BOOLEAN DEFAULT true,
-
-    OUT seq INTEGER,
-    OUT circuits BIGINT[])
-
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C IMMUTABLE STRICT;
-
--- COMMENTS
-
-COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT, BOOLEAN)
-IS 'pgRouting internal function';
-
-COMMENT ON FUNCTION _pgr_hawickCircuits_Unique(TEXT, BOOLEAN)
-IS 'pgRouting internal function';
+#endif  // INCLUDE_C_TYPES_CIRCUITS_RT_H_

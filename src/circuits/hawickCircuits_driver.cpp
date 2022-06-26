@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2022 Nitish Chauhan
-Mail: nitishchauhan0022@gmail.com
+Mail: nitishchauhan0022 at gmail.com
 
 ------
 
@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/hawickCircuits/hawickCircuits_driver.h"
+#include "drivers/circuits/hawickCircuits_driver.h"
 
 #include <sstream>
 #include <vector>
@@ -37,16 +37,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
-#include "hawickCircuits/pgr_hawickCircuits.hpp"
+#include "circuits/hawickCircuits.hpp"
 
 
 
 void
-do_pgr_hawickCircuits(
-        pgr_edge_t  *data_edges,
+do_hawickCircuits(
+        Edge_t  *data_edges,
         size_t total_edges,
 
-        pgr_circuits_rt **return_tuples,
+        circuits_rt **return_tuples,
         size_t *return_count,
 
         char ** log_msg,
@@ -62,14 +62,14 @@ do_pgr_hawickCircuits(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-        std::vector < pgr_circuits_rt > results;
+        std::vector < circuits_rt > results;
 
         graphType gType = DIRECTED;
         pgrouting::DirectedGraph digraph(gType);
 
         digraph.insert_edges(data_edges, total_edges);
 
-        results = pgr_hawickCircuits(digraph);
+        results = hawickCircuits(digraph);
 
         auto count = results.size();
 

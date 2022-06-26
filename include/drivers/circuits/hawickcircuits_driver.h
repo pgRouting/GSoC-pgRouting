@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _hawickCircuits.sql
+File: circuits_driver.h
 
 Generated with Template by:
 Copyright (c) 2022 pgRouting developers
@@ -26,36 +26,39 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
----------------
--- _pgr_hawickCircuits
----------------
 
-CREATE FUNCTION _pgr_hawickCircuits(
-    edges_sql TEXT,
-    directed BOOLEAN DEFAULT true,
+#ifndef INCLUDE_DRIVERS_CIRCUITS_HAWICKCIRCUITS_DRIVER_H_
+#define INCLUDE_DRIVERS_CIRCUITS_HAWICKCIRCUITS_DRIVER_H_
 
-    OUT seq INTEGER,
-    OUT circuits BIGINT[])
 
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C IMMUTABLE STRICT;
+/* for size-t */
+#ifdef __cplusplus
+#   include <cstddef>
+#else
+#   include <stddef.h>
+#endif
 
-CREATE FUNCTION _pgr_hawickCircuits_Unique(
-    edges_sql TEXT,
-    directed BOOLEAN DEFAULT true,
+typedef struct Edge_t Edge_t;
+typedef struct circuits_rt circuits_rt;
 
-    OUT seq INTEGER,
-    OUT circuits BIGINT[])
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C IMMUTABLE STRICT;
+void
+do_hawickCircuits(
+        Edge_t  *,        // data_edges
+        size_t,           // total_tuples
+        circuits_rt **,   // return_tuples
+        size_t *,         //return_count
 
--- COMMENTS
+        char **,          // log_msg
+        char **,          // notice_msg
+        char **);         //err_msg
 
-COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT, BOOLEAN)
-IS 'pgRouting internal function';
 
-COMMENT ON FUNCTION _pgr_hawickCircuits_Unique(TEXT, BOOLEAN)
-IS 'pgRouting internal function';
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // INCLUDE_DRIVERS_CIRCUITS_HAWICKCIRCUITS_DRIVER_H_
