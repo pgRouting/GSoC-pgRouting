@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2022 Nitish Chauhan
-Mail: nitishchauhan0022@gmail.com
+Mail: nitishchauhan0022 at gmail.com
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -48,8 +48,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_hawickCircuits);
 
-static
-void
+static void
 process(
         char* edges_sql,
 
@@ -74,7 +73,7 @@ process(
     char *log_msg = NULL;
     char *notice_msg = NULL;
     char *err_msg = NULL;
-    do_pgr_hawickCircuits(
+    do_hawickCircuits(
             edges, total_edges,
 
             result_tuples,
@@ -83,7 +82,7 @@ process(
             &notice_msg,
             &err_msg);
 
-    time_msg("processing pgr_hawickCircuits", start_t, clock());
+    time_msg("processing hawickCircuits", start_t, clock());
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
@@ -112,7 +111,7 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
     TupleDesc           tuple_desc;
 
     /**********************************************************************/
-    pgr_Circuits_rt *result_tuples = NULL;
+    circuits_rt *result_tuples = NULL;
     size_t result_count = 0;
     /**********************************************************************/
 
@@ -155,7 +154,7 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (pgr_hawickCircuit_rt*) funcctx->user_fctx;
+    result_tuples = (circuit_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;

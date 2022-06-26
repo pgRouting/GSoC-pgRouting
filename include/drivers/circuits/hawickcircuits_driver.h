@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2022 Nitish Chauhan
-Mail: nitishchauhan0022@gmail.com
+Mail: nitishchauhan0022 at gmail.com
 
 ------
 
@@ -45,21 +45,16 @@ typedef struct circuits_rt circuits_rt;
 extern "C" {
 #endif
 
-/*********************************************************
-    edges_sql TEXT,
-
- ********************************************************/
-
 void
-do_pgr_hawickCircuits(
-        Edge_t  *data_edges,
-        size_t total_tuples,
-        circuits_rt **return_tuples,
-        size_t *return_count,
+do_hawickCircuits(
+        Edge_t  *,        // data_edges
+        size_t,           // total_tuples
+        circuits_rt **,   // return_tuples
+        size_t *,         //return_count
 
-        char **log_msg,
-        char **notice_msg,
-        char **err_msg);
+        char **,          // log_msg
+        char **,          // notice_msg
+        char **);         //err_msg
 
 
 #ifdef __cplusplus

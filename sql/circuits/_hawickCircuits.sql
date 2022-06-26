@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2022 Nitish Chauhan
-Mail: nitishchauhan0022@gmail.com
+Mail: nitishchauhan0022 at gmail.com
 
 ------
 
@@ -32,6 +32,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 CREATE FUNCTION _pgr_hawickCircuits(
     edges_sql TEXT,
+    directed BOOLEAN DEFAULT true,
+
+    OUT seq INTEGER,
+    OUT circuits BIGINT[])
+
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C IMMUTABLE STRICT;
+
+CREATE FUNCTION _pgr_hawickCircuits_Unique(
+    edges_sql TEXT,
+    directed BOOLEAN DEFAULT true,
 
     OUT seq INTEGER,
     OUT circuits BIGINT[])
@@ -42,5 +54,8 @@ LANGUAGE C IMMUTABLE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT)
+COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT, BOOLEAN)
+IS 'pgRouting internal function';
+
+COMMENT ON FUNCTION _pgr_hawickCircuits_Unique(TEXT, BOOLEAN)
 IS 'pgRouting internal function';
