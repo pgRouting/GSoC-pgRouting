@@ -24,8 +24,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_CIRCUIT_PGR_HAWICKCIRCUITS_HPP_
-#define INCLUDE_CIRCUIT_PGR_HAWICKCIRCUITS_HPP_
+#ifndef INCLUDE_CIRCUITS_HAWICKCIRCUITS_HPP_
+#define INCLUDE_CIRCUITS_HAWICKCIRCUITS_HPP_
 #pragma once
 
 #include <boost/graph/adjacency_list.hpp>
@@ -74,4 +74,4 @@ std::vector<circuits_rt> pgr_hawickCircuits(G &graph) {
     return visitor.result();
 }
 
-#endif  // INCLUDE_CIRCUITS_PGR_HAWICKCIRCUITS_HPP_
+#endif  // INCLUDE_CIRCUITS_HAWICKCIRCUITS_HPP_
