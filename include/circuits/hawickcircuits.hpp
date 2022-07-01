@@ -58,7 +58,7 @@ struct circuit_detector {
         for (; i != before_end; ++i) {
             circuit[number++] = i;
         }
-        results.push_back({{circuit}, {(adj_siz)}});
+        results.push_back({circuit, adj_siz});
     }
 
     std::vector<circuits_rt> result() {
@@ -69,7 +69,7 @@ struct circuit_detector {
 template <typename G>
 std::vector<circuits_rt> pgr_hawickCircuits(G &graph) {
     circuit_detector visitor;
-    boost::hawick_circuits(G, visitor);
+    boost::hawick_circuits(graph, visitor);
 
     return visitor.result();
 }
