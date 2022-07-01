@@ -32,52 +32,46 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/hawick_circuits.hpp>
 #include <boost/property_map/property_map.hpp>
+
 #include <iostream>
 #include <iterator>
+#include <vector>
 
 #include "cpp_common/basePath_SSEC.hpp"
 #include "cpp_common/pgr_base_graph.hpp"
 #include "cpp_common/pgr_assert.h"
-
 #include "c_types/circuits_rt.h"
 
-struct circuit_detector
-{
-    std::vector < circuits_rt > results;
+struct circuit_detector {
+    std::vector<circuits_rt> results;
     template <typename Path, typename Graph>
-    void cycle(Path const &p, Graph const &g)
-    {
-       if (p.empty())
+    void cycle(Path const &p, Graph const &g) {
+        if (p.empty())
             return;
         // Iterate over path printing each vertex that forms the circuit.
-        typename Path::const_iterator i=p.begin(), before_end = p.end();
+        typename Path::const_iterator i = p.begin(), before_end = p.end();
 
-        int64_t* circuit = nullptr;
+        int64_t *circuit = nullptr;
         size_t adj_siz = static_cast<size_t>(before_end - i);
-        circuit = pgr_alloc(adj_siz , circuit);
-        int number=0;
-        for (; i != before_end; ++i)
-        {
-            circuit[number++]=i;
-
+        circuit = pgr_alloc(adj_siz, circuit);
+        int number = 0;
+        for (; i != before_end; ++i) {
+            circuit[number++] = i;
         }
         results.push_back({{circuit}, {(adj_siz)}});
-
     }
 
-    std::vector < circuits_rt > result()
-    {
+    std::vector<circuits_rt> result() {
         return results;
     }
-
 };
 
-std::vector <circuits_rt> pgr_hawickCircuits(G &graph)
-{
-
+template <typename G>
+std::vector<circuits_rt> pgr_hawickCircuits(G &graph) {
     circuit_detector visitor;
     boost::hawick_circuits(G, visitor);
 
     return visitor.result();
-
 }
+
+#endif  // INCLUDE_CIRCUITS_PGR_HAWICKCIRCUITS_HPP_
