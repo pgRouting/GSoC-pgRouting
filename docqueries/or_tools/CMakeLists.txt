@@ -1,5 +1,4 @@
 SET(LOCAL_FILES
-    doc-knapsack.rst
     )
 
 foreach (f ${LOCAL_FILES})
