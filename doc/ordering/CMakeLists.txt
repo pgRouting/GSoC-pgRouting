@@ -1,4 +1,3 @@
-#[[
 SET(LOCAL_FILES
     pgr_cuthillMckeeOrdering.rst
     )
@@ -9,4 +8,3 @@ foreach (f ${LOCAL_FILES})
 endforeach()
 
 set(PROJECT_DOC_FILES ${PROJECT_DOC_FILES} ${LOCAL_DOC_FILES} PARENT_SCOPE)
-]] 
