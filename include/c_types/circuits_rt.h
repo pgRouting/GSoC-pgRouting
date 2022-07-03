@@ -42,7 +42,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  * return type for circuit
  * ***********************************************************************/
 struct circuits_rt {
-    int seq;
+    // int seq;
     int64_t *circuit;
     int circuit_size;
 };
