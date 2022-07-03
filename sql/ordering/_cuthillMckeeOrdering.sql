@@ -32,11 +32,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ----------------------------
 
 CREATE FUNCTION _pgr_cuthillMckeeOrdering(
-    edges_sql TEXT,
-    s_vertex INTEGER,
-    OUT r_cuthillMckeeOrdering BIGINT[],
-    OUT orig_bandwidth BIGINT,
-    OUT new_bandwidth BIGINT)
+    TEXT,
+    BIGINT,
+    OUT seq BIGINT,
+    OUT ordering BIGINT
+    )
 
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
@@ -44,6 +44,6 @@ LANGUAGE C IMMUTABLE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_cuthillMckeeOrdering(TEXT)
+COMMENT ON FUNCTION _pgr_cuthillMckeeOrdering(TEXT, BIGINT)
 IS 'pgRouting internal function';
  
