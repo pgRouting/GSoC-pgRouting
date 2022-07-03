@@ -50,9 +50,9 @@ extern "C" {
 #endif
 
   /*********************************************************
-    orders_sql TEXT,
-    max_vehicles INTEGER,
-    capacity FLOAT,
+    weights_sql TEXT,
+    values_sql TEXT,
+    bin_capacity INTEGER,
     max_cycles INTEGER,
    ********************************************************/
   void do_pgr_pickDeliver(
