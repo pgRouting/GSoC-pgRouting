@@ -1,4 +1,3 @@
-#[[
 SET(LOCAL_FILES
     _cuthillMckeeOrdering.sql
     cuthillMckeeOrdering.sql
@@ -14,4 +13,3 @@ foreach (f ${LOCAL_FILES})
 endforeach()
 
 set(PROJECT_SQL_FILES ${PROJECT_SQL_FILES} ${PACKAGE_SQL_FILES} PARENT_SCOPE)
-]] 
