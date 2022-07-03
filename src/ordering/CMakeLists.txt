@@ -1,5 +1,4 @@
-#[[ADD_LIBRARY(ordering OBJECT
+ADD_LIBRARY(ordering OBJECT
     cuthillMckeeOrdering.c
     cuthillMckeeOrdering_driver.cpp
     )
-]]
