@@ -59,11 +59,11 @@ Individuals (in alphabetical order)
 - Ashish Kumar
 
   - Adding new experimental VROOM category functions: vrp_vroom, vrp_vroomJobs, vrp_vroomShipments.
-  
+
 - Manas Sivakumar
 
   - Adding Google Or tools functionality to vrprouting
-  
+
 - Virginia Vergara
 
   - Porting the code from pgRouting
