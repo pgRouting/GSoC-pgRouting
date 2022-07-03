@@ -48,8 +48,6 @@ struct ORDERING_rt {
     int s_vertex;
     int64_t *ordering_array;
     int ordering_array_size;
-    int orig_bandwidth;
-    int new_bandwidth;
 };
 
 #endif  // INCLUDE_C_TYPES_ORDERING_RT_H_
