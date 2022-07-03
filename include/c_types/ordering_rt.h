@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _cuthillMckeeOrdering.sql
+File: ordering_rt.h
 
 Generated with Template by:
 Copyright (c) 2022 pgRouting developers
@@ -25,25 +25,29 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
- ********************************************************************PGR-GNU*/
+********************************************************************PGR-GNU*/
 
-----------------------------
--- _pgr_cuthillMckeeOrdering
-----------------------------
+/*! @file */
 
-CREATE FUNCTION _pgr_cuthillMckeeOrdering(
-    TEXT,
-    BIGINT,
-    OUT seq BIGINT,
-    OUT ordering BIGINT
-    )
+#ifndef INCLUDE_C_TYPES_ORDERING_RT_H_
+#define INCLUDE_C_TYPES_ORDERING_RT_H_
+#pragma once
 
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C IMMUTABLE STRICT;
+/* for int64_t */
+#ifdef __cplusplus
+#   include <cstdint>
+#else
+#   include <stdint.h>
+#endif
 
--- COMMENTS
+/**************************************************************************
+ * return type for ordering
+ * ***********************************************************************/
 
-COMMENT ON FUNCTION _pgr_cuthillMckeeOrdering(TEXT, BIGINT)
-IS 'pgRouting internal function';
- 
+struct ORDERING_rt {
+    int s_vertex;
+    int64_t *ordering_array;
+    int ordering_array_size;
+};
+
+#endif  // INCLUDE_C_TYPES_ORDERING_RT_H_

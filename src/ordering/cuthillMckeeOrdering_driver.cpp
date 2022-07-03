@@ -33,17 +33,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
+#include "c_types/ii_t_rt.h"
 
-#include "ordering/pgr_cuthillMckeeOrdering.hpp"
+#include "ordering/cuthillMckeeOrdering.hpp"
 
 
-// template < class G >
-// std::vector < To_be_created >
-// _cuthillMckeeOrdering(G &graph) {
-//     pgrouting::functions::_cuthillMckeeOrdering < G > fn_cuthillMckeeOrdering;
-//     auto results = fn_cuthillMckeeOrdering.cuthillMckeeOrdering(graph);
-//     return results;
-// }
+template <class G>
+static
+std::vector <II_t_rt> /* TODO To_be_created Same type as the return type of fn_cuthillMckeeOrdering*/
+cuthillMckeeOrdering(G &graph) {
+    pgrouting::functions::CuthillMckeeOrdering<G> fn;
+    auto results = fn.cuthillMckeeOrdering(graph);
+    return results;
+}
 
 
 void do_cuthillMckeeOrdering(
@@ -74,7 +76,7 @@ void do_cuthillMckeeOrdering(
 
         undigraph.insert_edges(data_edges, total_edges);
 
-        results = _cuthillMckeeOrdering(undigraph);
+        results = cuthillMckeeOrdering(undigraph);
         auto count = results.size();
 
         if (count == 0) {

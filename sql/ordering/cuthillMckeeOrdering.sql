@@ -33,29 +33,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 CREATE FUNCTION pgr_cuthillMckeeOrdering(
     TEXT, -- edges_sql (required)
-
-    s_vertex INTEGER,
-    OUT r_cuthillMckeeOrdering BIGINT[],
-    OUT orig_bandwidth BIGINT,
-    OUT new_bandwidth BIGINT)
-
+    BIGINT, -- start_vertex
+    OUT seq BIGINT,
+    OUT ordering BIGINT)
 RETURNS SETOF RECORD AS
 $BODY$
-BEGIN
-    RETURN QUERY
     SELECT *
-    FROM _pgr_cuthillMckeeOrdering(_pgr_get_statement($1));
-END;
+    FROM _pgr_cuthillMckeeOrdering(_pgr_get_statement($1), $2);
 $BODY$
-LANGUAGE plpgsql VOLATILE STRICT;
+LANGUAGE SQL VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_cuthillMckeeOrdering(TEXT)
+COMMENT ON FUNCTION pgr_cuthillMckeeOrdering(TEXT, BIGINT)
 IS 'pgr_cuthillMckeeOrdering
 - EXPERIMENTAL
 - Parameters:
     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+    - start vertex identifier
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_cuthillMckeeOrdering.html
 ';
