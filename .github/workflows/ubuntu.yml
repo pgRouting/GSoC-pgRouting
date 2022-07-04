@@ -60,6 +60,8 @@ jobs:
             postgresql-server-dev-${{ matrix.psql }}
             wget https://github.com/google/or-tools/releases/download/v9.3/or-tools_amd64_ubuntu-20.04_v9.3.10502.tar.gz
             ls or-tools_amd64_ubuntu-20.04_v9.3.10502.tar.gz
+            mkdir or-tools
+            tar xf or-tools_amd64_ubuntu-20.04_v9.3.10502.tar.gz ./or-tools
 
 
       - name: Install VROOM dependencies
