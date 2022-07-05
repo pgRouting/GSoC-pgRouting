@@ -4,7 +4,8 @@ fix_typos
 code_linter
 src/version/_version.h
 v[0-9]*
-or-tools
+ortools
+build1
 
 # files are ignored on gh-pages
 doxy

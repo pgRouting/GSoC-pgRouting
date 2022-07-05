@@ -1,5 +1,5 @@
 SET(LOCAL_FILES
-  _knapsack.sql
+   knapsack.sql
   _knapsack.sql
   )
 
