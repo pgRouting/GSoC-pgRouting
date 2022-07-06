@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_C_TYPES_CIRCUITS_RT_H_
-#define INCLUDE_C_TYPES_CIRCUITS_RT_H_
+#ifndef INCLUDE_ORDERING_CUTHILLMCKEEORDERING_HPP_
+#define INCLUDE_ORDERING_CUTHILLMCKEEORDERING_HPP_
 #pragma once
 
 #include <boost/property_map/property_map.hpp>
@@ -77,12 +77,12 @@ class CuthillMckeeOrdering {
       *
       * It does all the processing and returns the results.
       *
-      * @param graph      the graph containing the edges
+      * @param graph the graph containing the edges
       *
       * @returns results, when results are found
       *
-      * @see [boost::sequential_vertex_coloring]
-      * (https://www.boost.org/libs/graph/doc/sequential_vertex_coloring.html)
+      * @see [boost::cuthill_mckee_ordering]
+      * (https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html)
       */
      std::vector <II_t_rt> cuthillMckeeOrdering(G &graph) {
          std::vector <II_t_rt> results;
@@ -90,17 +90,17 @@ class CuthillMckeeOrdering {
         #if 0
          auto i_map = boost::get(boost::vertex_index, graph.graph);
 
-         // vector which will store the color of all the vertices in the graph
-         std::vector < vertices_size_type > colors(boost::num_vertices(graph.graph));
+         // vector which will store the ordering of the graph
+         std::vector < vertices_size_type > ordering(boost::num_vertices(graph.graph));
 
-         // An iterator property map which records the color of each vertex
-         auto color_map = boost::make_iterator_property_map(colors.begin(), i_map);
+         // An iterator property map which records the ordering 
+         auto ordering_map = boost::make_iterator_property_map(ordering.begin(), i_map);
 
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
 
          try {
-             boost::sequential_vertex_coloring(graph.graph, color_map);
+             boost::cuthill_mckee_ordering(graph.graph, ordering_map);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -111,7 +111,7 @@ class CuthillMckeeOrdering {
              throw;
          }
 
-         results = get_results(colors, graph);
+         results = get_results(ordering, graph);
         #endif
 
          return results;
@@ -122,15 +122,15 @@ class CuthillMckeeOrdering {
  private:
      /** @brief to get the results
       *
-      * Uses the `colors` vector to get the results i.e. the color of every vertex.
+      * Uses the `ordering` vector to get the results i.e. the ordering.
       *
-      * @param colors      vector which contains the color of every vertex
+      * @param ordering    vector which contains the new ordering
       * @param graph       the graph containing the edges
       *
       * @returns `results` vector
       */
      std::vector <II_t_rt> get_results(
-             std::vector < vertices_size_type > &colors,
+             std::vector < vertices_size_type > &ordering,
              const G &graph) {
          std::vector <II_t_rt> results;
 
@@ -138,15 +138,17 @@ class CuthillMckeeOrdering {
 
          for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
              int64_t node = graph[*v].id;
-             auto color = colors[*v];
-             results.push_back({{node}, {static_cast<int64_t>(color + 1)}});
+             auto orderings = ordering[*v];
+             results.push_back({{node}, {static_cast<int64_t>(orderings + 1)}});
          }
 
-         // ordering the results in an increasing order of the node id
+         // ordering the results in an reverse ordering 
+         #if 0
          std::sort(results.begin(), results.end(),
              [](const II_t_rt row1, const II_t_rt row2) {
                  return row1.d1.id < row2.d1.id;
              });
+         #endif    
 
          return results;
      }
@@ -154,4 +156,4 @@ class CuthillMckeeOrdering {
 }  // namespace functions
 }  // namespace pgrouting
 
-#endif  // INCLUDE_COLORING_PGR_CUTHILLMCKEEORDERING_HPP_
+#endif  // INCLUDE_ORDERING_CUTHILLMCKEEORDERING_HPP_
