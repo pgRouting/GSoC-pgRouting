@@ -331,8 +331,8 @@ endforeach()
 # Google OR tools
 #----------------------
 
-find_package(ortools CONFIG REQUIRED)
-target_link_libraries(vrprouting ortools::ortools)
+#[[find_package(ortools CONFIG REQUIRED)
+target_link_libraries(vrprouting ortools::ortools)]]
 
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
