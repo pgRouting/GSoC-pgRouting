@@ -331,8 +331,12 @@ endforeach()
 # Google OR tools
 #----------------------
 
-#[[find_package(ortools CONFIG REQUIRED)
-target_link_libraries(vrprouting ortools::ortools)]]
+set(ortools_DIR "/home/manas/Codes/GSOC-2022/MyFork/ortools/build")
+set(absl_DIR "/home/manas/Codes/GSOC-2022/MyFork/ortools/build/_deps/absl-build")
+set(Protobuf_DIR "/home/manas/Codes/GSOC-2022/MyFork/ortools/build/_deps/protobuf-build/lib/cmake/protobuf")
+find_package(ortools CONFIG REQUIRED)
+add_subdirectory(ortools)
+target_link_libraries(VRPROUTING ortools::ortools)
 
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
