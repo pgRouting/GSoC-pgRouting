@@ -154,7 +154,7 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (circuit_rt*) funcctx->user_fctx;
+    result_tuples = (circuits_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;
@@ -164,7 +164,7 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
         int16 typlen;
 
         size_t num  = 2;
-        values = (Datun *)palloc(num * sizeof(Datum));
+        values = (Datum *)palloc(num * sizeof(Datum));
         nulls = palloc(num * sizeof(bool));
 
 
