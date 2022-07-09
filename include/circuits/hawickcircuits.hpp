@@ -42,6 +42,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_assert.h"
 #include "c_types/circuits_rt.h"
 
+/*
 struct circuit_detector {
     std::vector<circuits_rt> results;
     template <typename Path, typename Graph>
@@ -65,13 +66,24 @@ struct circuit_detector {
         return results;
     }
 };
+*/
+
 
 template <typename G>
 std::vector<circuits_rt> pgr_hawickCircuits(G &graph) {
+    /*
     circuit_detector visitor;
     boost::hawick_circuits(graph, visitor);
 
     return visitor.result();
+    */
+   std::vector<circuits_rt> results;
+   circuits_rt result;
+   result.circuit = nullptr;
+   result.circuit_size = 0;
+   results.push_back(result);
+   return results;
 }
+
 
 #endif  // INCLUDE_CIRCUITS_HAWICKCIRCUITS_HPP_
