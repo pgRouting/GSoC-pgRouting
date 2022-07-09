@@ -34,6 +34,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/postgres_connection.h"
 #include "utils/array.h"
 
+#ifndef INT8ARRAYOID
+#define INT8ARRAYOID    1016
+#endif
+
 #include "c_types/circuits_rt.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
@@ -162,6 +166,7 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool         *nulls;
         int16 typlen;
+        size_t      call_cntr = funcctx->call_cntr;
 
         size_t num  = 2;
         values = (Datum *)palloc(num * sizeof(Datum));
@@ -182,9 +187,9 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
 
         for (i = 0; i < target_array_size; ++i) {
             PGR_DBG("Storing target_array vertex %ld",
-                    result_tuples[call_cntr].circuits[i]);
+                    result_tuples[call_cntr].circuit[i]);
             target_array_array[i] =
-                Int64GetDatum(result_tuples[call_cntr].circuits[i]);
+                Int64GetDatum(result_tuples[call_cntr].circuit[i]);
         }
 
         bool typbyval;

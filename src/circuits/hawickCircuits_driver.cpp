@@ -69,7 +69,7 @@ do_hawickCircuits(
 
         digraph.insert_edges(data_edges, total_edges);
 
-        results = hawickCircuits(digraph);
+        results = pgr_hawickCircuits(digraph);
 
         auto count = results.size();
 
