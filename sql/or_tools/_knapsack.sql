@@ -27,8 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 CREATE OR REPLACE FUNCTION _vrp_knapsack(
-  TEXT, -- weights SQL
-  TEXT, -- values  SQL
+  TEXT, -- weights_values SQL
   
   INTEGER, -- bin capacity
 
@@ -43,5 +42,5 @@ LANGUAGE c VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _vrp_knapsack(TEXT, TEXT, INTEGER)
+COMMENT ON FUNCTION _vrp_knapsack(TEXT, INTEGER)
 IS 'vrprouting internal function';

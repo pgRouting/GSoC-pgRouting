@@ -39,16 +39,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 @note C/C++/postgreSQL connecting structure for output
 name | description
 :----- | :-------
-TotalWeight | Cumulative Weight of items in the knapsack
-TotalValue  | Cumulative Value of items in the knapsack
 Index       | Position of the item in the order in which the input was given
 ItemWeight  | Weight of the item
 ItemValue   | Value of the item
 */
 
 struct Knapsack_rt {
-    int64_t TotalWeight;
-    int64_t TotalValue;
     int Index;
     int ItemWeight;
     int ItemValue;
