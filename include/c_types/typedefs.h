@@ -97,8 +97,9 @@ typedef struct Vroom_matrix_t Vroom_matrix_t;
 typedef struct Vroom_break_t Vroom_break_t;
 typedef struct Vroom_time_window_t Vroom_time_window_t;
 typedef struct Vroom_rt Vroom_rt;
+typedef struct knapsack_rt knapsack_rt;
 #endif
 
 /*************************************************************************/
 
-#endif  // INCLUDE_C_TYPES_TYPEDEFS_H_
+#endif // INCLUDE_C_TYPES_TYPEDEFS_H_
