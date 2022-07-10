@@ -35,9 +35,10 @@ PG_FUNCTION_INFO_V1(_vrp_knapsack);
 static
 void
 process(
-        char* pd_orders_sql,
-        char* vehicles_sql,
+        char* weights_sql,
+        char* values_sql,
         char* matrix_sql,
+        int bin_capacity,
         double factor,
         int max_cycles,
         int initial_solution_id,
