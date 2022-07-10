@@ -70,6 +70,7 @@ process(
         return;
     }
 
+    PGR_DBG("Starting timer");
     clock_t start_t = clock();
     char *log_msg = NULL;
     char *notice_msg = NULL;
@@ -77,7 +78,7 @@ process(
 
     do_cuthillMckeeOrdering(
             edges, total_edges,
-
+            start_vid,
             result_tuples,
             result_count,
             &log_msg,
@@ -161,10 +162,10 @@ _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        #if 0
-        values[0] = Int64GetDatum(result_tuples[funcctx->call_cntr].d1.id);
+#if 1
+        values[0] = Int64GetDatum(funcctx->call_cntr + 1);
         values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2.value);
-        #endif 
+#endif 
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

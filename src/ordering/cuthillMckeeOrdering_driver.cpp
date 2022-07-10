@@ -37,20 +37,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "ordering/cuthillMckeeOrdering.hpp"
 
-
-template <class G>
+#if 0
+/* TODO To_be_created Same type as the return type of fn_cuthillMckeeOrdering*/
 static
-std::vector <II_t_rt> /* TODO To_be_created Same type as the return type of fn_cuthillMckeeOrdering*/
-cuthillMckeeOrdering(G &graph) {
-    pgrouting::functions::CuthillMckeeOrdering<G> fn;
-    auto results = fn.cuthillMckeeOrdering(graph);
+std::vector <II_t_rt>
+cuthillMckeeOrdering(pgrouting::UndirectedGraph &graph, int64_t start_vid) {
+    pgrouting::functions::CuthillMckeeOrdering fn;
+    auto results = fn.cuthillMckeeOrdering(graph, start_vid);
+    log << fn.get_log();
     return results;
 }
-
+#endif
 
 void do_cuthillMckeeOrdering(
     Edge_t *data_edges,
     size_t total_edges,
+
+    int64_t start_vid,
 
     II_t_rt **return_tuples,
     size_t *return_count,
@@ -68,22 +71,22 @@ void do_cuthillMckeeOrdering(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-        std::vector<II_t_rt> results;
-
         graphType gType = UNDIRECTED;
 
         pgrouting::UndirectedGraph undigraph(gType);
-
         undigraph.insert_edges(data_edges, total_edges);
 
-        results = cuthillMckeeOrdering(undigraph);
+        pgrouting::functions::CuthillMckeeOrdering fn;
+        auto results = fn.cuthillMckeeOrdering(undigraph, start_vid);
+        log << fn.get_log();
+
         auto count = results.size();
 
         if (count == 0) {
             (*return_tuples) = NULL;
             (*return_count) = 0;
             notice << "No results found";
-            *log_msg = pgr_msg(notice.str().c_str());
+            *log_msg = pgr_msg(log.str().c_str());
             return;
         }
 

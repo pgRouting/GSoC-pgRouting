@@ -31,13 +31,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_ORDERING_CUTHILLMCKEEORDERING_DRIVER_H_
 
 
-/* for size-t */
 #ifdef __cplusplus
 #   include <cstddef>
+#   include <cstdint>
 using Edge_t = struct Edge_t;
 using II_t_rt = struct II_t_rt;
 #else
 #   include <stddef.h>
+#   include <stdint.h>
 typedef struct Edge_t Edge_t;
 typedef struct II_t_rt II_t_rt;
 #endif
@@ -49,14 +50,14 @@ extern "C" {
 
 void
 do_cuthillMckeeOrdering(
-        Edge_t*,  // data_edges
-        size_t,   // total_tuples
-        II_t_rt**,  // return_tuples
-        size_t*,  // return_count
+        Edge_t*,  size_t,   // edges
+        int64_t,  // starting vertex
 
-        char **, // log_msg
-        char **, // notice_msg
-        char **); // err_msg
+        II_t_rt**,  size_t*,  // results
+
+        char **, // log msg
+        char **, // notice msg
+        char **); // err msg
 
 
 #ifdef __cplusplus
