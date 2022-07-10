@@ -1,9 +1,9 @@
 /*PGR-GNU*****************************************************************
 File: pickDeliver_driver.cpp
-Copyright (c) 2022 pgRouting developers
+Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 Function's developer:
-Copyright (c) 2022 Manas Sivakumar
+Copyright (c) 2015 Celia Virginia Vergara Castillo
 ------
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

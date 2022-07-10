@@ -6,7 +6,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2022 Manas Sivakumar
-Mail: Manas Sivakumar
+Mail:
 
 ------
 
@@ -39,10 +39,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   include <stddef.h>
 #endif
 
-
+#include "c_types/vehicle_t.h"
+#include "c_types/matrix_cell_t.h"
 
 typedef struct PickDeliveryOrders_t PickDeliveryOrders_t;
-typedef struct Knapsack_rt Knapsack_rt;
+typedef struct Solution_rt Solution_rt;
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,11 +55,16 @@ extern "C" {
     bin_capacity INTEGER,
     max_cycles INTEGER,
    ********************************************************/
-  void do_knapsack(
+  void do_pgr_pickDeliver(
       PickDeliveryOrders_t *pd_orders_arr, size_t total_pd_orders,
-      
+      Vehicle_t *vehicles_arr, size_t total_vehicles,
+      Matrix_cell_t *matrix_cells_arr, size_t total_cells,
 
-      Knapsack_rt **return_tuples,
+      double factor,
+      int max_cycles,
+      int initial_solution_id,
+
+      Solution_rt **return_tuples,
       size_t *return_count,
 
       char **log_msg,
