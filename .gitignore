@@ -6,6 +6,8 @@ src/version/_version.h
 v[0-9]*
 ortools
 build1
+gpush.sh
+bin_packing.cc
 
 # files are ignored on gh-pages
 doxy
