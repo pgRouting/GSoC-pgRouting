@@ -35,8 +35,7 @@ PG_FUNCTION_INFO_V1(_vrp_knapsack);
 static
 void
 process(
-        char* weights_sql,
-        char* values_sql,
+        char* weights_values_sql,
         int bin_capacity,
         
         Knapsack_rt **result_tuples,
@@ -44,9 +43,9 @@ process(
 
     pgr_SPI_connect();
 
-    PickDeliveryOrders_t *pd_orders_arr = NULL;
+    Knapsack_rt *pd_orders_arr = NULL;
     size_t total_pd_orders = 0;
-    get_shipments_raw(pd_orders_sql,
+    get_weights_values(weights_values_sql,
            &pd_orders_arr, &total_pd_orders);
 
     if (total_pd_orders == 0) {

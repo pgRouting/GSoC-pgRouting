@@ -66,7 +66,7 @@ get_initial_solution(vrprouting::problem::PickDeliver* problem_ptr, int m_initia
 }  // namespace
 
 void
-do_pgr_pickDeliver(
+do_knapsack(
         struct PickDeliveryOrders_t customers_arr[],
         size_t total_customers,
 
