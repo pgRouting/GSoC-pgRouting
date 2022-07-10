@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/circuits/hawickCircuits_driver.h"
+
 
 #include <sstream>
 #include <vector>
@@ -37,7 +37,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
-#include "circuits/hawickCircuits.hpp"
+#include "drivers/circuits/hawickcircuits_driver.h"
+#include "circuits/hawickcircuits.hpp"
 
 
 
@@ -69,7 +70,7 @@ do_hawickCircuits(
 
         digraph.insert_edges(data_edges, total_edges);
 
-        results = hawickCircuits(digraph);
+        results = pgr_hawickCircuits(digraph);
 
         auto count = results.size();
 

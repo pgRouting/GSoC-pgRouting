@@ -34,6 +34,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/postgres_connection.h"
 #include "utils/array.h"
 
+#ifndef INT8ARRAYOID
+#define INT8ARRAYOID    1016
+#endif
+
 #include "c_types/circuits_rt.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
@@ -43,7 +47,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/arrays_input.h"
 
 
-#include "drivers/circuits/hawickCircuits_driver.h"
+#include "drivers/circuits/hawickcircuits_driver.h"
 
 PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_hawickCircuits);
@@ -59,7 +63,7 @@ process(
     (*result_tuples) = NULL;
     (*result_count) = 0;
 
-    pgr_edge_t *edges = NULL;
+    Edge_t *edges = NULL;
     size_t total_edges = 0;
 
     pgr_get_edges(edges_sql, &edges, &total_edges);
@@ -154,7 +158,7 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (circuit_rt*) funcctx->user_fctx;
+    result_tuples = (circuits_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;
@@ -162,9 +166,10 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool         *nulls;
         int16 typlen;
+        size_t      call_cntr = funcctx->call_cntr;
 
         size_t num  = 2;
-        values = (Datun *)palloc(num * sizeof(Datum));
+        values = (Datum *)palloc(num * sizeof(Datum));
         nulls = palloc(num * sizeof(bool));
 
 
@@ -182,9 +187,9 @@ PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
 
         for (i = 0; i < target_array_size; ++i) {
             PGR_DBG("Storing target_array vertex %ld",
-                    result_tuples[call_cntr].circuits[i]);
+                    result_tuples[call_cntr].circuit[i]);
             target_array_array[i] =
-                Int64GetDatum(result_tuples[call_cntr].circuits[i]);
+                Int64GetDatum(result_tuples[call_cntr].circuit[i]);
         }
 
         bool typbyval;
