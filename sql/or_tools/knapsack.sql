@@ -40,7 +40,7 @@ CREATE OR REPLACE FUNCTION vrp_knapsack(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM vrp_knapsack(_pgr_get_statement($1), $2);
+    FROM _vrp_knapsack(_pgr_get_statement($1), $2);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 

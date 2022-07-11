@@ -38,7 +38,7 @@ process(
         char* weights_values_sql,
         int bin_capacity,
         
-        Solution_rt **result_tuples,
+        Knapsack_rt **result_tuples,
         size_t *result_count) {
 
     pgr_SPI_connect();
@@ -139,7 +139,7 @@ _vrp_knapsack(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (Solution_rt*) funcctx->user_fctx;
+    result_tuples = (Knapsack_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr <  funcctx->max_calls) {
         HeapTuple   tuple;
