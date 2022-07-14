@@ -103,4 +103,4 @@ typedef struct Knapsack_rt Knapsack_rt;
 
 /*************************************************************************/
 
-#endif // INCLUDE_C_TYPES_TYPEDEFS_H_
+#endif  // INCLUDE_C_TYPES_TYPEDEFS_H_

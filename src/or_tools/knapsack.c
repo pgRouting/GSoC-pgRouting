@@ -107,7 +107,7 @@ _vrp_knapsack(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    Solution_rt *result_tuples = 0;
+    Knapsack_rt *Knapsack_tuples = 0;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
@@ -156,19 +156,8 @@ _vrp_knapsack(PG_FUNCTION_ARGS) {
         }
 
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
-        values[1] = Int32GetDatum(result_tuples[call_cntr].vehicle_seq);
-        values[2] = Int64GetDatum(result_tuples[call_cntr].vehicle_id);
-        values[3] = Int32GetDatum(result_tuples[call_cntr].stop_seq);
-        values[4] = Int32GetDatum(result_tuples[call_cntr].stop_type + 1);
-        values[5] = Int64GetDatum(result_tuples[call_cntr].stop_id);
-        values[6] = Int64GetDatum(result_tuples[call_cntr].order_id);
-        values[7] = Int64GetDatum(result_tuples[call_cntr].cargo);
-        values[8] = Int64GetDatum(result_tuples[call_cntr].travelTime);
-        values[9] = Int64GetDatum(result_tuples[call_cntr].arrivalTime);
-        values[10] = Int64GetDatum(result_tuples[call_cntr].waitDuration);
-        values[11] = Int64GetDatum(result_tuples[call_cntr].serviceDuration);
-        values[12] = Int64GetDatum(result_tuples[call_cntr].departureTime);
-
+        values[1] = Int32GetDatum(result_tuples[call_cntr].item_weight);
+        values[2] = Int64GetDatum(result_tuples[call_cntr].item_cost);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

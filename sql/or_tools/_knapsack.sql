@@ -31,9 +31,9 @@ CREATE OR REPLACE FUNCTION _vrp_knapsack(
   
   INTEGER, -- capacity
 
-  OUT total_value INTEGER,
+  OUT total_cost INTEGER,
   OUT total_weight INTEGER,
-  OUT packed_items INTEGER[],
+  OUT packed_costs INTEGER[],
   OUT packed_weights INTEGER[]
 )
 RETURNS SETOF RECORD AS

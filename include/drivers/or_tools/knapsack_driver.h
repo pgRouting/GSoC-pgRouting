@@ -39,8 +39,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   include <stddef.h>
 #endif
 
-
-typedef struct PickDeliveryOrders_t PickDeliveryOrders_t;
 typedef struct Knapsack_rt Knapsack_rt;
 
 #ifdef __cplusplus

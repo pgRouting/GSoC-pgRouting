@@ -67,21 +67,13 @@ get_initial_solution(vrprouting::problem::PickDeliver* problem_ptr, int m_initia
 
 void
 do_knapsack(
-        struct PickDeliveryOrders_t customers_arr[],
-        size_t total_customers,
+        struct Knapsack_rt knapsack_items[],
+        size_t total_items,
 
-        Vehicle_t *vehicles_arr,
-        size_t total_vehicles,
+        int capacity,
 
-        Matrix_cell_t *matrix_cells_arr,
-        size_t total_cells,
-
-        double factor,
-        int max_cycles,
-        int initial_solution_id,
-
-        Solution_rt **return_tuples,
-        size_t *return_count,
+        Knapsack_rt **return_tuples,
+        Knapsack_t *return_count,
 
         char **log_msg,
         char **notice_msg,
