@@ -67,7 +67,7 @@ process(
     char *notice_msg = NULL;
     char *err_msg = NULL;
 
-    do_pgr_pickDeliver(
+    do_knapsack(
             knapsack_items, total_knapsack_items,
             
             capacity,
