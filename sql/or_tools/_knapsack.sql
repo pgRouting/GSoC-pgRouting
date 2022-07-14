@@ -27,9 +27,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 CREATE OR REPLACE FUNCTION _vrp_knapsack(
-  TEXT, -- weights_values SQL
+  TEXT, -- weights_cost SQL
   
-  INTEGER, -- bin capacity
+  INTEGER, -- capacity
 
   OUT total_value INTEGER,
   OUT total_weight INTEGER,

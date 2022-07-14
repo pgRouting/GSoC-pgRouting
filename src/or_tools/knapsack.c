@@ -35,25 +35,25 @@ PG_FUNCTION_INFO_V1(_vrp_knapsack);
 static
 void
 process(
-        char* weights_values_sql,
-        int bin_capacity,
+        char* weights_cost_sql,
+        int capacity,
         
         Knapsack_rt **result_tuples,
         size_t *result_count) {
 
     pgr_SPI_connect();
 
-    Knapsack_rt *pd_orders_arr = NULL;
-    size_t total_pd_orders = 0;
-    get_weights_values(weights_values_sql,
-           &pd_orders_arr, &total_pd_orders);
+    Knapsack_rt *knapsack_items = NULL;
+    size_t total_knapsack_items = 0;
+    get_weights_cost(weights_cost_sql,
+           &knapsack_items, &total_knapsack_items);
 
-    if (total_pd_orders == 0) {
+    if (total_knapsack_items == 0) {
         (*result_count) = 0;
         (*result_tuples) = NULL;
 
         /* freeing memory before return */
-        if (pd_orders_arr) {pfree(pd_orders_arr); pd_orders_arr = NULL;}
+        if (knapsack_items) {pfree(knapsack_items); knapsack_items = NULL;}
 
         pgr_SPI_finish();
         ereport(ERROR,
@@ -61,18 +61,16 @@ process(
                  errmsg("No orders found")));
         return;
     }
-
-
-
+    
+    clock_t start_t = clock();
+    char *log_msg = NULL;
+    char *notice_msg = NULL;
+    char *err_msg = NULL;
 
     do_pgr_pickDeliver(
-            pd_orders_arr, total_pd_orders,
-            vehicles_arr, total_vehicles,
-            matrix_cells_arr, total_cells,
-
-            factor,
-            max_cycles,
-            initial_solution_id,
+            knapsack_items, total_knapsack_items,
+            
+            capacity,
 
             result_tuples,
             result_count,

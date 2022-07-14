@@ -40,14 +40,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 name | description
 :----- | :-------
 Index       | Position of the item in the order in which the input was given
-ItemWeight  | Weight of the item
-ItemValue   | Value of the item
+item_weight  | Weight of the item
+item_cost   | Value of the item
 */
 
 struct Knapsack_rt {
-    int Index;
-    int ItemWeight;
-    int ItemValue;
+    int64_t item_weight;
+    int64_t item_calue;
 };
 
 /*************************************************************************/
