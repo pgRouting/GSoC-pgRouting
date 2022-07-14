@@ -14,8 +14,4 @@ SELECT *
 FROM knapsack_data;
 
 SELECT *
-FROM vrp_knapsack($$SELECT * FROM knapsack_data$$, 3);
-
-
-SELECT *
-FROM vrp_knapsack($$SELECT * FROM knapsack_data$$, 3);
+FROM vrp_knapsack($$SELECT weight, cost FROM knapsack_data$$, 3);

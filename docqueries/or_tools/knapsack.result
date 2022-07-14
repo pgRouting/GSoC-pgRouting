@@ -26,18 +26,9 @@ FROM knapsack_data;
 (5 rows)
 
 SELECT *
-FROM vrp_knapsack($$SELECT * FROM knapsack_data$$, 3);
+FROM vrp_knapsack($$SELECT weight, cost FROM knapsack_data$$, 3);
 WARNING:  Stopping execution
- total_cost | total_weight | packed_cost | packed_weights
-------------+--------------+-------------+----------------
-(0 rows)
-
-SELECT *
-FROM vrp_knapsack($$SELECT * FROM knapsack_data$$, 3);
-WARNING:  Stopping execution
- total_cost | total_weight | packed_cost | packed_weights
-------------+--------------+-------------+----------------
-(0 rows)
-
+ERROR:  Column 'Ë¿‘ÛˇêHãE¯dH3%(' not Found
+CONTEXT:  SQL function "vrp_knapsack" statement 1
 ROLLBACK;
 ROLLBACK
