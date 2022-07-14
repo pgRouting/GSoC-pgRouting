@@ -150,6 +150,7 @@ function test_compile {
     #exit 0
 
     tap_test
-    action_tests
+    #action_tests
+    
 }
 test_compile

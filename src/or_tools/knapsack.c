@@ -41,6 +41,7 @@ process(
         Knapsack_rt **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
+#if 0
     elog(WARNING, "Stopping execution");
     Knapsack_rt *knapsack_items = NULL;
     size_t total_knapsack_items = 0;
@@ -92,7 +93,7 @@ process(
     if (notice_msg) {pfree(notice_msg); notice_msg = NULL;}
     if (err_msg) {pfree(err_msg); err_msg = NULL;}
     if (knapsack_items) {pfree(knapsack_items); knapsack_items = NULL;}
-
+#endif
     pgr_SPI_finish();
 }
 
