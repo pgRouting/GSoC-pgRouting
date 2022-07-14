@@ -35,14 +35,20 @@ PG_FUNCTION_INFO_V1(_vrp_knapsack);
 static
 void
 process(
-        char* weights_cost_sql,
+        char* weights_costs_sql,
         int capacity,
 
         Knapsack_rt **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
-#if 0
+    weights_costs_sql = weights_costs_sql;
+    PGR_DBG("%d", capacity);
+    result_tuples = NULL;
+    result_count = 0;
+    if (result_tuples) {pfree(result_tuples); result_tuples = NULL;}
+    result_count = result_count + 1 -1;
     elog(WARNING, "Stopping execution");
+#if 0
     Knapsack_rt *knapsack_items = NULL;
     size_t total_knapsack_items = 0;
     get_weights_costs(weights_cost_sql,

@@ -27,7 +27,7 @@ GCC=""
 QUERIES_DIRS=$(ls docqueries -1)
 TAP_DIRS=$(ls pgtap -1)
 
-QUERIES_DIRS=""
+QUERIES_DIRS="or_tools"
 TAP_DIRS=""
 
 function install_vroom {

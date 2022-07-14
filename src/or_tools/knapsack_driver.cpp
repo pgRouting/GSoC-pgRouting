@@ -40,7 +40,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "problem/pickDeliver.h"
 #include "initialsol/initials_code.h"
 #include "problem/matrix.h"
-#include "c_types/knapsack_rt.h"
 
 namespace  {
 vrprouting::problem::Solution
@@ -52,7 +51,8 @@ get_initial_solution(vrprouting::problem::PickDeliver* problem_ptr, int m_initia
     if (m_initial_id == 0) {
         for (int i = 1; i < 7; ++i) {
             if (i == 1) {
-                m_solutions = Initial_solution((Initials_code)i, problem_ptr);      } else {
+                m_solutions = Initial_solution((Initials_code)i, problem_ptr);
+            } else {
                 auto new_sol = Initial_solution((Initials_code)i, problem_ptr);
                 m_solutions = (new_sol < m_solutions)? new_sol : m_solutions;
             }
@@ -67,12 +67,20 @@ get_initial_solution(vrprouting::problem::PickDeliver* problem_ptr, int m_initia
 
 void
 do_knapsack(
-        struct Knapsack_rt knapsack_items[],
-        size_t total_items,
+        struct PickDeliveryOrders_t customers_arr[],
+        size_t total_customers,
 
-        int capacity,
+        Vehicle_t *vehicles_arr,
+        size_t total_vehicles,
 
-        Knapsack_rt **return_tuples,
+        Matrix_cell_t *matrix_cells_arr,
+        size_t total_cells,
+
+        double factor,
+        int max_cycles,
+        int initial_solution_id,
+
+        Solution_rt **return_tuples,
         size_t *return_count,
 
         char **log_msg,
