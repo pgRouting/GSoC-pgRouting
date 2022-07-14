@@ -54,10 +54,9 @@ extern "C" {
     max_cycles INTEGER,
    ********************************************************/
   void do_knapsack(
-      PickDeliveryOrders_t *pd_orders_arr, size_t total_pd_orders,
-      Knapsack_t *knapsack_arr, size_t total_items,
-
-      int bin_capacity,
+      Knapsack_rt *knapsack_items, size_t total_knapsack_items,
+      
+      int capacity,
       
       Knapsack_rt **return_tuples,
       size_t *return_count,
