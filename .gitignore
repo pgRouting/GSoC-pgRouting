@@ -8,7 +8,7 @@ ortools
 build1
 bin_packing.cc
 gpush.sh
-vroom-1.12.0
+vroom-v1.12.0
 
 # files are ignored on gh-pages
 doxy
