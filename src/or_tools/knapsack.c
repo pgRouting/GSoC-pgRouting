@@ -105,7 +105,7 @@ _vrp_knapsack(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    Knapsack_rt *result_tuples = 0;
+    Knapsack_rt *result_tuples = NULL;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
