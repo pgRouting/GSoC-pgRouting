@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
-
+#include "c_types/knapsack_rt.h"
 #include "drivers/or_tools/knapsack_driver.h"
 
 PGDLLEXPORT Datum

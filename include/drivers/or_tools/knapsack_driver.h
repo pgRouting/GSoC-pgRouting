@@ -46,10 +46,8 @@ extern "C" {
 #endif
 
   /*********************************************************
-    weights_sql TEXT,
-    values_sql TEXT,
-    bin_capacity INTEGER,
-    max_cycles INTEGER,
+    weights_cost_sql TEXT,
+    capacity INTEGER,
    ********************************************************/
   void do_knapsack(
       Knapsack_rt *knapsack_items, size_t total_knapsack_items,
