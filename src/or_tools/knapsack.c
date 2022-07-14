@@ -41,7 +41,7 @@ process(
         Knapsack_rt **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
-
+    elog(WARNING, "Stopping execution");
     Knapsack_rt *knapsack_items = NULL;
     size_t total_knapsack_items = 0;
     get_weights_cost(weights_cost_sql,
