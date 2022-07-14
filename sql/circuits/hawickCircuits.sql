@@ -46,7 +46,7 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
-
+/*
 CREATE FUNCTION pgr_hawickCircuits_Unique(
     TEXT, -- edges_sql (required)
 
@@ -63,6 +63,7 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
+*/
 
 -- COMMENTS
 
@@ -78,6 +79,7 @@ IS 'pgr_hawickCircuits
 ';
 
 
+/*
 COMMENT ON FUNCTION pgr_hawickCircuits_Unique(TEXT, BOOLEAN)
 IS 'pgr_hawickCircuits_unique
 - EXPERIMENTAL
@@ -88,3 +90,4 @@ IS 'pgr_hawickCircuits_unique
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
 ';
+*/

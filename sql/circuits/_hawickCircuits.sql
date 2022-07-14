@@ -41,7 +41,7 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
-CREATE FUNCTION _pgr_hawickCircuits_Unique(
+/*CREATE FUNCTION _pgr_hawickCircuits_Unique(
     edges_sql TEXT,
     directed BOOLEAN DEFAULT true,
 
@@ -51,11 +51,13 @@ CREATE FUNCTION _pgr_hawickCircuits_Unique(
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
-
+*/
 -- COMMENTS
 
 COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT, BOOLEAN)
 IS 'pgRouting internal function';
 
+/*
 COMMENT ON FUNCTION _pgr_hawickCircuits_Unique(TEXT, BOOLEAN)
 IS 'pgRouting internal function';
+*/
