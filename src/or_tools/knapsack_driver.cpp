@@ -40,6 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "problem/pickDeliver.h"
 #include "initialsol/initials_code.h"
 #include "problem/matrix.h"
+#include "c_types/knapsack_rt.h"
 
 namespace  {
 vrprouting::problem::Solution
@@ -73,7 +74,7 @@ do_knapsack(
         int capacity,
 
         Knapsack_rt **return_tuples,
-        Knapsack_t *return_count,
+        size_t *return_count,
 
         char **log_msg,
         char **notice_msg,
