@@ -92,9 +92,7 @@ process(
     if (log_msg) {pfree(log_msg); log_msg = NULL;}
     if (notice_msg) {pfree(notice_msg); notice_msg = NULL;}
     if (err_msg) {pfree(err_msg); err_msg = NULL;}
-    if (pd_orders_arr) {pfree(pd_orders_arr); pd_orders_arr = NULL;}
-    if (vehicles_arr) {pfree(vehicles_arr); vehicles_arr = NULL;}
-    if (matrix_cells_arr) {pfree(matrix_cells_arr); matrix_cells_arr = NULL;}
+    if (knapsack_items) {pfree(knapsack_items); knapsack_items = NULL;}
 
     pgr_SPI_finish();
 
@@ -107,7 +105,7 @@ _vrp_knapsack(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    Knapsack_rt *Knapsack_tuples = 0;
+    Knapsack_rt *result_tuples = 0;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
