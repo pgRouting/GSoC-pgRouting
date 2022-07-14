@@ -37,10 +37,9 @@ void
 process(
         char* weights_cost_sql,
         int capacity,
-        
+
         Knapsack_rt **result_tuples,
         size_t *result_count) {
-
     pgr_SPI_connect();
 
     Knapsack_rt *knapsack_items = NULL;
@@ -61,7 +60,7 @@ process(
                  errmsg("No orders found")));
         return;
     }
-    
+
     clock_t start_t = clock();
     char *log_msg = NULL;
     char *notice_msg = NULL;
@@ -69,7 +68,7 @@ process(
 
     do_knapsack(
             knapsack_items, total_knapsack_items,
-            
+
             capacity,
 
             result_tuples,
@@ -95,7 +94,6 @@ process(
     if (knapsack_items) {pfree(knapsack_items); knapsack_items = NULL;}
 
     pgr_SPI_finish();
-
 }
 
 
@@ -114,7 +112,7 @@ _vrp_knapsack(PG_FUNCTION_ARGS) {
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
         process(
-                text_to_cstring(PG_GETARG_TEXT_P(0)), 
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_INT32(1),
                 &result_tuples,
                 &result_count);

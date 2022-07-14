@@ -52,9 +52,9 @@ extern "C" {
    ********************************************************/
   void do_knapsack(
       Knapsack_rt *knapsack_items, size_t total_knapsack_items,
-      
+
       int capacity,
-      
+
       Knapsack_rt **return_tuples,
       size_t *return_count,
 

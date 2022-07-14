@@ -52,8 +52,7 @@ get_initial_solution(vrprouting::problem::PickDeliver* problem_ptr, int m_initia
     if (m_initial_id == 0) {
         for (int i = 1; i < 7; ++i) {
             if (i == 1) {
-                m_solutions = Initial_solution((Initials_code)i, problem_ptr);
-            } else {
+                m_solutions = Initial_solution((Initials_code)i, problem_ptr);      } else {
                 auto new_sol = Initial_solution((Initials_code)i, problem_ptr);
                 m_solutions = (new_sol < m_solutions)? new_sol : m_solutions;
             }
