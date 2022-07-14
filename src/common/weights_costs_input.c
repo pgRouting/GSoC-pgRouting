@@ -54,7 +54,7 @@ get_weights_general(
 
   const int tuple_limit = 1000000;
   size_t total_tuples = 0;
-  const int column_count = 3;
+  const int column_count = 2;
 
   void *SPIplan;
   SPIplan = pgr_SPI_prepare(sql);
@@ -136,7 +136,5 @@ get_weights_costs(
   }
   info[0].name = "weight";
   info[1].name = "cost";
-
-  info[2].eType = INTERVAL;
   get_weights_general(sql, info, rows, total_rows);
 }
