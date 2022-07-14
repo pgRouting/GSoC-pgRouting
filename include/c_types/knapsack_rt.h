@@ -46,7 +46,7 @@ item_cost   | Value of the item
 
 struct Knapsack_rt {
     int64_t item_weight;
-    int64_t item_calue;
+    int64_t item_cost;
 };
 
 /*************************************************************************/
