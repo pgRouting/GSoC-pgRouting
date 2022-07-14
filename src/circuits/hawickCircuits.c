@@ -49,8 +49,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/circuits/hawickcircuits_driver.h"
 
-PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_hawickCircuits);
+PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_hawickcircuits);
 
 static void
 process(
@@ -110,7 +110,7 @@ process(
  *
  */
 
-PGDLLEXPORT Datum _pgr_hawickCircuits(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
