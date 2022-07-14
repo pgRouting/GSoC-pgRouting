@@ -35,9 +35,9 @@ void fetch_weights(
         HeapTuple *tuple,
         TupleDesc *tupdesc,
         Column_info_t info[2],
-        Weight_t *row) {
-    row->weight = get_Id(tuple, tupdesc,  info[0], -1);
-    row->cost = get_Id(tuple, tupdesc,  info[1], -1);
+        Knapsack_rt *row) {
+    row->item_weight = get_Id(tuple, tupdesc,  info[0], -1);
+    row->item_cost = get_Id(tuple, tupdesc,  info[1], -1);
 }
 
 static
@@ -45,9 +45,9 @@ void
 get_weights_general(
     char *sql,
     Column_info_t *info,
-    Weight_t **rows,
+    Knapsack_rt **rows,
     size_t *total_rows) {
-#ifdef 1
+#if 0
   clock_t start_t = clock();
   PGR_DBG("%s", sql);
 #endif
@@ -76,11 +76,11 @@ get_weights_general(
 
     if (ntuples > 0) {
       if ((*rows) == NULL)
-        (*rows) = (Weight_t *)palloc0(
-            total_tuples * sizeof(Weight_t));
+        (*rows) = (Knapsack_rt *)palloc0(
+            total_tuples * sizeof(Knapsack_rt));
       else
-        (*rows) = (Weight_t *)repalloc(
-            (*rows), total_tuples * sizeof(Weight_t));
+        (*rows) = (Knapsack_rt *)repalloc(
+            (*rows), total_tuples * sizeof(Knapsack_rt));
 
       if ((*rows) == NULL) {
         elog(ERROR, "Out of memory");
@@ -123,7 +123,7 @@ get_weights_general(
 void
 get_weights_costs(
     char *sql,
-    Weight_t **rows,
+    Knapsack_rt **rows,
     size_t *total_rows) {
   Column_info_t info[2];
 

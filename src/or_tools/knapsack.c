@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
-
+#include "c_common/weights_costs_input.h"
 #include "c_types/knapsack_rt.h"
 #include "drivers/or_tools/knapsack_driver.h"
 
@@ -48,6 +48,15 @@ process(
     if (result_tuples) {pfree(result_tuples); result_tuples = NULL;}
     result_count = result_count + 1 -1;
     elog(WARNING, "Stopping execution");
+
+    Knapsack_rt *weights_arr = NULL;
+    size_t total_weights = 0;
+#if 0    
+    if (weights_arr) {pfree(weights_arr); weights_arr = NULL;}
+    total_weights = total_weights + 1 -1;
+#endif
+    get_weights_costs(weights_costs_sql,
+           &weights_arr, &total_weights);
 #if 0
     Knapsack_rt *knapsack_items = NULL;
     size_t total_knapsack_items = 0;

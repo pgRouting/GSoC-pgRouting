@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 typedef struct Knapsack_rt Knapsack_rt;
 
 /** @brief Get the weights and cost for each item */
-void get_weights_cost(
+void get_weights_costs(
     char *sql,
     Knapsack_rt **rows,
     size_t *total_rows);

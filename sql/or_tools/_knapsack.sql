@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _knapsack_0_1.sql
+File: _knapsack.sql
 
 Copyright (c) 2021 pgRouting developers
 Mail: project@pgrouting.org
