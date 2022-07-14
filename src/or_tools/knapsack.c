@@ -60,7 +60,7 @@ process(
 #if 0
     Knapsack_rt *knapsack_items = NULL;
     size_t total_knapsack_items = 0;
-    get_weights_costs(weights_cost_sql,
+    get_weights_costs(weights_costs_sql,
            &knapsack_items, &total_knapsack_items);
 
     if (total_knapsack_items == 0) {
