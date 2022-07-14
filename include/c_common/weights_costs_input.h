@@ -17,10 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_C_COMMON_WEIGHTS_COST_INPUT_H_
-#define INCLUDE_C_COMMON_WEIGHTS_COST_INPUT_H_
+#ifndef INCLUDE_C_COMMON_WEIGHTS_COSTS_INPUT_H_
+#define INCLUDE_C_COMMON_WEIGHTS_COSTS_INPUT_H_
 #pragma once
-
 #include <stddef.h>
 
 typedef struct Knapsack_rt Knapsack_rt;
@@ -31,4 +30,4 @@ void get_weights_costs(
     Knapsack_rt **rows,
     size_t *total_rows);
 
-#endif  // INCLUDE_C_COMMON_WEIGHTS__COSTS_INPUT_H_
+#endif  // INCLUDE_C_COMMON_WEIGHTS_COSTS_INPUT_H_

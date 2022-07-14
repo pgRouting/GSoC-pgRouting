@@ -51,7 +51,7 @@ process(
 
     Knapsack_rt *weights_arr = NULL;
     size_t total_weights = 0;
-#if 0    
+#if 0
     if (weights_arr) {pfree(weights_arr); weights_arr = NULL;}
     total_weights = total_weights + 1 -1;
 #endif
