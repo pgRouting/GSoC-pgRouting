@@ -50,7 +50,7 @@ struct circuits_rt {
     int64_t node;
     int64_t edge;
     double cost;
-    double agg_cost;  
+    double agg_cost;
 };
 
 #endif  // INCLUDE_C_TYPES_CIRCUITS_RT_H_

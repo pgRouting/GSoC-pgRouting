@@ -159,7 +159,7 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
         size_t       call_cntr = funcctx->call_cntr;
 
 
-        size_t numb_out = 9 ;
+        size_t numb_out = 9;
         values = palloc(numb_out * sizeof(Datum));
         nulls = palloc(numb_out * sizeof(bool));
         size_t i;

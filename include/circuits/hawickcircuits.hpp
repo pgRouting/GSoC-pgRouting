@@ -42,7 +42,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_assert.h"
 #include "c_types/circuits_rt.h"
 
-namespace pgrouting{
+namespace pgrouting {
 #if 0
 struct circuit_detector {
     std::vector<circuits_rt> results;
@@ -78,10 +78,10 @@ std::vector<circuits_rt> hawickCircuits(G & /*graph*/) {
 
     return visitor.result();
 #endif
-   std::vector<circuits_rt> results;
-   return results;
+  std::vector<circuits_rt> results;
+  return results;
 }
 
-}  //namespace pgrouting
+}   // namespace pgrouting
 
 #endif  // INCLUDE_CIRCUITS_HAWICKCIRCUITS_HPP_
