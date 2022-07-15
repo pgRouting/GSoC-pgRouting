@@ -36,13 +36,14 @@ CREATE FUNCTION pgr_hawickCircuits(
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
-    OUT path_id BIGINT,
+    OUT path_id INTEGER,
     OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-    
+
 RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
