@@ -32,17 +32,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 CREATE FUNCTION pgr_hawickCircuits(
     TEXT, -- edges_sql (required)
-
     directed BOOLEAN DEFAULT true,
 
     OUT seq INTEGER,
-    OUT circuits BIGINT[])
+    OUT path_seq INTEGER,
+    OUT path_id BIGINT,
+    OUT start_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+    
 RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
     RETURN QUERY
     SELECT *
-    FROM _pgr_hawickCircuits(_pgr_get_statement($1));
+    FROM _pgr_hawickCircuits(_pgr_get_statement($1), $2);
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;

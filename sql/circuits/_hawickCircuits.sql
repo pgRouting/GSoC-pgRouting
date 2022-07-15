@@ -31,11 +31,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ---------------
 
 CREATE FUNCTION _pgr_hawickCircuits(
-    edges_sql TEXT,
-    directed BOOLEAN DEFAULT true,
+    TEXT,
+    BOOLEAN,
 
     OUT seq INTEGER,
-    OUT circuits BIGINT[])
+    OUT path_id  INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_vid BIGINT, 
+    OUT end_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
