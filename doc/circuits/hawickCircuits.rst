@@ -29,7 +29,7 @@
 
   * New **experimental** signature:
 
-    * ``pgr_hawickCircuits`` (`Hawick Circuits`)
+    * ``pgr_hawickCircuits`` (`Hawick Circuits`_)
 
 
 Description
@@ -56,7 +56,7 @@ Signatures
 .. index::
     single: Hawick Circuits - Experimental on v3.4
 
-Hawick Circuit
+Hawick Circuits
 ...............................................................................
 
 .. parsed-literal::
