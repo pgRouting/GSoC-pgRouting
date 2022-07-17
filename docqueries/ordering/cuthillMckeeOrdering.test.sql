@@ -15,7 +15,7 @@ CREATE TABLE expected_result (
 INSERT INTO expected_result (seq, ordering) VALUES
 (1, 8),
 (2, 3),
-(3, 0),   
+(3, 0), 
 (4, 9),
 (5, 2),
 (6, 5),
