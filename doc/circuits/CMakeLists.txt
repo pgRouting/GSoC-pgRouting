@@ -1,6 +1,6 @@
 
 SET(LOCAL_FILES
-    pgr_hawickCircuits.rst
+    hawickCircuits.rst
     )
 
 foreach (f ${LOCAL_FILES})

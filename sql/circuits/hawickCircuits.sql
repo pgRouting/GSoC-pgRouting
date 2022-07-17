@@ -32,21 +32,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 CREATE FUNCTION pgr_hawickCircuits(
     TEXT, -- edges_sql (required)
-
     directed BOOLEAN DEFAULT true,
 
     OUT seq INTEGER,
-    OUT circuits BIGINT[])
+    OUT path_id INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+
 RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
     RETURN QUERY
     SELECT *
-    FROM _pgr_hawickCircuits(_pgr_get_statement($1));
+    FROM _pgr_hawickCircuits(_pgr_get_statement($1), $2);
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
-
+/*
 CREATE FUNCTION pgr_hawickCircuits_Unique(
     TEXT, -- edges_sql (required)
 
@@ -63,6 +69,7 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
+*/
 
 -- COMMENTS
 
@@ -78,6 +85,7 @@ IS 'pgr_hawickCircuits
 ';
 
 
+/*
 COMMENT ON FUNCTION pgr_hawickCircuits_Unique(TEXT, BOOLEAN)
 IS 'pgr_hawickCircuits_unique
 - EXPERIMENTAL
@@ -88,3 +96,4 @@ IS 'pgr_hawickCircuits_unique
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
 ';
+*/

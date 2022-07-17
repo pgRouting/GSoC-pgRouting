@@ -31,6 +31,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ---------------
 
 CREATE FUNCTION _pgr_hawickCircuits(
+    TEXT,
+    BOOLEAN,
+
+    OUT seq INTEGER,
+    OUT path_id  INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_vid BIGINT, 
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C IMMUTABLE STRICT;
+
+/*CREATE FUNCTION _pgr_hawickCircuits_Unique(
     edges_sql TEXT,
     directed BOOLEAN DEFAULT true,
 
@@ -40,22 +57,13 @@ CREATE FUNCTION _pgr_hawickCircuits(
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
-
-CREATE FUNCTION _pgr_hawickCircuits_Unique(
-    edges_sql TEXT,
-    directed BOOLEAN DEFAULT true,
-
-    OUT seq INTEGER,
-    OUT circuits BIGINT[])
-
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C IMMUTABLE STRICT;
-
+*/
 -- COMMENTS
 
 COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT, BOOLEAN)
 IS 'pgRouting internal function';
 
+/*
 COMMENT ON FUNCTION _pgr_hawickCircuits_Unique(TEXT, BOOLEAN)
 IS 'pgRouting internal function';
+*/

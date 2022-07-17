@@ -46,6 +46,7 @@ void
 do_hawickCircuits(
         Edge_t  *data_edges,
         size_t total_edges,
+        bool,
 
         circuits_rt **return_tuples,
         size_t *return_count,
@@ -70,7 +71,7 @@ do_hawickCircuits(
 
         digraph.insert_edges(data_edges, total_edges);
 
-        results = pgr_hawickCircuits(digraph);
+        results = pgrouting::hawickCircuits(digraph);
 
         auto count = results.size();
 
