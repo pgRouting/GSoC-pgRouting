@@ -83,7 +83,8 @@ public:
       * @see [boost::cuthill_mckee_ordering]
       * (https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html)
       */
-    std::vector<II_t_rt>cuthillMckeeOrdering(G & /*graph*/, int64_t) {
+    std::vector<II_t_rt>
+    cuthillMckeeOrdering(G & /*graph*/, int64_t) {
         std::vector<II_t_rt>results;
 
         /* TODO
@@ -97,7 +98,7 @@ public:
          auto i_map = boost::get(boost::vertex_index, graph.graph);
 
          // vector which will store the ordering of the graph
-         std::vector < vertices_size_type > ordering(boost::num_vertices(graph.graph));
+         std::vector<vertices_size_type> ordering(boost::num_vertices(graph.graph));
 
          // An iterator property map which records the ordering 
          auto ordering_map = boost::make_iterator_property_map(ordering.begin(), i_map);

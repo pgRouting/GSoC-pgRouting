@@ -1,5 +1,5 @@
 SET(LOCAL_FILES
-    pgr_cuthillMckeeOrdering.rst
+    cuthillMckeeOrdering.rst
     )
 
 foreach (f ${LOCAL_FILES})

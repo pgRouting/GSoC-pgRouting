@@ -90,6 +90,12 @@ Experimental Functions
    :start-after: index experimental from here
    :end-before: index experimental to here
 
+:doc:`ordering-family`
+
+.. include:: ordering-family.rst
+   :start-after: index experimental from here
+   :end-before: index experimental to here
+
 :doc:`TRSP-family`
 
 .. include:: TRSP-family.rst
