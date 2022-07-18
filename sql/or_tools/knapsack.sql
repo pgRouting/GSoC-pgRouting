@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: knapsack_0-1.sql
+File: knapsack_.sql
 
 Copyright (c) 2021 pgRouting developers
 Mail: project@pgrouting.org
@@ -28,24 +28,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 CREATE OR REPLACE FUNCTION vrp_knapsack(
-  TEXT, -- weights SQL
-  TEXT, -- values  SQL
+  TEXT, -- weights_cost SQL
   
-  INTEGER, -- bin capacity
+  INTEGER, -- capacity
 
-  OUT total_value INTEGER,
+  OUT total_cost INTEGER,
   OUT total_weight INTEGER,
-  OUT packed_items INTEGER[],
+  OUT packed_cost INTEGER[],
   OUT packed_weights INTEGER[]
 )
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM vrp_knapsack(_pgr_get_statement($1), _pgr_get_statement($2), $3);
+    FROM _vrp_knapsack(_pgr_get_statement($1), $2);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION vrp_knapsack(TEXT, TEXT, INTEGER)
+COMMENT ON FUNCTION vrp_knapsack(TEXT, INTEGER)
 IS 'vrp_knapsack';

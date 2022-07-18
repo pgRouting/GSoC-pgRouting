@@ -1,11 +1,8 @@
 /*PGR-GNU*****************************************************************
-File: _knapsack.sql
+File: knapsack_rt.h
 
-Copyright (c) 2021 pgRouting developers
-Mail: project@pgrouting.org
-
-Function's developer:
 Copyright (c) 2022 Manas Sivakumar
+Mail: vicky_vergara@hotmail.com
 
 ------
 
@@ -24,23 +21,34 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
+/*! @file */
 
+#ifndef INCLUDE_C_TYPES_KNAPSACK_RT_H_
+#define INCLUDE_C_TYPES_KNAPSACK_RT_H_
+#pragma once
 
-CREATE OR REPLACE FUNCTION _vrp_knapsack(
-  TEXT, -- weights_cost SQL
-  
-  INTEGER, -- capacity
+/* for int64_t */
+#ifdef __cplusplus
+#   include <cstdint>
+#else
+#   include <stdint.h>
+#endif
 
-  OUT total_cost INTEGER,
-  OUT total_weight INTEGER,
-  OUT packed_costs INTEGER[],
-  OUT packed_weights INTEGER[]
-)
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE c VOLATILE STRICT;
+/** @brief
 
--- COMMENTS
+@note C/C++/postgreSQL connecting structure for output
+name | description
+:----- | :-------
+Index       | Position of the item in the order in which the input was given
+item_weight  | Weight of the item
+item_cost   | Value of the item
+*/
 
-COMMENT ON FUNCTION _vrp_knapsack(TEXT, INTEGER)
-IS 'vrprouting internal function';
+struct Knapsack_rt {
+    int64_t item_weight;
+    int64_t item_cost;
+};
+
+/*************************************************************************/
+
+#endif  // INCLUDE_C_TYPES_KNAPSACK_RT_H_

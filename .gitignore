@@ -6,6 +6,9 @@ src/version/_version.h
 v[0-9]*
 ortools
 build1
+bin_packing.cc
+gpush.sh
+vroom-v1.12.0
 
 # files are ignored on gh-pages
 doxy

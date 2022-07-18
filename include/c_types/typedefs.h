@@ -60,6 +60,7 @@ using Vroom_matrix_t = struct Vroom_matrix_t;
 using Vroom_break_t = struct Vroom_break_t;
 using Vroom_time_window_t = struct Vroom_time_window_t;
 using Vroom_rt = struct Vroom_rt;
+using Knapsack_rt = struct Knapsack_rt;
 /*
  * Index on a container
  */
@@ -97,6 +98,7 @@ typedef struct Vroom_matrix_t Vroom_matrix_t;
 typedef struct Vroom_break_t Vroom_break_t;
 typedef struct Vroom_time_window_t Vroom_time_window_t;
 typedef struct Vroom_rt Vroom_rt;
+typedef struct Knapsack_rt Knapsack_rt;
 #endif
 
 /*************************************************************************/
