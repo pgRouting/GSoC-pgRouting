@@ -34,8 +34,6 @@ graphs
 
   * New **experimental** signature:
 
-    * ``cuthillMckeeOrdering`` (`Cuthill-Mckee Ordering`_)
-
 
 Description
 -------------------------------------------------------------------------------
@@ -81,8 +79,8 @@ Parameters
 -------------------------------------------------------------------------------
 
 .. include:: pgRouting-concepts.rst
-   :start-after: only_edges_sql_start
-   :end-before: only_edges_sql_end
+   :start-after: only_edge_param_start
+   :end-before: only_edge_param_end
 
 .. include:: ordering-family.rst
    :start-after: ordering_start_vid_start
