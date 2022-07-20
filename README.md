@@ -8,13 +8,22 @@ Once you have the downloaded the tar file from the official website, extract it 
 ### Download from source (Recommended)
 Clone this repository https://github.com/google/or-tools/tree/main or https://github.com/google/or-tools/tree/stable
 ```
-
+git clone git@github.com:google/or-tools.git
 ```
 
-### To test your installation run
+### dependencies
 ```
-make test_cc
+Cmake > 3.20
+C++17 at least
 ```
+### How to build
+https://github.com/google/or-tools/blob/main/cmake/README.md#cmake-options
+In the root directory
+```
+cmake -S. -Bbuild -DBUILD_DEPS:BOOL=ON
+cmake --build build
+```
+
 Save your program as a .cc file inside the root folder.  
 
 
