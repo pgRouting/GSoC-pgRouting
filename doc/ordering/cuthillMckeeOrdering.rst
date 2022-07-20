@@ -81,13 +81,12 @@ Parameters
 -------------------------------------------------------------------------------
 
 .. include:: pgRouting-concepts.rst
-   :start-after: basic_edges_sql_start
-   :end-before: basic_edges_sql_end
+   :start-after: only_edges_sql_start
+   :end-before: only_edges_sql_end
 
-
-Optional parameters
--------------------------------------------------------------------------------
-TBD
+.. include:: ordering-family.rst
+   :start-after: ordering_start_vid_start
+   :end-before: ordering_start_vid_end
 
 Inner Queries
 -------------------------------------------------------------------------------
@@ -102,20 +101,9 @@ Edges SQL
 Return columns
 -------------------------------------------------------------------------------
 
-.. list-table::
-   :width: 81
-   :widths: auto
-   :header-rows: 1
-
-   * - Column
-     - Type
-     - Description
-   * - ``seq``
-     - ``BIGINT``
-     - Sequential value starting from ``1``
-   * - ``ordering``
-     - ``BIGINT``
-     - Reverse Cuthill-McKee Ordering.
+.. include:: ordering-family.rst
+    :start-after: result columns start
+    :end-before: result columns end
 
 See Also
 -------------------------------------------------------------------------------
