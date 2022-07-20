@@ -63,7 +63,7 @@ namespace functions {
 //*************************************************************
 
 class CuthillMckeeOrdering : public Pgr_messages{
-public:
+ public:
     using G = pgrouting::UndirectedGraph;
     using vertices_size_type = G::vertices_size_type;
 
@@ -91,7 +91,7 @@ public:
          * start_vid -> vertex descriptor
          * make a call
          */
-        
+
         /* On the meantime, using boost example */
 
 #if 0
@@ -100,7 +100,7 @@ public:
          // vector which will store the ordering of the graph
          std::vector<vertices_size_type> ordering(boost::num_vertices(graph.graph));
 
-         // An iterator property map which records the ordering 
+         // An iterator property map which records the ordering
          auto ordering_map = boost::make_iterator_property_map(ordering.begin(), i_map);
 
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
@@ -130,20 +130,20 @@ public:
         typedef graph_traits< Graph >::vertices_size_type size_type;
 
         typedef std::pair< std::int64_t, std::int64_t > Pair;
-        Pair edges[14] = { Pair(0, 3), // a-d
-            Pair(0, 5), // a-f
-            Pair(1, 2), // b-c
-            Pair(1, 4), // b-e
-            Pair(1, 6), // b-g
-            Pair(1, 9), // b-j
-            Pair(2, 3), // c-d
-            Pair(2, 4), // c-e
-            Pair(3, 5), // d-f
-            Pair(3, 8), // d-i
-            Pair(4, 6), // e-g
-            Pair(5, 6), // f-g
-            Pair(5, 7), // f-h
-            Pair(6, 7) }; // g-h
+        Pair edges[14] = { Pair(0, 3),  // a-d
+            Pair(0, 5),  // a-f
+            Pair(1, 2),  // b-c
+            Pair(1, 4),  // b-e
+            Pair(1, 6),  // b-g
+            Pair(1, 9),  // b-j
+            Pair(2, 3),  // c-d
+            Pair(2, 4),  // c-e
+            Pair(3, 5),  // d-f
+            Pair(3, 8),  // d-i
+            Pair(4, 6),  // e-g
+            Pair(5, 6),  // f-g
+            Pair(5, 7),  // f-h
+            Pair(6, 7) };  // g-h
 
         Graph G(10);
             for (int i = 0; i < 14; ++i)
@@ -157,7 +157,7 @@ public:
 
         property_map< Graph, vertex_index_t >::type index_map
             = get(vertex_index, G);
-        
+
         std::vector< Vertex > inv_perm(num_vertices(G));
         std::vector< size_type > perm(num_vertices(G));
     {
@@ -170,14 +170,14 @@ public:
         for (std::vector< Vertex >::const_iterator i = inv_perm.begin();
              i != inv_perm.end(); ++i) {
             log << index_map[*i] << " ";
-            results.push_back({index_map[*i],index_map[*i]});
+            results.push_back({index_map[*i], index_map[*i]});
             }
         log << std::endl;
 
         for (size_type c = 0; c != inv_perm.size(); ++c)
             perm[index_map[inv_perm[c]]] = c;
         }
-    }        
+    }
 #endif
          return results;
      }
@@ -197,10 +197,9 @@ public:
      std::vector <II_t_rt> get_results(
              std::vector <vertices_size_type> & /*ordering*/,
              const G & /*graph*/) {
-        
          std::vector <II_t_rt> results;
-          
-#if 0 
+
+#if 0
          typename boost::graph_traits < Graph > ::vertex_iterator v, vend;
 
          for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
@@ -209,12 +208,12 @@ public:
              results.push_back({{node}, {static_cast<int64_t>(orderings + 1)}});
          }
 
-         // ordering the results in an reverse ordering 
+         // ordering the results in an reverse ordering
          std::sort(results.begin(), results.end(),
              [](const II_t_rt row1, const II_t_rt row2) {
                  return row1.d1.id < row2.d1.id;
              });
-#endif    
+#endif
 
          return results;
      }
