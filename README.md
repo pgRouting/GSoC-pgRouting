@@ -1,9 +1,15 @@
 # google-or-practise 
 
+### Download as binary
 In order to run the code first you need to install google-or-tools in your local machine https://developers.google.com/optimization/install/cpp/linux.  
 I'm using google-or-tools v9.3.10502.  
 Once you have the downloaded the tar file from the official website, extract it and change directory to the root folder.
 
+### Download from source (Recommended)
+Clone this repository https://github.com/google/or-tools/tree/main or https://github.com/google/or-tools/tree/stable
+```
+
+```
 
 ### To test your installation run
 ```
