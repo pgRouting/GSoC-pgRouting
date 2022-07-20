@@ -43,45 +43,39 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/circuits_rt.h"
 
 namespace pgrouting {
-#if 0
-struct circuit_detector {
     std::vector<circuits_rt> results;
-    template <typename Path, typename Graph>
-    void cycle(Path const &p, Graph const &g) {
+#if 1
+struct circuit_detector{
+template <typename Path, typename Graph>
+void cycle(Path const &p, Graph const &g){
         if (p.empty())
-            return;
-        // Iterate over path printing each vertex that forms the circuit.
-        typename Path::const_iterator i = p.begin(), before_end = p.end();
+        return;
 
-        int64_t *circuit = nullptr;
-        size_t adj_siz = static_cast<size_t>(before_end - i);
-        circuit = pgr_alloc(adj_siz, circuit);
-        int number = 0;
-        for (; i != before_end; ++i) {
-            circuit[number++] = i;
+        // Get the property map containing the vertex indices so we can store them for output.
+
+        typedef typename boost::property_map<Graph, boost::vertex_index_t>::const_type IndexMap;
+        IndexMap indices = get(boost::vertex_index, g);
+
+        // Iterate over path iterator adding each vertex that forms the circuit.
+
+        typename Path::const_iterator i, before_end = boost::prior(p.end());
+        for (i = p.begin(); i != before_end; ++i) {
+            // add the  current vertex to the circuit storage container
+            auto vertex = get(indices, *i);
         }
-        results.push_back({circuit, adj_siz});
-    }
-
-    std::vector<circuits_rt> result() {
-        return results;
     }
 };
 #endif
 
-
-template <typename G>
-std::vector<circuits_rt> hawickCircuits(G & /*graph*/) {
+    template <typename G>
+    std::vector<circuits_rt> hawickCircuits(G & /*graph*/) {
 #if 0
     circuit_detector visitor;
     boost::hawick_circuits(graph, visitor);
-
-    return visitor.result();
 #endif
-  std::vector<circuits_rt> results;
-  return results;
-}
+        return results;
+    }
 
-}   // namespace pgrouting
+}  // namespace pgrouting
 
 #endif  // INCLUDE_CIRCUITS_HAWICKCIRCUITS_HPP_
