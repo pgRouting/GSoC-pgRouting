@@ -331,8 +331,17 @@ endforeach()
 # Google OR tools
 #----------------------
 
-# set(CMAKE_PREFIX_PATH "/home/manas/Codes/GSOC-2022/MyFork/ortools/build")
+set(CMAKE_PREFIX_PATH "/home/manas/Codes/GSOC-2022/MyFork/ortools/")
 # add_subdirectory(ortools)
+
+# set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+# set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${ORTOOLS_ROOT})
+# add_subdirectory(ortools)
+find_package(ortools CONFIG REQUIRED)
+add_executable(myapp bin_packing.cc)
+target_link_libraries(myapp ortools::ortools)
+
+# add_definitions(-DUSE_GLOP)
 # set(ortools_DIR "/home/manas/Codes/GSOC-2022/MyFork/ortools/build")
 # set(absl_DIR "/home/manas/Codes/GSOC-2022/MyFork/ortools/build/_deps/absl-build")
 # set(re2_DIR "/home/manas/Codes/GSOC-2022/MyFork/ortools/build/_deps/re2-build/CMakeFiles/Export/lib/cmake/re2")
