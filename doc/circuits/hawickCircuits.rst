@@ -109,6 +109,9 @@ Return columns
    * - ``start_vid``
      - ``BIGINT``
      - Identifier of the starting vertex of the circuit.
+   * - ``end_vid``
+     - ``BIGINT``
+     - Identifier of the ending vertex of the circuit.
    * - ``node``
      - ``BIGINT``
      - Identifier of the node in the path from a vid to next vid.
