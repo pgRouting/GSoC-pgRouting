@@ -29,7 +29,7 @@
 
   * New **experimental** signature:
 
-    * ``pgr_hawickCircuits`` (`Hawick Circuits`_)
+    * ``pgr_hawickCircuits``
 
 
 Description
@@ -56,15 +56,6 @@ Signatures
 .. index::
     single: Hawick Circuits - Experimental on v3.4
 
-Hawick Circuits
-...............................................................................
-
-.. parsed-literal::
-
-    pgr_hawickCircuits(`Edges SQL`_ [, directed]);
-   RETURNS (seq, path_id, path_seq, start_vid, node, edge, cost, agg_cost)
-    OR EMPTY SET
-
 :Example:
 
 .. literalinclude:: hawickCircuits.queries
@@ -74,12 +65,12 @@ Hawick Circuits
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: pgRouting-concepts.rst
-   :start-after: basic_edges_sql_start
-   :end-before: basic_edges_sql_end
+.. include:: allpairs-family.rst
+    :start-after: edges_start
+    :end-before: edges_end
 
 Optional parameters
--------------------------------------------------------------------------------
+...............................................................................
 
 .. include:: dijkstra-family.rst
     :start-after: dijkstra_optionals_start
@@ -92,8 +83,8 @@ Edges SQL
 ...............................................................................
 
 .. include:: pgRouting-concepts.rst
-    :start-after: basic_edges_sql_start
-    :end-before: basic_edges_sql_end
+    :start-after: no_id_edges_sql_start
+    :end-before: no_id_edges_sql_end
 
 Return columns
 -------------------------------------------------------------------------------
@@ -138,9 +129,9 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
-* `Boost: Hawick Circuit Algorithm documentation
+* `Boost: Hawick Circuit Algorithm
   <https://www.boost.org/doc/libs/1_78_0/libs/graph/doc/hawick_circuits.html>`__
-* `Link to publication
+* `Enumerating Circuits and Loops in Graphs with Self-Arcs and Multiple-Arcs by Ken Hawick and Health A. James
   <https://www.researchgate.net/publication/221440635_Enumerating_Circuits_and_Loops_in_Graphs_with_Self-Arcs_and_Multiple-Arcs>`__
 
 .. rubric:: Indices and tables
