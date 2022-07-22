@@ -38,6 +38,7 @@ CREATE FUNCTION pgr_hawickCircuits(
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
     OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -52,26 +53,6 @@ BEGIN
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
-/*
-CREATE FUNCTION pgr_hawickCircuits_Unique(
-    TEXT, -- edges_sql (required)
-
-    directed BOOLEAN DEFAULT true,
-
-    OUT seq INTEGER,
-    OUT circuits BIGINT[])
-RETURNS SETOF RECORD AS
-$BODY$
-BEGIN
-    RETURN QUERY
-    SELECT *
-    FROM _pgr_hawickCircuits_Unique(_pgr_get_statement($1));
-END;
-$BODY$
-LANGUAGE plpgsql VOLATILE STRICT;
-*/
-
--- COMMENTS
 
 COMMENT ON FUNCTION pgr_hawickCircuits(TEXT, BOOLEAN)
 IS 'pgr_hawickCircuits
@@ -81,19 +62,5 @@ IS 'pgr_hawickCircuits
 - Optional Parameters
    - directed := true
 - Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
+    - ${PROJECT_DOC_LINK}/hawickCircuits.html
 ';
-
-
-/*
-COMMENT ON FUNCTION pgr_hawickCircuits_Unique(TEXT, BOOLEAN)
-IS 'pgr_hawickCircuits_unique
-- EXPERIMENTAL
-- Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-- Optional Parameters
-   - directed := true
-- Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
-';
-*/

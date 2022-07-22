@@ -159,7 +159,7 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
         size_t       call_cntr = funcctx->call_cntr;
 
 
-        size_t numb_out = 8;
+        size_t numb_out = 9;
         values = palloc(numb_out * sizeof(Datum));
         nulls = palloc(numb_out * sizeof(bool));
         size_t i;
@@ -171,10 +171,11 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
         values[1] = Int32GetDatum(result_tuples[call_cntr].circuit_id);
         values[2] = Int32GetDatum(result_tuples[call_cntr].circuit_path_seq + 1);
         values[3] = Int64GetDatum(result_tuples[call_cntr].start_vid);
-        values[4] = Int64GetDatum(result_tuples[call_cntr].node);
-        values[5] = Int64GetDatum(result_tuples[call_cntr].edge);
-        values[6] = Float8GetDatum(result_tuples[call_cntr].cost);
-        values[7] = Float8GetDatum(result_tuples[call_cntr].agg_cost);
+        values[4] = Int64GetDatum(result_tuples[call_cntr].end_vid);
+        values[5] = Int64GetDatum(result_tuples[call_cntr].node);
+        values[6] = Int64GetDatum(result_tuples[call_cntr].edge);
+        values[7] = Float8GetDatum(result_tuples[call_cntr].cost);
+        values[8] = Float8GetDatum(result_tuples[call_cntr].agg_cost);
 
         /**********************************************************************/
 

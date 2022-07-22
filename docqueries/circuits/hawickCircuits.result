@@ -6,8 +6,8 @@ SET
 SELECT * FROM pgr_hawickCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM edges'
 );
- seq | path_id | path_seq | start_vid | node | edge | cost | agg_cost
------+---------+----------+-----------+------+------+------+----------
+ seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+---------+----------+-----------+---------+------+------+------+----------
 (0 rows)
 
 /* -- q2 */
