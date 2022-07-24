@@ -34,41 +34,50 @@ Ordering - Family of functions
 
     cuthillMckeeOrdering
 
-Starting Vertex Parameter
+Parameters
 ...............................................................................
 
-.. ordering_start_vid_start
+.. parameters_start
 
 .. list-table::
    :width: 81
    :widths: auto
    :header-rows: 1
 
-   * - Column
+   * - Parameter
      - Type
      - Description
+   * - `Edges SQL`_
+     - ``TEXT``
+     - `Edges SQL`_ as described below.
    * - **start vid**
      - ``BIGINT``
      - Identifier of the starting vertex
 
-.. ordering_start_vid_end
+.. parameters_end
+
+Edges SQL
+...............................................................................
+
+.. include:: pgRouting-concepts.rst
+   :start-after: basic_edges_sql_start
+   :end-before: basic_edges_sql_end
 
 Result Columns
 -------------------------------------------------------------------------------
 
-.. result columns start
+.. result_columns_start
 
-Returns SET OF ``(seq, ordering)``
+Returns SET OF ``(seq, node)``
 
 ===============  =========== ======================================
 Column           Type        Description
 ===============  =========== ======================================
 ``seq``           ``BIGINT``  Sequence of the order starting from 1.
-``ordering``      ``BIGINT``  New ordering in reverse order.
-
+``node``          ``BIGINT``  New ordering in reverse order.
 ===============  =========== ======================================
 
-.. result columns end
+.. result_columns_end
 
 See Also
 -------------------------------------------------------------------------------
