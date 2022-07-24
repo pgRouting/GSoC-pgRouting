@@ -107,14 +107,14 @@ process(
  *
  */
 
-PGDLLEXPORT Datum 
+PGDLLEXPORT Datum
 _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
     II_t_rt *result_tuples = NULL;
     size_t result_count = 0;
-  
+
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
@@ -165,7 +165,7 @@ _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
 #if 1
         values[0] = Int64GetDatum(funcctx->call_cntr + 1);
         values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2.value);
-#endif 
+#endif
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

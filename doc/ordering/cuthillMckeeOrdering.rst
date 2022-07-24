@@ -34,8 +34,6 @@ graphs
 
   * New **experimental** signature:
 
-    * ``cuthillMckeeOrdering`` (`Cuthill-Mckee Ordering`_)
-
 
 Description
 -------------------------------------------------------------------------------
@@ -66,7 +64,7 @@ Signatures
 
     cuthillMckeeOrdering(`Edges SQL`_, **start vid**)
 
-    RETURNS SET OF (seq, ordering)
+    RETURNS SET OF (seq, node)
     OR EMPTY SET
 
 :Example:
@@ -80,14 +78,9 @@ Signatures
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: pgRouting-concepts.rst
-   :start-after: basic_edges_sql_start
-   :end-before: basic_edges_sql_end
-
-
-Optional parameters
--------------------------------------------------------------------------------
-TBD
+.. include:: ordering-family.rst
+   :start-after: parameters_start
+   :end-before: parameters_end
 
 Inner Queries
 -------------------------------------------------------------------------------
@@ -97,25 +90,14 @@ Edges SQL
 
 .. include:: pgRouting-concepts.rst
    :start-after: basic_edges_sql_start
-   :end-before: basic_edges_sql_end   
+   :end-before: basic_edges_sql_end 
 
 Return columns
 -------------------------------------------------------------------------------
 
-.. list-table::
-   :width: 81
-   :widths: auto
-   :header-rows: 1
-
-   * - Column
-     - Type
-     - Description
-   * - ``seq``
-     - ``BIGINT``
-     - Sequential value starting from ``1``
-   * - ``ordering``
-     - ``BIGINT``
-     - Reverse Cuthill-McKee Ordering.
+.. include:: ordering-family.rst
+    :start-after: result_columns_start
+    :end-before: result_columns_end
 
 See Also
 -------------------------------------------------------------------------------
@@ -124,10 +106,8 @@ See Also
 
 .. see also start
 
-* `Boost: Cuthill-McKee Ordering Algorithm documentation
+* `Boost: Cuthill-McKee Ordering
   <https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html>`__
-* `Wikipedia: Cuthill-McKee Ordering
-  <https://en.wikipedia.org/wiki/Cuthill%E2%80%93McKee_algorithm>`__
 
 .. see also end
 

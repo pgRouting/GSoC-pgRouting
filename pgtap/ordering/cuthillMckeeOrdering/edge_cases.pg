@@ -1,0 +1,58 @@
+BEGIN;
+
+UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN NOT min_version('3.4.0') THEN plan(1) ELSE plan(18) END;
+
+CREATE TABLE boost_data (
+    id SERIAL,
+    source BIGINT,
+    target BIGINT,
+    cost FLOAT,
+)
+
+CREATE TABLE expected_result (
+  seq INTEGER,
+  node BIGINT);
+
+INSERT INTO expected_result (seq, node) VALUES
+(1, 8),
+(2, 3),
+(3, 0), 
+(4, 9),
+(5, 2),
+(6, 5),
+(7, 1),
+(8, 4),
+(9, 7),
+(10, 6);
+
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF NOT min_version('3.4.0') THEN
+  RETURN QUERY
+  SELECT skip(1, 'Function is new on 3.4.0');
+  RETURN;
+END IF;
+
+PREPARE q_1 AS
+SELECT * FROM pgr_cuthillMckeeOrdering(
+  'SELECT id, source, target, cost, reverse_cost FROM boost_data',
+  6);
+
+PREPARE r_1 AS
+SELECT * FROM expected_result;
+
+RETURN QUERY SELECT set_eq('q_1','r_1','boost example starting from 6');
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
+
+
+SELECT * FROM finish();
+ROLLBACK;

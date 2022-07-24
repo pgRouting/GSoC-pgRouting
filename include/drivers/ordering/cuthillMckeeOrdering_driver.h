@@ -55,9 +55,9 @@ do_cuthillMckeeOrdering(
 
         II_t_rt**,  size_t*,  // results
 
-        char **, // log msg
-        char **, // notice msg
-        char **); // err msg
+        char **,  // log msg
+        char **,  // notice msg
+        char **);  // err msg
 
 
 #ifdef __cplusplus

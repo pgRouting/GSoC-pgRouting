@@ -1,4 +1,5 @@
 SET(LOCAL_FILES
+    ordering-family.rst
     cuthillMckeeOrdering.rst
     )
 
