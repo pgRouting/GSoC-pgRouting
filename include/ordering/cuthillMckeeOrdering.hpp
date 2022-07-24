@@ -84,8 +84,16 @@ class CuthillMckeeOrdering : public Pgr_messages{
       * (https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html)
       */
     std::vector<II_t_rt>
-    cuthillMckeeOrdering(G & /*graph*/, int64_t) {
+    cuthillMckeeOrdering(G &graph, int64_t start_vid) {
         std::vector<II_t_rt>results;
+
+        // get source
+        if(!graph.has_vertex(start_vid)) {
+            return results;
+        }
+
+        // get vertex descriptor
+        auto v = graph.get_V(start_vid);
 
         /* TODO
          * start_vid -> vertex descriptor
@@ -95,7 +103,7 @@ class CuthillMckeeOrdering : public Pgr_messages{
         /* On the meantime, using boost example */
 
 #if 0
-         auto i_map = boost::get(boost::vertex_index, graph.graph);
+         auto start_vid = boost::get(boost::vertex_index, graph.graph);
 
          // vector which will store the ordering of the graph
          std::vector<vertices_size_type> ordering(boost::num_vertices(graph.graph));
@@ -119,7 +127,8 @@ class CuthillMckeeOrdering : public Pgr_messages{
          }
 
          results = get_results(ordering, graph);
-#else
+#endif
+#if 0
     {
         using namespace boost;
         typedef adjacency_list< vecS, vecS, undirectedS,
