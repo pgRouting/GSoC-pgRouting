@@ -10,9 +10,9 @@ SELECT * FROM pgr_cuthillMckeeOrdering(
 
 CREATE TABLE expected_result (
   seq INTEGER,
-  ordering BIGINT);
+  node BIGINT);
 
-INSERT INTO expected_result (seq, ordering) VALUES
+INSERT INTO expected_result (seq, node) VALUES
 (1, 8),
 (2, 3),
 (3, 0), 
