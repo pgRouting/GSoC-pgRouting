@@ -45,6 +45,7 @@ struct circuits_rt {
     int circuit_id;
     int circuit_path_seq;
     int64_t start_vid;
+    int64_t end_vid;
     int64_t node;
     int64_t edge;
     double cost;

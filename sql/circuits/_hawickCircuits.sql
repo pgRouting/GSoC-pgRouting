@@ -37,7 +37,8 @@ CREATE FUNCTION _pgr_hawickCircuits(
     OUT seq INTEGER,
     OUT path_id  INTEGER,
     OUT path_seq INTEGER,
-    OUT start_vid BIGINT, 
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -47,23 +48,5 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
-/*CREATE FUNCTION _pgr_hawickCircuits_Unique(
-    edges_sql TEXT,
-    directed BOOLEAN DEFAULT true,
-
-    OUT seq INTEGER,
-    OUT circuits BIGINT[])
-
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C IMMUTABLE STRICT;
-*/
--- COMMENTS
-
 COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT, BOOLEAN)
 IS 'pgRouting internal function';
-
-/*
-COMMENT ON FUNCTION _pgr_hawickCircuits_Unique(TEXT, BOOLEAN)
-IS 'pgRouting internal function';
-*/
