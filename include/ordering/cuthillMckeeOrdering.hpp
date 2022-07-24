@@ -95,27 +95,13 @@ class CuthillMckeeOrdering : public Pgr_messages{
         // get vertex descriptor
         auto v = graph.get_V(start_vid);
 
-        /* TODO
-         * start_vid -> vertex descriptor
-         * make a call
-         */
-
-        /* On the meantime, using boost example */
-
-#if 0
-         auto start_vid = boost::get(boost::vertex_index, graph.graph);
-
-         // vector which will store the ordering of the graph
-         std::vector<vertices_size_type> ordering(boost::num_vertices(graph.graph));
-
-         // An iterator property map which records the ordering
-         auto ordering_map = boost::make_iterator_property_map(ordering.begin(), i_map);
-
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
 
          try {
+#if 0
              boost::cuthill_mckee_ordering(graph.graph, ordering_map);
+#endif
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -125,11 +111,11 @@ class CuthillMckeeOrdering : public Pgr_messages{
          } catch (...) {
              throw;
          }
-
+#if 0
          results = get_results(ordering, graph);
 #endif
 #if 0
-    {
+    {   // TODO delete boost example
         using namespace boost;
         typedef adjacency_list< vecS, vecS, undirectedS,
         property< vertex_color_t, default_color_type,
