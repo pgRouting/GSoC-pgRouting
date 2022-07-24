@@ -35,7 +35,7 @@ CREATE FUNCTION pgr_cuthillMckeeOrdering(
     TEXT, -- edges_sql (required)
     BIGINT, -- start_vertex
     OUT seq BIGINT,
-    OUT ordering BIGINT)
+    OUT node BIGINT)
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *

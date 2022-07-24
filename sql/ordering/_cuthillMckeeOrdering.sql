@@ -35,7 +35,7 @@ CREATE FUNCTION _pgr_cuthillMckeeOrdering(
     TEXT,
     BIGINT,
     OUT seq BIGINT,
-    OUT ordering BIGINT
+    OUT node BIGINT
     )
 
 RETURNS SETOF RECORD AS
