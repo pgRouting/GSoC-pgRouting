@@ -8,7 +8,9 @@ ortools
 build1
 bin_packing.cc
 gpush.sh
-vroom-v1.12.0
+vrprun.sh
+error_output.txt
+.vscode/
 
 # files are ignored on gh-pages
 doxy
