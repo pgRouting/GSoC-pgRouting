@@ -40,7 +40,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "drivers/circuits/hawickcircuits_driver.h"
 #include "circuits/hawickcircuits.hpp"
 
-
+template < class G >
+std::vector <circuits_rt>
+pgr_hawickCircuits(G &graph) {
+    pgrouting::functions::pgr_hawickCircuits < G > fn_hawickCircuits;
+    auto results = fn_hawickCircuits.hawickCircuits(graph);
+    return results;
+}
 
 void
 do_hawickCircuits(
@@ -59,6 +65,7 @@ do_hawickCircuits(
     std::ostringstream notice;
     try {
         pgassert(!(*log_msg));
+        pgassert(total_edges != 0);
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
@@ -71,7 +78,7 @@ do_hawickCircuits(
 
         digraph.insert_edges(data_edges, total_edges);
 
-        results = pgrouting::hawickCircuits(digraph);
+        results = pgr_hawickCircuits(digraph);
 
         auto count = results.size();
 
