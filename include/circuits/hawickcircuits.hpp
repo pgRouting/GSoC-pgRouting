@@ -36,46 +36,78 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <iostream>
 #include <iterator>
 #include <vector>
+#include <deque>
 
 #include "cpp_common/basePath_SSEC.hpp"
 #include "cpp_common/pgr_base_graph.hpp"
+#include "cpp_common/interruption.h"
 #include "cpp_common/pgr_assert.h"
 #include "c_types/circuits_rt.h"
 
+
 namespace pgrouting {
-    std::vector<circuits_rt> results;
+namespace functions {
+
 #if 1
-struct circuit_detector{
-template <typename Path, typename Graph>
-void cycle(Path const &p, Graph const &g){
+template <typename G>
+class circuit_detector{
+ public:
+    circuit_detector(
+        G &graph,
+        std::vector<circuits_rt> &data) :
+    m_graph(graph),
+    m_data(data) {}
+    template <typename Path, typename Graph>
+    void cycle(Path const &p, Graph const&) {
         if (p.empty())
         return;
-
-        // Get the property map containing the vertex indices so we can store them for output.
-
-        typedef typename boost::property_map<Graph, boost::vertex_index_t>::const_type IndexMap;
-        IndexMap indices = get(boost::vertex_index, g);
-
-        // Iterate over path iterator adding each vertex that forms the circuit.
-
+        int j = 0;
         typename Path::const_iterator i, before_end = boost::prior(p.end());
+        auto start_vid = m_graph[*p.begin()].id;
+        auto end_vid = m_graph[*p.begin()].id;
+
         for (i = p.begin(); i != before_end; ++i) {
-            // add the  current vertex to the circuit storage container
-            auto vertex = get(indices, *i);
+            // To Do: Fillup the columns that are 0 marked
+            auto node = m_graph[*i].id;
+            m_data.push_back({circuit_No, j, start_vid, end_vid, node, 0, 0, 0});
+            j++;
         }
+        auto node = m_graph[*i].id;
+        m_data.push_back({circuit_No, j, start_vid, end_vid, node, 0, 0, 0});  // Adding up the last vertex
+        j++;
+        m_data.push_back({circuit_No, j, start_vid, end_vid, start_vid, 0, 0, 0});  // Adding up the starting vertex
+        circuit_No++;
     }
+
+ private:
+    G &m_graph;
+    std::vector<circuits_rt> &m_data;
+    int circuit_No = 1;
 };
 #endif
 
-    template <typename G>
-    std::vector<circuits_rt> hawickCircuits(G & /*graph*/) {
-#if 0
-    circuit_detector visitor;
-    boost::hawick_circuits(graph, visitor);
-#endif
-        return results;
-    }
-
+template <class G>
+class pgr_hawickCircuits{
+ public:
+      std::vector<circuits_rt> hawickCircuits(G & graph) {
+      std::vector<circuits_rt> results;
+      circuit_detector <G> detector(graph, results);
+        CHECK_FOR_INTERRUPTS();
+         try {
+             boost::hawick_circuits(graph.graph, detector);
+         } catch (boost::exception const& ex) {
+             (void)ex;
+             throw;
+         } catch (std::exception &e) {
+             (void)e;
+             throw;
+         } catch (...) {
+             throw;
+         }
+    return results;
+}
+};
+}  // namespace functions
 }  // namespace pgrouting
 
 #endif  // INCLUDE_CIRCUITS_HAWICKCIRCUITS_HPP_
