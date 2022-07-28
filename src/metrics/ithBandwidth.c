@@ -26,19 +26,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-/** @file vertexBetweennessCenrality.c
+/** @file ithBandwidth.c
  * @brief Connecting code with postgres.
  *
  */
 
 #include <stdbool.h>
-
+#include "c_common/postgres_connection.h"
 #include "utils/array.h"
 
-#include "c_common/postgres_connection.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
+
 #include "c_common/edges_input.h"
 #include "c_common/arrays_input.h"
 
@@ -63,7 +63,6 @@ PG_FUNCTION_INFO_V1(_pgr_ithBandwidth);
  *
  * @returns void
  */
-
 static
 void
 process(
@@ -81,21 +80,10 @@ process(
 
     pgr_get_edges(edges_sql, &edges, &total_edges);
 
-     if (total_edges == 0) {
-        ereport(WARNING,
-                (errmsg("Insufficient data found on inner query."),
-                 errhint("%s", edges_sql)));
-        (*result_count) = 0;
-        (*result_tuples) = NULL;
-        pgr_SPI_finish();
-        return;
-    }
-
     clock_t start_t = clock();
     char *log_msg = NULL;
     char *notice_msg = NULL;
     char *err_msg = NULL;
-
     do_pgr_ithBandwidth(
             edges, total_edges,
 
@@ -122,7 +110,6 @@ process(
 
     pgr_SPI_finish();
 }
-
 /*                                                                            */
 /******************************************************************************/
 
@@ -146,19 +133,19 @@ PGDLLEXPORT Datum _pgr_ithBandwidth(PG_FUNCTION_ARGS) {
 
         /***********************************************************************
          *
-         *   pgr_ithBandwidth( edges_sql TEXT );
+         *   pgr_ithBandwidth(edges_sql TEXT);
          *
          **********************************************************************/
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
-                PG_GETARG_BOOL(1),
                 &result_tuples,
                 &result_count);
 
         /**********************************************************************/
 
-    funcctx->max_calls = result_count;
+
+        funcctx->max_calls = result_count;
 
         funcctx->user_fctx = result_tuples;
         if (get_call_result_type(fcinfo, NULL, &tuple_desc)
@@ -185,8 +172,8 @@ PGDLLEXPORT Datum _pgr_ithBandwidth(PG_FUNCTION_ARGS) {
 
         /***********************************************************************
          *
-         *   OUT node BIGINT
-         *   OUT ithBandwidth BIGINT
+         *   OUT node BIGINT,
+         *   OUT ith_bandwidth BIGINT,
          *
          **********************************************************************/
 
