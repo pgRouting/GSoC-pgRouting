@@ -37,7 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "ordering/cuthillMckeeOrdering.hpp"
 
-#if 1
+#if 0
 /* TODO To_be_created Same type as the return type of fn_cuthillMckeeOrdering*/
 static
 std::vector <II_t_rt>
@@ -51,7 +51,7 @@ cuthillMckeeOrdering(pgrouting::UndirectedGraph &graph, int64_t start_vid) {
 }
 #endif
 
-#if 0
+#if 1
 template <class G>
 std::vector <II_t_rt>
 cuthillMckeeOrdering(G &graph, int64_t start_vid) {
@@ -87,10 +87,10 @@ void do_cuthillMckeeOrdering(
 
         pgrouting::UndirectedGraph undigraph(gType);
         undigraph.insert_edges(data_edges, total_edges);
-        // auto results = cuthillMckeeOrdering(undigraph, start_vid);  // might cause error bcz of type
-        pgrouting::functions::CuthillMckeeOrdering fn;
-        auto results = fn.cuthillMckeeOrdering(undigraph, start_vid);
-        log << fn.get_log();
+        auto results = cuthillMckeeOrdering(undigraph, start_vid);  // might cause error bcz of type
+        // pgrouting::functions::CuthillMckeeOrdering fn;
+        // auto results = fn.cuthillMckeeOrdering(undigraph, start_vid);
+        // log << fn.get_log();
 
         auto count = results.size();
 

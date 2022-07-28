@@ -63,10 +63,10 @@ namespace functions {
 
 //*************************************************************
 
-// template <class G>
+template <class G>
 class CuthillMckeeOrdering : public Pgr_messages{
  public:
-#if 1
+#if 0
     using G = pgrouting::UndirectedGraph;
     using vertices_size_type = G::vertices_size_type;
 
@@ -182,7 +182,7 @@ class CuthillMckeeOrdering : public Pgr_messages{
      }
 #endif
      //@}
-#if 0
+#if 1
     typedef typename G::V V;
     typedef typename G::E E;
     typedef boost::adjacency_list<boost::vecS,boost::vecS,boost::undirectedS,
