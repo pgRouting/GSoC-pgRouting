@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 /* TODO remove unnecessary includes */
+#include <boost/config.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/property_map/vector_property_map.hpp>
@@ -62,8 +63,10 @@ namespace functions {
 
 //*************************************************************
 
+// template <class G>
 class CuthillMckeeOrdering : public Pgr_messages{
  public:
+#if 1
     using G = pgrouting::UndirectedGraph;
     using vertices_size_type = G::vertices_size_type;
 
@@ -88,7 +91,7 @@ class CuthillMckeeOrdering : public Pgr_messages{
         std::vector<II_t_rt>results;
 
         // get source
-        if(!graph.has_vertex(start_vid)) {
+        if (!graph.has_vertex(start_vid)) {
             return results;
         }
 
@@ -115,7 +118,8 @@ class CuthillMckeeOrdering : public Pgr_messages{
          results = get_results(ordering, graph);
 #endif
 #if 0
-    {   // TODO delete boost example
+    {
+        // delete boost example
         using namespace boost;
         typedef adjacency_list< vecS, vecS, undirectedS,
         property< vertex_color_t, default_color_type,
@@ -176,8 +180,48 @@ class CuthillMckeeOrdering : public Pgr_messages{
 #endif
          return results;
      }
-
+#endif
      //@}
+#if 0
+    typedef typename G::V V;
+    typedef typename G::E E;
+    typedef boost::adjacency_list<boost::vecS,boost::vecS,boost::undirectedS,
+        boost::property<boost::vertex_color_t,boost::default_color_type,
+        boost::property<boost::vertex_degree_t, int>>>
+        Graph;
+    typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type;
+    typedef boost::graph_traits<Graph>::vertices_size_type size_type;
+
+    // documentation todo
+
+        std::vector<II_t_rt>
+        cuthillMckeeOrdering(G &graph, int64_t start_vid) {
+        std::vector<II_t_rt>results;
+
+         auto i_map = boost::get(boost::vertex_index, graph.graph);
+
+         std::vector <vertices_size_type> ordering(boost::num_vertices(graph.graph));
+
+         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
+         CHECK_FOR_INTERRUPTS();
+
+         try {
+             boost::cuthill_mckee_ordering(graph.graph);
+         } catch (boost::exception const& ex) {
+             (void)ex;
+             throw;
+         } catch (std::exception &e) {
+             (void)e;
+             throw;
+         } catch (...) {
+             throw;
+         }
+
+         results = get_results(ordering, graph);
+
+         return results;
+     }
+#endif
 
  private:
      /** @brief to get the results
@@ -190,9 +234,9 @@ class CuthillMckeeOrdering : public Pgr_messages{
       * @returns `results` vector
       */
      std::vector <II_t_rt> get_results(
-             std::vector <vertices_size_type> & /*ordering*/,
-             const G & /*graph*/) {
-         std::vector <II_t_rt> results;
+            std::vector <vertices_size_type> & /*ordering*/,
+            const G & graph) {
+            std::vector <II_t_rt> results;
 
 #if 0
          typename boost::graph_traits < Graph > ::vertex_iterator v, vend;
@@ -209,9 +253,8 @@ class CuthillMckeeOrdering : public Pgr_messages{
                  return row1.d1.id < row2.d1.id;
              });
 #endif
-
-         return results;
-     }
+            return results;
+        }
 };
 }  // namespace functions
 }  // namespace pgrouting
