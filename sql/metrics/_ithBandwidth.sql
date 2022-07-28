@@ -36,8 +36,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 CREATE FUNCTION _pgr_ithBandwidth(
     edges_sql TEXT,
 
-    OUT node BIGINT,
-    OUT ithBandwidth BIGINT)
+    OUT vertex_id BIGINT,
+    OUT bandwidth_value BIGINT)
 
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
