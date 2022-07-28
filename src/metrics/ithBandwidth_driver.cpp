@@ -62,7 +62,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 template < class G >
-std::vector < To_be_created >
+std::vector <II_t_rt>
 pgr_ithBandwidth(G &graph) {
     pgrouting::functions::Pgr_ithBandwidth < G > fn_ithBandwidth;
     auto results = fn_ithBandwidth.ithBandwidth(graph);
@@ -77,12 +77,10 @@ pgr_ithBandwidth(G &graph) {
  * @pre return_tuples is empty
  * @pre return_count is 0
  *
- * It builds the graph using the `data_edges`, depending on whether
- * the graph is directed or undirected. It also converts the C types
- * to the C++ types, such as the `rootsArr` to `roots` vector and
- * passes these variables to the template function `pgr_ithBandwidth`
- * which calls the main function defined in the C++ Header file. It also does
- * exception handling.
+ * It builds the undirected graph using the `data_edges` variable.  
+ * Then, it passes the required variables to the template function
+ * `pgr_ithBandwidth` which calls the main function
+ * defined in the C++ Header file. It also does exception handling.
  *
  * @param data_edges     the set of edges from the SQL query
  * @param total_edges    the total number of edges in the SQL query
@@ -94,14 +92,13 @@ pgr_ithBandwidth(G &graph) {
  *
  * @returns void
  */
+
 void
 do_pgr_ithBandwidth(
         Edge_t  *data_edges,
         size_t total_edges,
 
-        bool directed,
-
-        To_be_included **return_tuples,
+        II_t_rt **return_tuples,
         size_t *return_count,
 
         char ** log_msg,
@@ -117,10 +114,9 @@ do_pgr_ithBandwidth(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-        std::vector < II_t_rt > results;
+        std::vector <II_t_rt> results;
 
         graphType gType = UNDIRECTED;
-
         pgrouting::UndirectedGraph undigraph(gType);
 
         undigraph.insert_edges(data_edges, total_edges);
