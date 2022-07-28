@@ -60,7 +60,8 @@ class Pgr_ithBandwidth {
  public:
      typedef typename G::V V;
      typedef typename G::E E;
-     typedef boost::adjacency_list < boost::listS, boost::vecS, boost::undirectedS > Graph;
+     typedef boost::adjacency_list < boost::vecS, boost::vecS, boost::undirectedS, boost::no_property,
+             boost::no_property > Graph;
      typedef boost::graph_traits < Graph > ::vertices_size_type vertices_size_type;
 
      /** @name IthBandwidth
@@ -77,7 +78,7 @@ class Pgr_ithBandwidth {
       * @returns          results, when results are found
       *
       * @see [boost::ith_bandwidth]
-      * (https://www.boost.org/libs/graph/doc/bandwidth.html#sec:ith-bandwidth)
+      * (https://www.boost.org/libs/graph/doc/bandwidth.html#sec:ith_bandwidth)
       */
      std::vector <II_t_rt> ithBandwidth(G &graph) {
          std::vector <II_t_rt> results;
@@ -85,16 +86,21 @@ class Pgr_ithBandwidth {
          auto i_map = boost::get(boost::vertex_index, graph.graph);
 
          // vector which will store the ithBandwidth of all the vertices in the graph
-         std::vector < vertices_size_type > ithBandwidths(boost::num_vertices(graph.graph));
+         std::vector < vertices_size_type > bandwidths(boost::num_vertices(graph.graph));
 
          // An iterator property map which records the ithBandwidth of each vertex
-         auto ithBandwidth_map = boost::make_iterator_property_map(ithBandwidths.begin(), i_map);
+         auto bandwidth_map = boost::make_iterator_property_map(bandwidths.begin(), i_map);
 
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
 
          try {
-             boost::ith_bandwidth(graph.graph, ithBandwidth_map);
+
+             typename boost::graph_traits < Graph > ::vertex_iterator v, vend;
+
+             for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
+                boost::ith_bandwidth(*v, graph.graph, bandwidth_map);
+             }
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -105,7 +111,7 @@ class Pgr_ithBandwidth {
              throw;
          }
 
-         results = get_results(ithBandwidths, graph);
+         results = get_results(bandwidths, graph);
 
          return results;
      }
@@ -115,15 +121,15 @@ class Pgr_ithBandwidth {
  private:
      /** @brief to get the results
       *
-      * Uses the `ithBandwidths` vector to get the results i.e. the ithBandwidth of every vertex.
+      * Uses the `bandwidths` vector to get the results i.e. the ithBandwidth of every vertex.
       *
-      * @param ithBandwidths      vector which contains the ithBandwidth of every vertex
+      * @param bandwidths         vector which contains the ithBandwidth of every vertex
       * @param graph              the graph containing the edges
       *
       * @returns `results` vector
       */
      std::vector <II_t_rt> get_results(
-             std::vector < vertices_size_type > &ithBandwidths,
+             std::vector < vertices_size_type > &bandwidths,
              const G &graph) {
          std::vector <II_t_rt> results;
 
@@ -131,8 +137,8 @@ class Pgr_ithBandwidth {
 
          for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
              int64_t node = graph[*v].id;
-             auto ithBandwidth = ithBandwidths[*v];
-             results.push_back({{node}, {static_cast<int64_t>(ithBandwidth + 1)}});
+             auto bandwidth = bandwidths[*v];
+             results.push_back({{node}, {static_cast<int64_t>(bandwidth + 1)}});
          }
 
          // ordering the results in an increasing order of the node id
