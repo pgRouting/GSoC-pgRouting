@@ -36,9 +36,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 CREATE FUNCTION pgr_ithBandwidth(
     TEXT,    -- edges_sql (required)
 
-    OUT node BIGINT,
-    OUT ithBandwidth BIGINT)
-    
+    OUT vertex_id BIGINT,
+    OUT bandwidth_value BIGINT)
 RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
@@ -51,7 +50,7 @@ LANGUAGE plpgsql VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_ithBandwidth(TEXT, BOOLEAN)
+COMMENT ON FUNCTION pgr_ithBandwidth(TEXT)
 IS 'pgr_ithBandwidth
 - EXPERIMENTAL
 - Parameters:
