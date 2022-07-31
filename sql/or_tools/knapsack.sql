@@ -16,7 +16,8 @@ VALUES
 
 create type knapsack_items as(
   index integer,
-  weight integer
+  weight integer,
+  cost integer
 );
 
 CREATE FUNCTION vrp_knapsack(inner_query text, capacity integer)
@@ -44,14 +45,17 @@ AS $$
 
   packed_items = []
   packed_weights = []
+  packed_values = []
   total_weight = 0
   plpy.warning('Total value =', computed_value)
   for i in range(len(values)):
     if solver.BestSolutionContains(i):
       packed_items.append(i)
       packed_weights.append(weights[0][i])
+      packed_values.append(values[i])
       total_weight += weights[0][i]
-      yield (i, weights[0][i])
+      yield (i, weights[0][i], values[i])
   plpy.warning('Total weight:', total_weight)
 $$ LANGUAGE plpython3u;
 
+SELECT * from vrp_knapsack('SELECT * from knapsack_data' , 15);
