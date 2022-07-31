@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: pgr_cuthillMckeeOrdering_driver.hpp
+File: cuthillMckeeOrdering.hpp
 
 Generated with Template by:
 Copyright (c) 2022 pgRouting developers
@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 /* TODO remove unnecessary includes */
+#include <boost/config.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/property_map/vector_property_map.hpp>
@@ -62,8 +63,10 @@ namespace functions {
 
 //*************************************************************
 
+template <class G>
 class CuthillMckeeOrdering : public Pgr_messages{
  public:
+#if 0
     using G = pgrouting::UndirectedGraph;
     using vertices_size_type = G::vertices_size_type;
 
@@ -88,7 +91,7 @@ class CuthillMckeeOrdering : public Pgr_messages{
         std::vector<II_t_rt>results;
 
         // get source
-        if(!graph.has_vertex(start_vid)) {
+        if (!graph.has_vertex(start_vid)) {
             return results;
         }
 
@@ -115,7 +118,8 @@ class CuthillMckeeOrdering : public Pgr_messages{
          results = get_results(ordering, graph);
 #endif
 #if 0
-    {   // TODO delete boost example
+    {
+        // delete boost example
         using namespace boost;
         typedef adjacency_list< vecS, vecS, undirectedS,
         property< vertex_color_t, default_color_type,
@@ -176,8 +180,61 @@ class CuthillMckeeOrdering : public Pgr_messages{
 #endif
          return results;
      }
-
+#endif
      //@}
+#if 1
+    typedef typename G::V V;
+    typedef typename G::E E;
+    typedef boost::adjacency_list<boost::vecS,boost::vecS,boost::undirectedS,
+        boost::property<boost::vertex_color_t,boost::default_color_type,
+        boost::property<boost::vertex_degree_t, int>>>
+        Graph;
+    typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type;
+    typedef boost::graph_traits<Graph>::vertices_size_type size_type;
+
+    // documentation todo
+
+        std::vector<II_t_rt>
+        cuthillMckeeOrdering(G &graph, int64_t start_vid) {
+        std::vector<II_t_rt>results;
+#if 0
+        auto d_map = boost::get(boost::vertex_index, graph.graph);
+         auto c_map = boost::get(boost::vertex_color, graph.graph);
+        boost::graph_traits<Graph>::vertex_iterator ui, ui_end;
+
+        property_map< Graph, vertex_degree_t >::type deg = get(vertex_degree, G);
+            for (boost::tie(ui, ui_end) = vertices(G); ui != ui_end; ++ui)
+            deg[*ui] = degree(*ui, G);
+
+        property_map< Graph, vertex_index_t >::type index_map
+            = get(vertex_index, G);
+
+        std::vector<size_type> inv_perm(boost::num_vertices(graph.graph));
+        std::vector<size_type> perm(boost::num_vertices(graph.graph));
+#endif
+
+        std::vector <vertices_size_type> ordering(boost::num_vertices(graph.graph));
+
+         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
+         CHECK_FOR_INTERRUPTS();
+
+         try {
+             boost::cuthill_mckee_ordering(graph.graph, start_vid);
+         } catch (boost::exception const& ex) {
+             (void)ex;
+             throw;
+         } catch (std::exception &e) {
+             (void)e;
+             throw;
+         } catch (...) {
+             throw;
+         }
+
+         results = get_results(ordering, graph);
+
+         return results;
+     }
+#endif
 
  private:
      /** @brief to get the results
@@ -190,28 +247,31 @@ class CuthillMckeeOrdering : public Pgr_messages{
       * @returns `results` vector
       */
      std::vector <II_t_rt> get_results(
-             std::vector <vertices_size_type> & /*ordering*/,
-             const G & /*graph*/) {
-         std::vector <II_t_rt> results;
+            std::vector <vertices_size_type> & /*ordering*/,
+            const G & graph) {
+            std::vector <II_t_rt> results;
 
 #if 0
-         typename boost::graph_traits < Graph > ::vertex_iterator v, vend;
+         typename boost::graph_traits <Graph> ::vertex_iterator v, vend;
 
+         for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
+             i != inv_perm.end(); ++i) {
+            log << index_map[*i] << " ";
+            results.push_back({index_map[*i], index_map[*i]});
+            }
+ 
          for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
              int64_t node = graph[*v].id;
              auto orderings = ordering[*v];
              results.push_back({{node}, {static_cast<int64_t>(orderings + 1)}});
          }
-
-         // ordering the results in an reverse ordering
-         std::sort(results.begin(), results.end(),
-             [](const II_t_rt row1, const II_t_rt row2) {
-                 return row1.d1.id < row2.d1.id;
-             });
+          for (size_type c = 0; c != inv_perm.size(); ++c)
+            perm[index_map[inv_perm[c]]] = c;
+        }
+         
 #endif
-
-         return results;
-     }
+            return results;
+        }
 };
 }  // namespace functions
 }  // namespace pgrouting
