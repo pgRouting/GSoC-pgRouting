@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: pgr_cuthillMckeeOrdering_driver.hpp
+File: cuthillMckeeOrdering.hpp
 
 Generated with Template by:
 Copyright (c) 2022 pgRouting developers
@@ -197,16 +197,29 @@ class CuthillMckeeOrdering : public Pgr_messages{
         std::vector<II_t_rt>
         cuthillMckeeOrdering(G &graph, int64_t start_vid) {
         std::vector<II_t_rt>results;
+#if 0
+        auto d_map = boost::get(boost::vertex_index, graph.graph);
+         auto c_map = boost::get(boost::vertex_color, graph.graph);
+        boost::graph_traits<Graph>::vertex_iterator ui, ui_end;
 
-         auto i_map = boost::get(boost::vertex_index, graph.graph);
+        property_map< Graph, vertex_degree_t >::type deg = get(vertex_degree, G);
+            for (boost::tie(ui, ui_end) = vertices(G); ui != ui_end; ++ui)
+            deg[*ui] = degree(*ui, G);
 
-         std::vector <vertices_size_type> ordering(boost::num_vertices(graph.graph));
+        property_map< Graph, vertex_index_t >::type index_map
+            = get(vertex_index, G);
+
+        std::vector<size_type> inv_perm(boost::num_vertices(graph.graph));
+        std::vector<size_type> perm(boost::num_vertices(graph.graph));
+#endif
+
+        std::vector <vertices_size_type> ordering(boost::num_vertices(graph.graph));
 
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
 
          try {
-             boost::cuthill_mckee_ordering(graph.graph);
+             boost::cuthill_mckee_ordering(graph.graph, start_vid);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -239,19 +252,23 @@ class CuthillMckeeOrdering : public Pgr_messages{
             std::vector <II_t_rt> results;
 
 #if 0
-         typename boost::graph_traits < Graph > ::vertex_iterator v, vend;
+         typename boost::graph_traits <Graph> ::vertex_iterator v, vend;
 
+         for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
+             i != inv_perm.end(); ++i) {
+            log << index_map[*i] << " ";
+            results.push_back({index_map[*i], index_map[*i]});
+            }
+ 
          for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
              int64_t node = graph[*v].id;
              auto orderings = ordering[*v];
              results.push_back({{node}, {static_cast<int64_t>(orderings + 1)}});
          }
-
-         // ordering the results in an reverse ordering
-         std::sort(results.begin(), results.end(),
-             [](const II_t_rt row1, const II_t_rt row2) {
-                 return row1.d1.id < row2.d1.id;
-             });
+          for (size_type c = 0; c != inv_perm.size(); ++c)
+            perm[index_map[inv_perm[c]]] = c;
+        }
+         
 #endif
             return results;
         }

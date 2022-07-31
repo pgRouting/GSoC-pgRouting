@@ -88,9 +88,11 @@ void do_cuthillMckeeOrdering(
         pgrouting::UndirectedGraph undigraph(gType);
         undigraph.insert_edges(data_edges, total_edges);
         auto results = cuthillMckeeOrdering(undigraph, start_vid);  // might cause error bcz of type
-        // pgrouting::functions::CuthillMckeeOrdering fn;
-        // auto results = fn.cuthillMckeeOrdering(undigraph, start_vid);
-        // log << fn.get_log();
+#if 0
+        pgrouting::functions::CuthillMckeeOrdering fn;
+        auto results = fn.cuthillMckeeOrdering(undigraph, start_vid);
+        log << fn.get_log();
+#endif
 
         auto count = results.size();
 
