@@ -1,6 +1,5 @@
 SET(LOCAL_FILES
-   _knapsack.sql
-   knapsack.sql
+   example.sql
   )
 
 foreach (f ${LOCAL_FILES})

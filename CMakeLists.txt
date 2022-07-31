@@ -331,8 +331,8 @@ endforeach()
 # Google OR tools
 #----------------------
 
-set(CMAKE_PREFIX_PATH "/home/manas/Codes/GSOC-2022/MyFork/ortools/")
-find_package(ortools CONFIG REQUIRED)
+# set(CMAKE_PREFIX_PATH "/home/manas/Codes/GSOC-2022/MyFork/ortools/")
+# find_package(ortools CONFIG REQUIRED)
 
 
 #-----------------------------------------------------------------------------
