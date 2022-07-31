@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 # pgRouting Documentation documentation build configuration file, created by
 # sphinx-quickstart on Sat Mar 23 16:03:51 2013.
-#
+# 
 # This file is execfile()d with the current directory set to its containing dir.
 #
 # Note that not all possible configuration values are present in this
@@ -327,6 +327,7 @@ linkcheck_ignore = [
     r'https://docs.pgrouting.org/.*/.*/DFS-category.html',
     r'https://docs.pgrouting.org/.*/.*/reference.html',
     r'https://docs.pgrouting.org/.*/.*/pgr_degree.html',
+    r'https://docs.pgrouting.org/.*/.*/hawickCircuits.html',
 
     # link failing used in contraction-family
     'https://algo2.iti.kit.edu/documents/routeplanning/geisberger_dipl.pdf'
