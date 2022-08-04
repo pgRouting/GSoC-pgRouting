@@ -26,44 +26,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-/** @file edgeBetweennessCenrality.c
- * @brief Connecting code with postgres.
- *
- */
-
 #include <stdbool.h>
 
-#include "utils/array.h"
-
 #include "c_common/postgres_connection.h"
+
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 #include "c_common/edges_input.h"
-#include "c_common/arrays_input.h"
 
-#include "c_types/to_be_created.h"
+#include "c_types/bc_rt.h"
+#include "c_types/edge_t.h"
 
 #include "drivers/metrics/edgeBetweennessCentrality_driver.h"
 
 PGDLLEXPORT Datum _pgr_edgeBetweennessCentrality(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_edgeBetweennessCentrality);
-
-/** @brief Static function, loads the data from postgres to C types for further processing.
- *
- * It first connects the C function to the SPI manager. Then converts
- * the postgres array to C array and loads the edges belonging to the graph
- * in C types. Then it calls the function `do_pgr_edgeBetweennessCentrality` defined
- * in the `edgeBetweennessCentrality_driver.h` file for further processing.
- * Finally, it frees the memory and disconnects the C function to the SPI manager.
- *
- * @param edges_sql      the edges of the SQL query
- * @param directed       whether the graph is directed or undirected
- * @param result_tuples  the rows in the result
- * @param result_count   the count of rows in the result
- *
- * @returns void
- */
 
 static
 void
@@ -72,7 +49,7 @@ process(
 
         bool directed,
 
-        To_be_created **result_tuples,
+        EBC_rt **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
 
@@ -84,16 +61,7 @@ process(
 
     pgr_get_edges(edges_sql, &edges, &total_edges);
 
-     if (total_edges == 0) {
-        ereport(WARNING,
-                (errmsg("Insufficient data found on inner query."),
-                 errhint("%s", edges_sql)));
-        (*result_count) = 0;
-        (*result_tuples) = NULL;
-        pgr_SPI_finish();
-        return;
-    }
-
+    PGR_DBG("Starting timer");
     clock_t start_t = clock();
     char *log_msg = NULL;
     char *notice_msg = NULL;
@@ -128,19 +96,13 @@ process(
     pgr_SPI_finish();
 }
 
-/*                                                                            */
-/******************************************************************************/
-
-/** @brief Helps in converting postgres variables to C variables, and returns the result.
- *
- */
-
+PG_FUNCTION_INFO_V1(_pgr_edgeBetweennessCentrality);
 PGDLLEXPORT Datum _pgr_edgeBetweennessCentrality(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
     /**********************************************************************/
-    To_be_created *result_tuples = NULL;
+    EBC_rt *result_tuples = NULL;
     size_t result_count = 0;
     /**********************************************************************/
 
@@ -157,7 +119,7 @@ PGDLLEXPORT Datum _pgr_edgeBetweennessCentrality(PG_FUNCTION_ARGS) {
          *   );
          *
          **********************************************************************/
-
+        PGR_DBG("Calling process");
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_BOOL(1),
@@ -166,15 +128,15 @@ PGDLLEXPORT Datum _pgr_edgeBetweennessCentrality(PG_FUNCTION_ARGS) {
 
         /**********************************************************************/
 
-    funcctx->max_calls = result_count;
 
+        funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
         if (get_call_result_type(fcinfo, NULL, &tuple_desc)
                 != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
-                     errmsg("function returning record called in context "
-                         "that cannot accept type record")));
+                    errmsg("function returning record called in context "
+                        "that cannot accept type record")));
         }
 
         funcctx->tuple_desc = tuple_desc;
@@ -183,7 +145,7 @@ PGDLLEXPORT Datum _pgr_edgeBetweennessCentrality(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (To_be_created*) funcctx->user_fctx;
+    result_tuples = (EBC_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;
@@ -193,7 +155,6 @@ PGDLLEXPORT Datum _pgr_edgeBetweennessCentrality(PG_FUNCTION_ARGS) {
 
         /***********************************************************************
          *
-         *   OUT id BIGINT
          *   OUT source BIGINT
          *   OUT target BIGINT
          *   OUT cost FLOAT
@@ -202,22 +163,20 @@ PGDLLEXPORT Datum _pgr_edgeBetweennessCentrality(PG_FUNCTION_ARGS) {
          *
          **********************************************************************/
 
-        size_t num  = 7;
-        values = palloc(num * sizeof(Datum));
-        nulls = palloc(num * sizeof(bool));
+        values = palloc(4 * sizeof(Datum));
+        nulls = palloc(4 * sizeof(bool));
 
 
         size_t i;
-        for (i = 0; i < num; ++i) {
+        for (i = 0; i < 4; ++i) {
             nulls[i] = false;
         }
 
-        values[0] = Int64GetDatum(result_tuples[funcctx->call_cntr].id);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].source);
-        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].target);
-        values[3] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
-        values[4] = Float8GetDatum(result_tuples[funcctx->call_cntr].absolute_BC);
-        values[5] = Float8GetDatum(result_tuples[funcctx->call_cntr].relative_BC);
+        values[0] = Int64GetDatum(result_tuples[funcctx->call_cntr].source);
+        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].target);
+        values[2] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
+        values[3] = Float8GetDatum(result_tuples[funcctx->call_cntr].absolute_BC);
+        values[4] = Float8GetDatum(result_tuples[funcctx->call_cntr].relative_BC);
 
         /**********************************************************************/
 

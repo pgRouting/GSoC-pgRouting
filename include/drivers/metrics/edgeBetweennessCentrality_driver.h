@@ -21,19 +21,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_COLORING_EDGEBETWEENNESSCENTRALITY_DRIVER_H_
-#define INCLUDE_DRIVERS_COLORING_EDGEBETWEENNESSCENTRALITY_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_METRICS_EDGEBETWEENNESSCENTRALITY_DRIVER_H_
+#define INCLUDE_DRIVERS_METRICS_EDGEBETWEENNESSCENTRALITY_DRIVER_H_
 #pragma once
 
 /* for size-t */
 #ifdef __cplusplus
 #   include <cstddef>
 using Edge_t = struct Edge_t;
-using BC_rt = struct BC_rt;
+using EBC_rt = struct EBC_rt;
 #else
 #   include <stddef.h>
 typedef struct Edge_t Edge_t;
-typedef struct BC_rt BC_rt;
+typedef struct EBC_rt EBC_rt;
 #endif
 
 
@@ -53,7 +53,9 @@ extern "C" {
             Edge_t *data_edges,
             size_t total_edges,
 
-            BC_rt **return_tuples,
+            bool directed,
+
+            EBC_rt **return_tuples,
             size_t *return_count,
 
             char ** log_msg,
@@ -64,4 +66,4 @@ extern "C" {
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_COLORING_EDGEBETWEENNESSCENTRALITY_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_METRICS_EDGEBETWEENNESSCENTRALITY_DRIVER_H_

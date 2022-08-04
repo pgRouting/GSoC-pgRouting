@@ -21,47 +21,41 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_COLORING_VERTEXBETWEENNESSCENTRALITY_DRIVER_H_
-#define INCLUDE_DRIVERS_COLORING_VERTEXBETWEENNESSCENTRALITY_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_METRICS_VERTEXBETWEENNESSCENTRALITY_DRIVER_H_
+#define INCLUDE_DRIVERS_METRICS_VERTEXBETWEENNESSCENTRALITY_DRIVER_H_
 #pragma once
 
 /* for size-t */
 #ifdef __cplusplus
 #   include <cstddef>
-using edge_t = struct edge_t;
-using BC_rt = struct BC_rt;
+using Edge_t = struct Edge_t;
+using VBC_rt = struct VBC_rt;
 #else
 #   include <stddef.h>
-typedef struct edge_t edge_t;
-typedef struct BC_rt BC_rt;
+typedef struct Edge_t Edge_t;
+typedef struct VBC_rt VBC_rt;
 #endif
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    /**************************************************
-     *
-     *   pgr_vertexBetweennessCentrality(
-     *      edges_sql TEXT,
-     *      directed BOOLEAN DEFAULT true
-     *   );
-     *
-     *************************************************/
-    void do_pgr_vertexBetweennessCentrality(
-            edge_t *data_edges,
+    void
+        do_pgr_vertexBetweennessCentrality(
+            Edge_t *data_edges,
             size_t total_edges,
 
-            BC_rt **return_tuples,
+            bool directed,
+
+            VBC_rt **return_tuples,
             size_t *return_count,
 
-            char ** log_msg,
-            char ** notice_msg,
-            char ** err_msg);
+            char** log_msg,
+            char** notice_msg,
+            char **err_msg);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_COLORING_VERTEXBETWEENNESSCENTRALITY_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_METRICS_VERTEXBETWEENNESSCENTRALITY_DRIVER_H_

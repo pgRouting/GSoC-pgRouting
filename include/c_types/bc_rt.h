@@ -33,10 +33,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   include <stdint.h>
 #endif
 
-struct BC_rt {
+struct VBC_rt {
     int64_t id;
-    int64_t source;
-    int64_t target;
+    double absolute_BC;
+    double relative_BC;
+};
+
+struct EBC_rt {
+    uint64_t source;
+    uint64_t target;
     double cost;
     double absolute_BC;
     double relative_BC;
