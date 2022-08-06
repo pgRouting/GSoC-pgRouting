@@ -1,0 +1,49 @@
+BEGIN;
+
+
+UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT plan(3);
+
+-- testing for the signature that they return the correct names & columns
+
+PREPARE v21q00 AS
+SELECT pg_typeof(seq)::text AS t1, pg_typeof(path_id)::text AS t2,
+    pg_typeof(path_seq)::text AS t3, pg_typeof(start_vid)::text AS t4,
+    pg_typeof(end_vid)::text AS t5, pg_typeof(node)::text AS t6,
+    pg_typeof(edge)::text AS t7, pg_typeof(cost)::text AS t8,
+    pg_typeof(agg_cost)::text AS t9
+    FROM (
+        SELECT * FROM pgr_hawickcircuits(
+            'SELECT id, source, target, cost, reverse_cost FROM edge_table'
+            )) AS a
+    limit 1
+;
+
+PREPARE v21q01 AS
+SELECT  'integer'::text AS t1,'integer'::text AS t2,
+    'integer'::text AS t3,'bigint'::text AS t4,
+    'bigint'::text AS t5, 'bigint'::text AS t6,
+    'bigint'::text AS t7, 'double precision'::text AS t8,
+    'double precision'::text AS t9;
+
+SELECT set_eq('v21q00', 'v21q01','Expected columns names');
+
+
+-- CHECKING WORKS WITH & WITOUT REVERSE COST
+
+PREPARE v20q1 AS
+SELECT * FROM pgr_hawickcircuits(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table'
+    );
+
+PREPARE v20q3 AS
+SELECT * FROM pgr_hawickcircuits(
+    'SELECT id, source, target, cost FROM edge_table'   
+    );
+
+SELECT lives_ok('v20q1','with reverse cost');
+SELECT lives_ok('v20q3','with NO reverse cost');
+
+
+SELECT finish();
+ROLLBACK;
