@@ -57,25 +57,21 @@ class circuit_detector{
         std::vector<circuits_rt> &data) :
     m_graph(graph),
     m_data(data) {}
-    template <typename Path, typename Graph>
-    void cycle(Path const &p, Graph const&) {
+    template <typename P, typename Gr>
+    void cycle(P const &p, Gr const&) {
         if (p.empty())
         return;
         int j = 0;
-        typename Path::const_iterator i, before_end = boost::prior(p.end());
+        typename P::const_iterator i;
         auto start_vid = m_graph[*p.begin()].id;
-        auto end_vid = m_graph[*p.begin()].id;
+        auto end_vid = start_vid;
 
-        for (i = p.begin(); i != before_end; ++i) {
+        for (i = p.begin(); i != p.end(); ++i) {
             // To Do: Fillup the columns that are 0 marked
             auto node = m_graph[*i].id;
-            m_data.push_back({circuit_No, j, start_vid, end_vid, node, 0, 0, 0});
-            j++;
+            m_data.push_back({circuit_No, ++j, start_vid, end_vid, node, 0, 0, 0});
         }
-        auto node = m_graph[*i].id;
-        m_data.push_back({circuit_No, j, start_vid, end_vid, node, 0, 0, 0});  // Adding up the last vertex
-        j++;
-        m_data.push_back({circuit_No, j, start_vid, end_vid, start_vid, 0, 0, 0});  // Adding up the starting vertex
+        m_data.push_back({circuit_No, ++j, start_vid, end_vid, start_vid, 0, 0, 0});  // Adding up the starting vertex
         circuit_No++;
     }
 
