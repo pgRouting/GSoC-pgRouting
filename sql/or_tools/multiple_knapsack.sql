@@ -43,13 +43,29 @@ AS $$
   try:
     inner_query_result = plpy.execute(inner_query, max_rows)
     num_of_rows = inner_query_result.nrows()
+    colnames = inner_query_result.colnames()
+    coltypes = inner_query_result.coltypes()
     plpy.info("Number of rows processed : ", num_of_rows)
   except plpy.SPIError as error_msg:
     plpy.info("Details: ",error_msg)
     plpy.error("Error Processing Inner Query. The given query is not a valid SQL command")
     return "Failed"
-  
+
+  if len(colnames) != 2:
+    plpy.error("Expected 2 columns, Got ", len(colnames))
+    return "Failed"
+  if ('weight' in colnames) and ('cost' in colnames):
+    plpy.notice("SQL query returned expected column names")
+  else:
+    plpy.error("Expected columns weight and cost, Got ", colnames)
+    return "Failed"  
+  if coltypes == [23, 23]:
+    plpy.notice("SQL query returned expected column types")
+  else:
+    plpy.error("Returned columns of different type. Expected Integer, Integer")
+    
   plpy.notice('Finished Execution of inner query')
+  
   for i in range(num_of_rows):
     data['values'].append(inner_query_result[i]["cost"])
     data['weights'].append(inner_query_result[i]["weight"])
@@ -113,5 +129,3 @@ AS $$
 $$ LANGUAGE plpython3u;
 
 -- SELECT * FROM vrp_multiple_knapsack('SELECT * FROM multiple_knapsack_data', ARRAY[100,100,100,100,100]);
-
---Have to learn how to leave space

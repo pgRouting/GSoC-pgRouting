@@ -40,12 +40,27 @@ AS $$
   try:
     inner_query_result = plpy.execute(inner_query, max_rows)
     num_of_rows = inner_query_result.nrows()
+    colnames = inner_query_result.colnames()
+    coltypes = inner_query_result.coltypes()
     plpy.info("Number of rows processed : ", num_of_rows)
   except plpy.SPIError as error_msg:
     plpy.info("Details: ",error_msg)
     plpy.error("Error Processing Inner Query. The given query is not a valid SQL command")
     return "Failed"
   
+  if len(colnames) != 2:
+    plpy.error("Expected 2 columns, Got ", len(colnames))
+    return "Failed"
+  if ('weight' in colnames) and ('cost' in colnames):
+    plpy.notice("SQL query returned expected column names")
+  else:
+    plpy.error("Expected columns weight and cost, Got ", colnames)
+    return "Failed"  
+  if coltypes == [23, 23]:
+    plpy.notice("SQL query returned expected column types")
+  else:
+    plpy.error("Returned columns of different type. Expected Integer, Integer")
+
   plpy.notice('Finished Execution of inner query')
 
   values = []
@@ -79,4 +94,4 @@ AS $$
   return "Success"
 $$ LANGUAGE plpython3u;
 
--- SELECT * from vrp_knapsack('SELECT * from knapsack_data' , 15);
+-- SELECT * FROM vrp_knapsack('SELECT * FROM knapsack_data' , 15);
