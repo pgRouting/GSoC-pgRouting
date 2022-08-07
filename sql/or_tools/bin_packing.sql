@@ -45,6 +45,9 @@ AS $$
   except:
     plpy.fatal("Unable to Initialize solver")
   
+  if solver is None:
+    plpy.error('SCIP solver unavailable.')
+  
   x = {}
   for i in data['items']:
     for j in data['bins']:
@@ -87,7 +90,7 @@ AS $$
           plpy.info('  Total weight', bin_weight)
     plpy.info('Number of bins used', num_bins)
   else:
-    plpy.fatal('The problem does not have an optimal solution')
+    plpy.error('The problem does not have an optimal solution')
   plpy.notice('Exiting Bin Packing program')
   return
 $$ LANGUAGE plpython3u;
