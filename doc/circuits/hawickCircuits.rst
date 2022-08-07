@@ -144,8 +144,6 @@ See Also
 * :doc:`sampledata`
 * `Boost: Hawick Circuit Algorithm
   <https://www.boost.org/doc/libs/1_78_0/libs/graph/doc/hawick_circuits.html>`__
-* `Enumerating Circuits and Loops in Graphs with Self-Arcs and Multiple-Arcs by Ken Hawick and Health A. James
-  <https://www.researchgate.net/publication/221440635_Enumerating_Circuits_and_Loops_in_Graphs_with_Self-Arcs_and_Multiple-Arcs.html>`__
 
 .. rubric:: Indices and tables
 
