@@ -42,6 +42,16 @@ and self-arcs with a memory efficient and high-performance im-plementation.
 It is an extension of Johnson's Algorithm of finding all the elementary circuits of
 a directed graph.
 
+The main Characteristics are:
+
+- The algorithm works only for directed graph
+- It is a variation of Johnson's algorithm for circuit enumeration.
+- Time Complexity: :math:`O((V + E) (c + 1))`
+
+  - where :math:`|E|` is the number of edges in the graph,
+  - :math:`|V|` is the number of vertices in the graph.
+  - :math:`|c|` is the number of circuts in the graph.
+
 Signatures
 -------------------------------------------------------------------------------
 
@@ -49,7 +59,7 @@ Signatures
 
 .. parsed-literal::
 
-   pgr_hawickCircuits(`Edges SQL`_ [, directed])
+   pgr_hawickCircuits(`Edges SQL`_)
    RETURNS (seq, path_id, path_seq, start_vid, node, edge, cost, agg_cost)
    OR EMPTY SET
 
