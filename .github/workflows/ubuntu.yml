@@ -57,7 +57,8 @@ jobs:
             postgresql-${{ matrix.psql }}-postgis-${{ matrix.postgis }} \
             postgresql-${{ matrix.psql }}-postgis-${{ matrix.postgis }}-scripts \
             postgresql-${{ matrix.psql }}-pgrouting \
-            postgresql-server-dev-${{ matrix.psql }}
+            postgresql-server-dev-${{ matrix.psql }} \
+            postgresql-plpython3-${{ matrix.psql }}
             
       - name: Install VROOM dependencies
         run: |
@@ -109,7 +110,5 @@ jobs:
           sudo service postgresql start
           sudo -u postgres createdb -p ${PGPORT}  ___vrp___test___
           cd tools/testers
-          sudo apt-get update
-          sudo apt-get install postgresql-plpython3-${{ matrix.psql }}
           sudo -u postgres psql -p "${PGPORT}" -U postgres -d ___vrp___test___ -X -q -v ON_ERROR_STOP=1 --pset pager=off -f setup_db.sql
           sudo -u postgres pg_prove --failures --quiet --recurse --ext .sql -p "${PGPORT}" -d ___vrp___test___ -U postgres ../../pgtap/
