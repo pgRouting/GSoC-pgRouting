@@ -58,4 +58,4 @@ AS $$
   plpy.warning('Total weight:', total_weight)
 $$ LANGUAGE plpython3u;
 
-SELECT * from vrp_knapsack('SELECT * from knapsack_data' , 15);
+-- SELECT * from vrp_knapsack('SELECT * from knapsack_data' , 15);

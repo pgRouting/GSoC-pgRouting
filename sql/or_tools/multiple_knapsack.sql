@@ -93,6 +93,6 @@ AS $$
     plpy.error('The problem does not have an optimal solution.')
 $$ LANGUAGE plpython3u;
 
-SELECT * from vrp_multiple_knapsack('SELECT * from multiple_knapsack_data', ARRAY[100,100,100,100,100]);
+-- SELECT * from vrp_multiple_knapsack('SELECT * from multiple_knapsack_data', ARRAY[100,100,100,100,100]);
 
 --Have to learn how to leave space

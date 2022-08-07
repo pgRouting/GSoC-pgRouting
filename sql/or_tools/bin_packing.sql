@@ -9,21 +9,41 @@ VALUES
 (48), (30), (19), (36), (36), (27), (42), (42), (36), (24), (30);
 
 
-CREATE FUNCTION vrp_bin_packing(inner_query text, bin_capacity integer)
-  RETURNS integer
+CREATE FUNCTION vrp_bin_packing(inner_query text, bin_capacity integer, max_rows integer = 10000)
+  RETURNS void
 AS $$
-  from ortools.linear_solver import pywraplp
-  inner_query_result = plpy.execute(inner_query, 11)
+  try:
+    from ortools.linear_solver import pywraplp
+  except Error as err:
+    plpy.fatal(err)
+  
+  plpy.notice('Entering Bin Packing program')
+  plpy.notice('Starting Execution of inner query')
+
+  try:
+    inner_query_result = plpy.execute(inner_query, max_rows)
+    plpy.info("Number of rows processed : ", inner_query_result.nrows())
+  except plpy.SPIError as error_msg:
+    plpy.info("Details: ",error_msg)
+    plpy.error("Error Processing Inner Query.The given query is not a valid SQL command")
+    return
+  
+  plpy.notice('Finished Execution of inner query')
   data = {}
   weights = []
+
   for i in range(11):
     weights.append(inner_query_result[i]["weight"])
   data['weights'] = weights
   data['items'] = list(range(len(weights)))
   data['bins'] = data['items']
   data['bin_capacity'] = bin_capacity
-    
-  solver = pywraplp.Solver.CreateSolver('SCIP')  
+  
+  try:
+    solver = pywraplp.Solver.CreateSolver('SCIP')  
+  except:
+    plpy.fatal("Unable to Initialize solver")
+  
   x = {}
   for i in data['items']:
     for j in data['bins']:
@@ -48,20 +68,26 @@ AS $$
     for j in data['bins']:
       if y[j].solution_value() == 1:
         bin_items = []
+        bin_weights = []
+        bin_values = []
         bin_weight = 0
+        bin_value = 0
         for i in data['items']:
           if x[i, j].solution_value() > 0:
             bin_items.append(i)
+            bin_weights.append(data['weights'][i])
             bin_weight += data['weights'][i]
         if bin_weight > 0:
           num_bins += 1
-          plpy.warning('Bin number', j)
-          plpy.warning('  Items packed', bin_items)
-          plpy.warning('  Total weight', bin_weight)
-    plpy.warning('Number of bins used', num_bins)
+          plpy.info('Bin number', j)
+          plpy.info('  Items packed', bin_items)
+          plpy.info('  Item weights', bin_weights)
+          plpy.info('  Total weight', bin_weight)
+    plpy.info('Number of bins used', num_bins)
   else:
-    plpy.error('The problem does not have an optimal solution')
-  return 1
+    plpy.fatal('The problem does not have an optimal solution')
+  plpy.notice('Exiting Bin Packing program')
+  return
 $$ LANGUAGE plpython3u;
 
-SELECT * from vrp_bin_packing('SELECT * from bin_packing_data', 100);
+-- SELECT * from vrp_bin_packing('SELECT * from bin_packing_data', 100);
