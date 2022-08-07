@@ -114,5 +114,6 @@ jobs:
           sudo service postgresql start
           sudo -u postgres createdb -p ${PGPORT}  ___vrp___test___
           cd tools/testers
+          sudo apt-get update && apt-get install postgresql-plpython3-12
           sudo -u postgres psql -p "${PGPORT}" -U postgres -d ___vrp___test___ -X -q -v ON_ERROR_STOP=1 --pset pager=off -f setup_db.sql
           sudo -u postgres pg_prove --failures --quiet --recurse --ext .sql -p "${PGPORT}" -d ___vrp___test___ -U postgres ../../pgtap/
