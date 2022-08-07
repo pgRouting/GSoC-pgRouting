@@ -52,7 +52,6 @@ void
 do_hawickCircuits(
         Edge_t  *data_edges,
         size_t total_edges,
-        bool,
 
         circuits_rt **return_tuples,
         size_t *return_count,

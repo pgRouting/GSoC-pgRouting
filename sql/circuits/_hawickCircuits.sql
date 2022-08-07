@@ -32,7 +32,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 CREATE FUNCTION _pgr_hawickCircuits(
     TEXT,
-    BOOLEAN,
 
     OUT seq INTEGER,
     OUT path_id  INTEGER,
@@ -48,5 +47,5 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
-COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT, BOOLEAN)
+COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT)
 IS 'pgRouting internal function';

@@ -48,7 +48,6 @@ PG_FUNCTION_INFO_V1(_pgr_hawickcircuits);
 static void
 process(
         char* edges_sql,
-        bool directed,
 
         circuits_rt **result_tuples,
         size_t *result_count) {
@@ -73,7 +72,6 @@ process(
     char *err_msg = NULL;
     do_hawickCircuits(
             edges, total_edges,
-            directed,
 
             result_tuples,
             result_count,
@@ -127,7 +125,6 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
-                PG_GETARG_BOOL(1),
                 &result_tuples,
                 &result_count);
 
