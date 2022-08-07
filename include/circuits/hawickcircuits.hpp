@@ -35,7 +35,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <iostream>
 #include <iterator>
-#include <vector>
 #include <deque>
 
 #include "cpp_common/basePath_SSEC.hpp"
@@ -54,7 +53,7 @@ class circuit_detector{
  public:
     circuit_detector(
         G &graph,
-        std::vector<circuits_rt> &data) :
+        std::deque<circuits_rt> &data) :
     m_graph(graph),
     m_data(data) {}
     template <typename P, typename Gr>
@@ -77,7 +76,7 @@ class circuit_detector{
 
  private:
     G &m_graph;
-    std::vector<circuits_rt> &m_data;
+    std::deque<circuits_rt> &m_data;
     int circuit_No = 1;
 };
 #endif
@@ -85,8 +84,8 @@ class circuit_detector{
 template <class G>
 class pgr_hawickCircuits{
  public:
-      std::vector<circuits_rt> hawickCircuits(G & graph) {
-      std::vector<circuits_rt> results;
+      std::deque<circuits_rt> hawickCircuits(G & graph) {
+      std::deque<circuits_rt> results;
       circuit_detector <G> detector(graph, results);
         CHECK_FOR_INTERRUPTS();
          try {
