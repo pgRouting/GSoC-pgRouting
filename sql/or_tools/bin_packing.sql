@@ -9,7 +9,7 @@ VALUES
 (48), (30), (19), (36), (36), (27), (42), (42), (36), (24), (30);
 
 
-CREATE FUNCTION vrp_bin_packing(inner_query text, bin_capacity integer, max_rows integer = 10000)
+CREATE FUNCTION vrp_bin_packing(inner_query text, bin_capacity integer, max_rows integer = 100000)
   RETURNS void
 AS $$
   try:
@@ -22,17 +22,18 @@ AS $$
 
   try:
     inner_query_result = plpy.execute(inner_query, max_rows)
-    plpy.info("Number of rows processed : ", inner_query_result.nrows())
+    num_of_rows = inner_query_result.nrows()
+    plpy.info("Number of rows processed : ", num_of_rows)
   except plpy.SPIError as error_msg:
     plpy.info("Details: ",error_msg)
-    plpy.error("Error Processing Inner Query.The given query is not a valid SQL command")
+    plpy.error("Error Processing Inner Query. The given query is not a valid SQL command")
     return
   
   plpy.notice('Finished Execution of inner query')
   data = {}
   weights = []
 
-  for i in range(11):
+  for i in range(num_of_rows):
     weights.append(inner_query_result[i]["weight"])
   data['weights'] = weights
   data['items'] = list(range(len(weights)))
@@ -57,7 +58,8 @@ AS $$
     solver.Add(sum(x[i, j] for j in data['bins']) == 1)
 
   for j in data['bins']:
-    solver.Add(sum(x[(i, j)] * data['weights'][i] for i in data['items']) <= y[j] * data['bin_capacity'])
+    solver.Add(sum(x[(i, j)] * data['weights'][i] 
+    for i in data['items']) <= y[j] * data['bin_capacity'])
 
   solver.Minimize(solver.Sum([y[j] for j in data['bins']]))
 
