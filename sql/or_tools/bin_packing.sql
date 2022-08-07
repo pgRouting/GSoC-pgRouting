@@ -1,3 +1,29 @@
+/*PGR-GNU*****************************************************************
+File: bin_packing.sql
+
+Copyright (c) 2022 GSoC-2022 pgRouting developers
+Mail: project@pgrouting.org
+
+Function's developer:
+Copyright (c) 2021 Manas Sivakumar
+
+------
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+ ********************************************************************PGR-GNU*/
 DROP FUNCTION IF EXISTS vrp_bin_packing CASCADE;
 DROP TABLE IF EXISTS bin_packing_data CASCADE;
 
@@ -9,8 +35,12 @@ VALUES
 (48), (30), (19), (36), (36), (27), (42), (42), (36), (24), (30);
 
 
-CREATE FUNCTION vrp_bin_packing(inner_query text, bin_capacity integer, max_rows integer = 100000)
-  RETURNS text
+CREATE OR REPLACE FUNCTION vrp_bin_packing(
+  inner_query TEXT, -- weights SQL
+  bin_capacity INTEGER, -- Bin Capacity
+  max_rows INTEGER = 100000 -- Maximum number of rows to be fetched. Default is value = 100000.
+)
+RETURNS TEXT
 AS $$
   try:
     from ortools.linear_solver import pywraplp
@@ -117,6 +147,14 @@ AS $$
     plpy.notice('The problem does not have an optimal solution')
   plpy.notice('Exiting Bin Packing program')
   return "Success"
-$$ LANGUAGE plpython3u;
+$$ LANGUAGE plpython3u VOLATILE STRICT;
 
 -- SELECT * FROM vrp_bin_packing('SELECT * FROM bin_packing_data', 100);
+
+-- COMMENTS
+
+COMMENT ON FUNCTION vrp_bin_packing(TEXT, INTEGER, INTEGER)
+IS 'vrp_bin_packing
+- Documentation:
+  - ${PROJECT_DOC_LINK}/vrp_bin_packing.html
+';

@@ -1,3 +1,30 @@
+
+/*PGR-GNU*****************************************************************
+File: knapsack.sql
+
+Copyright (c) 2022 GSoC-2022 pgRouting developers
+Mail: project@pgrouting.org
+
+Function's developer:
+Copyright (c) 2021 Manas Sivakumar
+
+------
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+ ********************************************************************PGR-GNU*/
 DROP FUNCTION IF EXISTS vrp_knapsack;
 DROP TABLE IF EXISTS knapsack_data;
 
@@ -13,8 +40,12 @@ VALUES
 (4, 10),
 (1, 2);
 
-CREATE FUNCTION vrp_knapsack(inner_query text, capacity integer, max_rows integer = 100000)
-  RETURNS text
+CREATE OR REPLACE FUNCTION vrp_knapsack(
+  inner_query TEXT, -- weights_cost SQL
+  capacity INTEGER, -- Knapsack Capacity
+  max_rows INTEGER = 100000 -- Maximum number of rows to be fetched. Default is 100000.
+)
+RETURNS TEXT
 AS $$
   try:
     from ortools.algorithms import pywrapknapsack_solver
@@ -96,6 +127,14 @@ AS $$
   plpy.info("Packed values: ", packed_values)
   plpy.notice("Exiting program")
   return "Success"
-$$ LANGUAGE plpython3u;
+$$ LANGUAGE plpython3u VOLATILE STRICT;
 
 -- SELECT * FROM vrp_knapsack('SELECT * FROM knapsack_data' , 15);
+
+-- COMMENTS
+
+COMMENT ON FUNCTION vrp_knapsack(TEXT, INTEGER, INTEGER)
+IS 'vrp_knapsack
+- Documentation:
+  - ${PROJECT_DOC_LINK}/vrp_knapsack.html
+';

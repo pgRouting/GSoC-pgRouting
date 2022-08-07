@@ -1,3 +1,29 @@
+/*PGR-GNU*****************************************************************
+File: multiple_knapsack.sql
+
+Copyright (c) 2022 GSoC-2022 pgRouting developers
+Mail: project@pgrouting.org
+
+Function's developer:
+Copyright (c) 2021 Manas Sivakumar
+
+------
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+ ********************************************************************PGR-GNU*/
 DROP FUNCTION IF EXISTS vrp_multiple_knapsack CASCADE;
 DROP TABLE IF EXISTS multiple_knapsack_data CASCADE;
 
@@ -24,8 +50,12 @@ VALUES
 (36, 25);
 
 
-CREATE FUNCTION vrp_multiple_knapsack(inner_query text, capacities integer[], max_rows integer = 100000)
-  RETURNS text
+CREATE OR REPLACE FUNCTION vrp_multiple_knapsack(
+  inner_query TEXT, -- weights_cost SQL
+  capacities INTEGER[], -- ARRAY of Knapsack Capacities
+  max_rows INTEGER = 100000 -- Maximum number of rows to be fetched. Default value is 100000.
+)
+RETURNS TEXT
 AS $$
   try:
     from ortools.linear_solver import pywraplp
@@ -134,6 +164,14 @@ AS $$
     plpy.notice('The problem does not have an optimal solution.')
   plpy.notice('Exiting Multiple Knapsack program')
   return "Success"
-$$ LANGUAGE plpython3u;
+$$ LANGUAGE plpython3u VOLATILE STRICT;
 
 -- SELECT * FROM vrp_multiple_knapsack('SELECT * FROM multiple_knapsack_data', ARRAY[100,100,100,100,100]);
+
+-- COMMENTS
+
+COMMENT ON FUNCTION vrp_multiple_knapsack(TEXT, INTEGER[], INTEGER)
+IS 'vrp_multiple_knapsack
+- Documentation:
+  - ${PROJECT_DOC_LINK}/vrp_multiple_knapsack.html
+';
