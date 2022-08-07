@@ -1,6 +1,6 @@
 
 /*PGR-GNU*****************************************************************
-File: knapsack.sql
+File: knapsack_with_type.sql
 
 Copyright (c) 2022 GSoC-2022 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 DROP FUNCTION IF EXISTS vrp_knapsack;
+DROP TYPE IF EXISTS knapsack_items;
 DROP TABLE IF EXISTS knapsack_data;
 
 CREATE TABLE knapsack_data(
@@ -40,18 +41,20 @@ VALUES
 (4, 10),
 (1, 2);
 
-CREATE OR REPLACE FUNCTION vrp_knapsack(
-  inner_query TEXT, -- weights_cost SQL
-  capacity INTEGER, -- Knapsack Capacity
-  max_rows INTEGER = 100000 -- Maximum number of rows to be fetched. Default is 100000.
-)
-RETURNS TEXT
+create type knapsack_items as(
+  index integer,
+  weight integer,
+  cost integer
+);
+
+CREATE FUNCTION vrp_knapsack(inner_query text, capacity integer, max_rows integer = 100000)
+  RETURNS SETOF knapsack_items
 AS $$
   try:
     from ortools.algorithms import pywrapknapsack_solver
-  except Exception as err:
+  except Error as err:
     plpy.error(err)
-    return "Failed"
+    return
   
   try:
     solver = pywrapknapsack_solver.KnapsackSolver(
@@ -59,40 +62,23 @@ AS $$
     KNAPSACK_MULTIDIMENSION_BRANCH_AND_BOUND_SOLVER, 'KnapsackExample')
   except:
     plpy.error('Unable to Initialize Knapsack Solver')
-    return "Failed"
+    return
 
  
   capacities = []
   capacities.append(capacity)
 
-  plpy.notice('Entering Knapsack program')
+  plpy.notice('Entering Mulitple Knapsack program')
   plpy.notice('Starting Execution of inner query')
 
   try:
     inner_query_result = plpy.execute(inner_query, max_rows)
     num_of_rows = inner_query_result.nrows()
-    colnames = inner_query_result.colnames()
-    coltypes = inner_query_result.coltypes()
     plpy.info("Number of rows processed : ", num_of_rows)
   except plpy.SPIError as error_msg:
     plpy.info("Details: ",error_msg)
     plpy.error("Error Processing Inner Query. The given query is not a valid SQL command")
-    return "Failed"
-  
-  if len(colnames) != 2:
-    plpy.error("Expected 2 columns, Got ", len(colnames))
-    return "Failed"
-  if ('weight' in colnames) and ('cost' in colnames):
-    plpy.notice("SQL query returned expected column names")
-  else:
-    plpy.error("Expected columns weight and cost, Got ", colnames)
-    return "Failed"  
-  if coltypes == [23, 23]:
-    plpy.notice("SQL query returned expected column types")
-  else:
-    plpy.error("Returned columns of different type. Expected Integer, Integer")
-
-  plpy.notice('Finished Execution of inner query')
+    return
 
   values = []
   weight1 = []
@@ -101,12 +87,8 @@ AS $$
     values.append(inner_query_result[i]["cost"])
     weight1.append(inner_query_result[i]["weight"])
   weights.append(weight1)
-  
-  try:
-    solver.Init(values, weights, capacities)
-  except Exception as error_msg:
-    plpy.error(error_msg)
-    return "Failed"
+
+  solver.Init(values, weights, capacities)
   computed_value = solver.Solve()
 
   packed_items = []
@@ -121,20 +103,8 @@ AS $$
       packed_weights.append(weights[0][i])
       packed_values.append(values[i])
       total_weight += weights[0][i]
+      yield (i, weights[0][i], values[i])
   plpy.info('Total weight:', total_weight)
-  plpy.info("Packed items: ", packed_items)
-  plpy.info("Packed weights: ", packed_weights)
-  plpy.info("Packed values: ", packed_values)
-  plpy.notice("Exiting program")
-  return "Success"
-$$ LANGUAGE plpython3u VOLATILE STRICT;
+$$ LANGUAGE plpython3u;
 
--- SELECT * FROM vrp_knapsack('SELECT * FROM knapsack_data' , 15);
-
--- COMMENTS
-
-COMMENT ON FUNCTION vrp_knapsack(TEXT, INTEGER, INTEGER)
-IS 'vrp_knapsack
-- Documentation:
-  - ${PROJECT_DOC_LINK}/vrp_knapsack.html
-';
+-- SELECT * from vrp_knapsack('SELECT * from knapsack_data' , 15);
