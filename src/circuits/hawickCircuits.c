@@ -32,14 +32,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
-#include "utils/array.h"
 #include "c_types/circuits_rt.h"
 #include "c_types/routes_t.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 #include "c_common/edges_input.h"
-#include "c_common/arrays_input.h"
 #include "drivers/circuits/hawickcircuits_driver.h"
 
 PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS);
