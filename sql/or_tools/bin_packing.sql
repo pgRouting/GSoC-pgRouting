@@ -10,12 +10,13 @@ VALUES
 
 
 CREATE FUNCTION vrp_bin_packing(inner_query text, bin_capacity integer, max_rows integer = 100000)
-  RETURNS void
+  RETURNS text
 AS $$
   try:
     from ortools.linear_solver import pywraplp
   except Error as err:
-    plpy.fatal(err)
+    plpy.error(err)
+    return "Failed"
   
   plpy.notice('Entering Bin Packing program')
   plpy.notice('Starting Execution of inner query')
@@ -27,7 +28,7 @@ AS $$
   except plpy.SPIError as error_msg:
     plpy.info("Details: ",error_msg)
     plpy.error("Error Processing Inner Query. The given query is not a valid SQL command")
-    return
+    return "Failed"
   
   plpy.notice('Finished Execution of inner query')
   data = {}
@@ -47,7 +48,10 @@ AS $$
   
   if solver is None:
     plpy.error('SCIP solver unavailable.')
+    return "Failed"
   
+  plpy.notice('SCIP solver ready!')
+
   x = {}
   for i in data['items']:
     for j in data['bins']:
@@ -90,7 +94,7 @@ AS $$
           plpy.info('  Total weight', bin_weight)
     plpy.info('Number of bins used', num_bins)
   else:
-    plpy.error('The problem does not have an optimal solution')
+    plpy.notice('The problem does not have an optimal solution')
   plpy.notice('Exiting Bin Packing program')
   return
 $$ LANGUAGE plpython3u;
