@@ -58,19 +58,20 @@ class circuit_detector{
     m_data(data) {}
     template <typename P, typename Gr>
     void cycle(P const &p, Gr const&) {
-        if (p.empty())
+        if (p.empty()) {
         return;
-        int j = 0;
+        }
+        int seq = 0;
         typename P::const_iterator i;
         auto start_vid = m_graph[*p.begin()].id;
         auto end_vid = start_vid;
 
-        for (i = p.begin(); i != p.end(); ++i) {
+        for (i = p.begin(); i != p.end(); ++i, ++seq) {
             // To Do: Fillup the columns that are 0 marked
             auto node = m_graph[*i].id;
-            m_data.push_back({circuit_No, ++j, start_vid, end_vid, node, 0, 0, 0});
+            m_data.push_back({circuit_No, seq, start_vid, end_vid, node, 0, 0, 0});
         }
-        m_data.push_back({circuit_No, ++j, start_vid, end_vid, start_vid, 0, 0, 0});  // Adding up the starting vertex
+        m_data.push_back({circuit_No, seq, start_vid, end_vid, start_vid, 0, 0, 0});  // Adding up the starting vertex
         circuit_No++;
     }
 
