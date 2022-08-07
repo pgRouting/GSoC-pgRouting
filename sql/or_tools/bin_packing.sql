@@ -99,4 +99,4 @@ AS $$
   return
 $$ LANGUAGE plpython3u;
 
--- SELECT * from vrp_bin_packing('SELECT * from bin_packing_data', 100);
+-- SELECT * FROM vrp_bin_packing('SELECT * FROM bin_packing_data', 100);
