@@ -38,6 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/property_map/vector_property_map.hpp>
 #include <boost/type_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/properties.hpp>
 #include <boost/graph/cuthill_mckee_ordering.hpp>
 
 #include <algorithm>
@@ -62,8 +63,9 @@ namespace pgrouting {
 namespace functions {
 
 //*************************************************************
-
+#if 1
 template <class G>
+#endif
 class CuthillMckeeOrdering : public Pgr_messages{
  public:
 #if 0
@@ -189,37 +191,38 @@ class CuthillMckeeOrdering : public Pgr_messages{
         boost::property<boost::vertex_color_t,boost::default_color_type,
         boost::property<boost::vertex_degree_t, int>>>
         Graph;
-    typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type;
     typedef boost::graph_traits<Graph>::vertices_size_type size_type;
+    typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
     // documentation todo
 
         std::vector<II_t_rt>
-        cuthillMckeeOrdering(G &graph, int64_t start_vid) {
+        cuthillMckeeOrdering(G &graph, uint64_t start_vid) {
         std::vector<II_t_rt>results;
 #if 0
         auto d_map = boost::get(boost::vertex_index, graph.graph);
-         auto c_map = boost::get(boost::vertex_color, graph.graph);
+        auto c_map = boost::get(boost::vertex_color, graph.graph);
         boost::graph_traits<Graph>::vertex_iterator ui, ui_end;
 
-        property_map< Graph, vertex_degree_t >::type deg = get(vertex_degree, G);
-            for (boost::tie(ui, ui_end) = vertices(G); ui != ui_end; ++ui)
-            deg[*ui] = degree(*ui, G);
+        boost::property_map<Graph, boost::vertex_degree_t>::type deg = boost::get(boost::vertex_degree, graph.graph);
+            for (boost::tie(ui, ui_end) = boost::vertices(graph.graph); ui != ui_end; ++ui)
+            deg[*ui] = boost::degree(*ui, graph.graph);
 
-        property_map< Graph, vertex_index_t >::type index_map
-            = get(vertex_index, G);
+        boost::property_map<Graph, boost::vertex_index_t >::type index_map
+            = boost::get(boost::vertex_index, graph.graph);
 
-        std::vector<size_type> inv_perm(boost::num_vertices(graph.graph));
+        std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
         std::vector<size_type> perm(boost::num_vertices(graph.graph));
 #endif
-
-        std::vector <vertices_size_type> ordering(boost::num_vertices(graph.graph));
+        Vertex s = boost::vertex(start_vid, graph.graph);
+        std::vector <size_type> ordering(boost::num_vertices(graph.graph));
 
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
 
          try {
-             boost::cuthill_mckee_ordering(graph.graph, start_vid);
+             boost::cuthill_mckee_ordering(graph.graph, s /*inv_perm.rbegin(), boost::get(boost::vertex_color, graph.graph),
+            boost::get(boost::vertex_degree, graph.graph)*/);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -247,7 +250,7 @@ class CuthillMckeeOrdering : public Pgr_messages{
       * @returns `results` vector
       */
      std::vector <II_t_rt> get_results(
-            std::vector <vertices_size_type> & /*ordering*/,
+            std::vector <size_type> & /*ordering*/,
             const G & graph) {
             std::vector <II_t_rt> results;
 
