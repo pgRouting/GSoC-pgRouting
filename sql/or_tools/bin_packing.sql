@@ -14,7 +14,7 @@ CREATE FUNCTION vrp_bin_packing(inner_query text, bin_capacity integer, max_rows
 AS $$
   try:
     from ortools.linear_solver import pywraplp
-  except Error as err:
+  except Exception as err:
     plpy.error(err)
     return "Failed"
   
@@ -50,7 +50,12 @@ AS $$
   weights = []
 
   for i in range(num_of_rows):
-    weights.append(inner_query_result[i]["weight"])
+    if type(inner_query_result[i]["weight"]) == int:
+      weights.append(inner_query_result[i]["weight"])
+    else:
+      plpy.error("Type Mismatch. Check Table Data")
+      return "Failed"
+
   data['weights'] = weights
   data['items'] = list(range(len(weights)))
   data['bins'] = data['items']
@@ -111,7 +116,7 @@ AS $$
   else:
     plpy.notice('The problem does not have an optimal solution')
   plpy.notice('Exiting Bin Packing program')
-  return
+  return "Success"
 $$ LANGUAGE plpython3u;
 
 -- SELECT * FROM vrp_bin_packing('SELECT * FROM bin_packing_data', 100);

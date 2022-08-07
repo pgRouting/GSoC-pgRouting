@@ -18,7 +18,7 @@ CREATE FUNCTION vrp_knapsack(inner_query text, capacity integer, max_rows intege
 AS $$
   try:
     from ortools.algorithms import pywrapknapsack_solver
-  except Error as err:
+  except Exception as err:
     plpy.error(err)
     return "Failed"
   
@@ -70,8 +70,12 @@ AS $$
     values.append(inner_query_result[i]["cost"])
     weight1.append(inner_query_result[i]["weight"])
   weights.append(weight1)
-
-  solver.Init(values, weights, capacities)
+  
+  try:
+    solver.Init(values, weights, capacities)
+  except Exception as error_msg:
+    plpy.error(error_msg)
+    return "Failed"
   computed_value = solver.Solve()
 
   packed_items = []

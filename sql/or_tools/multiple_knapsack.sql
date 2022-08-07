@@ -29,7 +29,7 @@ CREATE FUNCTION vrp_multiple_knapsack(inner_query text, capacities integer[], ma
 AS $$
   try:
     from ortools.linear_solver import pywraplp
-  except Error as err:
+  except Exception as err:
     plpy.error(err)
     return "Failed"
 
@@ -65,10 +65,18 @@ AS $$
     plpy.error("Returned columns of different type. Expected Integer, Integer")
     
   plpy.notice('Finished Execution of inner query')
-  
+
   for i in range(num_of_rows):
-    data['values'].append(inner_query_result[i]["cost"])
-    data['weights'].append(inner_query_result[i]["weight"])
+    if type(inner_query_result[i]["cost"]) == int:
+      data['values'].append(inner_query_result[i]["cost"])
+    else:
+      plpy.error("Type Mismatch. Check Table Data")
+      return "Failed"
+    if type(inner_query_result[i]["weight"]) == int:
+      data['weights'].append(inner_query_result[i]["weight"])
+    else:
+      plpy.error("Type Mismatch. Check Table Data")
+      return "Failed"
 
   data['num_items'] = len(data['weights'])
   data['all_items'] = range(data['num_items'])
