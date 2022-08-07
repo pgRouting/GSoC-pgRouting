@@ -44,7 +44,7 @@ AS $$
   try:
     solver = pywraplp.Solver.CreateSolver('SCIP')  
   except:
-    plpy.fatal("Unable to Initialize solver")
+    plpy.error("Unable to Initialize solver")
   
   if solver is None:
     plpy.error('SCIP solver unavailable.')

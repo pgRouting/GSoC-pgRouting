@@ -1,4 +1,5 @@
 DROP FUNCTION IF EXISTS vrp_knapsack;
+DROP TYPE IF EXISTS knapsack_items;
 DROP TABLE IF EXISTS knapsack_data;
 
 CREATE TABLE knapsack_data(
@@ -13,14 +14,20 @@ VALUES
 (4, 10),
 (1, 2);
 
+create type knapsack_items as(
+  index integer,
+  weight integer,
+  cost integer
+);
+
 CREATE FUNCTION vrp_knapsack(inner_query text, capacity integer, max_rows integer = 100000)
-  RETURNS text
+  RETURNS SETOF knapsack_items
 AS $$
   try:
     from ortools.algorithms import pywrapknapsack_solver
   except Error as err:
     plpy.error(err)
-    return "Failed"
+    return
   
   try:
     solver = pywrapknapsack_solver.KnapsackSolver(
@@ -28,13 +35,13 @@ AS $$
     KNAPSACK_MULTIDIMENSION_BRANCH_AND_BOUND_SOLVER, 'KnapsackExample')
   except:
     plpy.error('Unable to Initialize Knapsack Solver')
-    return "Failed"
+    return
 
  
   capacities = []
   capacities.append(capacity)
 
-  plpy.notice('Entering Knapsack program')
+  plpy.notice('Entering Mulitple Knapsack program')
   plpy.notice('Starting Execution of inner query')
 
   try:
@@ -44,9 +51,7 @@ AS $$
   except plpy.SPIError as error_msg:
     plpy.info("Details: ",error_msg)
     plpy.error("Error Processing Inner Query. The given query is not a valid SQL command")
-    return "Failed"
-  
-  plpy.notice('Finished Execution of inner query')
+    return
 
   values = []
   weight1 = []
@@ -71,12 +76,8 @@ AS $$
       packed_weights.append(weights[0][i])
       packed_values.append(values[i])
       total_weight += weights[0][i]
+      yield (i, weights[0][i], values[i])
   plpy.info('Total weight:', total_weight)
-  plpy.info("Packed items: ", packed_items)
-  plpy.info("Packed weights: ", packed_weights)
-  plpy.info("Packed values: ", packed_values)
-  plpy.notice("Exiting program")
-  return "Success"
 $$ LANGUAGE plpython3u;
 
 -- SELECT * from vrp_knapsack('SELECT * from knapsack_data' , 15);
