@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 #include <sstream>
-#include <vector>
+#include <deque>
 #include <algorithm>
 #include <string>
 
@@ -41,7 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "circuits/hawickcircuits.hpp"
 
 template < class G >
-std::vector <circuits_rt>
+std::deque <circuits_rt>
 pgr_hawickCircuits(G &graph) {
     pgrouting::functions::pgr_hawickCircuits < G > fn_hawickCircuits;
     auto results = fn_hawickCircuits.hawickCircuits(graph);
@@ -52,7 +52,6 @@ void
 do_hawickCircuits(
         Edge_t  *data_edges,
         size_t total_edges,
-        bool,
 
         circuits_rt **return_tuples,
         size_t *return_count,
@@ -71,7 +70,7 @@ do_hawickCircuits(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-        std::vector < circuits_rt > results;
+        std::deque < circuits_rt > results;
 
         graphType gType = DIRECTED;
         pgrouting::DirectedGraph digraph(gType);

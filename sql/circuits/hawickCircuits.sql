@@ -32,7 +32,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 CREATE FUNCTION pgr_hawickCircuits(
     TEXT, -- edges_sql (required)
-    directed BOOLEAN DEFAULT true,
 
     OUT seq INTEGER,
     OUT path_id INTEGER,
@@ -49,18 +48,16 @@ $BODY$
 BEGIN
     RETURN QUERY
     SELECT *
-    FROM _pgr_hawickCircuits(_pgr_get_statement($1), $2);
+    FROM _pgr_hawickCircuits(_pgr_get_statement($1));
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
-COMMENT ON FUNCTION pgr_hawickCircuits(TEXT, BOOLEAN)
+COMMENT ON FUNCTION pgr_hawickCircuits(TEXT)
 IS 'pgr_hawickCircuits
 - EXPERIMENTAL
 - Parameters:
     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-- Optional Parameters
-   - directed := true
 - Documentation:
     - ${PROJECT_DOC_LINK}/hawickCircuits.html
 ';

@@ -35,7 +35,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <iostream>
 #include <iterator>
-#include <vector>
 #include <deque>
 
 #include "cpp_common/basePath_SSEC.hpp"
@@ -54,34 +53,31 @@ class circuit_detector{
  public:
     circuit_detector(
         G &graph,
-        std::vector<circuits_rt> &data) :
+        std::deque<circuits_rt> &data) :
     m_graph(graph),
     m_data(data) {}
-    template <typename Path, typename Graph>
-    void cycle(Path const &p, Graph const&) {
-        if (p.empty())
+    template <typename P, typename Gr>
+    void cycle(P const &p, Gr const&) {
+        if (p.empty()) {
         return;
-        int j = 0;
-        typename Path::const_iterator i, before_end = boost::prior(p.end());
+        }
+        int seq = 0;
+        typename P::const_iterator i;
         auto start_vid = m_graph[*p.begin()].id;
-        auto end_vid = m_graph[*p.begin()].id;
+        auto end_vid = start_vid;
 
-        for (i = p.begin(); i != before_end; ++i) {
+        for (i = p.begin(); i != p.end(); ++i, ++seq) {
             // To Do: Fillup the columns that are 0 marked
             auto node = m_graph[*i].id;
-            m_data.push_back({circuit_No, j, start_vid, end_vid, node, 0, 0, 0});
-            j++;
+            m_data.push_back({circuit_No, seq, start_vid, end_vid, node, 0, 0, 0});
         }
-        auto node = m_graph[*i].id;
-        m_data.push_back({circuit_No, j, start_vid, end_vid, node, 0, 0, 0});  // Adding up the last vertex
-        j++;
-        m_data.push_back({circuit_No, j, start_vid, end_vid, start_vid, 0, 0, 0});  // Adding up the starting vertex
+        m_data.push_back({circuit_No, seq, start_vid, end_vid, start_vid, 0, 0, 0});  // Adding up the starting vertex
         circuit_No++;
     }
 
  private:
     G &m_graph;
-    std::vector<circuits_rt> &m_data;
+    std::deque<circuits_rt> &m_data;
     int circuit_No = 1;
 };
 #endif
@@ -89,8 +85,8 @@ class circuit_detector{
 template <class G>
 class pgr_hawickCircuits{
  public:
-      std::vector<circuits_rt> hawickCircuits(G & graph) {
-      std::vector<circuits_rt> results;
+      std::deque<circuits_rt> hawickCircuits(G & graph) {
+      std::deque<circuits_rt> results;
       circuit_detector <G> detector(graph, results);
         CHECK_FOR_INTERRUPTS();
          try {

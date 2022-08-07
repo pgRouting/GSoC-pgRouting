@@ -32,14 +32,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
-#include "utils/array.h"
 #include "c_types/circuits_rt.h"
 #include "c_types/routes_t.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 #include "c_common/edges_input.h"
-#include "c_common/arrays_input.h"
 #include "drivers/circuits/hawickcircuits_driver.h"
 
 PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS);
@@ -48,7 +46,6 @@ PG_FUNCTION_INFO_V1(_pgr_hawickcircuits);
 static void
 process(
         char* edges_sql,
-        bool directed,
 
         circuits_rt **result_tuples,
         size_t *result_count) {
@@ -73,7 +70,6 @@ process(
     char *err_msg = NULL;
     do_hawickCircuits(
             edges, total_edges,
-            directed,
 
             result_tuples,
             result_count,
@@ -127,7 +123,6 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
-                PG_GETARG_BOOL(1),
                 &result_tuples,
                 &result_count);
 
@@ -169,7 +164,7 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
 
         values[0] = Int32GetDatum(call_cntr + 1);
         values[1] = Int32GetDatum(result_tuples[call_cntr].circuit_id);
-        values[2] = Int32GetDatum(result_tuples[call_cntr].circuit_path_seq + 1);
+        values[2] = Int32GetDatum(result_tuples[call_cntr].circuit_path_seq);
         values[3] = Int64GetDatum(result_tuples[call_cntr].start_vid);
         values[4] = Int64GetDatum(result_tuples[call_cntr].end_vid);
         values[5] = Int64GetDatum(result_tuples[call_cntr].node);
