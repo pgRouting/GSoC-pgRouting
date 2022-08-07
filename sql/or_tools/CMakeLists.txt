@@ -1,6 +1,6 @@
 SET(LOCAL_FILES
-   knapsack.sql,
-   multiple_knapsack.sql,
+   knapsack.sql
+   multiple_knapsack.sql
    bin_packing.sql
   )
 
