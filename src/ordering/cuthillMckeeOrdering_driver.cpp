@@ -37,7 +37,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "ordering/cuthillMckeeOrdering.hpp"
 
-
+#if 1
+template <class G>
+std::vector <II_t_rt>
+cuthillMckeeOrdering(G &graph, int64_t start_vid) {
+    pgrouting::functions::CuthillMckeeOrdering <G> fn_cuthillMckeeOrdering;
+    auto results = fn_cuthillMckeeOrdering.cuthillMckeeOrdering(graph, start_vid);
+    return results;
+}
+#endif
 
 
 
@@ -45,7 +53,7 @@ void do_cuthillMckeeOrdering(
     Edge_t *data_edges,
     size_t total_edges,
 
-    uint64_t start_vid,
+    int64_t start_vid,
 
     II_t_rt **return_tuples,
     size_t *return_count,
@@ -66,6 +74,10 @@ void do_cuthillMckeeOrdering(
         graphType gType = UNDIRECTED;
 
         std::vector<II_t_rt>results;
+
+        pgrouting::UndirectedGraph undigraph(gType);
+        undigraph.insert_edges(data_edges, total_edges);
+        results = cuthillMckeeOrdering(undigraph, start_vid);
 
         auto count = results.size();
 
