@@ -48,7 +48,7 @@ namespace pgrouting {
 namespace functions {
 
 #if 1
-template <typename G>
+template <typename G, typename E>
 class circuit_detector{
  public:
     circuit_detector(
@@ -57,7 +57,7 @@ class circuit_detector{
     m_graph(graph),
     m_data(data) {}
     template <typename P, typename Gr>
-    void cycle(P const &p, Gr const&) {
+    void cycle(P const &p, Gr const& Grap) {
         if (p.empty()) {
         return;
         }
@@ -65,13 +65,31 @@ class circuit_detector{
         typename P::const_iterator i;
         auto start_vid = m_graph[*p.begin()].id;
         auto end_vid = start_vid;
-
+        bool found;
+        double agg_cost = 0;
+        E edge;
         for (i = p.begin(); i != p.end(); ++i, ++seq) {
             // To Do: Fillup the columns that are 0 marked
             auto node = m_graph[*i].id;
+            boost::tie(edge, found)= boost::edge(*i, *(i+1), Grap);
+            if (found) {
+                auto cost = m_graph[edge].cost;
+                auto id = m_graph[edge].id;
+                m_data.push_back({circuit_No, seq, start_vid, end_vid, node, id, cost, agg_cost});
+                agg_cost = agg_cost + cost;
+            } else {
+            boost::tie(edge, found)= boost::edge(*(boost::prior(p.end())), *(p.begin()), Grap);
+            if (found) {
+                auto cost = m_graph[edge].cost;
+                auto id = m_graph[edge].id;
+                m_data.push_back({circuit_No, seq, start_vid, end_vid, node, id, cost, agg_cost});
+                agg_cost = agg_cost + cost;
+            } else {
             m_data.push_back({circuit_No, seq, start_vid, end_vid, node, 0, 0, 0});
+            }
+            }
         }
-        m_data.push_back({circuit_No, seq, start_vid, end_vid, start_vid, 0, 0, 0});  // Adding up the starting vertex
+        m_data.push_back({circuit_No, seq, start_vid, end_vid, start_vid, -1, 0, agg_cost});
         circuit_No++;
     }
 
@@ -85,9 +103,10 @@ class circuit_detector{
 template <class G>
 class pgr_hawickCircuits{
  public:
+      typedef typename G::E E;
       std::deque<circuits_rt> hawickCircuits(G & graph) {
       std::deque<circuits_rt> results;
-      circuit_detector <G> detector(graph, results);
+      circuit_detector <G, E> detector(graph, results);
         CHECK_FOR_INTERRUPTS();
          try {
              boost::hawick_circuits(graph.graph, detector);
