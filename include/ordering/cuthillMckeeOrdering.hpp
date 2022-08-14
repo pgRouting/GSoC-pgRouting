@@ -40,6 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/cuthill_mckee_ordering.hpp>
+#include <boost/property_map/property_map.hpp>
 
 #include <algorithm>
 #include <vector>
@@ -62,38 +63,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace functions {
 
-//*************************************************************
-#if 1
 template <class G>
-#endif
 class CuthillMckeeOrdering : public Pgr_messages{
  public:
 
 #if 1
-    
-    typedef boost::adjacency_list<boost::vecS,boost::vecS,boost::undirectedS,
-        boost::property<boost::vertex_color_t,boost::default_color_type,
-        boost::property<boost::vertex_degree_t, int>>>
-        Graph;
+   
+    typedef typename G::V V;
+    typedef typename G::E E;
+    typedef boost::adjacency_list<boost::vecS,boost::vecS,boost::undirectedS> Graph;
     typedef boost::graph_traits<Graph>::vertices_size_type size_type;
     typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
     // documentation todo
 
         std::vector<II_t_rt>
-        cuthillMckeeOrdering(G &graph, uint64_t start_vid) {
+        cuthillMckeeOrdering(G &graph, int64_t start_vid) {
         std::vector<II_t_rt>results;
-
-        Vertex s = boost::vertex(start_vid, graph.graph);
-        std::vector <size_type> ordering(boost::num_vertices(graph.graph));
+        uint64_t start_v = *(reinterpret_cast<uint64_t*>(&start_vid));
+        auto i_map = boost::get(boost::vertex_index, graph.graph);
+        Vertex s = boost::vertex(start_v, graph.graph);
         std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
         std::vector<size_type> perm(boost::num_vertices(graph.graph));
-
+        std::vector <size_type> colors(boost::num_vertices(graph.graph));
+        auto color_map = boost::make_iterator_property_map(&colors[0], i_map, colors[0]);
+        auto out_deg = boost::make_out_degree_map(graph.graph);
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
 
          try {
-             boost::cuthill_mckee_ordering(graph.graph, s);
+             boost::cuthill_mckee_ordering(graph.graph, s, inv_perm.rbegin(), color_map, out_deg);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -104,7 +103,7 @@ class CuthillMckeeOrdering : public Pgr_messages{
              throw;
          }
 
-         results = get_results(ordering, graph);
+         results = get_results(inv_perm, graph);
 
          return results;
      }
@@ -115,34 +114,26 @@ class CuthillMckeeOrdering : public Pgr_messages{
       *
       * Uses the `ordering` vector to get the results i.e. the ordering.
       *
-      * @param ordering    vector which contains the new ordering
+      * @param inv_perm    vector which contains the new ordering
       * @param graph       the graph containing the edges
       *
       * @returns `results` vector
       */
      std::vector <II_t_rt> get_results(
-            std::vector <size_type> & ordering,
+            std::vector <size_type> & inv_perm,
             const G & graph) {
             std::vector <II_t_rt> results;
 
-#if 0
          typename boost::graph_traits <Graph> ::vertex_iterator v, vend;
-
-         for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
-             i != inv_perm.end(); ++i) {
-            log << index_map[*i] << " ";
-            results.push_back({index_map[*i], index_map[*i]});
-            }
  
          for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
-             int64_t node = graph[*v].id;
-             auto orderings = ordering[*v];
-             results.push_back({{node}, {static_cast<int64_t>(orderings + 1)}});
+             auto seq = graph[*v].id;
+             auto order = inv_perm[*v];
+             results.push_back({{seq}, {static_cast<int64_t>(order + 1)}});
          }
+#if 0
           for (size_type c = 0; c != inv_perm.size(); ++c)
-            perm[index_map[inv_perm[c]]] = c;
-        }
-         
+            perm[i_map[inv_perm[c]]] = c;
 #endif
             return results;
         }
