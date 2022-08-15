@@ -25,29 +25,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 DROP FUNCTION IF EXISTS vrp_multiple_knapsack CASCADE;
-DROP TABLE IF EXISTS multiple_knapsack_data CASCADE;
+-- DROP TABLE IF EXISTS multiple_knapsack_data CASCADE;
 
-CREATE TABLE multiple_knapsack_data(
-  weight INTEGER,
-  cost INTEGER);
+-- CREATE TABLE multiple_knapsack_data(
+--   weight INTEGER,
+--   cost INTEGER);
 
-INSERT INTO multiple_knapsack_data (weight,  cost)
-VALUES
-(48, 10),
-(30, 30),
-(42, 25),
-(36, 50),
-(36, 35),
-(48, 30), 
-(42, 15), 
-(42, 40),
-(36, 30),
-(24, 35), 
-(30, 45), 
-(30, 10), 
-(42, 20), 
-(36, 30), 
-(36, 25);
+-- INSERT INTO multiple_knapsack_data (weight,  cost)
+-- VALUES
+-- (48, 10),
+-- (30, 30),
+-- (42, 25),
+-- (36, 50),
+-- (36, 35),
+-- (48, 30), 
+-- (42, 15), 
+-- (42, 40),
+-- (36, 30),
+-- (24, 35), 
+-- (30, 45), 
+-- (30, 10), 
+-- (42, 20), 
+-- (36, 30), 
+-- (36, 25);
 
 
 CREATE OR REPLACE FUNCTION vrp_multiple_knapsack(

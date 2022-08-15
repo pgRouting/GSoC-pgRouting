@@ -25,14 +25,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 DROP FUNCTION IF EXISTS vrp_bin_packing CASCADE;
-DROP TABLE IF EXISTS bin_packing_data CASCADE;
+-- DROP TABLE IF EXISTS bin_packing_data CASCADE;
 
-CREATE TABLE bin_packing_data(
-  weight INTEGER);
+-- CREATE TABLE bin_packing_data(
+--   weight INTEGER);
 
-INSERT INTO bin_packing_data (weight)
-VALUES
-(48), (30), (19), (36), (36), (27), (42), (42), (36), (24), (30);
+-- INSERT INTO bin_packing_data (weight)
+-- VALUES
+-- (48), (30), (19), (36), (36), (27), (42), (42), (36), (24), (30);
 
 
 CREATE OR REPLACE FUNCTION vrp_bin_packing(

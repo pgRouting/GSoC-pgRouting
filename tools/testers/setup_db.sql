@@ -28,5 +28,6 @@ BEGIN;
     \i no_crash_test.sql
     \i general_pgtap_tests.sql
     \i vroomdata.sql
+    \i ortoolsdata.sql
 
 END;

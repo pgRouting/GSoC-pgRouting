@@ -26,19 +26,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 DROP FUNCTION IF EXISTS vrp_knapsack;
-DROP TABLE IF EXISTS knapsack_data;
+-- DROP TABLE IF EXISTS knapsack_data;
 
-CREATE TABLE knapsack_data(
-  weight INTEGER,
-  cost INTEGER);
+-- CREATE TABLE knapsack_data(
+--   weight INTEGER,
+--   cost INTEGER);
 
-INSERT INTO knapsack_data (weight,  cost)
-VALUES
-(12, 4),
-(2, 2),
-(1, 1),
-(4, 10),
-(1, 2);
+-- INSERT INTO knapsack_data (weight,  cost)
+-- VALUES
+-- (12, 4),
+-- (2, 2),
+-- (1, 1),
+-- (4, 10),
+-- (1, 2);
 
 CREATE OR REPLACE FUNCTION vrp_knapsack(
   inner_query TEXT, -- weights_cost SQL
