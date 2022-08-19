@@ -47,7 +47,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace functions {
 
-#if 1
 template <typename G, typename E>
 class circuit_detector{
  public:
@@ -62,43 +61,35 @@ class circuit_detector{
         return;
         }
         int seq = 0;
-        typename P::const_iterator i;
+        typename P::const_iterator i, before_end = boost::prior(p.end());
         auto start_vid = m_graph[*p.begin()].id;
         auto end_vid = start_vid;
-        bool found;
         double agg_cost = 0;
         E edge;
-        for (i = p.begin(); i != p.end(); ++i, ++seq) {
-            // To Do: Fillup the columns that are 0 marked
+        for (i = p.begin(); i != before_end; ++i, ++seq) {
             auto node = m_graph[*i].id;
-            boost::tie(edge, found)= boost::edge(*i, *(i+1), Grap);
-            if (found) {
-                auto cost = m_graph[edge].cost;
-                auto id = m_graph[edge].id;
-                m_data.push_back({circuit_No, seq, start_vid, end_vid, node, id, cost, agg_cost});
-                agg_cost = agg_cost + cost;
-            } else {
-            boost::tie(edge, found)= boost::edge(*(boost::prior(p.end())), *(p.begin()), Grap);
-            if (found) {
-                auto cost = m_graph[edge].cost;
-                auto id = m_graph[edge].id;
-                m_data.push_back({circuit_No, seq, start_vid, end_vid, node, id, cost, agg_cost});
-                agg_cost = agg_cost + cost;
-            } else {
-            m_data.push_back({circuit_No, seq, start_vid, end_vid, node, 0, 0, 0});
+            edge = boost::edge(*i, *(i+1), Grap).first;
+            auto cost = m_graph[edge].cost;
+            auto id = m_graph[edge].id;
+            m_data.push_back({circuit_No, seq, start_vid, end_vid, node, id, cost, agg_cost});
+            agg_cost = agg_cost + cost;
             }
-            }
+            auto node = m_graph[*i].id;
+            edge = boost::edge(*(boost::prior(p.end())), *(p.begin()), Grap).first;
+            auto cost = m_graph[edge].cost;
+            auto id = m_graph[edge].id;
+            m_data.push_back({circuit_No, seq, start_vid, end_vid, node, id, cost, agg_cost});
+            agg_cost = agg_cost + cost;
+            ++seq;
+            m_data.push_back({circuit_No, seq, start_vid, end_vid, start_vid, -1, 0, agg_cost});
+            circuit_No++;
         }
-        m_data.push_back({circuit_No, seq, start_vid, end_vid, start_vid, -1, 0, agg_cost});
-        circuit_No++;
-    }
 
  private:
     G &m_graph;
     std::deque<circuits_rt> &m_data;
     int circuit_No = 1;
 };
-#endif
 
 template <class G>
 class pgr_hawickCircuits{
@@ -109,7 +100,7 @@ class pgr_hawickCircuits{
       circuit_detector <G, E> detector(graph, results);
         CHECK_FOR_INTERRUPTS();
          try {
-             boost::hawick_circuits(graph.graph, detector);
+             boost::hawick_unique_circuits(graph.graph, detector);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
