@@ -25,20 +25,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
-DROP FUNCTION IF EXISTS vrp_knapsack;
--- DROP TABLE IF EXISTS knapsack_data;
+DROP FUNCTION IF EXISTS vrp_knapsack CASCADE;
+DROP TABLE IF EXISTS knapsack_data;
 
--- CREATE TABLE knapsack_data(
---   weight INTEGER,
---   cost INTEGER);
+CREATE TABLE knapsack_data(
+  weight NUMERIC,
+  cost INTEGER);
 
--- INSERT INTO knapsack_data (weight,  cost)
--- VALUES
--- (12, 4),
--- (2, 2),
--- (1, 1),
--- (4, 10),
--- (1, 2);
+INSERT INTO knapsack_data (weight,  cost)
+VALUES
+(12, 4),
+(2, 2),
+(1, 1),
+(4, 10),
+(1, 2);
 
 CREATE OR REPLACE FUNCTION vrp_knapsack(
   inner_query TEXT, -- weights_cost SQL
@@ -53,6 +53,13 @@ AS $$
     plpy.error(err)
     return "Failed"
   
+  global max_rows
+  if inner_query == None:
+    raise Exception('Inner Query Cannot be NULL')
+  if capacity == None:
+    raise Exception('Capacity Cannot be NULL')
+  if max_rows == None:
+    max_rows = 100000
   try:
     solver = pywrapknapsack_solver.KnapsackSolver(
     pywrapknapsack_solver.KnapsackSolver.
@@ -60,8 +67,7 @@ AS $$
   except:
     plpy.error('Unable to Initialize Knapsack Solver')
     return "Failed"
-
- 
+  
   capacities = []
   capacities.append(capacity)
 
@@ -87,10 +93,10 @@ AS $$
   else:
     plpy.error("Expected columns weight and cost, Got ", colnames)
     return "Failed"  
-  if coltypes == [23, 23]:
+  if all(item in [20, 21, 23] for item in coltypes):
     plpy.notice("SQL query returned expected column types")
   else:
-    plpy.error("Returned columns of different type. Expected Integer, Integer")
+    raise Exception("Returned columns of different type. Expected Integer, Integer")
 
   plpy.notice('Finished Execution of inner query')
 
@@ -127,7 +133,7 @@ AS $$
   plpy.info("Packed values: ", packed_values)
   plpy.notice("Exiting program")
   return "Success"
-$$ LANGUAGE plpython3u VOLATILE STRICT;
+$$ LANGUAGE plpython3u VOLATILE;
 
 -- SELECT * FROM vrp_knapsack('SELECT * FROM knapsack_data' , 15);
 

@@ -48,6 +48,14 @@ AS $$
     plpy.error(err)
     return "Failed"
   
+  global max_rows
+  if inner_query == None:
+    raise Exception('Inner Query Cannot be NULL')
+  if bin_capacity == None:
+    raise Exception('Capacity Cannot be NULL')
+  if max_rows == None:
+    max_rows = 100000
+  
   plpy.notice('Entering Bin Packing program')
   plpy.notice('Starting Execution of inner query')
 
@@ -70,10 +78,10 @@ AS $$
   else:
     plpy.error("Expected column weight, Got ", colnames)
     return "Failed"  
-  if coltypes == [23]:
+  if all(item in [20, 21, 23] for item in coltypes):
     plpy.notice("SQL query returned expected column types")
   else:
-    plpy.error("Returned columns of different type. Expected Integer")
+    raise Exception("Returned columns of different type. Expected Integer")
   
   plpy.notice('Finished Execution of inner query')
   data = {}
@@ -147,7 +155,7 @@ AS $$
     plpy.notice('The problem does not have an optimal solution')
   plpy.notice('Exiting Bin Packing program')
   return "Success"
-$$ LANGUAGE plpython3u VOLATILE STRICT;
+$$ LANGUAGE plpython3u VOLATILE;
 
 -- SELECT * FROM vrp_bin_packing('SELECT * FROM bin_packing_data', 100);
 

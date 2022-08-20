@@ -62,7 +62,15 @@ AS $$
   except Exception as err:
     plpy.error(err)
     return "Failed"
-
+  
+  global max_rows
+  if inner_query == None:
+    raise Exception('Inner Query Cannot be NULL')
+  if capacities == None:
+    raise Exception('Capacity Cannot be NULL')
+  if max_rows == None:
+    max_rows = 100000
+  
   data = {}
   data['values'] = []
   data['weights'] = []
@@ -89,10 +97,10 @@ AS $$
   else:
     plpy.error("Expected columns weight and cost, Got ", colnames)
     return "Failed"  
-  if coltypes == [23, 23]:
+  if all(item in [20, 21, 23] for item in coltypes):
     plpy.notice("SQL query returned expected column types")
   else:
-    plpy.error("Returned columns of different type. Expected Integer, Integer")
+    raise Exception("Returned columns of different type. Expected Integer, Integer")
     
   plpy.notice('Finished Execution of inner query')
 
@@ -164,7 +172,7 @@ AS $$
     plpy.notice('The problem does not have an optimal solution.')
   plpy.notice('Exiting Multiple Knapsack program')
   return "Success"
-$$ LANGUAGE plpython3u VOLATILE STRICT;
+$$ LANGUAGE plpython3u VOLATILE;
 
 -- SELECT * FROM vrp_multiple_knapsack('SELECT * FROM multiple_knapsack_data', ARRAY[100,100,100,100,100]);
 
