@@ -1,7 +1,7 @@
 BEGIN;
 SET search_path TO 'ortools', 'public';
 SET client_min_messages TO ERROR;
-SELECT CASE WHEN min_version('0.3.0') THEN plan (116) ELSE plan(1) END;
+SELECT CASE WHEN min_version('0.3.0') THEN plan (18) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
