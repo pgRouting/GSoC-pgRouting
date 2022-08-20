@@ -1,0 +1,47 @@
+BEGIN;
+BEGIN
+SET client_min_messages TO NOTICE;
+SET
+DROP TABLE IF EXISTS bin_packing_query CASCADE;
+NOTICE:  table "bin_packing_query" does not exist, skipping
+DROP TABLE
+CREATE TABLE bin_packing_query(
+  weight INTEGER);
+CREATE TABLE
+INSERT INTO bin_packing_query (weight)
+VALUES
+(48), (30), (19), (36), (36), (27), (42), (42), (36), (24), (30);
+INSERT 0 11
+SELECT * FROM vrp_bin_packing('SELECT * FROM bin_packing_query', 100);
+NOTICE:  Entering Bin Packing program
+NOTICE:  Starting Execution of inner query
+INFO:  ('Number of rows processed : ', 11)
+NOTICE:  SQL query returned expected column names
+NOTICE:  SQL query returned expected column types
+NOTICE:  Finished Execution of inner query
+NOTICE:  SCIP solver ready!
+INFO:  ('Bin number', 0)
+INFO:  ('  Items packed', [0, 1, 2])
+INFO:  ('  Item weights', [48, 30, 19])
+INFO:  ('  Total weight', 97)
+INFO:  ('Bin number', 1)
+INFO:  ('  Items packed', [3, 4, 5])
+INFO:  ('  Item weights', [36, 36, 27])
+INFO:  ('  Total weight', 99)
+INFO:  ('Bin number', 2)
+INFO:  ('  Items packed', [6, 7])
+INFO:  ('  Item weights', [42, 42])
+INFO:  ('  Total weight', 84)
+INFO:  ('Bin number', 3)
+INFO:  ('  Items packed', [8, 9, 10])
+INFO:  ('  Item weights', [36, 24, 30])
+INFO:  ('  Total weight', 90)
+INFO:  ('Number of bins used', 4.0)
+NOTICE:  Exiting Bin Packing program
+ vrp_bin_packing 
+-----------------
+ Success
+(1 row)
+
+ROLLBACK;
+ROLLBACK
