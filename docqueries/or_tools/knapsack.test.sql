@@ -1,8 +1,9 @@
-CREATE TABLE knapsack_data(
+DROP TABLE IF EXISTS knapsack_query;
+CREATE TABLE knapsack_query(
   weight INTEGER,
   cost INTEGER);
 
-INSERT INTO knapsack_data (weight,  cost)
+INSERT INTO knapsack_query(weight,  cost)
 VALUES
 (12, 4),
 (2, 2),
@@ -11,7 +12,7 @@ VALUES
 (1, 2);
 
 SELECT *
-FROM knapsack_data;
+FROM knapsack_query;
 
 SELECT *
-FROM vrp_knapsack($$SELECT weight, cost FROM knapsack_data$$, 3);
+FROM vrp_knapsack($$SELECT * FROM knapsack_query$$, 15);
