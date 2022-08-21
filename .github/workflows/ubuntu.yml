@@ -59,9 +59,9 @@ jobs:
             postgresql-${{ matrix.psql }}-pgrouting \
             postgresql-server-dev-${{ matrix.psql }} \
             postgresql-plpython3-${{ matrix.psql }}
+
       - name: Install Google OR-Tools dependencies 
         run: |
-          umask 022
           python -m pip install --upgrade --user ortools
 
       - name: Install VROOM dependencies
