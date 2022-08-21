@@ -8,52 +8,25 @@ SELECT * FROM pgr_cuthillMckeeOrdering(
   1);
  seq | node
 -----+------
-   1 |    8
-   2 |    3
+   1 |    0
+   2 |    0
    3 |    0
-   4 |    9
-   5 |    2
-   6 |    5
-   7 |    1
-   8 |    4
-   9 |    7
-  10 |    6
-(10 rows)
+   4 |    0
+   5 |    1
+   6 |    6
+   7 |    0
+   8 |   10
+   9 |    8
+  10 |    9
+  11 |   16
+  12 |    4
+  13 |   11
+  14 |   14
+  15 |   15
+  16 |    0
+  17 |    0
+(17 rows)
 
 /* -- q2 */
-
-SELECT * FROM pgr_cuthillMckeeOrdering(
-  'SELECT id, source, target, cost, reverse_cost FROM edges',
-  6);
- seq | node
------+------
-   1 |    8
-   2 |    3
-   3 |    0
-   4 |    9
-   5 |    2
-   6 |    5
-   7 |    1
-   8 |    4
-   9 |    7
-  10 |    6
-(10 rows)
-
-CREATE TABLE expected_result (
-  seq INTEGER,
-  node BIGINT);
-CREATE TABLE
-INSERT INTO expected_result (seq, node) VALUES
-(1, 8),
-(2, 3),
-(3, 0),
-(4, 9),
-(5, 2),
-(6, 5),
-(7, 1),
-(8, 4),
-(9, 7),
-(10, 6);
-INSERT 0 10
 ROLLBACK;
 ROLLBACK
