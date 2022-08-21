@@ -1,49 +1,138 @@
 BEGIN;
 
-
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(3);
+SELECT CASE WHEN NOT min_version('3.4.0') THEN plan(1) ELSE plan(10) END;
 
--- testing for the signature that they return the correct names & columns
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
 
-PREPARE v21q00 AS
-SELECT pg_typeof(seq)::text AS t1, pg_typeof(path_id)::text AS t2,
-    pg_typeof(path_seq)::text AS t3, pg_typeof(start_vid)::text AS t4,
-    pg_typeof(end_vid)::text AS t5, pg_typeof(node)::text AS t6,
-    pg_typeof(edge)::text AS t7, pg_typeof(cost)::text AS t8,
-    pg_typeof(agg_cost)::text AS t9
-    FROM (
-        SELECT * FROM pgr_hawickcircuits(
-            'SELECT id, source, target, cost, reverse_cost FROM edge_table'
-            )) AS a
-    limit 1
-;
+IF NOT min_version('3.4.0') THEN
+  RETURN QUERY
+  SELECT skip(1, 'Function is new on 3.4.0');
+  RETURN;
+END IF;
 
-PREPARE v21q01 AS
-SELECT  'integer'::text AS t1,'integer'::text AS t2,
-    'integer'::text AS t3,'bigint'::text AS t4,
-    'bigint'::text AS t5, 'bigint'::text AS t6,
-    'bigint'::text AS t7, 'double precision'::text AS t8,
-    'double precision'::text AS t9;
+-- 0 edge, 0 vertex test
 
-SELECT set_eq('v21q00', 'v21q01','Expected columns names');
+PREPARE q1 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edge_table
+WHERE id > 18;
 
+RETURN QUERY
+SELECT is_empty('q1', 'Graph with 0 edge and 0 vertex');
 
--- CHECKING WORKS WITH & WITOUT REVERSE COST
+PREPARE hawickCircuits1 AS
+SELECT * FROM pgr_hawickcircuits('q1');
 
-PREPARE v20q1 AS
-SELECT * FROM pgr_hawickcircuits(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table'
-    );
-
-PREPARE v20q3 AS
-SELECT * FROM pgr_hawickcircuits(
-    'SELECT id, source, target, cost FROM edge_table'   
-    );
-
-SELECT lives_ok('v20q1','with reverse cost');
-SELECT lives_ok('v20q3','with NO reverse cost');
+RETURN QUERY
+SELECT is_empty('hawickCircuits1', 'Graph with 0 edge and 0 vertex -> Empty row is returned');
 
 
-SELECT finish();
+-- 1 vertex test
+
+PREPARE q2 AS
+SELECT id, source, 2 AS target, cost, reverse_cost
+FROM edge_table
+WHERE id = 2;
+
+PREPARE hawickCircuits2 AS
+SELECT * FROM pgr_hawickCircuits('q2');
+
+RETURN QUERY
+SELECT is_empty('hawickCircuits2', 'One vertex graph can not have circuits -> Empty row is returned');
+
+
+-- 2 vertices test (connected)
+
+PREPARE q3 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edge_table
+WHERE id = 7;
+
+RETURN QUERY
+SELECT set_eq('q3', $$VALUES (7, 3, 7, 1, 1)$$, 'Graph with two connected vertices 3 and 7');
+
+PREPARE hawickCircuits3 AS
+SELECT * FROM pgr_hawickcircuits('q3');
+
+RETURN QUERY
+SELECT set_eq('hawickCircuits3',
+    $$VALUES
+        (1, 1, 0, 3, 3, 3, 7, 1, 0),
+        (2, 1, 1, 3, 3, 7, 7, 1, 1),
+        (3, 1, 2, 3, 3, 3, -1, 0, 2)
+    $$,
+    'Circuit between the vertex 3 and 7');
+
+-- 3 vertices test
+
+PREPARE q4 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edge_table
+WHERE id <= 2;
+
+RETURN QUERY
+SELECT set_eq('q4', $$VALUES (1, 5, 6, 1, 1), (2, 6, 10, -1, 1)$$, 'Graph with three vertices 5, 6 and 10');
+
+PREPARE hawickCircuits4 AS
+SELECT * FROM pgr_hawickCircuits('q4');
+
+RETURN QUERY
+SELECT set_eq('hawickCircuits4',
+    $$VALUES
+        (1, 1, 0, 5, 5, 5, 1, 1, 0),
+        (2, 1, 1, 5, 5, 6, 1, 1, 1),
+        (3, 1, 2, 5, 5, 5, -1, 0, 2)
+    $$,
+    'Circuit between 5 and 6 expected');
+
+-- 4 vertices test
+
+PREPARE q5 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edge_table
+WHERE id IN (3, 5, 9, 16);
+
+RETURN QUERY
+SELECT set_eq('q5',
+    $$VALUES
+        (5, 10, 11, 1, -1),
+        (3, 10, 15, -1, 1),
+        (9, 11, 16, 1, 1),
+        (16, 15, 16, 1, 1)
+    $$,
+    'Graph with four vertices 10, 11, 16 and 15'
+);
+
+PREPARE edgeColoring5 AS
+SELECT * FROM pgr_edgeColoring('q5');
+
+RETURN QUERY
+SELECT set_eq('edgeColoring4',
+    $$VALUES
+    (1, 1, 0, 10, 10, 10, 5, 1, 0),
+    (2, 1, 1, 10, 10, 11, 9, 1, 1),
+    (3, 1, 2, 10, 10, 16, 16, 1, 2),
+    (4, 1, 3, 10, 10, 15, 3, 1, 3),
+    (5, 1, 4, 10, 10, 10, -1, 0, 4),
+    (6, 2, 0, 11, 11, 11, 9, 1, 0),
+    (7, 2, 1, 11, 11, 16, 9, 1, 1),
+    (8, 2, 2, 11, 11, 11, -1, 0, 2),
+    (9, 3, 0, 15, 15, 15, 16, 1, 0),
+    (10, 3, 1, 15, 15, 16, 16, 1, 1),
+    (11, 3, 2, 15, 15, 15, -1, 0, 2)
+    $$,
+    'Circuit between 10->11->16->15->10, 11->16->11 & 15->16->15 expected');
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
+
+
+SELECT * FROM finish();
 ROLLBACK;
