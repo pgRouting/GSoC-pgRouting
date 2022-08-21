@@ -107,11 +107,11 @@ SELECT set_eq('q5',
     'Graph with four vertices 10, 11, 16 and 15'
 );
 
-PREPARE edgeColoring5 AS
-SELECT * FROM pgr_edgeColoring('q5');
+PREPARE hawickCircuits5 AS
+SELECT * FROM pgr_hawickCircuits('q5');
 
 RETURN QUERY
-SELECT set_eq('edgeColoring4',
+SELECT set_eq('hawickCircuits5',
     $$VALUES
     (1, 1, 0, 10, 10, 10, 5, 1, 0),
     (2, 1, 1, 10, 10, 11, 9, 1, 1),
@@ -132,7 +132,6 @@ $BODY$
 LANGUAGE plpgsql;
 
 SELECT edge_cases();
-
 
 SELECT * FROM finish();
 ROLLBACK;
