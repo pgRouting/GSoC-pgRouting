@@ -62,7 +62,10 @@ jobs:
 
       - name: Install Google OR-Tools dependencies 
         run: |
-          python -m pip install --upgrade --user ortools
+          sudo su
+          umask 022
+          pip3 install ortools
+          exit
 
       - name: Install VROOM dependencies
         run: |
