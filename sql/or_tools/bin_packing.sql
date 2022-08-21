@@ -24,6 +24,31 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
+/*
+.. signature start
+
+::
+
+    vrp_bin_packing(weight SQL, bin_capacity Integer [max_cycles])
+    RETURNS SET OF:
+        
+
+.. signature end
+
+.. parameters start
+
+================= ================== ========= =================================================
+Column            Type                Default    Description
+================= ================== ========= =================================================
+**weight SQL**    ``TEXT``                   `weight_cost SQL`_ query contianing the weights and cost of each item
+**bin_capacity**           ``INTEGER``                capacity of the Bin
+**max_rows**           ``INTEGER``    100000      Maximum number of items(rows) to fetch from table.
+
+================= ================== ========= =================================================
+
+.. parameters end
+
+*/
 DROP FUNCTION IF EXISTS vrp_bin_packing CASCADE;
 -- DROP TABLE IF EXISTS bin_packing_data CASCADE;
 

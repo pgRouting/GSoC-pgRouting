@@ -24,6 +24,32 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
+/*
+.. signature start
+
+::
+
+    vrp_multiple_knapsack(weight_cost SQL, capacities Integer[] [max_cycles])
+    RETURNS SET OF:
+        
+
+.. signature end
+
+.. parameters start
+
+================= ================== ========= =================================================
+Column            Type                Default    Description
+================= ================== ========= =================================================
+**weight_cost SQL**    ``TEXT``                   `weight_cost SQL`_ query contianing the weights and cost of each item
+**capacities**           ``INTEGER[]``                Capacities of each knapsack
+**max_rows**           ``INTEGER``    100000      Maximum number of items(rows) to fetch from table.
+
+================= ================== ========= =================================================
+
+.. parameters end
+
+*/
+
 DROP FUNCTION IF EXISTS vrp_multiple_knapsack CASCADE;
 -- DROP TABLE IF EXISTS multiple_knapsack_data CASCADE;
 
