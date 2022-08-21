@@ -24,30 +24,56 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
+/*
+.. signature start
+
+::
+
+    vrp_multiple_knapsack(weight_cost SQL, capacities Integer[] [max_cycles])
+    RETURNS SET OF:
+        
+
+.. signature end
+
+.. parameters start
+
+================= ================== ========= =================================================
+Column            Type                Default    Description
+================= ================== ========= =================================================
+**weight_cost SQL**    ``TEXT``                   `weight_cost SQL`_ query contianing the weights and cost of each item
+**capacities**           ``INTEGER[]``                Capacities of each knapsack
+**max_rows**           ``INTEGER``    100000      Maximum number of items(rows) to fetch from table.
+
+================= ================== ========= =================================================
+
+.. parameters end
+
+*/
+
 DROP FUNCTION IF EXISTS vrp_multiple_knapsack CASCADE;
-DROP TABLE IF EXISTS multiple_knapsack_data CASCADE;
+-- DROP TABLE IF EXISTS multiple_knapsack_data CASCADE;
 
-CREATE TABLE multiple_knapsack_data(
-  weight INTEGER,
-  cost INTEGER);
+-- CREATE TABLE multiple_knapsack_data(
+--   weight INTEGER,
+--   cost INTEGER);
 
-INSERT INTO multiple_knapsack_data (weight,  cost)
-VALUES
-(48, 10),
-(30, 30),
-(42, 25),
-(36, 50),
-(36, 35),
-(48, 30), 
-(42, 15), 
-(42, 40),
-(36, 30),
-(24, 35), 
-(30, 45), 
-(30, 10), 
-(42, 20), 
-(36, 30), 
-(36, 25);
+-- INSERT INTO multiple_knapsack_data (weight,  cost)
+-- VALUES
+-- (48, 10),
+-- (30, 30),
+-- (42, 25),
+-- (36, 50),
+-- (36, 35),
+-- (48, 30), 
+-- (42, 15), 
+-- (42, 40),
+-- (36, 30),
+-- (24, 35), 
+-- (30, 45), 
+-- (30, 10), 
+-- (42, 20), 
+-- (36, 30), 
+-- (36, 25);
 
 
 CREATE OR REPLACE FUNCTION vrp_multiple_knapsack(
@@ -62,7 +88,15 @@ AS $$
   except Exception as err:
     plpy.error(err)
     return "Failed"
-
+  
+  global max_rows
+  if inner_query == None:
+    raise Exception('Inner Query Cannot be NULL')
+  if capacities == None:
+    raise Exception('Capacity Cannot be NULL')
+  if max_rows == None:
+    max_rows = 100000
+  
   data = {}
   data['values'] = []
   data['weights'] = []
@@ -89,10 +123,10 @@ AS $$
   else:
     plpy.error("Expected columns weight and cost, Got ", colnames)
     return "Failed"  
-  if coltypes == [23, 23]:
+  if all(item in [20, 21, 23] for item in coltypes):
     plpy.notice("SQL query returned expected column types")
   else:
-    plpy.error("Returned columns of different type. Expected Integer, Integer")
+    raise Exception("Returned columns of different type. Expected Integer, Integer")
     
   plpy.notice('Finished Execution of inner query')
 
@@ -164,7 +198,7 @@ AS $$
     plpy.notice('The problem does not have an optimal solution.')
   plpy.notice('Exiting Multiple Knapsack program')
   return "Success"
-$$ LANGUAGE plpython3u VOLATILE STRICT;
+$$ LANGUAGE plpython3u VOLATILE;
 
 -- SELECT * FROM vrp_multiple_knapsack('SELECT * FROM multiple_knapsack_data', ARRAY[100,100,100,100,100]);
 

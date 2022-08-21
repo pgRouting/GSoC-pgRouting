@@ -1,5 +1,7 @@
 SET(LOCAL_FILES
     knapsack
+    multiple_knapsack
+    bin_packing
     )
 
 foreach (f ${LOCAL_FILES})

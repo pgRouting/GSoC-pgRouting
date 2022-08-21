@@ -11,6 +11,7 @@ gpush.sh
 vrprun.sh
 error_output.txt
 .vscode/
+vroom-v1.12.0/
 
 # files are ignored on gh-pages
 doxy

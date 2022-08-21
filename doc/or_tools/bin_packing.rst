@@ -12,7 +12,7 @@
   `Latest <https://vrp.pgrouting.org/latest/en/vrp_oneDepot.html>`__
   (`v0 <https://vrp.pgrouting.org/v0/en/vrp_oneDepot.html>`__)
 
-vrp_knapsack - Experimental
+vrp_bin_packing - Experimental
 ===============================================================================
 
 .. include:: experimental.rst
@@ -32,22 +32,23 @@ Version 0.0.0
 Description
 -------------------------------------------------------------------------------
 
-The knapsack problem is a problem in combinatorial optimization: 
-Given a set of items, each with a weight and a value, 
-Determine the number of each item to include in a collection 
-so that the total weight is less than or equal to a given limit and the total value is as large as possible
+The bin packing problem is an optimization problem, in which 
+items of different sizes must be packed into a finite number of bins or containers, 
+each of a fixed given capacity, in a way that minimizes the number of bins used. 
+The problem has many applications, such as filling up containers, loading trucks with weight capacity constraints, 
+creating file backups in media and technology mapping in FPGA semiconductor chip design.
 
 Signatures
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/knapsack.sql
+.. include:: ../sql/or_tools/bin_packing.sql
    :start-after: signature start
    :end-before: signature end
 
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/knapsack.sql
+.. include:: ../sql/or_tools/bin_packing.sql
    :start-after: parameters start
    :end-before: parameters end
 

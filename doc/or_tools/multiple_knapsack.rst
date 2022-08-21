@@ -12,7 +12,7 @@
   `Latest <https://vrp.pgrouting.org/latest/en/vrp_oneDepot.html>`__
   (`v0 <https://vrp.pgrouting.org/v0/en/vrp_oneDepot.html>`__)
 
-vrp_knapsack - Experimental
+vrp_multiple_knapsack - Experimental
 ===============================================================================
 
 .. include:: experimental.rst
@@ -32,22 +32,22 @@ Version 0.0.0
 Description
 -------------------------------------------------------------------------------
 
-The knapsack problem is a problem in combinatorial optimization: 
-Given a set of items, each with a weight and a value, 
-Determine the number of each item to include in a collection 
-so that the total weight is less than or equal to a given limit and the total value is as large as possible
+The multiple knapsack problem is a problem in combinatorial optimization: 
+it is a more general verison of the classic knapsack problem where instead of a
+single knapsack, you will be given multiple knapsacks and your goal is maximise the total
+value of packed items in all knapsacks.
 
 Signatures
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/knapsack.sql
+.. include:: ../sql/or_tools/multiple_knapsack.sql
    :start-after: signature start
    :end-before: signature end
 
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/knapsack.sql
+.. include:: ../sql/or_tools/multiple_knapsack.sql
    :start-after: parameters start
    :end-before: parameters end
 
