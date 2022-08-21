@@ -83,7 +83,7 @@ void do_cuthillMckeeOrdering(
 
         if (count == 0) {
             (*return_tuples) = NULL;
-            (*return_count) = 0; 
+            (*return_count) = 0;
             notice << "No results found";
             *log_msg = pgr_msg(log.str().c_str());
             return;

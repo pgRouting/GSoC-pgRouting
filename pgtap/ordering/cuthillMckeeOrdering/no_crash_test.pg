@@ -42,7 +42,7 @@ BEGIN
     'NULL'
     ]::TEXT[];
 
-    RETURN query SELECT * FROM no_crash_test('pgr_pgr_cuthillMckeeOrdering', params, subs);
+    RETURN query SELECT * FROM no_crash_test('pgr_cuthillMckeeOrdering', params, subs);
 
 END
 $BODY$

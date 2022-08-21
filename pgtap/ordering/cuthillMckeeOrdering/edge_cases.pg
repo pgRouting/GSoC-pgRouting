@@ -8,7 +8,7 @@ CREATE TABLE boost_data (
     source BIGINT,
     target BIGINT,
     cost FLOAT,
-)
+);
 
 CREATE TABLE expected_result (
   seq INTEGER,

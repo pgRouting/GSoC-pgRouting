@@ -3,7 +3,10 @@ SELECT * FROM pgr_cuthillMckeeOrdering(
   'SELECT id, source, target, cost, reverse_cost FROM edges',
   1);
 /* -- q2 */
--- below this line are for becoming pgTap tests
+
+
+
+-- added to pgtap test
 SELECT * FROM pgr_cuthillMckeeOrdering(
   'SELECT id, source, target, cost, reverse_cost FROM edges',
   6);
@@ -13,13 +16,20 @@ CREATE TABLE expected_result (
   node BIGINT);
 
 INSERT INTO expected_result (seq, node) VALUES
-(1, 8),
-(2, 3),
-(3, 0), 
-(4, 9),
-(5, 2),
-(6, 5),
-(7, 1),
-(8, 4),
-(9, 7),
-(10, 6);
+(1, 13),
+(2, 14),
+(3, 12), 
+(4, 15),
+(5, 7),
+(6, 11),
+(7, 9),
+(8, 10),
+(9, 8),
+(10, 6),
+(11, 4),
+(12, 5),
+(13, 3),
+(14, 2),
+(15, 1),
+(16, 16),
+(17, 17);

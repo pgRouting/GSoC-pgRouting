@@ -40,7 +40,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/properties.hpp>
 #include <boost/graph/cuthill_mckee_ordering.hpp>
-#include <boost/property_map/property_map.hpp>
 
 #include <algorithm>
 #include <vector>
@@ -64,14 +63,14 @@ namespace pgrouting {
 namespace functions {
 
 template <class G>
-class CuthillMckeeOrdering : public Pgr_messages{
+class CuthillMckeeOrdering : public Pgr_messages {
  public:
 
 #if 1
-   
+
     typedef typename G::V V;
     typedef typename G::E E;
-    typedef boost::adjacency_list<boost::vecS,boost::vecS,boost::undirectedS> Graph;
+    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
     typedef boost::graph_traits<Graph>::vertices_size_type size_type;
     typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
@@ -88,6 +87,10 @@ class CuthillMckeeOrdering : public Pgr_messages{
         std::vector <size_type> colors(boost::num_vertices(graph.graph));
         auto color_map = boost::make_iterator_property_map(&colors[0], i_map, colors[0]);
         auto out_deg = boost::make_out_degree_map(graph.graph);
+#if 0
+        auto index_map = boost::property_map<Graph, boost::vertex_index_t>
+        index_map = boost::get(boost::vertex_index, graph.graph);
+#endif
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
 
@@ -121,18 +124,25 @@ class CuthillMckeeOrdering : public Pgr_messages{
       */
      std::vector <II_t_rt> get_results(
             std::vector <size_type> & inv_perm,
-            const G & graph) {
+            const G &graph) {
             std::vector <II_t_rt> results;
-
-         typename boost::graph_traits <Graph> ::vertex_iterator v, vend;
- 
-         for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
-             auto seq = graph[*v].id;
-             auto order = inv_perm[*v];
-             results.push_back({{seq}, {static_cast<int64_t>(order + 1)}});
-         }
 #if 0
-          for (size_type c = 0; c != inv_perm.size(); ++c)
+        typename boost::graph_traits <Graph> ::vertex_iterator v, vend;
+
+        for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
+            auto seq = graph[*v].id;
+            auto order = inv_perm[*v];
+            results.push_back({{seq}, {static_cast<int64_t>(order + 1)}});
+#endif
+        for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
+             i != inv_perm.end(); ++i) {
+            log << inv_perm[*i] << " ";
+            auto seq = graph[*i].id;
+            results.push_back({{seq}, {static_cast<int64_t>(graph.graph[*i].id)}});
+            seq++;
+            }
+#if 0
+        for (size_type c = 0; c != inv_perm.size(); ++c)
             perm[i_map[inv_perm[c]]] = c;
 #endif
             return results;
