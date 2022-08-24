@@ -133,6 +133,7 @@ class CuthillMckeeOrdering : public Pgr_messages {
             auto seq = graph[*v].id;
             auto order = inv_perm[*v];
             results.push_back({{seq}, {static_cast<int64_t>(order + 1)}});
+        }
 #endif
         for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
              i != inv_perm.end(); ++i) {
@@ -141,6 +142,15 @@ class CuthillMckeeOrdering : public Pgr_messages {
             results.push_back({{seq}, {static_cast<int64_t>(graph.graph[*i].id)}});
             seq++;
             }
+#if 0
+         int seq=1;
+        for (auto i:inv_perm) {
+            // log << inv_perm[*i] << " ";
+            // auto seq = graph[*i].id;
+            results.push_back({{seq}, {static_cast<int64_t>(i)}});
+            seq++;
+            }
+#endif
 #if 0
         for (size_type c = 0; c != inv_perm.size(); ++c)
             perm[i_map[inv_perm[c]]] = c;
