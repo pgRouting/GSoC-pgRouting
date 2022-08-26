@@ -84,10 +84,12 @@ class CuthillMckeeOrdering : public Pgr_messages {
         Vertex s = boost::vertex(start_v, graph.graph);
         std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
         std::vector<size_type> perm(boost::num_vertices(graph.graph));
-        std::vector <size_type> colors(boost::num_vertices(graph.graph));
+        std::vector <boost::default_color_type> colors(boost::num_vertices(graph.graph));
         auto color_map = boost::make_iterator_property_map(&colors[0], i_map, colors[0]);
         auto out_deg = boost::make_out_degree_map(graph.graph);
 #if 0
+        auto out_deg = boost::get(boost::vertex_degree, graph.graph);
+        auto vertexcolor = boost::get(boost::vertex_color, graph.graph);
         auto index_map = boost::property_map<Graph, boost::vertex_index_t>
         index_map = boost::get(boost::vertex_index, graph.graph);
 #endif
@@ -95,7 +97,7 @@ class CuthillMckeeOrdering : public Pgr_messages {
          CHECK_FOR_INTERRUPTS();
 
          try {
-             boost::cuthill_mckee_ordering(graph.graph, s, inv_perm.rbegin(), color_map, out_deg);
+             boost::cuthill_mckee_ordering(graph.graph, inv_perm.rbegin(), color_map, out_deg);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
