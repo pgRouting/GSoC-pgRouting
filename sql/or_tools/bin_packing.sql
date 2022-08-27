@@ -5,7 +5,7 @@ Copyright (c) 2022 GSoC-2022 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2021 Manas Sivakumar
+Copyright (c) 2022 Manas Sivakumar
 
 ------
 
@@ -25,29 +25,81 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 /*
-.. signature start
+signature start
+
+.. code-block:: none
+
+    vrp_bin_packing(
+      Weights SQL, bin_capacity ANY-INTEGER, [, max_rows])
+
+    RETURNS SET OF
+    (bin_number, item_id)
+
+signature end
+
+parameters start
+
+============================== =========== =========================================================
+Parameter                      Type             Description
+============================== =========== =========================================================
+**Weights SQL**                ``TEXT``         `Weights SQL`_ query describing the weight of each item
+
+**Bin_Capacity**               ``ANY-INTEGER``   Maximum Capacity of the bin.
+============================== =========== =========================================================
+
+parameters end
+
+optional parameters start
+
+===================== ============ ============================= =================================================
+Parameter             Type         Default                       Description
+===================== ============ ============================= =================================================
+**max_rows**          ``ANY-INTEGER``  :math:`100000`            Maximum items(rows) to fetch from bin_packing_data
+                                                                 table
+===================== ============ ============================= =================================================
+
+optional parameters end
+
+.. Weights start
+
+A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    vrp_bin_packing(weight SQL, bin_capacity Integer [max_cycles])
-    RETURNS SET OF:
-        
+    id, weight
 
-.. signature end
 
-.. parameters start
+====================  =========================  =========== ================================================
+Column                Type                       Default     Description
+====================  =========================  =========== ================================================
+**id**                ``ANY-INTEGER``                        unique identifier of the item.
 
-================= ================== ========= =================================================
-Column            Type                Default    Description
-================= ================== ========= =================================================
-**weight SQL**    ``TEXT``                   `weight_cost SQL`_ query contianing the weights and cost of each item
-**bin_capacity**           ``INTEGER``                capacity of the Bin
-**max_rows**           ``INTEGER``    100000      Maximum number of items(rows) to fetch from table.
+**weight**            ``ANY-INTEGER``                        weight of the item.
+====================  =========================  =========== ================================================
 
-================= ================== ========= =================================================
+.. Weights end
 
-.. parameters end
+result start
 
+Returns set of
+
+.. code-block:: none
+
+    (bin_number, item_id)
+
+=================== ================= =================================================
+Column              Type              Description
+=================== ================= =================================================
+**bin_number**       ``ANY-INTEGER``       Integer to uniquely identify a bin
+
+**item_id**          ``ANY-INTEGER``       Integer to uniquely identify an item in the 
+                                           bin
+=================== ================= =================================================
+result end
+
+**Note**:
+
+- ANY-INTEGER: [SMALLINT, INTEGER, BIGINT]
 */
 DROP FUNCTION IF EXISTS vrp_bin_packing CASCADE;
 -- DROP TABLE IF EXISTS bin_packing_data CASCADE;

@@ -40,26 +40,40 @@ value of packed items in all knapsacks.
 Signatures
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/multiple_knapsack.sql
+.. include:: ../../sql/or_tools/multiple_knapsack.sql
    :start-after: signature start
    :end-before: signature end
 
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/multiple_knapsack.sql
+.. include:: ../../sql/or_tools/multiple_knapsack.sql
    :start-after: parameters start
    :end-before: parameters end
+
+Optional Parameters
+...............................................................................
+
+.. include:: ../../sql/or_tools/multiple_knapsack.sql
+   :start-after: optional parameters start
+   :end-before: optional parameters end
 
 Inner Queries
 -------------------------------------------------------------------------------
 
-* TBD
+Weights_Costs SQL
+...............................................................................
+
+.. include:: ../../sql/or_tools/multiple_knapsack.sql
+   :start-after: Weights_Costs start
+   :end-before: Weights_Costs end
 
 Result Columns
 -------------------------------------------------------------------------------
 
-* TBD
+.. include:: ../../sql/or_tools/multiple_knapsack.sql
+   :start-after: result start
+   :end-before: result end
 
 Example
 -------------------------------------------------------------------------------

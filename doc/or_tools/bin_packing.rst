@@ -41,26 +41,40 @@ creating file backups in media and technology mapping in FPGA semiconductor chip
 Signatures
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/bin_packing.sql
+.. include:: ../../sql/or_tools/bin_packing.sql
    :start-after: signature start
    :end-before: signature end
 
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/bin_packing.sql
+.. include:: ../../sql/or_tools/bin_packing.sql
    :start-after: parameters start
    :end-before: parameters end
+
+Optional Parameters
+...............................................................................
+
+.. include:: ../../sql/or_tools/bin_packing.sql
+   :start-after: optional parameters start
+   :end-before: optional parameters end
 
 Inner Queries
 -------------------------------------------------------------------------------
 
-* TBD
+Weights SQL
+...............................................................................
+
+.. include:: ../../sql/or_tools/bin_packing.sql
+   :start-after: Weights start
+   :end-before: Weights end
 
 Result Columns
 -------------------------------------------------------------------------------
 
-* TBD
+.. include:: ../../sql/or_tools/bin_packing.sql
+   :start-after: result start
+   :end-before: result end
 
 Example
 -------------------------------------------------------------------------------

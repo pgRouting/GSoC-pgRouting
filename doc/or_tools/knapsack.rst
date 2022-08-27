@@ -40,26 +40,40 @@ so that the total weight is less than or equal to a given limit and the total va
 Signatures
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/knapsack.sql
+.. include:: ../../sql/or_tools/knapsack.sql
    :start-after: signature start
    :end-before: signature end
 
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: ../sql/or_tools/knapsack.sql
+.. include:: ../../sql/or_tools/knapsack.sql
    :start-after: parameters start
    :end-before: parameters end
+
+Optional Parameters
+...............................................................................
+
+.. include:: ../../sql/or_tools/knapsack.sql
+   :start-after: optional parameters start
+   :end-before: optional parameters end
 
 Inner Queries
 -------------------------------------------------------------------------------
 
-* TBD
+Weights_Costs SQL
+...............................................................................
+
+.. include:: ../../sql/or_tools/knapsack.sql
+   :start-after: Weights_Costs start
+   :end-before: Weights_Costs end
 
 Result Columns
 -------------------------------------------------------------------------------
 
-* TBD
+.. include:: ../../sql/or_tools/knapsack.sql
+   :start-after: result start
+   :end-before: result end
 
 Example
 -------------------------------------------------------------------------------
