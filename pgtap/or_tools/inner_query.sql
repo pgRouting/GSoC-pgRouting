@@ -1,7 +1,7 @@
 BEGIN;
 SET search_path TO 'ortools', 'public';
 
-SELECT CASE WHEN min_version('0.3.0') THEN plan (30) ELSE plan(1) END;
+SELECT CASE WHEN min_version('0.3.0') THEN plan (48) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION test_value(fn TEXT, inner_query_table TEXT, start_sql TEXT, rest_sql TEXT, params TEXT[], parameter TEXT, accept TEXT[], reject TEXT[])
 RETURNS SETOF TEXT AS
@@ -69,23 +69,28 @@ BEGIN
   inner_query_table := 'knapsack_data';
   start_sql := '';
   rest_sql := ', 15)';
-  params := ARRAY['weight', 'cost'];
+  params := ARRAY['id', 'weight', 'cost'];
+  RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'id');
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'weight');
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'cost');
 
+  -- vrp_multiple_knapsack
   fn := 'vrp_multiple_knapsack';
   inner_query_table := 'multiple_knapsack_data';
   start_sql := '';
   rest_sql := ', ARRAY[100,100,100,100,100])';
-  params := ARRAY['weight', 'cost'];
+  params := ARRAY['id', 'weight', 'cost'];
+  RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'id');
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'weight');
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'cost');
-
+  
+  -- bin_packing
   fn := 'vrp_bin_packing';
   inner_query_table := 'bin_packing_data';
   start_sql := '';
   rest_sql := ', 100)';
-  params := ARRAY['weight'];
+  params := ARRAY['id', 'weight'];
+  RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'id');
   RETURN QUERY SELECT test_anyInteger(fn, inner_query_table, start_sql, rest_sql, params, 'weight');
 
 END;
