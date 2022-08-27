@@ -53,20 +53,20 @@ Column            Type                Default    Description
 */
 
 DROP FUNCTION IF EXISTS vrp_knapsack CASCADE;
-DROP TABLE IF EXISTS knapsack_data;
+-- DROP TABLE IF EXISTS knapsack_data;
 
-CREATE TABLE knapsack_data(
-  id INTEGER,
-  weight INTEGER,
-  cost INTEGER);
+-- CREATE TABLE knapsack_data(
+--   id INTEGER,
+--   weight INTEGER,
+--   cost INTEGER);
 
-INSERT INTO knapsack_data (id, weight,  cost)
-VALUES
-(1, 12, 4),
-(2, 2, 2),
-(3, 1, 1),
-(4, 4, 10),
-(5, 1, 2);
+-- INSERT INTO knapsack_data (id, weight,  cost)
+-- VALUES
+-- (1, 12, 4),
+-- (2, 2, 2),
+-- (3, 1, 1),
+-- (4, 4, 10),
+-- (5, 1, 2);
 
 CREATE OR REPLACE FUNCTION vrp_knapsack(
   inner_query TEXT, -- weights_cost SQL

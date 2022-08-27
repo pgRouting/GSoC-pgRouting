@@ -50,15 +50,15 @@ Column            Type                Default    Description
 
 */
 DROP FUNCTION IF EXISTS vrp_bin_packing CASCADE;
-DROP TABLE IF EXISTS bin_packing_data CASCADE;
+-- DROP TABLE IF EXISTS bin_packing_data CASCADE;
 
-CREATE TABLE bin_packing_data(
-  id INTEGER,
-  weight INTEGER);
+-- CREATE TABLE bin_packing_data(
+--   id INTEGER,
+--   weight INTEGER);
 
-INSERT INTO bin_packing_data (id, weight)
-VALUES
-(1, 48), (2, 30), (3, 19), (4, 36), (5, 36), (6, 27), (7, 42), (8, 42), (9, 36), (10, 24), (11, 30);
+-- INSERT INTO bin_packing_data (id, weight)
+-- VALUES
+-- (1, 48), (2, 30), (3, 19), (4, 36), (5, 36), (6, 27), (7, 42), (8, 42), (9, 36), (10, 24), (11, 30);
 
 
 CREATE OR REPLACE FUNCTION vrp_bin_packing(
@@ -166,7 +166,7 @@ AS $$
 
 $$ LANGUAGE plpython3u VOLATILE;
 
--- SELECT * FROM vrp_bin_packing('SELECT * FROM bin_packing_data', 100);
+-- SELECT * FROM vrp_bin_packing('SELECT id, weight FROM bin_packing_data', 100);
 
 -- COMMENTS
 
