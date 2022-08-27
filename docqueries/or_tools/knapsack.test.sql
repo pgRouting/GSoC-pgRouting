@@ -16,4 +16,4 @@ SELECT *
 FROM knapsack_query;
 
 SELECT * 
-FROM vrp_knapsack($$SELECT * FROM knapsack_query$$, 15)
+FROM vrp_knapsack($$SELECT * FROM knapsack_query$$, 15);
