@@ -33,7 +33,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 CREATE FUNCTION _pgr_cuthillMckeeOrdering(
     TEXT,
-    BIGINT,
     OUT seq BIGINT,
     OUT node BIGINT
     )
@@ -44,6 +43,6 @@ LANGUAGE C IMMUTABLE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_cuthillMckeeOrdering(TEXT, BIGINT)
+COMMENT ON FUNCTION _pgr_cuthillMckeeOrdering(TEXT)
 IS 'pgRouting internal function';
  

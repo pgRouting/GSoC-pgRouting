@@ -62,12 +62,12 @@ Signatures
 
 .. parsed-literal::
 
-    cuthillMckeeOrdering(`Edges SQL`_, **start vid**)
+    cuthillMckeeOrdering(`Edges SQL`_)
 
     RETURNS SET OF (seq, node)
     OR EMPTY SET
 
-:Example:
+:Example: Graph ordering of pgRouting :doc:`sampledata`
 
 .. literalinclude:: cuthillMckeeOrdering.queries
    :start-after: -- q1
@@ -106,6 +106,7 @@ See Also
 
 .. see also start
 
+* :doc:`sampledata`
 * `Boost: Cuthill-McKee Ordering
   <https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html>`__
 

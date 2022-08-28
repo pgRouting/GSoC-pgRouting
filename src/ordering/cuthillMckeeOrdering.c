@@ -27,14 +27,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
-#include "utils/array.h"
 
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
 #include "c_common/edges_input.h"
-#include "c_common/arrays_input.h"
 #include "c_types/ii_t_rt.h"
 
 
@@ -47,7 +45,6 @@ static
 void
 process(
     char* edges_sql,
-    int64_t start_vid,
 
     II_t_rt **result_tuples,
     size_t *result_count) {
@@ -78,7 +75,6 @@ process(
 
     do_cuthillMckeeOrdering(
             edges, total_edges,
-            start_vid,
             result_tuples,
             result_count,
             &log_msg,
@@ -122,7 +118,6 @@ _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
-                PG_GETARG_INT64(1),
                 &result_tuples,
                 &result_count);
 
@@ -162,10 +157,8 @@ _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-#if 1
         values[0] = Int64GetDatum(funcctx->call_cntr + 1);
         values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2.value);
-#endif
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

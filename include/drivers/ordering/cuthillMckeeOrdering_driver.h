@@ -51,7 +51,6 @@ extern "C" {
 void
 do_cuthillMckeeOrdering(
         Edge_t*,  size_t,   // edges
-        int64_t,  // starting vertex
 
         II_t_rt**,  size_t*,  // results
 
