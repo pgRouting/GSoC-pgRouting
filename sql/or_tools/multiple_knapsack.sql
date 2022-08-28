@@ -39,28 +39,27 @@ signature end
 
 parameters start
 
-============================== =========== =========================================================
-Parameter                      Type             Description
-============================== =========== =========================================================
-**Weights SQL**                ``TEXT``                `Weights SQL`_ query describing the weight of each item
-
-**Capacities**                 ``ARRAY[ANY-INTEGER]``   An array describing the capacity of each knapsack
-============================== =========== =========================================================
+============================== ======================= =========================================================
+Parameter                      Type                    Description
+============================== ======================= =========================================================
+**Weights_Costs SQL**                ``TEXT``                `Weights_Costs SQL`_ query describing the weight of each item
+**Capacities**                 ``ARRAY[ANY-INTEGER]``  An array describing the capacity of each knapsack
+============================== ======================= =========================================================
 
 parameters end
 
 optional parameters start
 
-===================== ============ ============================= =================================================
-Parameter             Type         Default                       Description
-===================== ============ ============================= =================================================
-**max_rows**          ``ANY-INTEGER``  :math:`100000`            Maximum items(rows) to fetch from bin_packing_data
-                                                                 table
-===================== ============ ============================= =================================================
+===================== ================ ============================= =================================================
+Parameter             Type             Default                       Description
+===================== ================ ============================= =================================================
+**max_rows**          ``ANY-INTEGER``  :math:`100000`                Maximum items(rows) to fetch from bin_packing_data
+                                                                     table
+===================== ================ ============================= =================================================
 
 optional parameters end
 
-.. Weights_Cost start
+.. Weights_Costs start
 
 A ``SELECT`` statement that returns the following columns:
 
@@ -79,7 +78,7 @@ Column                Type                       Default     Description
 **cost**              ``ANY-INTEGER``                        cost of the item.
 ====================  =========================  =========== ================================================
 
-.. Weights end
+.. Weights_Costs end
 
 result start
 
@@ -92,10 +91,10 @@ Returns set of
 =================== ================= =================================================
 Column              Type              Description
 =================== ================= =================================================
-**knapsack_number**  ``ANY-INTEGER``       Integer to uniquely identify a knapsack
+**knapsack_number**  ``ANY-INTEGER``  Integer to uniquely identify a knapsack
 
-**item_id**          ``ANY-INTEGER``       Integer to uniquely identify an item in the 
-                                           bin
+**item_id**          ``ANY-INTEGER``  Integer to uniquely identify an item in the 
+                                      bin
 =================== ================= =================================================
 result end
 
