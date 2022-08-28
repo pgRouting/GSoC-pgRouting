@@ -55,6 +55,7 @@ Terminologies
 
 - **weight**: For each item, a positive integer weight is associated with it.
 - **cost**: For each item, a positive integer cost(value) is associated with it.
+- **capacity**: Maximum storage capacity of a knapsack or a bin.
 
 Inner Queries
 -------------------------------------------------------------------------------
