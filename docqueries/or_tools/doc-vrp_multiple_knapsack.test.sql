@@ -23,8 +23,10 @@ VALUES
 (14, 36, 30), 
 (15, 36, 25);
 
+/* -- example_start */
 SELECT * 
 FROM multiple_knapsack_query;
 
 SELECT * 
 FROM vrp_multiple_knapsack('SELECT id, weight, cost FROM multiple_knapsack_query', ARRAY[100,100,100,100,100]);
+/* -- example_end */

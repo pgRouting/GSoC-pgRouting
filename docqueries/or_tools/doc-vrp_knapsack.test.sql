@@ -12,8 +12,10 @@ VALUES
 (4, 4, 10),
 (5, 1, 2);
 
+/* -- example_start */
 SELECT *
 FROM knapsack_query;
 
 SELECT * 
 FROM vrp_knapsack($$SELECT * FROM knapsack_query$$, 15);
+/* -- example_end */

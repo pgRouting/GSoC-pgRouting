@@ -28,6 +28,7 @@ VALUES
 (14, 36, 30), 
 (15, 36, 25);
 INSERT 0 15
+/* -- example_start */
 SELECT * 
 FROM multiple_knapsack_query;
  id | weight | cost 
@@ -67,5 +68,6 @@ FROM vrp_multiple_knapsack('SELECT id, weight, cost FROM multiple_knapsack_query
                5 |       8
 (12 rows)
 
+/* -- example_end */
 ROLLBACK;
 ROLLBACK

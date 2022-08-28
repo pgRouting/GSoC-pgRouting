@@ -13,6 +13,7 @@ INSERT INTO bin_packing_query (id, weight)
 VALUES
 (1, 48), (2, 30), (3, 19), (4, 36), (5, 36), (6, 27), (7, 42), (8, 42), (9, 36), (10, 24), (11, 30);
 INSERT 0 11
+/* -- example_start */
 SELECT *
 FROM bin_packing_query;
  id | weight 
@@ -47,5 +48,6 @@ FROM vrp_bin_packing('SELECT id, weight FROM bin_packing_query', 100);
           4 |      11
 (11 rows)
 
+/* -- example_end */
 ROLLBACK;
 ROLLBACK
