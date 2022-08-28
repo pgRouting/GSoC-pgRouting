@@ -57,7 +57,7 @@ CREATE FUNCTION greet (how text)
 AS $$
   for who in [ "World", "PostgreSQL", "PL/Python" ]:
     yield ( how, who )
-  for i in range(10):
+  for i in range(3):
     yield (how, 'World')
 $$ LANGUAGE plpython3u;
 

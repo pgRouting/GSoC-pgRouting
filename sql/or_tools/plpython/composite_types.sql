@@ -24,13 +24,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
-DROP FUNCTION IF EXISTS overpaid;
-DROP FUNCTION IF EXISTS make_pair;
-DROP FUNCTION IF EXISTS make_pair_dict;
-DROP FUNCTION IF EXISTS multiout_simple;
-DROP TABLE IF EXISTS employee;
-DROP TYPE IF EXISTS named_value;
-DROP PROCEDURE IF EXISTS python_triple;
+DROP FUNCTION IF EXISTS overpaid CASCADE;
+DROP FUNCTION IF EXISTS make_pair CASCADE;
+DROP FUNCTION IF EXISTS make_pair1 CASCADE;
+DROP FUNCTION IF EXISTS make_pair0 CASCADE;
+DROP FUNCTION IF EXISTS make_pair_dict CASCADE;
+DROP FUNCTION IF EXISTS multiout_simple CASCADE;
+DROP TABLE IF EXISTS employee CASCADE;
+DROP TYPE IF EXISTS named_value CASCADE;
+DROP PROCEDURE IF EXISTS python_triple CASCADE;
+DROP TYPE IF EXISTS employees CASCADE;
+
 
 CREATE TABLE employee (
   name text,
@@ -55,7 +59,7 @@ AS $$
 $$ LANGUAGE plpython3u;
 
 --output is a composite type
-CREATE FUNCTION make_pair (name text, value integer)
+CREATE FUNCTION make_pair0 (name text, value integer)
   RETURNS named_value[]
 AS $$
   return (( name, value ), (name, value))
@@ -82,3 +86,25 @@ AS $$
 $$ LANGUAGE plpython3u;
 
 -- CALL python_triple(5, 10);
+
+CREATE TYPE employees AS (
+  name   text,
+  salary  integer
+);
+
+CREATE FUNCTION make_pair1 (person employees)
+  RETURNS setof employees
+AS $$
+  return person, person
+  # or alternatively, as list: return [ name, value ]
+$$ LANGUAGE plpython3u;
+
+CREATE FUNCTION make_pair3 (name text, value integer)
+  RETURNS named_value
+AS $$
+  class named_value:
+    def __init__ (self, n, v):
+      self.name = n
+      self.value = v
+  return named_value(name, value)
+$$ LANGUAGE plpython3u;
