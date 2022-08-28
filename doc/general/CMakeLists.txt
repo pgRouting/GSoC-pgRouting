@@ -12,6 +12,7 @@ SET(LOCAL_FILES
     support.rst
     pgr-category.rst
     vroom-category.rst
+    or_tools-category.rst
     )
 
 foreach (f ${LOCAL_FILES})
