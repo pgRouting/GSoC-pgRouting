@@ -50,9 +50,6 @@ Parameters
    * - `Edges SQL`_
      - ``TEXT``
      - `Edges SQL`_ as described below.
-   * - **start vid**
-     - ``BIGINT``
-     - Identifier of the starting vertex
 
 .. parameters_end
 
