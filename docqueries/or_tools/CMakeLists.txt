@@ -1,7 +1,7 @@
 SET(LOCAL_FILES
-    knapsack
-    multiple_knapsack
-    bin_packing
+    doc-vrp_knapsack
+    doc-vrp_multiple_knapsack
+    doc-vrp_bin_packing
     )
 
 foreach (f ${LOCAL_FILES})

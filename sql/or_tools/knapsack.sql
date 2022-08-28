@@ -6,7 +6,7 @@ Copyright (c) 2022 GSoC-2022 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2021 Manas Sivakumar
+Copyright (c) 2022 Manas Sivakumar
 
 ------
 
@@ -27,58 +27,110 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 /*
-.. signature start
+signature start
+
+.. code-block:: none
+
+    vrp_knapsack(
+      Weights_Costs SQL, capacity ANY-INTEGER, [, max_rows])
+
+    RETURNS SET OF
+    (item_id)
+
+signature end
+
+parameters start
+
+============================== ================ =========================================================
+Parameter                      Type             Description
+============================== ================ =========================================================
+**Weights_Costs SQL**          ``TEXT``         `Weights_Costs SQL`_ query describing the weights and
+                                                cost of each item
+**Capacity**                   ``ANY-INTEGER``  Maximum Capacity of the knapsack.
+============================== ================ =========================================================
+
+parameters end
+
+optional parameters start
+
+===================== =============== ================================== =================================================
+Parameter             Type            Default                            Description
+===================== =============== ================================== =================================================
+**max_rows**          ``ANY-INTEGER`` :math:`100000`                     Maximum items(rows) to fetch from knapsack_data
+                                                                         table
+===================== =============== ================================== =================================================
+
+optional parameters end
+
+.. Weights_Costs start
+
+A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    vrp_knapsack(weight_cost SQL, capacity Integer [max_cycles])
-    RETURNS SET OF:
-        
+    id, weight, cost
 
-.. signature end
 
-.. parameters start
+====================  =========================  =========== ================================================
+Column                Type                       Default     Description
+====================  =========================  =========== ================================================
+**id**                ``ANY-INTEGER``                        unique identifier of the item.
 
-================= ================== ========= =================================================
-Column            Type                Default    Description
-================= ================== ========= =================================================
-**weight_cost SQL**    ``TEXT``                   `weight_cost SQL`_ query contianing the weights and cost of each item
-**capacity**           ``INTEGER``                Capacity of the knapsack
-**max_rows**           ``INTEGER``    100000      Maximum number of items(rows) to fetch from table.
+**weight**            ``ANY-INTEGER``                        weight of the item.
 
-================= ================== ========= =================================================
+**cost**              ``ANY-INTEGER``                        cost of the item.
+====================  =========================  =========== ================================================
 
-.. parameters end
+.. Weights_Costs end
 
+result start
+
+Returns set of
+
+.. code-block:: none
+
+    (item_id)
+
+=================== ================= =================================================
+Column              Type              Description
+=================== ================= =================================================
+**item_id**         ``ANY-INTEGER``   Integer to uniquely identify an item in the 
+                                      knapsack
+=================== ================= =================================================
+result end
+
+**Note**:
+
+- ANY-INTEGER: [SMALLINT, INTEGER, BIGINT]
 */
 
 DROP FUNCTION IF EXISTS vrp_knapsack CASCADE;
-DROP TABLE IF EXISTS knapsack_data;
+-- DROP TABLE IF EXISTS knapsack_data;
 
-CREATE TABLE knapsack_data(
-  weight NUMERIC,
-  cost INTEGER);
+-- CREATE TABLE knapsack_data(
+--   id INTEGER,
+--   weight INTEGER,
+--   cost INTEGER);
 
-INSERT INTO knapsack_data (weight,  cost)
-VALUES
-(12, 4),
-(2, 2),
-(1, 1),
-(4, 10),
-(1, 2);
+-- INSERT INTO knapsack_data (id, weight,  cost)
+-- VALUES
+-- (1, 12, 4),
+-- (2, 2, 2),
+-- (3, 1, 1),
+-- (4, 4, 10),
+-- (5, 1, 2);
 
 CREATE OR REPLACE FUNCTION vrp_knapsack(
   inner_query TEXT, -- weights_cost SQL
   capacity INTEGER, -- Knapsack Capacity
   max_rows INTEGER = 100000 -- Maximum number of rows to be fetched. Default is 100000.
 )
-RETURNS TEXT
+RETURNS TABLE(item_id INTEGER)
 AS $$
   try:
     from ortools.algorithms import pywrapknapsack_solver
   except Exception as err:
     plpy.error(err)
-    return "Failed"
   
   global max_rows
   if inner_query == None:
@@ -93,44 +145,39 @@ AS $$
     KNAPSACK_MULTIDIMENSION_BRANCH_AND_BOUND_SOLVER, 'KnapsackExample')
   except:
     plpy.error('Unable to Initialize Knapsack Solver')
-    return "Failed"
   
   capacities = []
   capacities.append(capacity)
 
-  plpy.notice('Entering Knapsack program')
-  plpy.notice('Starting Execution of inner query')
+  # Program Execution Starts here
 
   try:
     inner_query_result = plpy.execute(inner_query, max_rows)
     num_of_rows = inner_query_result.nrows()
     colnames = inner_query_result.colnames()
     coltypes = inner_query_result.coltypes()
-    plpy.info("Number of rows processed : ", num_of_rows)
   except plpy.SPIError as error_msg:
-    plpy.info("Details: ",error_msg)
     plpy.error("Error Processing Inner Query. The given query is not a valid SQL command")
-    return "Failed"
   
-  if len(colnames) != 2:
-    plpy.error("Expected 2 columns, Got ", len(colnames))
-    return "Failed"
-  if ('weight' in colnames) and ('cost' in colnames):
-    plpy.notice("SQL query returned expected column names")
+  if len(colnames) != 3:
+    plpy.error("Expected 3 columns, Got ", len(colnames))
+  if ('weight' in colnames) and ('cost' in colnames) and ('id' in colnames):
+    # got correct column names
+    pass
   else:
-    plpy.error("Expected columns weight and cost, Got ", colnames)
-    return "Failed"  
+    plpy.error("Expected columns weight and cost, Got ", colnames) 
   if all(item in [20, 21, 23] for item in coltypes):
-    plpy.notice("SQL query returned expected column types")
+    # got correct column types
+    pass
   else:
     raise Exception("Returned columns of different type. Expected Integer, Integer")
 
-  plpy.notice('Finished Execution of inner query')
-
+  ids = []
   values = []
   weight1 = []
   weights =[]
   for i in range(num_of_rows):
+    ids.append(inner_query_result[i]["id"])
     values.append(inner_query_result[i]["cost"])
     weight1.append(inner_query_result[i]["weight"])
   weights.append(weight1)
@@ -139,30 +186,18 @@ AS $$
     solver.Init(values, weights, capacities)
   except Exception as error_msg:
     plpy.error(error_msg)
-    return "Failed"
   computed_value = solver.Solve()
-
-  packed_items = []
-  packed_weights = []
-  packed_values = []
-  total_weight = 0
-
-  plpy.info('Total value =', computed_value)
+  
+  # prints results
   for i in range(len(values)):
     if solver.BestSolutionContains(i):
-      packed_items.append(i)
-      packed_weights.append(weights[0][i])
-      packed_values.append(values[i])
-      total_weight += weights[0][i]
-  plpy.info('Total weight:', total_weight)
-  plpy.info("Packed items: ", packed_items)
-  plpy.info("Packed weights: ", packed_weights)
-  plpy.info("Packed values: ", packed_values)
-  plpy.notice("Exiting program")
-  return "Success"
+      yield (ids[i])
+
+  # end of the program
+
 $$ LANGUAGE plpython3u VOLATILE;
 
--- SELECT * FROM vrp_knapsack('SELECT * FROM knapsack_data' , 15);
+-- SELECT * FROM vrp_knapsack('SELECT id, weight, cost FROM knapsack_data' , 15);
 
 -- COMMENTS
 

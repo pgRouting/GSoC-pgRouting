@@ -5,7 +5,7 @@ Copyright (c) 2022 GSoC-2022 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2021 Manas Sivakumar
+Copyright (c) 2022 Manas Sivakumar
 
 ------
 
@@ -25,55 +25,109 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 /*
-.. signature start
+signature start
+
+.. code-block:: none
+
+    vrp_multiple_knapsack(
+      Weights_Costs SQL, capacities ARRAY[ANY-INTEGER], [, max_rows])
+
+    RETURNS SET OF
+    (knapsack_number, item_id)
+
+signature end
+
+parameters start
+
+============================== ======================= =========================================================
+Parameter                      Type                    Description
+============================== ======================= =========================================================
+**Weights_Costs SQL**                ``TEXT``                `Weights_Costs SQL`_ query describing the weight of each item
+**Capacities**                 ``ARRAY[ANY-INTEGER]``  An array describing the capacity of each knapsack
+============================== ======================= =========================================================
+
+parameters end
+
+optional parameters start
+
+===================== ================ ============================= =================================================
+Parameter             Type             Default                       Description
+===================== ================ ============================= =================================================
+**max_rows**          ``ANY-INTEGER``  :math:`100000`                Maximum items(rows) to fetch from bin_packing_data
+                                                                     table
+===================== ================ ============================= =================================================
+
+optional parameters end
+
+.. Weights_Costs start
+
+A ``SELECT`` statement that returns the following columns:
 
 ::
 
-    vrp_multiple_knapsack(weight_cost SQL, capacities Integer[] [max_cycles])
-    RETURNS SET OF:
-        
+    id, weight, cost
 
-.. signature end
 
-.. parameters start
+====================  =========================  =========== ================================================
+Column                Type                       Default     Description
+====================  =========================  =========== ================================================
+**id**                ``ANY-INTEGER``                        unique identifier of the item.
 
-================= ================== ========= =================================================
-Column            Type                Default    Description
-================= ================== ========= =================================================
-**weight_cost SQL**    ``TEXT``                   `weight_cost SQL`_ query contianing the weights and cost of each item
-**capacities**           ``INTEGER[]``                Capacities of each knapsack
-**max_rows**           ``INTEGER``    100000      Maximum number of items(rows) to fetch from table.
+**weight**            ``ANY-INTEGER``                        weight of the item.
 
-================= ================== ========= =================================================
+**cost**              ``ANY-INTEGER``                        cost of the item.
+====================  =========================  =========== ================================================
 
-.. parameters end
+.. Weights_Costs end
 
+result start
+
+Returns set of
+
+.. code-block:: none
+
+    (knapsack_number, item_id)
+
+=================== ================= =================================================
+Column              Type              Description
+=================== ================= =================================================
+**knapsack_number**  ``ANY-INTEGER``  Integer to uniquely identify a knapsack
+
+**item_id**          ``ANY-INTEGER``  Integer to uniquely identify an item in the 
+                                      bin
+=================== ================= =================================================
+result end
+
+**Note**:
+
+- ANY-INTEGER: [SMALLINT, INTEGER, BIGINT]
 */
 
 DROP FUNCTION IF EXISTS vrp_multiple_knapsack CASCADE;
 -- DROP TABLE IF EXISTS multiple_knapsack_data CASCADE;
 
 -- CREATE TABLE multiple_knapsack_data(
+--   id INTEGER,
 --   weight INTEGER,
 --   cost INTEGER);
 
--- INSERT INTO multiple_knapsack_data (weight,  cost)
+-- INSERT INTO multiple_knapsack_data (id, weight,  cost)
 -- VALUES
--- (48, 10),
--- (30, 30),
--- (42, 25),
--- (36, 50),
--- (36, 35),
--- (48, 30), 
--- (42, 15), 
--- (42, 40),
--- (36, 30),
--- (24, 35), 
--- (30, 45), 
--- (30, 10), 
--- (42, 20), 
--- (36, 30), 
--- (36, 25);
+-- (1, 48, 10),
+-- (2, 30, 30),
+-- (3, 42, 25),
+-- (4, 36, 50),
+-- (5, 36, 35),
+-- (6, 48, 30), 
+-- (7, 42, 15), 
+-- (8, 42, 40),
+-- (9, 36, 30),
+-- (10, 24, 35), 
+-- (11, 30, 45), 
+-- (12, 30, 10), 
+-- (13, 42, 20), 
+-- (14, 36, 30), 
+-- (15, 36, 25);
 
 
 CREATE OR REPLACE FUNCTION vrp_multiple_knapsack(
@@ -81,13 +135,12 @@ CREATE OR REPLACE FUNCTION vrp_multiple_knapsack(
   capacities INTEGER[], -- ARRAY of Knapsack Capacities
   max_rows INTEGER = 100000 -- Maximum number of rows to be fetched. Default value is 100000.
 )
-RETURNS TEXT
+RETURNS TABLE(knapsack_number INTEGER, item_id INTEGER)
 AS $$
   try:
     from ortools.linear_solver import pywraplp
   except Exception as err:
     plpy.error(err)
-    return "Failed"
   
   global max_rows
   if inner_query == None:
@@ -100,47 +153,36 @@ AS $$
   data = {}
   data['values'] = []
   data['weights'] = []
+  data_ids = []
 
-  plpy.notice('Entering Mulitple Knapsack program')
-  plpy.notice('Starting Execution of inner query')
+  # Program Execution Starts here
 
   try:
     inner_query_result = plpy.execute(inner_query, max_rows)
     num_of_rows = inner_query_result.nrows()
     colnames = inner_query_result.colnames()
     coltypes = inner_query_result.coltypes()
-    plpy.info("Number of rows processed : ", num_of_rows)
   except plpy.SPIError as error_msg:
-    plpy.info("Details: ",error_msg)
     plpy.error("Error Processing Inner Query. The given query is not a valid SQL command")
-    return "Failed"
-
-  if len(colnames) != 2:
-    plpy.error("Expected 2 columns, Got ", len(colnames))
-    return "Failed"
-  if ('weight' in colnames) and ('cost' in colnames):
-    plpy.notice("SQL query returned expected column names")
+    
+  if len(colnames) != 3:
+    plpy.error("Expected 3 columns, Got ", len(colnames))
+  if ('weight' in colnames) and ('cost' in colnames) and ('cost' in colnames):
+    # got expected column names
+    pass
   else:
     plpy.error("Expected columns weight and cost, Got ", colnames)
-    return "Failed"  
   if all(item in [20, 21, 23] for item in coltypes):
-    plpy.notice("SQL query returned expected column types")
+    # got expected column types
+    pass
   else:
     raise Exception("Returned columns of different type. Expected Integer, Integer")
     
-  plpy.notice('Finished Execution of inner query')
-
   for i in range(num_of_rows):
-    if type(inner_query_result[i]["cost"]) == int:
-      data['values'].append(inner_query_result[i]["cost"])
-    else:
-      plpy.error("Type Mismatch. Check Table Data")
-      return "Failed"
-    if type(inner_query_result[i]["weight"]) == int:
-      data['weights'].append(inner_query_result[i]["weight"])
-    else:
-      plpy.error("Type Mismatch. Check Table Data")
-      return "Failed"
+    data['values'].append(inner_query_result[i]["cost"])
+    data['weights'].append(inner_query_result[i]["weight"])
+    data_ids.append(inner_query_result[i]["id"])
+    
 
   data['num_items'] = len(data['weights'])
   data['all_items'] = range(data['num_items'])
@@ -156,9 +198,7 @@ AS $$
 
   if solver is None:
     plpy.error('SCIP solver unavailable.')
-    return "Failed"
   
-  plpy.notice('SCIP solver ready!')
   x = {}
   for i in data['all_items']:
     for b in data['all_bins']:
@@ -179,28 +219,16 @@ AS $$
   status = solver.Solve()
 
   if status == pywraplp.Solver.OPTIMAL:
-    plpy.info('Total value =', objective.Value())
-    total_weight = 0
     for b in data['all_bins']:
-        plpy.info('Bin :', b)
-        bin_weight = 0
-        bin_value = 0
         for i in data['all_items']:
             if x[i, b].solution_value() > 0:
-                plpy.info(f"Item {i} - weight: {data['weights'][i]} value: {data['values'][i]}")
-                bin_weight += data['weights'][i]
-                bin_value += data['values'][i]
-        plpy.info('Packed bin weight', bin_weight)
-        plpy.info('Packed bin value', bin_value)
-        total_weight += bin_weight
-    plpy.info('Total packed weight', total_weight)
+                yield(b+1, data_ids[i])
   else:
     plpy.notice('The problem does not have an optimal solution.')
-  plpy.notice('Exiting Multiple Knapsack program')
-  return "Success"
+  # end of the program
 $$ LANGUAGE plpython3u VOLATILE;
 
--- SELECT * FROM vrp_multiple_knapsack('SELECT * FROM multiple_knapsack_data', ARRAY[100,100,100,100,100]);
+-- SELECT * FROM vrp_multiple_knapsack('SELECT id, weight, cost FROM multiple_knapsack_data', ARRAY[100,100,100,100,100]);
 
 -- COMMENTS
 
