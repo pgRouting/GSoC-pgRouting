@@ -5,6 +5,8 @@
     This documentation is licensed under a Creative Commons Attribution-Share
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
+
+
 |
 
 * `Documentation <https://vrp.pgrouting.org/>`__ → `vrpRouting v0 <https://vrp.pgrouting.org/v0>`__
@@ -21,7 +23,7 @@ vrp_multiple_knapsack - Experimental
 
 .. rubric:: Availability
 
-Version 0.0.0
+Version 0.4.0
 
 * New **experimental** function
 
@@ -78,12 +80,16 @@ Result Columns
 Example
 -------------------------------------------------------------------------------
 
-* TBD
+.. literalinclude:: doc-vrp_multiple_knapsack.queries
+   :start-after: -- example_start
+   :end-before: -- example_end
 
 See Also
 -------------------------------------------------------------------------------
 
-* TBD
+.. include:: or_tools-category.rst
+   :start-after: see_also_start
+   :end-before: see_also_end
 
 .. rubric:: Indices and tables
 

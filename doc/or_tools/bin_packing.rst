@@ -2,10 +2,13 @@
    ****************************************************************************
     vrpRouting Manual
     Copyright(c) vrpRouting Contributors
+
     This documentation is licensed under a Creative Commons Attribution-Share
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
+
 |
+
 
 * `Documentation <https://vrp.pgrouting.org/>`__ → `vrpRouting v0 <https://vrp.pgrouting.org/v0>`__
 * Supported Versions
@@ -21,7 +24,7 @@ vrp_bin_packing - Experimental
 
 .. rubric:: Availability
 
-Version 0.0.0
+Version 0.4.0
 
 * New **experimental** function
 
@@ -38,9 +41,10 @@ each of a fixed given capacity, in a way that minimizes the number of bins used.
 The problem has many applications, such as filling up containers, loading trucks with weight capacity constraints, 
 creating file backups in media and technology mapping in FPGA semiconductor chip design.
 
+
 Signatures
 -------------------------------------------------------------------------------
-
+   
 .. include:: ../../sql/or_tools/bin_packing.sql
    :start-after: signature start
    :end-before: signature end
@@ -79,12 +83,16 @@ Result Columns
 Example
 -------------------------------------------------------------------------------
 
-* TBD
+.. literalinclude:: doc-vrp_bin_packing.queries
+   :start-after: -- example_start
+   :end-before: -- example_end
 
 See Also
 -------------------------------------------------------------------------------
 
-* TBD
+.. include:: or_tools-category.rst
+   :start-after: see_also_start
+   :end-before: see_also_end
 
 .. rubric:: Indices and tables
 
