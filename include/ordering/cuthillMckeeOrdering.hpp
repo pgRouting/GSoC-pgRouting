@@ -65,9 +65,6 @@ namespace functions {
 template <class G>
 class CuthillMckeeOrdering : public Pgr_messages {
  public:
-
-#if 1
-
     typedef typename G::V V;
     typedef typename G::E E;
     typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
@@ -77,22 +74,14 @@ class CuthillMckeeOrdering : public Pgr_messages {
     // documentation todo
 
         std::vector<II_t_rt>
-        cuthillMckeeOrdering(G &graph, int64_t start_vid) {
+        cuthillMckeeOrdering(G &graph) {
         std::vector<II_t_rt>results;
-        uint64_t start_v = *(reinterpret_cast<uint64_t*>(&start_vid));
         auto i_map = boost::get(boost::vertex_index, graph.graph);
-        Vertex s = boost::vertex(start_v, graph.graph);
         std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
-        std::vector<size_type> perm(boost::num_vertices(graph.graph));
         std::vector <boost::default_color_type> colors(boost::num_vertices(graph.graph));
         auto color_map = boost::make_iterator_property_map(&colors[0], i_map, colors[0]);
         auto out_deg = boost::make_out_degree_map(graph.graph);
-#if 0
-        auto out_deg = boost::get(boost::vertex_degree, graph.graph);
-        auto vertexcolor = boost::get(boost::vertex_color, graph.graph);
-        auto index_map = boost::property_map<Graph, boost::vertex_index_t>
-        index_map = boost::get(boost::vertex_index, graph.graph);
-#endif
+
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
 
@@ -112,7 +101,6 @@ class CuthillMckeeOrdering : public Pgr_messages {
 
          return results;
      }
-#endif
 
  private:
      /** @brief to get the results
@@ -128,15 +116,7 @@ class CuthillMckeeOrdering : public Pgr_messages {
             std::vector <size_type> & inv_perm,
             const G &graph) {
             std::vector <II_t_rt> results;
-#if 0
-        typename boost::graph_traits <Graph> ::vertex_iterator v, vend;
 
-        for (boost::tie(v, vend) = vertices(graph.graph); v != vend; ++v) {
-            auto seq = graph[*v].id;
-            auto order = inv_perm[*v];
-            results.push_back({{seq}, {static_cast<int64_t>(order + 1)}});
-        }
-#endif
         for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
              i != inv_perm.end(); ++i) {
             log << inv_perm[*i] << " ";
@@ -144,19 +124,7 @@ class CuthillMckeeOrdering : public Pgr_messages {
             results.push_back({{seq}, {static_cast<int64_t>(graph.graph[*i].id)}});
             seq++;
             }
-#if 0
-         int seq=1;
-        for (auto i:inv_perm) {
-            // log << inv_perm[*i] << " ";
-            // auto seq = graph[*i].id;
-            results.push_back({{seq}, {static_cast<int64_t>(i)}});
-            seq++;
-            }
-#endif
-#if 0
-        for (size_type c = 0; c != inv_perm.size(); ++c)
-            perm[i_map[inv_perm[c]]] = c;
-#endif
+
             return results;
         }
 };
