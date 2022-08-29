@@ -16,7 +16,7 @@
 cuthillMckeeOrdering - Experimental
 ===============================================================================
 
-``cuthillMckeeOrdering`` — Returns the reverse Cuthill-Mckee ordering of undirected
+``cuthillMckeeOrdering`` — Returns the reverse Cuthill-Mckee ordering of an undirected
 graphs
 
 .. figure:: images/boost-inside.jpeg
@@ -52,7 +52,10 @@ each step, the adjacent vertices are placed in the queue in order of increasing 
 **The main Characteristics are:**
 
 - The implementation is for **undirected** graphs.
-- The running time complexity is: :math: `O(m log(m)|V|)` where m = max{degree(v)|v in V}.
+- The running time complexity is: :math: `O(m log(m)|V|)`
+
+  - where :math:`|V|` is the number of vertices,
+  - :math:`m` is the maximum degree of the vertices in the graph.
 
 Signatures
 ------------------------------------------------------------------------------
@@ -106,9 +109,9 @@ See Also
 
 .. see also start
 
-* :doc:`sampledata`
 * `Boost: Cuthill-McKee Ordering
   <https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html>`__
+* `Wikipedia: Cuthill-McKee Ordering <https://en.wikipedia.org/wiki/Cuthill%E2%80%93McKee_algorithm>`__
 
 .. see also end
 
