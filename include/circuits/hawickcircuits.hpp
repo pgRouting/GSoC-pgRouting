@@ -31,7 +31,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/hawick_circuits.hpp>
-#include <boost/property_map/property_map.hpp>
 
 #include <iostream>
 #include <iterator>
@@ -127,7 +126,6 @@ class pgr_hawickCircuits{
       */
 
       std::deque<circuits_rt> hawickCircuits(G & graph) {
-
       // results storing the output
       std::deque<circuits_rt> results;
 
