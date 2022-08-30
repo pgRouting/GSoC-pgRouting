@@ -43,6 +43,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_hawickcircuits);
 
+/** @brief Static function, loads the data from postgres to C types for further processing.
+ *
+ * It first connects the C function to the SPI manager. Then converts
+ * the postgres array to C array and loads the edges belonging to the graph
+ * in C types. Then it calls the function `do_cuthillMckeeOrdering` defined
+ * in the `cuthillMckeeOrdering_driver.h` file for further processing.
+ * Finally, it frees the memory and disconnects the C function to the SPI manager.
+ *
+ * @param edges_sql      the edges of the SQL query
+ * @param result_tuples  the rows in the result
+ * @param result_count   the count of rows in the result
+ *
+ * @returns void
+ */
+
 static void
 process(
         char* edges_sql,
@@ -126,7 +141,6 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
                 &result_tuples,
                 &result_count);
 
-        /**********************************************************************/
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
@@ -172,7 +186,19 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
         values[7] = Float8GetDatum(result_tuples[call_cntr].cost);
         values[8] = Float8GetDatum(result_tuples[call_cntr].agg_cost);
 
-        /**********************************************************************/
+        /***********************************************************************
+         *
+         *   OUT  seq INTEGER,
+         *   OUT path_id INTEGER,
+         *   OUT path_seq INTEGER,
+         *   OUT start_vid BIGINT,
+         *   OUT end_vid BIGINT,
+         *   OUT node BIGINT,
+         *   OUT edge FLOAT,
+         *   OUT cost FLOAT,
+         *   OUT agg_cost FLOAT
+         *
+         **********************************************************************/
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
