@@ -18,6 +18,8 @@
 
 ``pgr_hawickCircuits`` —  Returns the list of cirucits using hawickCircuits algorithm.
 
+.. figure:: images/boost-inside.jpeg
+   :target: https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
 
 .. include:: experimental.rst
    :start-after: begin-warn-expr
@@ -42,10 +44,17 @@ and self-arcs with a memory efficient and high-performance im-plementation.
 It is an extension of Johnson's Algorithm of finding all the elementary circuits of
 a directed graph.
 
-The main Characteristics are:
+There are 2 variations defined in the Boost Graph Library. Here, we have implemented only
+2nd as it serves the most suitable and practical usecase. In this variation we get the
+circuits after filtering out the circuits caused by parallel edges. Parallel edge circuits
+have more use cases when you want to count the no. of circuits.Maybe in future, we will also
+implemenent this variation.
 
-- The algorithm works only for directed graph
+**The main Characteristics are:**
+
+- The algorithm implementation works only for directed graph
 - It is a variation of Johnson's algorithm for circuit enumeration.
+- The algorithm outputs the distinct circuits present in the graph.
 - Time Complexity: :math:`O((V + E) (c + 1))`
 
   - where :math:`|E|` is the number of edges in the graph,
@@ -60,13 +69,13 @@ Signatures
 .. parsed-literal::
 
    pgr_hawickCircuits(`Edges SQL`_)
-   RETURNS (seq, path_id, path_seq, start_vid, node, edge, cost, agg_cost)
+   RETURNS SET OF (seq, path_id, path_seq, start_vid, node, edge, cost, agg_cost)
    OR EMPTY SET
 
 .. index::
     single: Hawick Circuits - Experimental on v3.4
 
-:Example:
+:Example: Circuits present in the pgRouting :doc:`sampledata`
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q1
@@ -115,7 +124,7 @@ Return columns
      - Id of the circuit starting from ``1``
    * - ``path_seq``
      - ``INTEGER``
-     - Relative postion in the path. Has value ``1`` for beginning of the path
+     - Relative postion in the path. Has value ``0`` for beginning of the path
    * - ``start_vid``
      - ``BIGINT``
      - Identifier of the starting vertex of the circuit.
