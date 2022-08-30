@@ -1,7 +1,7 @@
 BEGIN;
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('3.4.0') THEN plan(1) ELSE plan(10) END;
+SELECT CASE WHEN NOT min_version('3.4.0') THEN plan(1) ELSE plan(11) END;
 
 
 CREATE OR REPLACE FUNCTION edge_cases()
@@ -111,6 +111,40 @@ FROM pgr_cuthillMckeeOrdering('q9');
 RETURN QUERY
 SELECT set_eq('r10', $$VALUES (1, 1), (2, 2), (3, 3)$$, 'Basic test');
 
+
+-- pgRouting sample data
+
+CREATE TABLE expected_result (
+  seq BIGINT,
+  node BIGINT);
+
+INSERT INTO expected_result (seq, node) VALUES
+(1, 16),
+(2, 17),
+(3, 14),
+(4, 15),
+(5, 1),
+(6, 7),
+(7, 2),
+(8, 8),
+(9, 3),
+(10, 5),
+(11, 13),
+(12, 4),
+(13, 6),
+(14, 10),
+(15, 9),
+(16, 11),
+(17, 12);
+
+PREPARE q11 AS
+SELECT * FROM pgr_cuthillMckeeOrdering(
+  'SELECT id, source, target, cost, reverse_cost FROM edge_table');
+
+PREPARE r11 AS
+SELECT * FROM expected_result;
+
+RETURN QUERY SELECT set_eq('q11','r11','sample data graph of pgRouting');
 
 END;
 $BODY$
