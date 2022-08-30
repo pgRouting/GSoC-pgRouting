@@ -40,6 +40,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "drivers/circuits/hawickcircuits_driver.h"
 #include "circuits/hawickcircuits.hpp"
 
+/** @file hawickCircuits_driver.cpp
+ * @brief Handles actual calling of function in the `hawickcircuits.hpp` file.
+ *
+ */
+
+/***********************************************************************
+ *
+ *   pgr_hawickcircuits(edges_sql TEXT);
+ *
+ ***********************************************************************/
+
+/** @brief Calls the main function defined in the C++ Header file.
+ *
+ * @param graph      the graph containing the edges
+ * @param log        stores the log message
+ *
+ * @returns results, when results are found
+ */
+
 template < class G >
 std::deque <circuits_rt>
 pgr_hawickCircuits(G &graph) {
@@ -47,6 +66,30 @@ pgr_hawickCircuits(G &graph) {
     auto results = fn_hawickCircuits.hawickCircuits(graph);
     return results;
 }
+
+/** @brief Performs exception handling and converts the results to postgres.
+ *
+ * @pre log_msg is empty
+ * @pre notice_msg is empty
+ * @pre err_msg is empty
+ * @pre return_tuples is empty
+ * @pre return_count is 0
+ *
+ * It builds the undirected graph using the `data_edges` variable.
+ * Then, it passes the required variables to the template function
+ * `cuthillMckeeOrdering` which calls the main function
+ * defined in the C++ Header file. It also does exception handling.
+ *
+ * @param data_edges     the set of edges from the SQL query
+ * @param total_edges    the total number of edges in the SQL query
+ * @param return_tuples  the rows in the result
+ * @param return_count   the count of rows in the result
+ * @param log_msg        stores the log message
+ * @param notice_msg     stores the notice message
+ * @param err_msg        stores the error message
+ *
+ * @returns void
+ */
 
 void
 do_hawickCircuits(
