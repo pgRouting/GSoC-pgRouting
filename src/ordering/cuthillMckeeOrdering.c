@@ -174,8 +174,8 @@ _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
 
     /***********************************************************************
          *
+         *   OUT seq BIGINT,
          *   OUT node BIGINT,
-         *   OUT color BIGINT,
          *
     **********************************************************************/
 
