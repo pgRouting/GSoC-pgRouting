@@ -25,6 +25,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+/** @file cuthillMckeeOrdering.c
+ * @brief Connecting code with postgres.
+ *
+ */
+
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 
@@ -40,6 +45,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 PGDLLEXPORT Datum _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_cuthillmckeeordering);
+
+/** @brief Static function, loads the data from postgres to C types for further processing.
+ *
+ * It first connects the C function to the SPI manager. Then converts
+ * the postgres array to C array and loads the edges belonging to the graph
+ * in C types. Then it calls the function `do_cuthillMckeeOrdering` defined
+ * in the `cuthillMckeeOrdering_driver.h` file for further processing.
+ * Finally, it frees the memory and disconnects the C function to the SPI manager.
+ *
+ * @param edges_sql      the edges of the SQL query
+ * @param result_tuples  the rows in the result
+ * @param result_count   the count of rows in the result
+ *
+ * @returns void
+ */
 
 static
 void
@@ -116,6 +136,12 @@ _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
+    /***********************************************************************
+         *
+         *   pgr_cuthillMckeeOrdering(edges_sql TEXT);
+         *
+    **********************************************************************/
+
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 &result_tuples,
@@ -146,6 +172,12 @@ _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool*        nulls;
 
+    /***********************************************************************
+         *
+         *   OUT seq BIGINT,
+         *   OUT node BIGINT,
+         *
+    **********************************************************************/
 
         size_t num  = 3;
         values = palloc(num * sizeof(Datum));
