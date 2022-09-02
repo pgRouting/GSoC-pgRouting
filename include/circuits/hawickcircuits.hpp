@@ -31,7 +31,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/hawick_circuits.hpp>
-#include <boost/property_map/property_map.hpp>
 
 #include <iostream>
 #include <iterator>
@@ -43,6 +42,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_assert.h"
 #include "c_types/circuits_rt.h"
 
+/** @file hawickcirucits.hpp
+ * @brief The main file which calls the respective boost function.
+ *
+ * Contains actual implementation of the function and the calling
+ * of the respective boost function.
+ */
 
 namespace pgrouting {
 namespace functions {
@@ -50,6 +55,13 @@ namespace functions {
 template <typename G, typename E>
 class circuit_detector{
  public:
+    /** @brief circuit detector to get the results
+      *
+      *
+      * @param graph     the graph containing the edges
+      * @param result    container for storing the result
+      *
+      */
     circuit_detector(
         G &graph,
         std::deque<circuits_rt> &data) :
@@ -95,9 +107,32 @@ template <class G>
 class pgr_hawickCircuits{
  public:
       typedef typename G::E E;
+
+    /** @name hawickcircuit
+      * @{
+      *
+      */
+
+     /** @brief hawickcircuit function
+      *
+      * It does all the processing and returns the results.
+      *
+      * @param graph  the graph containing the edges
+      *
+      * @returns results, when results are found
+      *
+      * @see [boost::hawickcircuit]
+      * (https://www.boost.org/libs/graph/doc/hawick_circuits.html)
+      */
+
       std::deque<circuits_rt> hawickCircuits(G & graph) {
+      // results storing the output
       std::deque<circuits_rt> results;
+
+      // a circuit detector to provide the mechanism to store the circuit
       circuit_detector <G, E> detector(graph, results);
+
+      /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
         CHECK_FOR_INTERRUPTS();
          try {
              boost::hawick_unique_circuits(graph.graph, detector);
@@ -111,6 +146,7 @@ class pgr_hawickCircuits{
              throw;
          }
     return results;
+    //@}
 }
 };
 }  // namespace functions
