@@ -86,7 +86,7 @@ release = '@PROJECT_FULL_VERSION@'
 # for a list of supported languages.
 language = 'en'
 locale_dirs = ['@CMAKE_SOURCE_DIR@/locale/']
-#gettext_compact = False
+
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -99,15 +99,9 @@ locale_dirs = ['@CMAKE_SOURCE_DIR@/locale/']
 exclude_patterns = [
     ]
 
-#    'src/pickDeliver/doc/pgr_withPointsVia.rst',
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
 
-# If true, '()' will be appended to :func: etc. cross-reference text.
-#add_function_parentheses = True
-
-# If true, the current module name will be prepended to all description
-# unit titles (such as .. function::).
 add_module_names = False
 
 # If true, sectionauthor and moduleauthor directives will be shown in the
@@ -119,6 +113,15 @@ pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
+
+# -- Options for internationalization ---------------------------------------------------
+
+gettext_allow_fuzzy_translations = True
+gettext_location = True
+#gettext_uuid = True
+#gettext_additional_targets = [ ]
+#gettext_compact = "docs"
+
 
 
 # -- Options for HTML output ---------------------------------------------------
@@ -329,6 +332,7 @@ linkcheck_ignore = [
     r'https://docs.pgrouting.org/.*/.*/pgr_degree.html',
     r'https://docs.pgrouting.org/.*/.*/cuthillMckeeOrdering.html',
     r'https://docs.pgrouting.org/.*/.*/ordering-family.html',
+    r'https://docs.pgrouting.org/.*/.*/pgr_findCloseEdges.html',
 
     # link failing used in contraction-family
     'https://algo2.iti.kit.edu/documents/routeplanning/geisberger_dipl.pdf'
@@ -347,6 +351,8 @@ linkcheck_anchors = False
 rst_epilog="""
 .. |ANY-INTEGER| replace:: :abbr:`ANY-INTEGER(SMALLINT, INTEGER, BIGINT)`
 .. |ANY-NUMERICAL| replace:: :abbr:`ANY-NUMERICAL(SMALLINT, INTEGER, BIGINT, REAL, FLOAT)`
+.. |generic-result| replace:: (seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)
+.. |via-result| replace:: (seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost, route_agg_cost)
 """
 
 # Create a compressed PDF

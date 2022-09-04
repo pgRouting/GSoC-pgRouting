@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v3.4.0-dev\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-05 17:43+0000\n"
-"PO-Revision-Date: 2022-05-06 15:35+0000\n"
-"Last-Translator: Celia Virginia Vergara Castillo <vicky@georepublic.de>\n"
+"POT-Creation-Date: 2022-06-25 12:55-0500\n"
+"PO-Revision-Date: 2022-06-24 16:38+0000\n"
+"Last-Translator: Pedro Jose Rios Vergara <jose@georepublic.de>\n"
 "Language-Team: Spanish <https://weblate.osgeo.org/projects/pgrouting/"
 "reference/es/>\n"
 "Language: es\n"
@@ -17,23 +17,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.11.2\n"
+"X-Generator: Weblate 4.12.2\n"
 
 #: ../../build/doc/reference.rst:12
-msgid "**Supported versions:** `Latest <https://docs.pgrouting.org/latest/en/reference.html>`__ (`3.4 <https://docs.pgrouting.org/3.4/en/reference.html>`__)"
+msgid ""
+"**Supported versions:** `Latest <https://docs.pgrouting.org/latest/en/"
+"reference.html>`__ (`3.4 <https://docs.pgrouting.org/3.4/en/reference."
+"html>`__)"
 msgstr ""
+"**Versiones soportadas** `Última <https://docs.pgrouting.org/latest/en/"
+"reference.html>`__ (`3.4 <https://docs.pgrouting.org/3.4/en/reference."
+"html>`__)"
 
 #: ../../build/doc/reference.rst:17
 msgid "Reference"
-msgstr ""
+msgstr "Referencia"
 
 #: ../../build/doc/reference.rst:21
 msgid ":doc:`pgr_version`"
-msgstr ""
+msgstr ":doc:`pgr_version`"
 
 #: ../../build/doc/reference.rst:22
 msgid ":doc:`pgr_full_version`"
-msgstr ""
+msgstr ":doc:`pgr_full_version`"
 
 #: ../../build/doc/reference.rst:33
 msgid "See Also"
@@ -41,7 +47,7 @@ msgstr "Ver también"
 
 #: ../../build/doc/reference.rst:36
 msgid "Indices and tables"
-msgstr ""
+msgstr "Índices y tablas"
 
 #: ../../build/doc/reference.rst:37
 msgid ":ref:`genindex`"

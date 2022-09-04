@@ -1,21 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) pgRouting Contributors - Version v3.2.0-dev
+# Copyright (C) pgRouting Contributors - Version v3.4.0-dev
 # This file is distributed under the same license as the pgRouting package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: pgRouting v3.2.0-dev\n"
+"Project-Id-Version: pgRouting v3.4.0-dev\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-06 19:21+0000\n"
+"POT-Creation-Date: 2022-07-03 19:08-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.1\n"
+"Generated-By: Babel 2.9.1\n"
 
 #: ../../build/doc/pgr_isPlanar.rst:12
 msgid ""
@@ -132,7 +132,7 @@ msgid ""
 " of its edges crossing. Such a drawing of a planar graph is called a "
 "plane drawing. Every planar graph also admits a straight-line drawing, "
 "which is a plane drawing where each edge is represented by a line "
-"segment. When a graph has :math:`K_7` or :math:`K_{10,10}` as subgraph "
+"segment. When a graph has :math:`K_5` or :math:`K_{3, 3}` as subgraph "
 "then the graph is not planar."
 msgstr ""
 
@@ -320,13 +320,13 @@ msgstr ""
 #: ../../build/doc/pgr_isPlanar.rst:106
 msgid ""
 "The following edges will make the subgraph with vertices {10, 15, 11, 16,"
-" 13} a :math:`K_7` graph."
+" 13} a :math:`K_1` graph."
 msgstr ""
 
 #: ../../build/doc/pgr_isPlanar.rst:113
 msgid ""
-"The new graph is not planar because it has a :math:`K_7` subgraph. Edges "
-"in blue represent :math:`K_7` subgraph."
+"The new graph is not planar because it has a :math:`K_5` subgraph. Edges "
+"in blue represent :math:`K_5` subgraph."
 msgstr ""
 
 #: ../../build/doc/pgr_isPlanar.rst:126

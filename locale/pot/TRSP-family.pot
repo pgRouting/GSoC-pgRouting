@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v3.4.0-dev\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-06 19:21+0000\n"
+"POT-Creation-Date: 2022-07-11 18:25-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,7 +169,7 @@ msgid "Introduction"
 msgstr ""
 
 #: ../../build/doc/TRSP-family.rst:63
-msgid "Road restrictions are a sequence of road segments that can not be taken in a sequential manner. Some restrictions are implicit on a directed graph, for example, one way roads where the wrong way edge is not even inserted on the graph. But normally on turns like **left turn** or **right turn**, hence the name turn restrictions, there are sometimes restrictions."
+msgid "Road restrictions are a sequence of road segments that can not be taken in a sequential manner. Some restrictions are implicit on a directed graph, for example, one way roads where the wrong way edge is not even inserted on the graph. But normally on turns like no left turn or no right turn, hence the name turn restrictions, there are sometimes restrictions."
 msgstr ""
 
 #: ../../build/doc/TRSP-family.rst:74
@@ -190,12 +190,13 @@ msgstr ""
 
 #: ../../build/doc/TRSP-family.rst:91
 #: ../../build/doc/pgRouting-concepts.rst:9
+#: ../../build/doc/pgRouting-concepts.rst:9
 msgid "Type"
 msgstr ""
 
 #: ../../build/doc/TRSP-family.rst:92
-#: ../../build/doc/pgRouting-concepts.rst:10
 #: ../../build/doc/pgRouting-concepts.rst:11
+#: ../../build/doc/pgRouting-concepts.rst:10
 msgid "Description"
 msgstr ""
 
@@ -234,12 +235,13 @@ msgid "Array of ordered vertices identifiers that are going to be visited."
 msgstr ""
 
 #: ../../build/doc/TRSP-family.rst:103
-#: ../../build/doc/pgRouting-concepts.rst:21
 #: ../../build/doc/pgRouting-concepts.rst:36
+#: ../../build/doc/pgRouting-concepts.rst:21
 msgid "Where:"
 msgstr ""
 
 #: ../../build/doc/TRSP-family.rst:0
+#: ../../build/doc/pgRouting-concepts.rst:0
 #: ../../build/doc/pgRouting-concepts.rst:0
 msgid "ANY-INTEGER"
 msgstr ""
@@ -257,7 +259,7 @@ msgid "On road networks, there are restrictions such as left or right turn restr
 msgstr ""
 
 #: ../../build/doc/TRSP-family.rst:115
-msgid "A restriction is a sequence of edges, called **path** and that **path** is to be avoided."
+msgid "A restriction is a sequence of edges, called path and that path is to be avoided."
 msgstr ""
 
 #: ../../build/doc/TRSP-family.rst:123
@@ -276,6 +278,7 @@ msgstr ""
 msgid "Edges SQL"
 msgstr ""
 
+#: ../../build/doc/pgRouting-concepts.rst:8
 #: ../../build/doc/pgRouting-concepts.rst:8
 msgid "Column"
 msgstr ""
@@ -318,9 +321,9 @@ msgstr ""
 msgid "``cost``"
 msgstr ""
 
-#: ../../build/doc/pgRouting-concepts.rst:18
 #: ../../build/doc/pgRouting-concepts.rst:25
 #: ../../build/doc/pgRouting-concepts.rst:29
+#: ../../build/doc/pgRouting-concepts.rst:18
 msgid "**ANY-NUMERICAL**"
 msgstr ""
 
@@ -344,17 +347,18 @@ msgstr ""
 msgid "When negative: edge (``target``, ``source``) does not exist, therefore it's not part of the graph."
 msgstr ""
 
-#: ../../build/doc/pgRouting-concepts.rst:23
 #: ../../build/doc/pgRouting-concepts.rst:38
+#: ../../build/doc/pgRouting-concepts.rst:23
 msgid "``SMALLINT``, ``INTEGER``, ``BIGINT``"
 msgstr ""
 
 #: ../../build/doc/pgRouting-concepts.rst:0
+#: ../../build/doc/pgRouting-concepts.rst:0
 msgid "ANY-NUMERICAL"
 msgstr ""
 
-#: ../../build/doc/pgRouting-concepts.rst:24
 #: ../../build/doc/pgRouting-concepts.rst:39
+#: ../../build/doc/pgRouting-concepts.rst:24
 msgid "``SMALLINT``, ``INTEGER``, ``BIGINT``, ``REAL``, ``FLOAT``"
 msgstr ""
 

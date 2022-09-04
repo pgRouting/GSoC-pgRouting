@@ -16,17 +16,71 @@
 Migration guide
 ===============================================================================
 
-``pgr_trsp`` signatures have changed and many issues have been fixed in the new
-signatures. This section will show how to migrate from the old signatures to the
-new replacement functions.
+Several functions are having changes on the signatures, and/or have been
+replaced by new functions.
 
-.. Note:: Results might be different as the deprecated function's code is
-   different from the replacement function.
+Results can be different because of the changes.
+
+Migrating functions:
+
+:doc:`pgr_maxCardinalityMatch` works only for undirected graphs, therefore the
+``directed`` flag has been removed.
+
+:doc:`pgr_trsp` signatures have changed and many issues have been fixed in the new
+signatures. This section will show how to migrate from the old signatures to the
+new replacement functions. This also affects the restrictions.
 
 .. warning::
    All deprecated functions will be removed on next mayor version 4.0.0
 
 .. contents:: Contents
+
+Migration of ``pgr_maxCardinalityMatch``
+-------------------------------------------------------------------------------
+
+Signature to be migrated:
+
+.. parsed-literal::
+
+  pgr_maxCardinalityMatch(Edges SQL, [directed])
+   RETURNS SETOF (seq, edge, source, target)
+
+Migration is needed, because:
+
+* Use ``cost`` and ``reverse_cost`` on the inner query
+* Results are ordered
+* Works for undirected graphs.
+* New signature
+
+  * ``pgr_maxCardinalityMatch(text)`` returns only ``edge`` column.
+  * The optional flag ``directed`` is removed.
+
+:Before migration:
+
+.. literalinclude:: migration.queries
+   :start-after: --maxcard1
+   :end-before: --maxcard2
+
+* Columns used are ``going`` and ``coming`` to represent the existence of an
+  edge.
+* Flag ``directed`` was used to indicate if it was for a **directed** or
+  **undirected** graph.
+
+  * The flag ``directed`` is ignored.
+
+    * Regardless of it's value it gives the result considering the graph as
+      **undirected**.
+
+:Migration:
+
+* Use the columns ``cost`` and ``reverse_cost`` to represent the existence of an
+  edge.
+* Do not use the flag ``directed``.
+* In the query returns only ``edge`` column.
+
+.. literalinclude:: migration.queries
+   :start-after: --maxcard2
+   :end-before: --maxcard3
 
 Migration of restrictions
 -------------------------------------------------------------------------------
@@ -55,14 +109,12 @@ On the deprecated signatures:
   * Is of type ``FLOAT``.
 
 Creation of the old restrictions table
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. literalinclude:: migration.queries
    :start-after: --rest00
    :end-before: --rest01
 
-Old restrictions fillup
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Old restrictions fill up
 
 .. literalinclude:: migration.queries
    :start-after: --rest01
@@ -103,26 +155,10 @@ New restrictions structure
 
   * Is of type ``ANY-NUMERICAL``
 
-Creation of the restrictions table
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+.. include:: sampledata.rst
+   :start-after: the_restrictions_start
+   :end-before: the_restrictions_end
 
-.. literalinclude:: sampledata.queries
-   :start-after: -- r1
-   :end-before: -- r2
-
-Restrictions fillup
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-.. literalinclude:: sampledata.queries
-   :start-after: -- r2
-   :end-before: -- r3
-
-Restrictions contents
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-.. literalinclude:: sampledata.queries
-   :start-after: -- r3
-   :end-before: -- r4
 
 The restriction with ``rid = 2`` represents the path :math:`3 \rightarrow5
 \rightarrow9`.
@@ -138,12 +174,12 @@ To transform the old restrictions table to the new restrictions structure,
 
   * In this migration guide ``new_restrictions`` is been used.
 
-* For this migration pgRuoting supllies an auxilary function for reversal of an
+* For this migration pgRouting supplies an auxiliary function for reversal of an
   array ``_pgr_array_reverse`` needed for the migration.
 
   * ``_pgr_array_reverse``:
 
-    * Was created temporarly for this migration
+    * Was created temporally for this migration
     * Is not documented.
     * Will be removed on the next mayor version 4.0.0
 
@@ -178,7 +214,7 @@ Signature to be migrated:
 
 * Does not autodetect if ``reverse_cost`` column exist.
 
-  * User must be carefull to match the existance of the column with the value of
+  * User must be careful to match the existence of the column with the value of
     ``has_rcost`` parameter.
 
 * The restrictions inner query is optional.
@@ -307,7 +343,7 @@ Signature to be migrated:
 
 * Does not autodetect if ``reverse_cost`` column exist.
 
-  * User must be carefull to match the existance of the column with the value of
+  * User must be careful to match the existence of the column with the value of
     ``has_rcost`` parameter.
 
 * The restrictions inner query is optional.
@@ -443,7 +479,7 @@ Signature to be migrated:
 
 * Does not autodetect if ``reverse_cost`` column exist.
 
-  * User must be carefull to match the existance of the column with the value of
+  * User must be careful to match the existence of the column with the value of
     ``has_rcost`` parameter.
 
 * The restrictions inner query is optional.
@@ -574,7 +610,7 @@ Signature to be migrated:
 
 * Does not autodetect if ``reverse_cost`` column exist.
 
-  * User must be carefull to match the existance of the column with the value of
+  * User must be careful to match the existence of the column with the value of
     ``has_rcost`` parameter.
 
 * The restrictions inner query is optional.
@@ -585,7 +621,7 @@ For these migration guide the following points will be used:
    :start-after: --viav7
    :end-before: --edgesvia1
 
-And will travel thru the follwoing Via points :math:`4\rightarrow3\rightarrow6`
+And will travel thru the following Via points :math:`4\rightarrow3\rightarrow6`
 
 Migrate by using:
 

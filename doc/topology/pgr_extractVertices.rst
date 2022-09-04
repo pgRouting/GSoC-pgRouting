@@ -283,6 +283,21 @@ Inspect the routing topology
 
 .. create_routing_topology_end
 
+
+Crossing edges
+...............................................................................
+
+.. include:: pgRouting-concepts.rst
+   :start-after: cross_edges_start
+   :end-before: cross_edges_end
+
+Graphs without geometries
+...............................................................................
+
+.. include:: pgRouting-concepts.rst
+   :start-after: no_geometry_start
+   :end-before: no_geometry_end
+
 See Also
 -------------------------------------------------------------------------------
 

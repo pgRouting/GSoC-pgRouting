@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v3.4.0-dev\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-06 19:21+0000\n"
+"POT-Creation-Date: 2022-06-25 12:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,11 +87,11 @@ msgstr ""
 #: ../../build/doc/pgr_withPointsKSP.rst:48
 #: ../../build/doc/pgr_withPointsKSP.rst:88
 #: ../../build/doc/dijkstra-family.rst:11
-#: ../../build/doc/pgRouting-concepts.rst:11
 #: ../../build/doc/pgr_KSP.rst:11
-#: ../../build/doc/pgr_KSP.rst:13
-#: ../../build/doc/withPoints-category.rst:11
 #: ../../build/doc/withPoints-family.rst:11
+#: ../../build/doc/pgRouting-concepts.rst:11
+#: ../../build/doc/withPoints-category.rst:11
+#: ../../build/doc/pgr_KSP.rst:13
 msgid "Description"
 msgstr ""
 
@@ -133,19 +133,19 @@ msgstr ""
 
 #: ../../build/doc/pgr_withPointsKSP.rst:86
 #: ../../build/doc/dijkstra-family.rst:8
-#: ../../build/doc/pgRouting-concepts.rst:8
 #: ../../build/doc/pgr_KSP.rst:8
+#: ../../build/doc/pgRouting-concepts.rst:8
 #: ../../build/doc/pgr_KSP.rst:11
 msgid "Column"
 msgstr ""
 
 #: ../../build/doc/pgr_withPointsKSP.rst:87
 #: ../../build/doc/dijkstra-family.rst:9
-#: ../../build/doc/pgRouting-concepts.rst:9
 #: ../../build/doc/pgr_KSP.rst:9
-#: ../../build/doc/pgr_KSP.rst:12
-#: ../../build/doc/withPoints-category.rst:9
 #: ../../build/doc/withPoints-family.rst:9
+#: ../../build/doc/pgRouting-concepts.rst:9
+#: ../../build/doc/withPoints-category.rst:9
+#: ../../build/doc/pgr_KSP.rst:12
 msgid "Type"
 msgstr ""
 
@@ -225,10 +225,10 @@ msgid "Optional parameters"
 msgstr ""
 
 #: ../../build/doc/dijkstra-family.rst:10
-#: ../../build/doc/pgRouting-concepts.rst:10
 #: ../../build/doc/pgr_KSP.rst:10
-#: ../../build/doc/withPoints-category.rst:10
 #: ../../build/doc/withPoints-family.rst:10
+#: ../../build/doc/pgRouting-concepts.rst:10
+#: ../../build/doc/withPoints-category.rst:10
 msgid "Default"
 msgstr ""
 
@@ -283,8 +283,8 @@ msgstr ""
 msgid "With points optional parameters"
 msgstr ""
 
-#: ../../build/doc/withPoints-category.rst:8
 #: ../../build/doc/withPoints-family.rst:8
+#: ../../build/doc/withPoints-category.rst:8
 msgid "Parameter"
 msgstr ""
 
@@ -292,13 +292,13 @@ msgstr ""
 msgid "``driving_side``"
 msgstr ""
 
-#: ../../build/doc/withPoints-category.rst:32
 #: ../../build/doc/withPoints-family.rst:13
+#: ../../build/doc/withPoints-category.rst:32
 msgid "``CHAR``"
 msgstr ""
 
-#: ../../build/doc/withPoints-category.rst:33
 #: ../../build/doc/withPoints-family.rst:14
+#: ../../build/doc/withPoints-category.rst:33
 msgid "``b``"
 msgstr ""
 
@@ -555,42 +555,62 @@ msgstr ""
 msgid "Additional Examples"
 msgstr ""
 
-#: ../../build/doc/pgr_withPointsKSP.rst:157
-msgid "get :math:`2` paths using left side driving topology, from point :math:`1` to point :math:`2` with details."
+#: ../../build/doc/pgr_withPointsKSP.rst:161
+msgid "Use :doc:`pgr_findCloseEdges` in the `Points SQL`_."
 msgstr ""
 
-#: ../../build/doc/pgr_withPointsKSP.rst:164
-msgid "get :math:`2` paths using right side driving topology from, point :math:`1` to point :math:`2` with heap paths and details."
+#: ../../build/doc/pgr_withPointsKSP.rst:163
+msgid "Get :math:`2` paths using left side driving topology, from vertex :math:`1` to the closest location on the graph of point `(2.9, 1.8)`."
 msgstr ""
 
-#: ../../build/doc/pgr_withPointsKSP.rst:171
-msgid "The queries use the :doc:`sampledata` network."
+#: ../../build/doc/pgr_withPointsKSP.rst:170
+msgid "Point :math:`-1` corresponds to the closest edge from point `(2.9,1.8)`."
 msgstr ""
 
-#: ../../build/doc/pgr_withPointsKSP.rst:174
-msgid "See Also"
+#: ../../build/doc/pgr_withPointsKSP.rst:173
+msgid "Left driving side"
 msgstr ""
 
-#: ../../build/doc/pgr_withPointsKSP.rst:176
-msgid ":doc:`withPoints-family`"
-msgstr ""
-
-#: ../../build/doc/pgr_withPointsKSP.rst:177
-msgid ":doc:`KSP-category`"
-msgstr ""
-
-#: ../../build/doc/pgr_withPointsKSP.rst:178
-msgid ":doc:`sampledata`"
-msgstr ""
-
-#: ../../build/doc/pgr_withPointsKSP.rst:181
-msgid "Indices and tables"
-msgstr ""
-
-#: ../../build/doc/pgr_withPointsKSP.rst:182
-msgid ":ref:`genindex`"
+#: ../../build/doc/pgr_withPointsKSP.rst:175
+msgid "Get :math:`2` paths using left side driving topology, from point :math:`1` to point :math:`2` with details."
 msgstr ""
 
 #: ../../build/doc/pgr_withPointsKSP.rst:183
+msgid "Right driving side"
+msgstr ""
+
+#: ../../build/doc/pgr_withPointsKSP.rst:185
+msgid "Get :math:`2` paths using right side driving topology from, point :math:`1` to point :math:`2` with heap paths and details."
+msgstr ""
+
+#: ../../build/doc/pgr_withPointsKSP.rst:192
+msgid "The queries use the :doc:`sampledata` network."
+msgstr ""
+
+#: ../../build/doc/pgr_withPointsKSP.rst:195
+msgid "See Also"
+msgstr ""
+
+#: ../../build/doc/pgr_withPointsKSP.rst:197
+msgid ":doc:`withPoints-family`"
+msgstr ""
+
+#: ../../build/doc/pgr_withPointsKSP.rst:198
+msgid ":doc:`KSP-category`"
+msgstr ""
+
+#: ../../build/doc/pgr_withPointsKSP.rst:199
+msgid ":doc:`sampledata`"
+msgstr ""
+
+#: ../../build/doc/pgr_withPointsKSP.rst:202
+msgid "Indices and tables"
+msgstr ""
+
+#: ../../build/doc/pgr_withPointsKSP.rst:203
+msgid ":ref:`genindex`"
+msgstr ""
+
+#: ../../build/doc/pgr_withPointsKSP.rst:204
 msgid ":ref:`search`"
 msgstr ""
