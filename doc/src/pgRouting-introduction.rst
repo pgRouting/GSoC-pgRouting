@@ -91,7 +91,8 @@ Rajat Shinde,
 Regina Obe,
 Shobhit Chaurasia,
 Swapnil Joshi,
-Virginia Vergara
+Virginia Vergara,
+Yige Huang
 
 
 And all the people that give us a little of their time making comments, finding
