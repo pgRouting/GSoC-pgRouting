@@ -104,8 +104,8 @@ class Pgr_bdAstar : public Pgr_bidirectional<G> {
     void explore_forward(const Cost_Vertex_pair &node) {
         typename G::EO_i out, out_end;
 
-        auto current_cost = node.first;
         auto current_node = node.second;
+        auto current_node_cost = forward_cost[current_node];
 
         for (boost::tie(out, out_end) = out_edges(current_node, graph.graph);
                 out != out_end; ++out) {
@@ -114,8 +114,8 @@ class Pgr_bdAstar : public Pgr_bidirectional<G> {
 
             if (forward_finished[next_node]) continue;
 
-            if (edge_cost + current_cost < forward_cost[next_node]) {
-                forward_cost[next_node] = edge_cost + current_cost;
+            if (edge_cost + current_node_cost < forward_cost[next_node]) {
+                forward_cost[next_node] = edge_cost + current_node_cost;
                 forward_predecessor[next_node] = current_node;
                 forward_edge[next_node] = graph[*out].id;
                 forward_queue.push({

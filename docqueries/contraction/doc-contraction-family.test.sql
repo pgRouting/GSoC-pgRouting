@@ -1,3 +1,5 @@
+-- CopyRight(c) pgRouting developers
+-- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
 
 /* -- q00 */
 SELECT id, source, target, cost, reverse_cost
@@ -64,6 +66,7 @@ ORDER BY id;
 CREATE OR REPLACE FUNCTION my_dijkstra(
   departure BIGINT, destination BIGINT,
   OUT seq INTEGER, OUT path_seq INTEGER,
+  OUT start_vid BIGINT, OUT end_vid BIGINT,
   OUT node BIGINT, OUT edge BIGINT,
   OUT cost FLOAT, OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
@@ -94,6 +97,7 @@ SELECT * FROM my_dijkstra(15, 1);
 CREATE OR REPLACE FUNCTION my_dijkstra(
   departure BIGINT, destination BIGINT,
   OUT seq INTEGER, OUT path_seq INTEGER,
+  OUT start_vid BIGINT, OUT end_vid BIGINT,
   OUT node BIGINT, OUT edge BIGINT,
   OUT cost FLOAT, OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
@@ -138,6 +142,7 @@ SELECT * FROM my_dijkstra(15, 1);
 CREATE OR REPLACE FUNCTION my_dijkstra(
   departure BIGINT, destination BIGINT,
   OUT seq INTEGER, OUT path_seq INTEGER,
+  OUT start_vid BIGINT, OUT end_vid BIGINT,
   OUT node BIGINT, OUT edge BIGINT,
   OUT cost FLOAT, OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS

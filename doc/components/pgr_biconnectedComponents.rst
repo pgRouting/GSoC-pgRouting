@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_biconnectedComponents.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_biconnectedComponents.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_biconnectedComponents.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_biconnectedComponents.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_biconnectedComponents.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_biconnectedComponents.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_biconnectedComponents.html>`__
@@ -75,11 +76,13 @@ only be contained in a single biconnected component.
 Signatures
 -------------------------------------------------------------------------------
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_biconnectedComponents(`Edges SQL`_)
-    RETURNS SET OF (seq, component, edge)
-    OR EMPTY SET
+   | pgr_biconnectedComponents(`Edges SQL`_)
+
+   | RETURNS SET OF |result-component-E|
+   | OR EMPTY SET
 
 :Example: The biconnected components of the graph
 
@@ -110,7 +113,7 @@ Edges SQL
 Result Columns
 -------------------------------------------------------------------------------
 
-Returns set of ``(seq, component, edge)``
+Returns set of |result-component-E|
 
 .. list-table::
    :width: 81

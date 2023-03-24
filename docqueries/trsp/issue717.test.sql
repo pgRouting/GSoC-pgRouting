@@ -1,3 +1,5 @@
+-- CopyRight(c) pgRouting developers
+-- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
 /*PGR-GNU*****************************************************************
 
 Copyright (c) 2015 pgRouting developers
@@ -21,46 +23,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
--------------------------------------
--------------------------------------
--- tests to without restrictions
--------------------------------------
--------------------------------------
-
--------------------------------------
--- directed  with reverse_cost
--------------------------------------
 SELECT * FROM pgr_trspViaVertices(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[6, 1, 12]::INTEGER[],     -- array of vids
-    true,  -- directed graph?
-    true  -- has_reverse_cost?
+    ARRAY[6, 1, 12]::INTEGER[],     /* array of vids */
+    true,  /* directed graph? */
+    true  /* has_reverse_cost? */
 );
 
 SELECT * FROM pgr_trspViaEdges(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[4,6,11]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    true,  -- directed graph?
-    true  -- has_reverse_cost?
-);
-
-
-SELECT * FROM pgr_trspViaEdges(
-    'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[1,11,6]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    true,  -- directed graph?
-    true  -- has_reverse_cost?
+    ARRAY[4,6,11]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    true,  /* directed graph? */
+    true  /* has_reverse_cost? */
 );
 
 
 SELECT * FROM pgr_trspViaEdges(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[1,11,6]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    true,  -- directed graph?
-    true  -- has_reverse_cost?
+    ARRAY[1,11,6]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    true,  /* directed graph? */
+    true  /* has_reverse_cost? */
+);
+
+
+SELECT * FROM pgr_trspViaEdges(
+    'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
+    ARRAY[1,11,6]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    true,  /* directed graph? */
+    true  /* has_reverse_cost? */
 );
 
 
@@ -69,35 +62,35 @@ SELECT * FROM pgr_trspViaEdges(
 -------------------------------------
 SELECT * FROM pgr_trspViaVertices(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[6, 1, 12]::INTEGER[],     -- array of vids
-    true,  -- directed graph?
-    false  -- has_reverse_cost?
+    ARRAY[6, 1, 12]::INTEGER[],     /* array of vids */
+    true,  /* directed graph? */
+    false  /* has_reverse_cost? */
 );
 
 SELECT * FROM pgr_trspViaEdges(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[4,6,11]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    true,  -- directed graph?
-    false  -- has_reverse_cost?
-);
-
-
-SELECT * FROM pgr_trspViaEdges(
-    'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[1,11,6]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    true,  -- directed graph?
-    false  -- has_reverse_cost?
+    ARRAY[4,6,11]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    true,  /* directed graph? */
+    false  /* has_reverse_cost? */
 );
 
 
 SELECT * FROM pgr_trspViaEdges(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[1,11,6]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    true,  -- directed graph?
-    false  -- has_reverse_cost?
+    ARRAY[1,11,6]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    true,  /* directed graph? */
+    false  /* has_reverse_cost? */
+);
+
+
+SELECT * FROM pgr_trspViaEdges(
+    'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
+    ARRAY[1,11,6]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    true,  /* directed graph? */
+    false  /* has_reverse_cost? */
 );
 
 
@@ -107,35 +100,35 @@ SELECT * FROM pgr_trspViaEdges(
 -------------------------------------
 SELECT * FROM pgr_trspViaVertices(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[6, 1, 12]::INTEGER[],     -- array of vids
-    false,  -- directed graph?
-    true  -- has_reverse_cost?
+    ARRAY[6, 1, 12]::INTEGER[],     /* array of vids */
+    false,  /* directed graph? */
+    true  /* has_reverse_cost? */
 );
 
 SELECT * FROM pgr_trspViaEdges(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[4,6,11]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    false,  -- directed graph?
-    true  -- has_reverse_cost?
-);
-
-
-SELECT * FROM pgr_trspViaEdges(
-    'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[1,11,6]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    false,  -- directed graph?
-    true  -- has_reverse_cost?
+    ARRAY[4,6,11]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    false,  /* directed graph? */
+    true  /* has_reverse_cost? */
 );
 
 
 SELECT * FROM pgr_trspViaEdges(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[1,11,6]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    false,  -- directed graph?
-    true  -- has_reverse_cost?
+    ARRAY[1,11,6]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    false,  /* directed graph? */
+    true  /* has_reverse_cost? */
+);
+
+
+SELECT * FROM pgr_trspViaEdges(
+    'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
+    ARRAY[1,11,6]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    false,  /* directed graph? */
+    true  /* has_reverse_cost? */
 );
 
 
@@ -144,33 +137,33 @@ SELECT * FROM pgr_trspViaEdges(
 -------------------------------------
 SELECT * FROM pgr_trspViaVertices(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[6, 1, 12]::INTEGER[],     -- array of vids
-    false,  -- directed graph?
-    false  -- has_reverse_cost?
+    ARRAY[6, 1, 12]::INTEGER[],     /* array of vids */
+    false,  /* directed graph? */
+    false  /* has_reverse_cost? */
 );
 
 SELECT * FROM pgr_trspViaEdges(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[4,6,11]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    false,  -- directed graph?
-    false  -- has_reverse_cost?
-);
-
-
-SELECT * FROM pgr_trspViaEdges(
-    'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[1,11,6]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    false,  -- directed graph?
-    false  -- has_reverse_cost?
+    ARRAY[4,6,11]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    false,  /* directed graph? */
+    false  /* has_reverse_cost? */
 );
 
 
 SELECT * FROM pgr_trspViaEdges(
     'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
-    ARRAY[1,11,6]::INTEGER[],           -- array of eids
-    ARRAY[0.5, 0.5, 0.5]::float8[],     -- array of pcts
-    false,  -- directed graph?
-    false  -- has_reverse_cost?
+    ARRAY[1,11,6]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    false,  /* directed graph? */
+    false  /* has_reverse_cost? */
+);
+
+
+SELECT * FROM pgr_trspViaEdges(
+    'SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost FROM edges',
+    ARRAY[1,11,6]::INTEGER[],           /* array of eids */
+    ARRAY[0.5, 0.5, 0.5]::float8[],     /* array of vids */
+    false,  /* directed graph? */
+    false  /* has_reverse_cost? */
 );

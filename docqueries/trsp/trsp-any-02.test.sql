@@ -1,3 +1,5 @@
+-- CopyRight(c) pgRouting developers
+-- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
 SET extra_float_digits=-3;
 
 CREATE TABLE restrictions2 (
@@ -17,11 +19,11 @@ UPDATE edges SET cost = cost + 0.001 * id * id, reverse_cost = reverse_cost + 0.
 
 select * from pgr_trsp(
     'select id::integer, source::integer, target::integer,cost, reverse_cost from edges ORDER BY ID',
-    1,    -- edge_id for start
-    0.5,  -- midpoint of edge
-    6,    -- edge_id of route end
-    0.5,  -- midpoint of edge
-    true, -- directed graph?
-    true, -- has_reverse_cost?
-    -- include the turn restrictions
+    1,    /* edge_id for start */
+    0.5,  /* midpoint of edge */
+    6,    /* edge_id of route end */
+    0.5,  /* midpoint of edge */
+    true, /* directed graph? */
+    true, /* has_reverse_cost? */
+    /* include the turn restrictions */
     'select to_cost, teid as target_id, feid||coalesce('',''||via,'''') as via_path from restrictions2');

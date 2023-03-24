@@ -31,13 +31,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_CONTRACTION_PGR_CONTRACTIONGRAPH_HPP_
 #pragma once
 
-#include <boost/graph/iteration_macros.hpp>
-
 #include <limits>
 #include <algorithm>
 #include <vector>
 #include <iostream>
 #include <tuple>
+
+#include <boost/graph/iteration_macros.hpp>
 
 #include "cpp_common/pgr_base_graph.hpp"
 #include "cpp_common/ch_vertex.h"
@@ -154,17 +154,16 @@ class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge> {
 
      /*! @brief add_shortuct to the graph during contraction
 
-       u -> v -> w
-
-       u -> w
-
-       edge (u, w) is a new edge e
-       e.contracted_vertices = v + v.contracted vertices
-
-       removed from graph edges: u -> v  and v -> w
-
-
        @param [in] edge of type *CH_edge* is to be added
+       @param [in] u vertex
+       @param [in] v vertex
+
+       u -> w -> v
+
+       u -> v
+
+       edge (u, v) is a new edge e
+       contracted_vertices = w + contracted vertices
        */
 
      void add_shortcut(const CH_edge &edge, V u, V v) {

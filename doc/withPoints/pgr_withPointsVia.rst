@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_withPointsVia.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_withPointsVia.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_withPointsVia.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_withPointsVia.html>`__
 
 ``pgr_withPointsVia`` - Proposed
 ===============================================================================
@@ -63,13 +64,14 @@ Signatures
 One Via
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_withPointsVia(`Edges SQL`_, `Points SQL`_, **via vertices**
-               [, directed] [, strict] [, U_turn_on_edge]) - Proposed on v3.4
-    RETURNS SET OF (seq, path_pid, path_seq, start_vid, end_vid,
-                    node, edge, cost, agg_cost, route_agg_cost)
-    OR EMPTY SET
+   | pgr_withPointsVia(`Edges SQL`_, `Points SQL`_, **via vertices**, [**options**])
+   | **options:** ``[directed, strict, U_turn_on_edge]``
+
+   | RETURNS SET OF |via-result|
+   | OR EMPTY SET
 
 :Example: Find the route that visits the vertices :math:`\{ -6, 15, -1\}` in
           that order on a **directed** graph.

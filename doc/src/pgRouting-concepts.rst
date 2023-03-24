@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgRouting-concepts.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgRouting-concepts.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgRouting-concepts.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgRouting-concepts.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgRouting-concepts.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgRouting-concepts.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgRouting-concepts.html>`__
@@ -901,7 +902,8 @@ Once the graph preparation work has been done above, it is time to use a
 
 The general form of a pgRouting function call is:
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
     pgr_<name>(`Inner queries`_, **parameters**, [ ``Optional parameters``)
 
@@ -918,7 +920,8 @@ named parameters.
 
 For example, for this :doc:`pgr_dijkstra` signature:
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
    pgr_dijkstra(`Edges SQL`_, **start vid**, **end vid**  [, ``directed``])
 
@@ -967,7 +970,7 @@ A function might have different overloads. The most common are called:
 Depending on the overload the parameters types change.
 
 * **One**: **ANY-INTEGER**
-* **Many**: ``ARRAY`` [ **ANY-INTEGER** ]
+* **Many**: ``ARRAY`` [**ANY-INTEGER**]
 
 Depending of the function the overloads may vary. But the concept of parameter
 type change remains the same.
@@ -1360,7 +1363,7 @@ Restrictions SQL
      - Type
      - Description
    * - ``path``
-     - ``ARRAY[`` **ANY-INTEGER** ``]``
+     - ``ARRAY`` [**ANY-INTEGER**]
      - Sequence of edge identifiers that form a path that is not allowed to be
        taken.
        - Empty arrays or ``NULL`` arrays are ignored.
@@ -1437,7 +1440,7 @@ Parameters for the Via functions
      -
      - SQL query as described.
    * - **via vertices**
-     - ``ARRAY[`` **ANY-INTEGER** ``]``
+     - ``ARRAY`` [**ANY-INTEGER**]
      -
      - Array of ordered vertices identifiers that are going to be visited.
    * - ``directed``
@@ -1491,13 +1494,13 @@ For the TRSP functions
      - **ANY-INTEGER**
      - Identifier of the departure vertex.
    * - **start vids**
-     - ``ARRAY[`` **ANY-INTEGER** ``]``
+     - ``ARRAY`` [**ANY-INTEGER**]
      - Array of identifiers of destination vertices.
    * - **end vid**
      - **ANY-INTEGER**
      - Identifier of the departure vertex.
    * - **end vids**
-     - ``ARRAY[`` **ANY-INTEGER** ``]``
+     - ``ARRAY`` [**ANY-INTEGER**]
      - Array of identifiers of destination vertices.
 
 Where:
@@ -1817,7 +1820,7 @@ Return columns for cost functions
 
 .. return_cost_start
 
-Set of ``(start_vid, end_vid, agg_cost)``
+Set of |matrix-result|
 
 .. list-table::
    :width: 81

@@ -46,12 +46,12 @@ INSERT 0 9
 SELECT * FROM pgr_dijkstra(
   'SELECT id, source, target, cost FROM wiki',
   1, 5, false);
- seq | path_seq | node | edge | cost | agg_cost
------+----------+------+------+------+----------
-   1 |        1 |    1 |    2 |    9 |        0
-   2 |        2 |    3 |    6 |    2 |        9
-   3 |        3 |    6 |    9 |    9 |       11
-   4 |        4 |    5 |   -1 |    0 |       20
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         1 |       5 |    1 |    2 |    9 |        0
+   2 |        2 |         1 |       5 |    3 |    6 |    2 |        9
+   3 |        3 |         1 |       5 |    6 |    9 |    9 |       11
+   4 |        4 |         1 |       5 |    5 |   -1 |    0 |       20
 (4 rows)
 
 /* -- q4 */
@@ -106,11 +106,12 @@ UPDATE 18
 ALTER TABLE edges ADD COLUMN direction TEXT;
 ALTER TABLE
 UPDATE edges SET
-direction = CASE WHEN (cost>0 AND reverse_cost>0) THEN 'B'
-           WHEN (cost>0 AND reverse_cost<0) THEN 'FT'
-           WHEN (cost<0 AND reverse_cost>0) THEN 'TF'
+direction = CASE WHEN (cost>0 AND reverse_cost>0) THEN 'B'   /* both ways */
+           WHEN (cost>0 AND reverse_cost<0) THEN 'FT'  /* direction of the LINESSTRING */
+           WHEN (cost<0 AND reverse_cost>0) THEN 'TF'  /* reverse direction of the LINESTRING */
            ELSE '' END;
 UPDATE 18
+/* unknown */
 /* -- topo5 */
 UPDATE edges SET
 cost = CASE WHEN (direction = 'B' OR direction = 'FT')
@@ -334,9 +335,7 @@ three_options AS (
     ST_X(ST_EndPoint(e_geom)) AS x2, ST_Y(ST_EndPoint(e_geom)) AS y2,
     ST_MakeLine(geom, ST_EndPoint(e_geom)) AS geom
   FROM info
-
   UNION
-
   SELECT closest, source, 0, 0, capacity, reverse_capacity,
     ST_X(geom) AS x1, ST_Y(geom) AS y1,
     ST_X(ST_StartPoint(e_geom)) AS x2, ST_Y(ST_StartPoint(e_geom)) AS y2,
@@ -351,7 +350,6 @@ three_options AS (
     edge
   FROM info */
   )
-
 INSERT INTO edges
   (source, target,
     cost, reverse_cost,
@@ -421,8 +419,8 @@ SELECT * FROM pgr_dijkstra($$
   WHERE geom && (SELECT st_buffer(geom, 1) AS myarea
     FROM edges WHERE id = 2)$$,
   1, 2);
- seq | path_seq | node | edge | cost | agg_cost
------+----------+------+------+------+----------
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
 (0 rows)
 
 /* -- performance2 */

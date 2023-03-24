@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_dagShortestPath.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_dagShortestPath.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_dagShortestPath.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_dagShortestPath.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_dagShortestPath.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_dagShortestPath.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_dagShortestPath.html>`__
@@ -91,16 +92,17 @@ Signatures
 
 .. rubric:: Summary
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_dagShortestPath(`Edges SQL`_, **start vid**,  **end vid**)
-    pgr_dagShortestPath(`Edges SQL`_, **start vid**,  **end vids**)
-    pgr_dagShortestPath(`Edges SQL`_, **start vids**, **end vid**)
-    pgr_dagShortestPath(`Edges SQL`_, **start vids**, **end vids**)
-    pgr_dagShortestPath(`Edges SQL`_, `Combinations SQL`_)
+   | pgr_dagShortestPath(`Edges SQL`_, **start vid**,  **end vid**)
+   | pgr_dagShortestPath(`Edges SQL`_, **start vid**,  **end vids**)
+   | pgr_dagShortestPath(`Edges SQL`_, **start vids**, **end vid**)
+   | pgr_dagShortestPath(`Edges SQL`_, **start vids**, **end vids**)
+   | pgr_dagShortestPath(`Edges SQL`_, `Combinations SQL`_)
 
-    RETURNS SET OF (seq, path_seq, node, edge, cost, agg_cost)
-    OR EMPTY SET
+   | RETURNS SET OF |result-1-1|
+   | OR EMPTY SET
 
 
 .. index::
@@ -109,11 +111,13 @@ Signatures
 One to One
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_dagShortestPath(`Edges SQL`_, **start vid**,  **end vid**)
-    RETURNS SET OF (seq, path_seq, node, edge, cost, agg_cost)
-    OR EMPTY SET
+   | pgr_dagShortestPath(`Edges SQL`_, **start vid**,  **end vid**)
+
+   | RETURNS SET OF |result-1-1|
+   | OR EMPTY SET
 
 :Example: From vertex :math:`5` to vertex  :math:`11` on a **directed** graph
 
@@ -127,11 +131,13 @@ One to One
 One to Many
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_dagShortestPath(`Edges SQL`_, **start vid**,  **end vids**)
-    RETURNS SET OF (seq, path_seq, node, edge, cost, agg_cost)
-    OR EMPTY SET
+   | pgr_dagShortestPath(`Edges SQL`_, **start vid**,  **end vids**)
+
+   | RETURNS SET OF |result-1-1|
+   | OR EMPTY SET
 
 :Example: From vertex :math:`5` to vertices :math:`\{7, 11\}`
 
@@ -145,11 +151,13 @@ One to Many
 Many to One
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_dagShortestPath(`Edges SQL`_, **start vids**, **end vid**)
-    RETURNS SET OF (seq, path_seq, node, edge, cost, agg_cost)
-    OR EMPTY SET
+   | pgr_dagShortestPath(`Edges SQL`_, **start vids**, **end vid**)
+
+   | RETURNS SET OF |result-1-1|
+   | OR EMPTY SET
 
 :Example: From vertices :math:`\{5, 10\}` to vertex :math:`11`
 
@@ -163,11 +171,13 @@ Many to One
 Many to Many
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_dagShortestPath(`Edges SQL`_, **start vids**, **end vids**)
-    RETURNS SET OF (seq, path_seq, node, edge, cost, agg_cost)
-    OR EMPTY SET
+   | pgr_dagShortestPath(`Edges SQL`_, **start vids**, **end vids**)
+
+   | RETURNS SET OF |result-1-1|
+   | OR EMPTY SET
 
 :Example: From vertices :math:`\{5, 15\}` to vertices :math:`\{11, 17\}` on an
           **undirected** graph
@@ -182,11 +192,13 @@ Many to Many
 Combinations
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_dagShortestPath(`Edges SQL`_, Combinations)
-    RETURNS SET OF (seq, path_seq, node, edge, cost, agg_cost)
-    OR EMPTY SET
+   | pgr_dagShortestPath(`Edges SQL`_, `Combinations SQL`_)
+
+   | RETURNS SET OF |result-1-1|
+   | OR EMPTY SET
 
 :Example: Using a combinations table on an **undirected** graph
 

@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_bipartite.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_bipartite.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_bipartite.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_bipartite.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_bipartite.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_bipartite.html>`__
 
@@ -61,12 +62,13 @@ Signatures
     single: bipartite - Experimental on v3.2
 
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_bipartite(`Edges SQL`_)
+   | pgr_bipartite(`Edges SQL`_)
 
-    RETURNS SET OF (vertex_id, color_id)
-    OR EMPTY SET
+   | RETURNS SET OF |result-node-color|
+   | OR EMPTY SET
 
 :Example: When the graph is bipartite
 

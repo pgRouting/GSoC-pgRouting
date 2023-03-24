@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_makeConnected.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_makeConnected.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_makeConnected.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_makeConnected.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_makeConnected.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_makeConnected.html>`__
 
@@ -64,11 +65,13 @@ The main characteristics are:
 Signatures
 -------------------------------------------------------------------------------
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_makeConnected(`Edges SQL`_)
-    RETURNS SET OF (seq, start_vid, end_vid)
-    OR EMPTY SET
+   | pgr_makeConnected(`Edges SQL`_)
+
+   | RETURNS SET OF |result-component-make|
+   | OR EMPTY SET
 
 :Example: Query done on :doc:`sampledata` network gives the list of edges that
           are needed to connect the graph.
@@ -97,7 +100,7 @@ Edges SQL
 Result Columns
 -------------------------------------------------------------------------------
 
-Returns set of ``(seq, start_vid, end_vid)``
+Returns set of |result-component-make|
 
 .. list-table::
    :width: 81

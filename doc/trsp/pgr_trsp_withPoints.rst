@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_trsp_withPoints.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_trsp_withPoints.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_trsp_withPoints.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_trsp_withPoints.html>`__
 
 pgr_trsp_withPoints - Proposed
 ===============================================================================
@@ -80,15 +81,14 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vid**, **end vid**, [options])
-   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vid**, **end vids**, [options])
-   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vid**, [options])
-   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vids**, [options])
-   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_, `Points SQL`_, [options])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vid**, **end vid**, [**options**])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vid**, **end vids**, [**options**])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vid**, [**options**])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vids**, [**options**])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_, `Points SQL`_, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
-   :[options]: [directed, driving_side [details]
-
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 .. index::
@@ -100,10 +100,10 @@ One to One
 .. admonition:: \ \
    :class: signatures
 
-   pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start
-   vid**, **end vid**, [directed, driving_side, details])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vid**, **end vid**, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From point :math:`1` to vertex :math:`10` with details on a left
@@ -122,10 +122,10 @@ One to Many
 .. admonition:: \ \
    :class: signatures
 
-   pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start
-   vid**, **end vids** [directed, driving_side, details])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vid**, **end vids**, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From point :math:`1` to point :math:`3` and vertex :math:`7`.
@@ -143,10 +143,10 @@ Many to One
 .. admonition:: \ \
    :class: signatures
 
-   pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start
-   vids**, **end vid** [directed, driving_side, details])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vid**, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From point :math:`1` and vertex :math:`6` to point :math:`3`.
@@ -164,10 +164,10 @@ Many to Many
 .. admonition:: \ \
    :class: signatures
 
-   pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start
-   vids**, **end vids** [directed, driving_side, details])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vids**, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From point :math:`1` and vertex :math:`6` to point :math:`3` and
@@ -186,10 +186,10 @@ Combinations
 .. admonition:: \ \
    :class: signatures
 
-   pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_,
-   `Points SQL`_, [directed, driving_side, details])
+   | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_, `Points SQL`_, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From point :math:`1` to vertex :math:`10` and from vertex :math:`6` to

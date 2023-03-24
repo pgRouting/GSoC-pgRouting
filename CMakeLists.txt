@@ -18,9 +18,9 @@ include(pgr/BuildType)
 #---------------------------------------------
 #---------------------------------------------
 
-project(PGROUTING VERSION 3.4.0
+project(PGROUTING VERSION 3.5.1
     LANGUAGES C CXX )
-set(PROJECT_VERSION_DEV "-dev")
+set(PROJECT_VERSION_DEV "")
 string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
 
 include(pgr/GitInfo)
@@ -29,11 +29,15 @@ include(pgr/Version)
 add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}${PROJECT_VERSION_DEV}")
 set(PROJECT_LIB_NAME "${PROJECT_NAME_LOWER}-${PROJECT_LIB_VERSION}")
 
-string(TIMESTAMP COMPILATION_DATE "%Y/%m/%d")
+string(TIMESTAMP COMPILATION_DATE "%Y/%m/%d" UTC)
 
-set(MINORS 3.4 3.3 3.2 3.1 3.0 2.6)
+set(MINORS 3.5 3.4 3.3 3.2 3.1 3.0 2.6)
 set(OLD_SIGNATURES
-    3.3.1 3.3.0
+    3.5.0
+    3.4.2
+    3.4.1
+    3.4.0
+    3.3.5 3.3.4 3.3.3 3.3.2 3.3.1 3.3.0
     3.2.2 3.2.1 3.2.0
     3.1.4 3.1.3 3.1.2 3.1.1 3.1.0
     3.0.6 3.0.5 3.0.4 3.0.3 3.0.2 3.0.1 3.0.0
@@ -169,15 +173,16 @@ if(NOT POSTGRESQL_FOUND OR NOT POSTGRESQL_VERSION_STRING)
     message(FATAL_ERROR "PostgreSQL not found - Please check your PostgreSQL installation.")
 endif()
 
-message(STATUS "POSTGRESQL_VERSION_STRING=${POSTGRESQL_VERSION_STRING}")
-string(SUBSTRING "${POSTGRESQL_VERSION_STRING}" 11 -1 POSTGRESQL_VERSION)
-
 # for XbetaY XalphaY XrcY -> X.Y
-string(REGEX REPLACE "^([0-9]+)[beta|alpha|rc|devel].*" "\\1.0" POSTGRESQL_VERSION ${POSTGRESQL_VERSION})
+string(REGEX REPLACE "([0-9]+)[beta|alpha|rc|devel].*" "\\1.0" POSTGRESQL_VERSION_STRING ${POSTGRESQL_VERSION_STRING})
+message(STATUS "POSTGRESQL_VERSION_STRING=${POSTGRESQL_VERSION_STRING}")
+
+STRING(REGEX MATCH "([0-9]+)\.([0-9]+)" POSTGRESQL_VERSION "${POSTGRESQL_VERSION_STRING}")
+message(STATUS "POSTGRESQL_VERSION=${POSTGRESQL_VERSION}")
 
 #for X.Y.Z -> XY  Y<10
 string(REGEX REPLACE "^([0-9]+)\\.([0-9]+).*" "\\1\\2" PGSQL_VERSION ${POSTGRESQL_VERSION})
-
+#message(STATUS "PGSQL_VERSION=${PGSQL_VERSION}")
 
 if("${POSTGRESQL_VERSION}" VERSION_LESS "${POSTGRESQL_MINIMUM_VERSION}")
     message(FATAL_ERROR " PostgreSQL ${POSTGRESQL_MINIMUM_VERSION} or greater is required.")
@@ -312,7 +317,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     endif()
 
     set(CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG}   -Wall -Wconversion -Wmissing-prototypes -W -Wunused -Wuninitialized -Wextra -Wdouble-promotion")
-    add_definitions(-Wsign-conversion  -Wfloat-conversion)
+    add_definitions(-Wsign-conversion)
     if(BOOST_Geometry_VERSION_OK)
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wconversion -pedantic -W -Wunused -Wuninitialized -Wextra -Wdouble-promotion")
     else()

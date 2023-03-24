@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_maxFlowMinCost_Cost.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_maxFlowMinCost_Cost.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_maxFlowMinCost_Cost.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_maxFlowMinCost_Cost.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_maxFlowMinCost_Cost.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_maxFlowMinCost_Cost.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_maxFlowMinCost_Cost.html>`__
@@ -74,14 +75,16 @@ Signatures
 
 .. rubric:: Summary
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vid**, **end vid**)
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vid**, **end vids**)
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vids**, **end vid**)
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vids**, **end vids**)
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, `Combinations SQL`_)
-    RETURNS FLOAT
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vid**, **end vid**)
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vid**, **end vids**)
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vids**, **end vid**)
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vids**, **end vids**)
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, `Combinations SQL`_)
+
+   | RETURNS FLOAT
 
 .. index::
     single: maxFlowMinCost_Cost(One to One) - Experimental on v3.0
@@ -89,10 +92,12 @@ Signatures
 One to One
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vid**, **end vid**)
-    RETURNS FLOAT
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vid**, **end vid**)
+
+   | RETURNS FLOAT
 
 :Example: From vertex :math:`11` to vertex :math:`12`
 
@@ -106,10 +111,12 @@ One to One
 One to Many
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vid**, **end vids**)
-    RETURNS FLOAT
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vid**, **end vids**)
+
+   | RETURNS FLOAT
 
 :Example: From vertex :math:`11` to vertices :math:`\{5, 10, 12\}`
 
@@ -123,10 +130,12 @@ One to Many
 Many to One
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vids**, **end vid**)
-    RETURNS FLOAT
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vids**, **end vid**)
+
+   | RETURNS FLOAT
 
 :Example: From vertices :math:`\{11, 3, 17\}` to vertex :math:`12`
 
@@ -140,10 +149,12 @@ Many to One
 Many to Many
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vids**, **end vids**)
-    RETURNS FLOAT
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, **start vids**, **end vids**)
+
+   | RETURNS FLOAT
 
 :Example: From vertices :math:`\{11, 3, 17\}` to vertices :math:`\{5, 10, 12\}`
 
@@ -158,10 +169,12 @@ Many to Many
 Combinations
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_maxFlowMinCost_Cost(`Edges SQL`_, `Combinations SQL`_)
-    RETURNS FLOAT
+   | pgr_maxFlowMinCost_Cost(`Edges SQL`_, `Combinations SQL`_)
+
+   | RETURNS FLOAT
 
 :Example: Using a combinations table, equivalent to calculating result from
           vertices :math:`\{5, 6\}` to vertices :math:`\{10, 15, 14\}`.

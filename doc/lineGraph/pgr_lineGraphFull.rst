@@ -11,10 +11,11 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_lineGraphFull.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_lineGraphFull.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_lineGraphFull.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_lineGraphFull.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_lineGraphFull.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_lineGraphFull.html>`__
-  `3.1 <https://docs.pgrouting.org/3.1/en/pgr_lineGraphFull.html>`__)
+  `3.1 <https://docs.pgrouting.org/3.1/en/pgr_lineGraphFull.html>`__
   `3.0 <https://docs.pgrouting.org/3.0/en/pgr_lineGraphFull.html>`__
 * **Unsupported versions:**
   `2.6 <https://docs.pgrouting.org/2.6/en/pgr_lineGraphFull.html>`__
@@ -71,19 +72,19 @@ Signatures
 
 .. rubric:: Summary
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_lineGraphFull(`Edges SQL`_)
-    RETURNS SET OF (seq, source, target, cost, edge)
-    OR EMPTY SET
+   | pgr_lineGraphFull(`Edges SQL`_)
+
+   | RETURNS SET OF |result-linegf|
+   | OR EMPTY SET
 
 :Example: Full line graph of subgraph of edges :math:`\{4, 7, 8, 10\}`
 
 .. literalinclude:: doc-pgr_lineGraphFull.queries
    :start-after: -- q1
    :end-before: -- q2
-
-.. pgr_lineGraphFull_parameters_start
 
 Parameters
 -------------------------------------------------------------------------------
@@ -105,7 +106,7 @@ Edges SQL
 Result Columns
 -------------------------------------------------------------------------------
 
-RETURNS SETOF  ``(seq, source, target, cost, reverse_cost)``
+RETURNS SET OF |result-linegf|
 
 .. list-table::
    :width: 81

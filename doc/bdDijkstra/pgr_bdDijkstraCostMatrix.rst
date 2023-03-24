@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_bdDijkstraCostMatrix.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_bdDijkstraCostMatrix.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_bdDijkstraCostMatrix.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_bdDijkstraCostMatrix.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_bdDijkstraCostMatrix.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_bdDijkstraCostMatrix.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_bdDijkstraCostMatrix.html>`__
@@ -63,10 +64,13 @@ Signatures
 
 .. rubric:: Summary
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_bdDijkstraCostMatrix(`Edges SQL`_, **start vids** [, directed])
-    RETURNS SET OF (start_vid, end_vid, agg_cost)
+   | pgr_bdDijkstraCostMatrix(`Edges SQL`_, **start vids**, [``directed``])
+
+   | RETURNS SET OF |matrix-result|
+   | OR EMPTY SET
 
 :Example: Symmetric cost matrix for vertices :math:`\{5, 6, 10, 15\}` on an
           **undirected** graph

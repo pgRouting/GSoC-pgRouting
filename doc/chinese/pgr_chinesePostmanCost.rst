@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_chinesePostmanCost.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_chinesePostmanCost.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_chinesePostmanCost.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_chinesePostmanCost.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_chinesePostmanCost.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_chinesePostmanCost.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_chinesePostmanCost.html>`__
@@ -41,7 +42,7 @@ Description
    :start-after: charactersistics-start
    :end-before: charactersistics-end
 
-- [TBD] Return value when the graph if disconnected
+- Return value when the graph if disconnected
 
 Signatures
 -------------------------------------------------------------------------------
@@ -49,10 +50,12 @@ Signatures
 .. index::
     single: chinesePostmanCost - Experimental on v3.0
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_chinesePostmanCost(`Edges SQL`_)
-    RETURNS FLOAT
+   | pgr_chinesePostmanCost(`Edges SQL`_)
+
+   | RETURNS ``FLOAT``
 
 :Example:
 

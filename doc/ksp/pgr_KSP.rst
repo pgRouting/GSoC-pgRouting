@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_KSP.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_KSP.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_KSP.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_KSP.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_KSP.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_KSP.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_KSP.html>`__)
@@ -60,12 +61,14 @@ Signatures
 
 .. rubric:: Summary
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_KSP(`Edges SQL`_, **start vid**, **end vid**, **K**
-               [, directed] [, heap_paths])
-    RETURNS SET OF (seq, path_id, path_seq, node, edge, cost, agg_cost)
-    OR EMPTY SET
+   | pgr_KSP(`Edges SQL`_, **start vid**, **end vid**, **K**, [**options**])
+   | **options:** ``[directed, heap_paths]``
+
+   | RETURNS SET OF |ksp-result|
+   | OR EMPTY SET
 
 :Example: Get 2 paths from :math:`6` to :math:`17` on a directed graph.
 

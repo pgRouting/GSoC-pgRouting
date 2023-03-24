@@ -11,10 +11,11 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_pickDeliverEuclidean.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_pickDeliverEuclidean.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_pickDeliverEuclidean.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_pickDeliverEuclidean.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_pickDeliverEuclidean.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_pickDeliverEuclidean.html>`__
-  current(`3.1 <https://docs.pgrouting.org/3.1/en/pgr_pickDeliverEuclidean.html>`__)
+  `3.1 <https://docs.pgrouting.org/3.1/en/pgr_pickDeliverEuclidean.html>`__
   `3.0 <https://docs.pgrouting.org/3.0/en/pgr_pickDeliverEuclidean.html>`__
 * **Unsupported versions:**
   `2.6 <https://docs.pgrouting.org/2.6/en/pgr_gsoc_vrppdtw.html>`__
@@ -92,13 +93,13 @@ Characteristics
 Signature
 -------------------------------------------------------------------------------
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_pickDeliverEuclidean(`Orders SQL`_, `Vehicles SQL`_,
-       [, factor], [max_cycles] [,initial_sol])
-    RETURNS SET OF (seq, vehicle_seq, vehicle_id,
-       stop_seq, stop_type, order_id, cargo,
-       travel_time, arrival_time, wait_time, service_time, departure_time)
+   | pgr_pickDeliverEuclidean(`Orders SQL`_, `Vehicles SQL`_, [**options**])
+   | **options:** ``[factor, max_cycles, initial_sol]``
+
+   | RETURNS SET OF |result-pickdrop|
 
 :Example: Solve the following problem
 
@@ -140,11 +141,12 @@ Orders SQL
 
 A `SELECT` statement that returns the following columns:
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    id, demand
-    p_x, p_y, p_open, p_close, [p_service,]
-    d_x, d_y, d_open, d_close, [d_service]
+   | id, demand
+   | p_x, p_y, p_open, p_close, [p_service,]
+   | d_x, d_y, d_open, d_close, [d_service]
 
 Where:
 
@@ -162,11 +164,12 @@ Vehicles SQL
 
 A `SELECT` statement that returns the following columns:
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    id, capacity
-    start_x, start_y, start_open, start_close [, start_service, ]
-    [ end_x, end_y, end_open, end_close, end_service ]
+   | id, capacity
+   | start_x, start_y, start_open, start_close [, start_service, ]
+   | [ end_x, end_y, end_open, end_close, end_service ]
 
 where:
 

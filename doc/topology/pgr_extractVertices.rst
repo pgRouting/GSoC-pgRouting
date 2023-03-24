@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_extractVertices.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_extractVertices.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_extractVertices.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_extractVertices.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_extractVertices.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_extractVertices.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_extractVertices.html>`__
@@ -54,10 +55,13 @@ Signatures
 .. index::
     single: pgr_extractVertices - Proposed on v3.3
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-   pgr_extractVertices(`Edges SQL`_ [, dryrun])
-   RETURNS SETOF (id, in_edges, out_edges, x, y, geom)
+   | pgr_extractVertices(`Edges SQL`_, [``dryrun``])
+
+   | RETURNS SETOF |result-extract|
+   | OR EMTPY SET
 
 :Example: Extracting the vertex information
 
@@ -166,7 +170,7 @@ Result Columns
      - Description
    * - ``id``
      - ``BIGINT``
-     - Identifier of the first end point vertex of the edge.
+     - Vertex identifier
    * - ``in_edges``
      - ``BIGINT[]``
      - Array of identifiers of the edges that have the vertex ``id`` as *first

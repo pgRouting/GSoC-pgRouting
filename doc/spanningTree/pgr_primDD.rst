@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_primDD.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_primDD.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_primDD.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_primDD.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_primDD.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_primDD.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_primDD.html>`__
@@ -56,11 +57,13 @@ calculated minimum spanning tree.
 Signatures
 -------------------------------------------------------------------------------
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_primDD(`Edges SQL`_, **Root vid**, **distance**)
-    pgr_primDD(`Edges SQL`_, **Root vids**, **distance**)
-    RETURNS SET OF (seq, depth, start_vid, node, edge, cost, agg_cost)
+   | pgr_primDD(`Edges SQL`_, **root vid**, **distance**)
+   | pgr_primDD(`Edges SQL`_, **root vids**, **distance**)
+
+   | RETURNS SET OF |result-bfs|
 
 .. index::
     single: primDD(Single vertex)
@@ -68,10 +71,12 @@ Signatures
 Single vertex
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_primDD(`Edges SQL`_, **Root vid**, **distance**)
-    RETURNS SET OF (seq, depth, start_vid, node, edge, cost, agg_cost)
+   | pgr_primDD(`Edges SQL`_, **root vid**, **distance**)
+
+   | RETURNS SET OF |result-bfs|
 
 :Example: The Minimum Spanning Tree starting on vertex :math:`6` with
           :math:`distance \leq 3.5`
@@ -86,10 +91,12 @@ Single vertex
 Multiple vertices
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_primDD(`Edges SQL`_, **Root vids**, **distance**)
-    RETURNS SET OF (seq, depth, start_vid, node, edge, cost, agg_cost)
+   | pgr_primDD(`Edges SQL`_, **root vids**, **distance**)
+
+   | RETURNS SET OF |result-bfs|
 
 :Example: The Minimum Spanning Tree starting on vertices :math:`\{9, 6\}` with
           :math:`distance \leq 3.5`

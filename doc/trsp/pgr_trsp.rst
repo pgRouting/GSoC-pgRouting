@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_trsp.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_trsp.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_trsp.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_trsp.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_trsp.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_trsp.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_trsp.html>`__
@@ -95,13 +96,13 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vid**, **end vid**, [directed])
-   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vid**, **end vids**, [ directed])
-   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vids**, **end vid**, [directed])
-   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vids**, **end vids**, [directed])
-   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_, [directed])
+   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vid**, **end vid**, [``directed``])
+   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vid**, **end vids**, [``directed``])
+   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vids**, **end vid**, [``directed``])
+   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vids**, **end vids**, [``directed``])
+   | pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_, [``directed``])
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 .. index::
@@ -113,9 +114,9 @@ One to One
 .. admonition:: \ \
    :class: signatures
 
-   pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vid**, **end vid**, [directed])
+   pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vid**, **end vid**, [``directed``])
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From vertex :math:`6` to vertex  :math:`10` on an undirected graph.
@@ -133,9 +134,9 @@ One to Many
 .. admonition:: \ \
    :class: signatures
 
-   pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vid**, **end vids**, [directed])
+   pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vid**, **end vids**, [``directed``])
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From vertex :math:`6` to vertices :math:`\{10, 1\}` on an
@@ -154,10 +155,9 @@ Many to One
 .. admonition:: \ \
    :class: signatures
 
-   pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vids**, **end vid**,
-   [directed])
+   pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vids**, **end vid**, [``directed``])
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From vertices :math:`\{6, 1\}` to vertex :math:`8` on a directed
@@ -177,9 +177,9 @@ Many to Many
    :class: signatures
 
    pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, **start vids**, **end vids**,
-   [directed])
+   [``directed``])
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From vertices :math:`\{6, 1\}` to vertices :math:`\{10, 8\}` on an
@@ -198,9 +198,9 @@ Combinations
 .. admonition:: \ \
    :class: signatures
 
-   pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_, [directed])
+   pgr_trsp(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_, [``directed``])
 
-   | RETURNS SET OF |generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: Using a combinations table on an undirected graph.

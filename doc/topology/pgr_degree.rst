@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_degree.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_degree.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_degree.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_degree.html>`__
 
 ``pgr_degree`` -- Proposed
 ===============================================================================
@@ -42,10 +43,13 @@ Signatures
 .. index::
     single: pgr_degree - Proposed on v3.4
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-   pgr_degree(`Edges SQL`_ , `Vertex SQL`_ [, dryrun])
-   RETURNS SETOF (id, degree)
+   | pgr_degree(`Edges SQL`_ , `Vertex SQL`_, [``dryrun``])
+
+   | RETURNS SETOF |result-degree|
+   | OR EMTPY SET
 
 :Example: Extracting the vertex information
 
@@ -136,9 +140,9 @@ Result Columns
    * - Column
      - Type
      - Description
-   * - ``id``
+   * - ``node``
      - ``BIGINT``
-     - Identifier of the first end point vertex of the edge.
+     - Vertex identifier
    * - ``degree``
      - ``BIGINT``
      - Number of edges that are incident to the vertex ``id``

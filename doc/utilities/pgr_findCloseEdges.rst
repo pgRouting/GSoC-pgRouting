@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_findCloseEdges.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_findCloseEdges.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_findCloseEdges.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_findCloseEdges.html>`__
 
 
 ``pgr_findCloseEdges``
@@ -49,12 +50,15 @@ Signatures
 
 .. rubric:: Summary
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_findCloseEdges(`Edges SQL`_, **point**, **tolerance**  [cap, partial, dryrun])
-    pgr_findCloseEdges(`Edges SQL`_, **points**, **tolerance**  [cap, partial, dryrun])
-    RETURNS SET OF (edge_id, fraction side, distance, geom, edge)
-    OR EMPTY SET
+   | pgr_findCloseEdges(`Edges SQL`_, **point**, **tolerance**, [**options**])
+   | pgr_findCloseEdges(`Edges SQL`_, **points**, **tolerance**, [**options**])
+   | **options:** ``[cap, partial, dryrun]``
+
+   | RETURNS SET OF |result-find|
+   | OR EMPTY SET
 
 .. index::
     single: findCloseEdges(One point)
@@ -62,11 +66,14 @@ Signatures
 One point
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-   pgr_findCloseEdges(`Edges SQL`_, **point**, **tolerance**  [cap, partial, dryrun])
-   RETURNS SET OF (edge_id, fraction, side, distance, geom, edge)
-   OR EMPTY SET
+   | pgr_findCloseEdges(`Edges SQL`_, **point**, **tolerance**, [**options**])
+   | **options:** ``[cap, partial, dryrun]``
+
+   | RETURNS SET OF |result-find|
+   | OR EMPTY SET
 
 :Example: With default values
 
@@ -94,11 +101,14 @@ One point
 Many points
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-   pgr_findCloseEdges(`Edges SQL`_, **points**, **tolerance**  [cap, partial, dryrun])
-   RETURNS SET OF (edge_id, fraction, side, distance, geom, edge)
-   OR EMPTY SET
+   | pgr_findCloseEdges(`Edges SQL`_, **points**, **tolerance**, [**options**])
+   | **options:** ``[cap, partial, dryrun]``
+
+   | RETURNS SET OF |result-find|
+   | OR EMPTY SET
 
 :Example: Find at most :math:`2` edges close to all vertices on the points of
           interest table.
@@ -196,10 +206,7 @@ Edges SQL
 Result Columns
 -------------------------------------------------------------------------------
 
-``RETURNS SET OF (edge_id, fraction, side, distance, geom, edge)
-OR EMPTY SET``
-
-
+Returns set of |result-find|
 
 .. list-table::
    :width: 81

@@ -1,3 +1,5 @@
+-- CopyRight(c) pgRouting developers
+-- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
 /*PGR-GNU*****************************************************************
 
 Copyright (c) 2015 pgRouting developers
@@ -20,7 +22,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
--- these should all be true
 select _pgr_versionless('2.1.0foobar23', '2.1');
 select _pgr_versionless('2.1.0foobar23', '2.1-rc1');
 select _pgr_versionless('2.1.0foobar23', '2.1-beta');
@@ -50,7 +51,6 @@ select _pgr_versionless('2.1', '2.1.3');
 select _pgr_versionless('1.05', '2.0.0');
 select _pgr_versionless('1.05', '2.0');
 select _pgr_versionless('1.05', '2');
--- these should all be false
 select _pgr_versionless('2.1', '2.1.0foobar23');
 select _pgr_versionless('2.1-rc1', '2.1.0foobar23');
 select _pgr_versionless('2.1-beta', '2.1.0foobar23');

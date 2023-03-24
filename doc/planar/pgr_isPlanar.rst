@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_isPlanar.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_isPlanar.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_isPlanar.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_isPlanar.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_isPlanar.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_isPlanar.html>`__
 
@@ -62,10 +63,12 @@ Signatures
 .. index::
    single: isPlanar - Experimental on v3.2
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_isPlanar(`Edges SQL`)
-    RETURNS BOOLEAN
+   | pgr_isPlanar(`Edges SQL`)
+
+   | RETURNS ``BOOLEAN``
 
 .. literalinclude:: doc-pgr_isPlanar.queries
    :start-after: -- q1
@@ -96,7 +99,7 @@ Returns a boolean ``(pgr_isplanar)``
 =================  =========== ==========================================
 Column             Type        Description
 =================  =========== ==========================================
-**pgr_isplanar**   ``BOOLEAN`` - `true` when the graph is planar.
+``pgr_isplanar``   ``BOOLEAN`` - `true` when the graph is planar.
                                - `false` when the graph is not planar.
 =================  =========== ==========================================
 

@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_full_version.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_full_version.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_full_version.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_full_version.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_full_version.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_full_version.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_full_version.html>`__
@@ -40,10 +41,12 @@ Get complete details of pgRouting version information
 Signatures
 -------------------------------------------------------------------------------
 
-.. Parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-   pgr_full_version()
-   RETURNS (version, build_type, compile_date, library, system, PostgreSQL, compiler, boost, hash)
+   | pgr_full_version()
+
+   | RETURNS |result-version|
 
 
 :Example: Information about when this documentation was built

@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_articulationPoints.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_articulationPoints.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_articulationPoints.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_articulationPoints.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_articulationPoints.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_articulationPoints.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_articulationPoints.html>`__
@@ -67,11 +68,13 @@ This implementation can only be used with an undirected graph.
 Signatures
 -------------------------------------------------------------------------------
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_articulationPoints(`Edges SQL`_)
-    RETURNS SET OF (node)
-    OR EMPTY SET
+   | pgr_articulationPoints(`Edges SQL`_)
+
+   | RETURNS SET OF |result-node|
+   | OR EMPTY SET
 
 :Example: The articulation points of the graph
 
@@ -104,7 +107,7 @@ Edges SQL
 Result Columns
 -------------------------------------------------------------------------------
 
-Returns set of ``(node)``
+Returns set of |result-node|
 
 .. list-table::
    :width: 81

@@ -1,18 +1,34 @@
 #!/bin/sh
+# /*PGR-GNU*****************************************************************
+# File: regress.sh
+# Copyright (c) 2018 pgRouting developers
+# Mail: project@pgrouting.org
+# ------
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# ********************************************************************PGR-GNU*/
 #--
 # Jenkins variables passed in
 #--
 #
 # export BRANCH=develop
-export PGROUTING_VER=$BRANCH
 
 #-------------------------
 # File used in Jenkins setup
 #-------------------------
-export PATH=${PATH}:/usr/local::/usr/local/lib::/usr/local/bin
+export PATH="${PATH}":/usr/local::/usr/local/lib::/usr/local/bin
 echo "$PATH"
 export PGUSER=postgres
-export PGROUTING_VER=$BRANCH
+export PGROUTING_VER="${BRANCH}"
 
 rm -rf "${WORKSPACE}/build${BRANCH}"
 mkdir "${WORKSPACE}/build${BRANCH}"

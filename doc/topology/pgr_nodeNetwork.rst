@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_nodeNetwork.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_nodeNetwork.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_nodeNetwork.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_nodeNetwork.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_nodeNetwork.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_nodeNetwork.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_nodeNetwork.html>`__
@@ -41,8 +42,10 @@ edges into a new table.
 
 .. parsed-literal::
 
-   pgr_nodenetwork(edge_table, tolerance, id, text the_geom, table_ending, rows_where, outall)
-   RETURNS TEXT
+   | pgr_nodenetwork(edge_table, tolerance, [**options**])
+   | **options:** ``[id, text the_geom, table_ending, rows_where, outall]``
+
+   | RETURNS ``TEXT``
 
 .. rubric:: Availability
 

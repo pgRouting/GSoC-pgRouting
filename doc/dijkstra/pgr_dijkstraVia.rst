@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_dijkstraVia.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_dijkstraVia.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_dijkstraVia.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_dijkstraVia.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_dijkstraVia.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_dijkstraVia.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_dijkstraVia.html>`__
@@ -62,13 +63,14 @@ Signatures
 One Via
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_dijkstraVia(`Edges SQL`_, **via vertices**
-               [, directed] [, strict] [, U_turn_on_edge]) - Proposed on v2.2
-    RETURNS SET OF (seq, path_pid, path_seq, start_vid, end_vid,
-                    node, edge, cost, agg_cost, route_agg_cost)
-    OR EMPTY SET
+   | pgr_dijkstraVia(`Edges SQL`_, **via vertices**, [**options**])
+   | **options:** ``[directed, strict, U_turn_on_edge]``
+
+   | RETURNS SET OF |via-result|
+   | OR EMPTY SET
 
 :Example: Find the route that visits the vertices :math:`\{5, 1, 8\}` in that
           order on an **directed** graph.

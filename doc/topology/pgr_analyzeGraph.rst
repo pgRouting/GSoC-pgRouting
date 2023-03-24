@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_analyzeGraph.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_analyzeGraph.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_analyzeGraph.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_analyzeGraph.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_analyzeGraph.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_analyzeGraph.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_analyzeGraph.html>`__
@@ -45,14 +46,14 @@ The function returns:
 - ``OK`` after the analysis has finished.
 - ``FAIL`` when the analysis was not completed due to an error.
 
-.. index::
-	single: analyzeGraph
+.. admonition:: \ \
+   :class: signatures
 
-.. parsed-literal::
+   | pgr_analyzeGraph(**edge_table**, **tolerance**, [**options**])
+   | **options:** ``[the_geom, id, source, target, rows_where]``
 
-	varchar pgr_analyzeGraph(text edge_table, double precision tolerance,
-            text the_geom:='the_geom', text id:='id',
-            text source:='source',text target:='target',text rows_where:='true')
+   | RETURNS ``VARCHAR``
+
 
 .. rubric:: Prerequisites
 

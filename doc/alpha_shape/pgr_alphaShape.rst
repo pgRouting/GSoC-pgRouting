@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_alphaShape.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_alphaShape.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_alphaShape.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_alphaShape.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_alphaShape.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_alphaShape.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_alphaShape.html>`__
@@ -79,10 +80,12 @@ Signatures
 .. index::
     single: alphaShape
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-   pgr_alphaShape(**geometry**,   [alpha])
-   RETURNS geometry
+   | pgr_alphaShape(**geometry**, [alpha])
+
+   | RETURNS ``geometry``
 
 
 :Example: passing a geometry collection with spoon radius :math:`1.5` using the

@@ -1,9 +1,22 @@
 #!/bin/bash
 # ------------------------------------------------------------------------------
-# pgRouting Scripts
-# Copyright(c) pgRouting Contributors
-#
-# Update the locale files
+# /*PGR-GNU*****************************************************************
+# File: update_locale.sh
+# Copyright (c) 2021 pgRouting developers
+# Mail: project@pgrouting.org
+# ------
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+# ********************************************************************PGR-GNU*/
 # ------------------------------------------------------------------------------
 
 
@@ -12,6 +25,7 @@ DIR=$(git rev-parse --show-toplevel)
 
 pushd "${DIR}" > /dev/null || exit 1
 
+mkdir -p build
 pushd build > /dev/null || exit 1
 cmake -DWITH_DOC=ON -DCMAKE_BUILD_TYPE=Release -DLOCALE=ON ..
 
@@ -28,5 +42,8 @@ perl -ne '/\/en\// && print' build/doc/locale_changes_po.txt | \
 bash tools/transifex/remove_obsolete_entries.sh
 
 while read -r f; do git add "$f"; done < build/doc/locale_changes_po_pot.txt
+
+git restore --staged locale/*/LC_MESSAGES/index.po
+git restore locale/*/LC_MESSAGES/index.po
 
 popd > /dev/null || exit 1

@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_createVerticesTable.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_createVerticesTable.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_createVerticesTable.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_createVerticesTable.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_createVerticesTable.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_createVerticesTable.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_createVerticesTable.html>`__
@@ -49,10 +50,12 @@ The function returns:
 Signatures
 -------------------------------------------------------------------------------
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-	pgr_createVerticesTable(edge_table, the_geom, source, target, rows_where)
-    RETURNS VARCHAR
+   | pgr_createVerticesTable(edge_table, [``the_geom, source, target, rows_where``])
+
+   | RETURNS ``VARCHAR``
 
 Parameters
 -------------------------------------------------------------------------------

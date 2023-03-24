@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/release_notes.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/release_notes.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/release_notes.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/release_notes.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/release_notes.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/release_notes.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/release_notes.html>`__
@@ -35,8 +36,67 @@ To see the full list of changes check the list of `Git commits
    :local:
 
 
+pgRouting 3.5.1 Release Notes
+-------------------------------------------------------------------------------
+
+No Changes Yet
+
+pgRouting 3.5.0 Release Notes
+-------------------------------------------------------------------------------
+
+To see all issues & pull requests closed by this release see the `Git closed
+milestone for 3.5.0
+<https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.5.0%22>`_
+
+.. rubric:: Official functions changes
+
+* Dijkstra
+
+  * Standarizing output columns to |short-generic-result|
+
+    * ``pgr_dijkstra`` (`One to One`) added ``start_vid`` and ``end_vid`` columns.
+    * ``pgr_dijkstra`` (`One to Many`) added ``end_vid`` column.
+    * ``pgr_dijkstra`` (`Many to One`) added ``start_vid`` column.
+
+pgRouting 3.4.2 Release Notes
+-------------------------------------------------------------------------------
+
+To see all issues & pull requests closed by this release see the `Git closed
+milestone for 3.4.2
+<https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.4.2%22>`_
+
+.. rubric:: Issue fixes
+
+* `#2394 <https://github.com/pgRouting/pgrouting/issues/2394>`__:
+  pgr_bdAstar accumulates heuristic cost in visited node cost.
+* `#2427 <https://github.com/pgRouting/pgrouting/issues/2427>`__:
+  pgr_createVerticesTable & pgr_createTopology, variable should be of type Record.
+
+pgRouting 3.4.1 Release Notes
+-------------------------------------------------------------------------------
+
+To see all issues & pull requests closed by this release see the `Git closed
+milestone for 3.4.1
+<https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.4.1%22>`_
+
+.. rubric:: Issue fixes
+
+* `#2401 <https://github.com/pgRouting/pgrouting/issues/2401>`__:
+  pgRouting 3.4.0 do not build docs when sphinx is too low or missing
+* `#2398 <https://github.com/pgRouting/pgrouting/issues/2398>`__:
+  v3.4.0 does not upgrade from 3.3.3
+
 pgRouting 3.4.0 Release Notes
 -------------------------------------------------------------------------------
+
+To see all issues & pull requests closed by this release see the `Git closed
+milestone for 3.4.0
+<https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.4.0%22>`_
+
+.. rubric:: Issue fixes
+
+* `#1891 <https://github.com/pgRouting/pgrouting/issues/1891>`__:
+  pgr_ksp doesn't give all correct shortest path
 
 .. rubric:: New proposed functions
 
@@ -76,6 +136,16 @@ pgRouting 3.4.0 Release Notes
   * ``pgr_findCloseEdges`` (One point)
   * ``pgr_findCloseEdges`` (Many points)
 
+.. rubric:: New experimental functions
+
+* Ordering
+
+  * ``pgr_cuthillMckeeOrdering``
+
+* Unclassified
+
+  * ``pgr_hawickCircuits``
+
 .. rubric:: Official functions changes
 
 * Flow functions
@@ -92,6 +162,46 @@ pgRouting 3.4.0 Release Notes
   * ``pgr_trsp(text,integer,float8,integer,float8,boolean,boolean,text)``
   * ``pgr_trspViaVertices(text,anyarray,boolean,boolean,text)``
   * ``pgr_trspViaEdges(text,integer[],float[],boolean,boolean,text)``
+
+pgRouting 3.3.5 Release Notes
+-------------------------------------------------------------------------------
+
+* `#2401 <https://github.com/pgRouting/pgrouting/issues/2401>`__:
+  pgRouting 3.4.0 do not build docs when sphinx is too low or missing
+
+pgRouting 3.3.4 Release Notes
+-------------------------------------------------------------------------------
+
+To see all issues & pull requests closed by this release see the `Git closed
+milestone for 3.3.4
+<https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.3.4%22>`_
+
+.. rubric:: Issue fixes
+
+* `#2400 <https://github.com/pgRouting/pgrouting/issues/2400>`__:
+  pgRouting 3.3.3 does not build in focal
+
+pgRouting 3.3.3 Release Notes
+-------------------------------------------------------------------------------
+
+To see all issues & pull requests closed by this release see the `Git closed
+milestone for 3.3.3
+<https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.3.3%22>`_
+
+.. rubric:: Issue fixes
+
+* `#1891 <https://github.com/pgRouting/pgrouting/issues/1891>`__:
+  pgr_ksp doesn't give all correct shortest path
+
+.. rubric:: Official functions changes
+
+* Flow functions
+
+  * ``pgr_maxCardinalityMatch(text,boolean)``
+
+    * Ignoring optional boolean parameter, as the algorithm works only for
+      undirected graphs.
+
 
 pgRouting 3.3.2 Release Notes
 -------------------------------------------------------------------------------
@@ -127,6 +237,8 @@ milestone for 3.3.2
   edgeDisjointPaths issues with start_vid and combinations
 * `#2312 <https://github.com/pgRouting/pgrouting/issues/2312>`__:
   pgr_extractVertices error when target is not BIGINT
+* `#2357 <https://github.com/pgRouting/pgrouting/issues/2357>`__:
+  Apply clang-tidy performance-*
 
 pgRouting 3.3.1 Release Notes
 -------------------------------------------------------------------------------

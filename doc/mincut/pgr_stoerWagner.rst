@@ -10,7 +10,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_stoerWagner.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_stoerWagner.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_stoerWagner.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_stoerWagner.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_stoerWagner.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_stoerWagner.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_stoerWagner.html>`__)
@@ -32,7 +33,7 @@ pgr_stoerWagner - Experimental
 
 .. rubric:: Availability
 
-* Version 2.3.0
+* Version 3.0
 
    * New **Experimental** function
 
@@ -79,11 +80,13 @@ Signatures
 .. index::
     single: stoerWagner - Experimental on v3.0
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_stoerWagner(`Edges SQL`_)
-    RETURNS SET OF (seq, edge, cost, mincut)
-    OR EMPTY SET
+   | pgr_stoerWagner(`Edges SQL`_)
+
+   | RETURNS SET OF |result-mincut|
+   | OR EMPTY SET
 
 :Example: min cut of the main subgraph
 

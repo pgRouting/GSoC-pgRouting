@@ -1,3 +1,5 @@
+-- CopyRight(c) pgRouting developers
+-- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
 /* -- q1 */
 SELECT * FROM pgr_maxFlow(
   'SELECT id, source, target, capacity, reverse_capacity

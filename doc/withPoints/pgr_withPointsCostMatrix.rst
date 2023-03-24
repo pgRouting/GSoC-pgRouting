@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_withPointsCostMatrix.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_withPointsCostMatrix.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_withPointsCostMatrix.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_withPointsCostMatrix.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_withPointsCostMatrix.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_withPointsCostMatrix.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_withPointsCostMatrix.html>`__
@@ -64,11 +65,14 @@ Signatures
 
 .. rubric:: Summary
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_withPointsCostMatrix(`Edges SQL`_, `Points SQL`_, **start vids**
-      [, directed] [, driving_side])
-    RETURNS SET OF (start_vid, end_vid, agg_cost)
+   | pgr_withPointsCostMatrix(`Edges SQL`_, `Points SQL`_, **start vids**, [**options**])
+   | **options:**  ``[directed, driving_side]``
+
+   | RETURNS SET OF |matrix-result|
+   | OR EMPTY SET
 
 .. note:: There is no **details** flag, unlike the other members of the
    withPoints family of functions.
@@ -77,8 +81,8 @@ Signatures
           11\}` on an **undirected** graph
 
 * Returning a **symmetrical** cost matrix
-* Using the default **side** value on the **points_sql** query
-* Using the default **driving_side** value
+* Using the default ``side`` value on the **points_sql** query
+* Using the default ``driving_side`` value
 
 .. literalinclude:: doc-pgr_withPointsCostMatrix.queries
    :start-after: -- q1

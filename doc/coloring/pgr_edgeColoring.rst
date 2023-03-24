@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_edgeColoring.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_edgeColoring.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_edgeColoring.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_edgeColoring.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_edgeColoring.html>`__
 
 pgr_edgeColoring - Experimental
@@ -49,7 +50,6 @@ no two adjacent edges have the same color.
 
   - :loop free: no self-loops and no parallel edges.
 
-
 - Provides the color to be assigned to all the edges present in the graph.
 
 - At most :math:`\Delta + 1` colors are used, where :math:`\Delta` is the degree
@@ -59,9 +59,9 @@ no two adjacent edges have the same color.
     color more than the optimal for all others.
   - When the graph is bipartite
 
-     - the chromatic number :math:`x'(G)` (minimum number of
-       colors needed for proper edge coloring of graph)  is equal to the degree
-       :math:`\Delta + 1` of the graph, (:math:`x'(G) = \Delta`)
+    - the chromatic number :math:`x'(G)` (minimum number of
+      colors needed for proper edge coloring of graph)  is equal to the degree
+      :math:`\Delta + 1` of the graph, (:math:`x'(G) = \Delta`)
 
 - The algorithm tries to assign the least possible color to every edge.
 
@@ -70,10 +70,10 @@ no two adjacent edges have the same color.
 - The returned rows are ordered in ascending order of the edge identifier.
 - Efficient graph coloring is an NP-Hard problem, and therefore:
 
-   - In this implelentation the running time: :math:`O(|E|*|V|)`
+  - In this implelentation the running time: :math:`O(|E|*|V|)`
 
-     - where :math:`|E|` is the number of edges in the graph,
-     - :math:`|V|` is the number of vertices in the graph.
+    - where :math:`|E|` is the number of edges in the graph,
+    - :math:`|V|` is the number of vertices in the graph.
 
 Signatures
 ------------------------------------------------------------------------------
@@ -81,12 +81,13 @@ Signatures
 .. index::
     single: edgeColoring - Experimental on v3.3
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_edgeColoring(`Edges SQL`_)
+   | pgr_edgeColoring(`Edges SQL`_)
 
-    RETURNS SET OF (edge_id, color_id)
-    OR EMPTY SET
+   | RETURNS SET OF |result-edge-color|
+   | OR EMPTY SET
 
 :Example: Graph coloring of pgRouting :doc:`sampledata`
 

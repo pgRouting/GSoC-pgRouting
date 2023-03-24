@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_drivingDistance.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_drivingDistance.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_drivingDistance.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_drivingDistance.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_drivingDistance.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_drivingDistance.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_drivingDistance.html>`__)
@@ -57,13 +58,14 @@ The edges extracted will conform to the corresponding spanning tree.
 Signatures
 -------------------------------------------------------------------------------
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_drivingDistance(`Edges SQL`_, **Root vid**,  **distance**
-               [, directed])
-    pgr_drivingDistance(`Edges SQL`_, **Root vids**, **distance**
-               [, directed] [, equicost])
-    RETURNS SET OF (seq, [from_v,] node, edge, cost, agg_cost)
+   | pgr_drivingDistance(`Edges SQL`_, **Root vid**,  **distance**, [``directed``])
+   | pgr_drivingDistance(`Edges SQL`_, **Root vids**, **distance**, [**options**])
+   | **options:** [directed, equicost]
+
+   | RETURNS SET OF |result-dij-dd|
 
 .. index::
    single: drivingDistance(Single vertex)
@@ -71,11 +73,12 @@ Signatures
 Single Vertex
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_drivingDistance(`Edges SQL`_, **Root vid**,  **distance**
-               [, directed])
-    RETURNS SET OF (seq, node, edge, cost, agg_cost)
+   | pgr_drivingDistance(`Edges SQL`_, **Root vid**,  **distance**, [``directed``])
+
+   | RETURNS SET OF |result-1-1|
 
 :Example: From vertex :math:`11` for a distance of :math:`3.0`
 
@@ -89,11 +92,13 @@ Single Vertex
 Multiple Vertices
 ...............................................................................
 
-.. parsed-literal::
+.. admonition:: \ \
+   :class: signatures
 
-    pgr_drivingDistance(`Edges SQL`_, **Root vids**, **distance**
-               [, directed] [, equicost])
-    RETURNS SET OF (seq, from_v, node, edge, cost, agg_cost)
+   | pgr_drivingDistance(`Edges SQL`_, **Root vids**, **distance**, [**options**])
+   | **options:** [directed, equicost]
+
+   | RETURNS SET OF |result-dij-dd-m|
 
 :Example: From vertices :math:`\{11, 16\}` for a distance of :math:`3.0` with
           equi-cost on a directed graph
