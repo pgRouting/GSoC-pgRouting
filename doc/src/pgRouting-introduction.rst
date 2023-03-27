@@ -83,6 +83,7 @@ This Release Contributors
 Individuals in this release (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Aniket Agarwal,
 Ashish Kumar,
 Cayetano Benavent,
 Daniel Kastl,
@@ -115,6 +116,7 @@ Contributors Past & Present:
 Individuals (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Aniket Agarwal,
 Aasheesh Tiwari,
 Aditya Pratap Singh,
 Adrien Berchet,
