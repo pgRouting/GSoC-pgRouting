@@ -74,7 +74,7 @@ Rajat Shinde,
 Regina Obe,
 Shobhit Chaurasia,
 Swapnil Joshi,
-Virginia Vergara
+Vicky Vergara
 
 
 And all the people that give us a little of their time making comments, finding
