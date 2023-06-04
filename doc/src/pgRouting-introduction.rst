@@ -66,6 +66,7 @@ This Release Contributors
 Individuals in this release (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Aryan Gupta,
 Ashish Kumar,
 Cayetano Benavent,
 Daniel Kastl,
