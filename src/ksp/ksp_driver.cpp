@@ -167,22 +167,22 @@ void do_pgr_ksp_one_to_many(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
         pgassert(total_edges != 0);
-        
+
         graphType gType = directed ? DIRECTED : UNDIRECTED;
         std::deque<Path> paths;
-        
+
         if (directed) {
             pgrouting::DirectedGraph digraph(gType);
             Pgr_ksp<pgrouting::DirectedGraph> fn_yen;
             digraph.insert_edges(data_edges, total_edges);
-            
+
             for (size_t i = 0; i < end_vid_count; ++i) {
                 paths = fn_yen.Yen(digraph, start_vid, end_vids[i], k, heap_paths);
-                
+
                 auto count = count_tuples(paths);
                 if (count != 0) {
                     *return_tuples = pgr_alloc(count, (*return_tuples));
-                    
+
                     size_t sequence = 0;
                     int route_id = 0;
                     for (const auto &path : paths) {
@@ -197,14 +197,14 @@ void do_pgr_ksp_one_to_many(
             pgrouting::UndirectedGraph undigraph(gType);
             Pgr_ksp<pgrouting::UndirectedGraph> fn_yen;
             undigraph.insert_edges(data_edges, total_edges);
-            
+
             for (size_t i = 0; i < end_vid_count; ++i) {
                 paths = fn_yen.Yen(undigraph, start_vid, end_vids[i], k, heap_paths);
-                
+
                 auto count = count_tuples(paths);
                 if (count != 0) {
                     *return_tuples = pgr_alloc(count, (*return_tuples));
-                    
+
                     size_t sequence = 0;
                     int route_id = 0;
                     for (const auto &path : paths) {
@@ -238,4 +238,3 @@ void do_pgr_ksp_one_to_many(
         *log_msg = pgr_msg(log.str().c_str());
     }
 }
-
