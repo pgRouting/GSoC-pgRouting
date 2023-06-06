@@ -53,7 +53,7 @@ class Pgr_ksp :  public Pgr_messages {
          m_start(0),
          m_end(0),
          m_K(0),
-         m_heap_paths(false) { //! heap is for debuging purpose to check whether the algorithm is running well or not 
+         m_heap_paths(false) {
              m_vis = new Visitor;
          }
      ~Pgr_ksp() {
@@ -100,12 +100,12 @@ class Pgr_ksp :  public Pgr_messages {
          auto paths = get_results();
          if (!m_heap_paths && paths.size() > m_K) paths.resize(m_K);
 
-         return paths; //! contain K shortest Paths
+         return paths;
      }
 
      void clear() {
-         m_Heap.clear(); //! clearing heap_paths
-         m_ResultSet.clear(); //! clearing all the paths stored previously
+         m_Heap.clear();
+         m_ResultSet.clear();
      }
 
 
@@ -125,20 +125,20 @@ class Pgr_ksp :  public Pgr_messages {
 
  protected:
      //! the actual algorithm
-     void executeYen(G &graph) { 
+     void executeYen(G &graph) {
          clear();
-         curr_result_path = getFirstSolution(graph); //! it will give the first shortest path
+         curr_result_path = getFirstSolution(graph);
          m_vis->on_insert_first_solution(curr_result_path);
 
-         if (m_ResultSet.size() == 0) return;  //! no path found
+         if (m_ResultSet.size() == 0) return;  // no path found
 
-         while (m_ResultSet.size() <  m_K) { //! looping till k shortest paths
+         while (m_ResultSet.size() <  m_K) {
              doNextCycle(graph);
-             if (m_Heap.empty()) break; //! if there will no k paths possible
+             if (m_Heap.empty()) break;
              curr_result_path = *m_Heap.begin();
-             curr_result_path.recalculate_agg_cost(); 
-             m_ResultSet.insert(curr_result_path); //! inserting the ith shortest path in result
-             m_Heap.erase(m_Heap.begin()); //! removing the inserted path from heap_paths
+             curr_result_path.recalculate_agg_cost();
+             m_ResultSet.insert(curr_result_path);
+             m_Heap.erase(m_Heap.begin());
          }
      }
 
@@ -147,7 +147,7 @@ class Pgr_ksp :  public Pgr_messages {
 
      //! Performs the first Dijkstra of the algorithm
  protected:
-     Path getFirstSolution(G &graph) { //! here first sortest path will be calculated using dijkstra algorithm
+     Path getFirstSolution(G &graph) {
          Path path;
 
          path = algorithms::dijkstra(graph, m_start, m_end);
@@ -161,7 +161,7 @@ class Pgr_ksp :  public Pgr_messages {
 
  protected:
      //! Performs the next cycle of the algorithm
-     void doNextCycle(G &graph) { 
+     void doNextCycle(G &graph) {
          for (unsigned int i = 0; i < curr_result_path.size(); ++i) {
              int64_t spurNodeId = curr_result_path[i].node;
 
