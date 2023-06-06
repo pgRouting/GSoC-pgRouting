@@ -3,7 +3,8 @@ build
 fix_typos
 code_linter
 src/version/version.h
-
+run.sh
+taptest.sh
 .DS_Store
 .vagrant
 .directory
