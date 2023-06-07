@@ -34,7 +34,7 @@ CREATE FUNCTION _pgr_drivingDistance(
     directed BOOLEAN DEFAULT TRUE,
     equicost BOOLEAN DEFAULT FALSE,
     OUT seq INTEGER,
-    OUT from_v  BIGINT,
+    OUT start_vid  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,

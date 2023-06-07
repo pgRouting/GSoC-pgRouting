@@ -33,7 +33,7 @@ CREATE FUNCTION pgr_drivingDistance(
     equicost BOOLEAN DEFAULT FALSE,
 
     OUT seq INTEGER,
-    OUT from_v  BIGINT,
+    OUT start_vid  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -58,13 +58,14 @@ CREATE FUNCTION pgr_drivingDistance(
     directed BOOLEAN DEFAULT TRUE,
 
     OUT seq INTEGER,
+    OUT start_vid  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT seq, node, edge, cost, agg_cost
+    SELECT *
     FROM _pgr_drivingDistance(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3, $4, false);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
