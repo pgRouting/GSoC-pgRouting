@@ -4,6 +4,9 @@ File: ksp_driver.cpp
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 vicky_vergara@hotmail.com
 
+Copyright (c) 2023 Aniket Agarwal
+aniketgarg187@gmail.com
+
 ------
 
 This program is free software; you can redistribute it and/or modify
