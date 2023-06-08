@@ -40,9 +40,9 @@ PG_FUNCTION_INFO_V1(_pgr_ksp);
 static
 void compute(
         char* edges_sql,
-        int64_t start_vertex,
-        int64_t end_vertex,
-
+        char* combinations_sql,
+        ArrayType *starts,
+        ArrayType *ends,
         int p_k,
         bool directed,
         bool heap_paths,
@@ -56,6 +56,25 @@ void compute(
     }
 
     size_t k = (size_t)p_k;
+
+    int64_t* start_vidsArr = NULL;
+    size_t size_start_vidsArr = 0;
+
+    int64_t* end_vidsArr = NULL;
+    size_t size_end_vidsArr = 0;
+
+    II_t_rt *combinations = NULL;
+    size_t total_combinations = 0;
+
+    if (starts && ends) {
+        start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, starts, false, &err_msg);
+        throw_error(err_msg, "While getting start vids");
+        end_vidsArr = pgr_get_bigIntArray(&size_end_vidsArr, ends, false, &err_msg);
+        throw_error(err_msg, "While getting end vids");
+    } else if (combinations_sql) {
+        pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
+        throw_error(err_msg, combinations_sql);
+    }
 
     PGR_DBG("Load data");
     Edge_t *edges = NULL;
@@ -86,8 +105,9 @@ void compute(
     do_pgr_ksp(
             edges,
             total_edges,
-            start_vertex,
-            end_vertex,
+            combinations, total_combinations,
+            start_vidsArr, size_start_vidsArr,
+            end_vidsArr, size_end_vidsArr,
             k,
             directed,
             heap_paths,
@@ -109,6 +129,9 @@ void compute(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+
+    if (start_vidsArr) pfree(start_vidsArr);
+    if (end_vidsArr) pfree(end_vidsArr);
 
 
     pgr_global_report(log_msg, notice_msg, err_msg);
@@ -141,15 +164,36 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
            heap_paths boolean
            */
         PGR_DBG("Calling process");
-        compute(
+        if (PG_NARGS() == 6){
+            /*
+             * many to many
+             */
+            compute(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
-                PG_GETARG_INT64(1),
-                PG_GETARG_INT64(2),
+                NULL,
+                PG_GETARG_ARRAYTYPE_P(1),
+                PG_GETARG_ARRAYTYPE_P(2),
                 PG_GETARG_INT32(3),
                 PG_GETARG_BOOL(4),
                 PG_GETARG_BOOL(5),
                 &path,
                 &result_count);
+        } else if (PG_NARGS() == 5){
+            /*
+             * combinations
+             */
+            compute(
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                text_to_cstring(PG_GETARG_TEXT_P(1)),
+                NULL,
+                NULL,
+                PG_GETARG_INT32(2),
+                PG_GETARG_BOOL(3),
+                PG_GETARG_BOOL(4),
+                &path,
+                &result_count);
+        }
+
         PGR_DBG("Total number of tuples to be returned %ld \n", result_count);
 
 
