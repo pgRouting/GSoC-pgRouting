@@ -38,7 +38,7 @@ using II_t_rt = struct II_t_rt;
 #   include <stdint.h>
 typedef struct Edge_t Edge_t;
 typedef struct Path_rt Path_rt;
-using II_t_rt = struct II_t_rt;
+typedef struct II_t_rt II_t_rt;
 #endif
 
 
