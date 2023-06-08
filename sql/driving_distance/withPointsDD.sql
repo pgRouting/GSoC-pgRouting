@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 -- SINGLE
---v2.6
+--v3.6
 CREATE FUNCTION pgr_withPointsDD(
     TEXT,   --edges_sql (required)
     TEXT,   -- points_sql (required)
@@ -35,13 +35,14 @@ CREATE FUNCTION pgr_withPointsDD(
     details BOOLEAN DEFAULT false,
 
     OUT seq INTEGER,
+    OUT start_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT seq, node, edge, cost, agg_cost
+    SELECT seq, start_vid, node, edge, cost, agg_cost
     FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
@@ -49,7 +50,7 @@ COST 100
 ROWS 1000;
 
 -- MULTIPLE
---v2.6
+--v3.6
 CREATE FUNCTION pgr_withPointsDD(
     TEXT,     --edges_sql (required)
     TEXT,     -- points_sql (required)
