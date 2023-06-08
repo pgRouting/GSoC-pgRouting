@@ -81,10 +81,10 @@ void compute(
     size_t total_edges = 0;
 
 
-    if (start_vertex == end_vertex) {
-        pgr_SPI_finish();
-        return;
-    }
+    // if (start_vertex == end_vertex) {
+    //     pgr_SPI_finish();
+    //     return;
+    // }
 
     pgr_get_edges(edges_sql, &edges, &total_edges, true, false, &err_msg);
     throw_error(err_msg, edges_sql);
@@ -103,8 +103,7 @@ void compute(
     clock_t start_t = clock();
 
     do_pgr_ksp(
-            edges,
-            total_edges,
+            edges, total_edges,
             combinations, total_combinations,
             start_vidsArr, size_start_vidsArr,
             end_vidsArr, size_end_vidsArr,
@@ -224,22 +223,24 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
         Datum *values;
         bool* nulls;
 
-        values = palloc(7 * sizeof(Datum));
-        nulls = palloc(7 * sizeof(bool));
+        values = palloc(9 * sizeof(Datum));
+        nulls = palloc(9 * sizeof(bool));
 
 
         size_t i;
-        for (i = 0; i < 7; ++i) {
+        for (i = 0; i < 9; ++i) {
             nulls[i] = false;
         }
 
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
         values[1] = Int32GetDatum(path[funcctx->call_cntr].start_id + 1);
         values[2] = Int32GetDatum(path[funcctx->call_cntr].seq);
-        values[3] = Int64GetDatum(path[funcctx->call_cntr].node);
-        values[4] = Int64GetDatum(path[funcctx->call_cntr].edge);
-        values[5] = Float8GetDatum(path[funcctx->call_cntr].cost);
-        values[6] = Float8GetDatum(path[funcctx->call_cntr].agg_cost);
+        values[3] = Int64GetDatum(path[call_cntr].start_id);
+        values[4] = Int64GetDatum(path[call_cntr].end_id);
+        values[5] = Int64GetDatum(path[funcctx->call_cntr].node);
+        values[6] = Int64GetDatum(path[funcctx->call_cntr].edge);
+        values[7] = Float8GetDatum(path[funcctx->call_cntr].cost);
+        values[8] = Float8GetDatum(path[funcctx->call_cntr].agg_cost);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
