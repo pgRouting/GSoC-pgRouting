@@ -4,6 +4,9 @@ File: pgr_ksp.hpp
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky_vergara@hotmail.com
 
+Copyright (c) 2023 Aniket Agarwal
+Mail: aniketgarg187@gmail.com
+
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -236,6 +239,39 @@ class Pgr_ksp :  public Pgr_messages {
 
 
 }  // namespace yen
+
+/*
+* Added the Algorithm to calculate overloads
+*/
+namespace algorithms {
+
+template <class G>
+std::deque<Path> ksp(
+    G &graph,
+    const std::map<int64_t, std::set<int64_t>> &combinations,
+    int k,
+    bool heap_paths){
+        std::deque<Path> paths;
+        pgrouting::yen::Pgr_ksp fn_yen(graph);
+
+        for (const auto &c : combinations) {
+            if (!graph.has_vertex(c.first)) continue;
+
+            for (const auto &destination : c.second) {
+                if (!graph.has_vertex(destination)) continue;
+
+                fn_yen.clear();
+
+                paths.push_back(fn_yen.Yen(
+                            graph.get_V(c.first), graph.get_V(destination),
+                            k, heap_paths));
+            }
+        }
+
+        return paths;
+    }
+} // namespace algorithms
+
 }  // namespace pgrouting
 
 #endif  // INCLUDE_YEN_PGR_KSP_HPP_
