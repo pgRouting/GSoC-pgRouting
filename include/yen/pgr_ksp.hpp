@@ -245,31 +245,32 @@ class Pgr_ksp :  public Pgr_messages {
 */
 namespace algorithms {
 
-template <class G>
-std::deque<Path> ksp(
-    G &graph,
-    const std::map<int64_t, std::set<int64_t>> &combinations,
-    int k,
-    bool heap_paths){
+    template <class G>
+    std::deque<Path> ksp(
+        G &graph,
+        const std::map<int64_t, std::set<int64_t>> &combinations,
+        size_t k,
+        bool heap_paths){
         std::deque<Path> paths;
-        pgrouting::yen::Pgr_ksp fn_yen(graph);
+        pgrouting::yen::Pgr_ksp<G> fn_yen;
 
         for (const auto &c : combinations) {
-            if (!graph.has_vertex(c.first)) continue;
+            if (!graph.has_vertex(c.first))
+                continue;
 
             for (const auto &destination : c.second) {
-                if (!graph.has_vertex(destination)) continue;
+                if (!graph.has_vertex(destination))
+                    continue;
 
                 fn_yen.clear();
-
-                paths.push_back(fn_yen.Yen(
-                            graph.get_V(c.first), graph.get_V(destination),
-                            k, heap_paths));
+                auto result_path = fn_yen.Yen(graph, c.first, destination, k, heap_paths);
+                paths.insert(paths.end(), result_path.begin(), result_path.end());
             }
         }
 
         return paths;
     }
+
 } // namespace algorithms
 
 }  // namespace pgrouting
