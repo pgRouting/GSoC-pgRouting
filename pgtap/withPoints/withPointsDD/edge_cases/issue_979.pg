@@ -20,12 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 BEGIN;
 
-SELECT PLAN(6);
+SELECT PLAN(4);
 
 
 ---
 --- DIRECTED GRAPH
 ---
+/* driving side 'b' is not used anymore
 -------- both driving sides
 
 PREPARE q1 AS
@@ -60,7 +61,7 @@ FROM
 
 SELECT set_eq('q1',
     $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test1$$,
-    'Should be aggregating individual costs: both driving sides, DIR');
+    'Should be aggregating individual costs: both driving sides, DIR');*/
 
 
 
@@ -161,6 +162,7 @@ FROM
     (  12 ,    1 ,      4.6)
 ) AS t (node, cost, agg_cost);
 
+/* driving side 'b' is not used anymore
 -------- both driving sides
 
 PREPARE q4 AS
@@ -171,7 +173,7 @@ SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS a
 
 SELECT set_eq('q4',
     $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
-    'Should be aggregating individual costs: both driving sides, UNDI');
+    'Should be aggregating individual costs: both driving sides, UNDI');*/
 
 
 
