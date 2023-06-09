@@ -31,7 +31,7 @@ CREATE FUNCTION pgr_withPointsDD(
     FLOAT,  -- distance (required)
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'b',
+    driving_side CHAR DEFAULT 'r',
     details BOOLEAN DEFAULT false,
 
     OUT seq INTEGER,
@@ -58,7 +58,7 @@ CREATE FUNCTION pgr_withPointsDD(
     FLOAT,    -- distance (required)
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'b',
+    driving_side CHAR DEFAULT 'r',
     details BOOLEAN DEFAULT false,
     equicost BOOLEAN DEFAULT false,
 
@@ -90,7 +90,7 @@ IS 'pgr_withPointsDD(Single Vertex)
     - Distance
 - Optional Parameters
     - directed := true
-    - driving_side := b
+    - driving_side := r
     - details := false
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_withPointsDD.html
@@ -107,7 +107,7 @@ IS 'pgr_withPointsDD(Multiple Vertices)
     - Distance
 - Optional Parameters
     - directed := true
-    - driving_side := b
+    - driving_side := r
     - details := false
     - equicost := false
 - Documentation:
