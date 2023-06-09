@@ -54,6 +54,9 @@ void process(
         Path_rt **result_tuples,
         size_t *result_count) {
     driving_side[0] = estimate_drivingSide(driving_side[0]);
+    if (driving_side[0] != 'r' && driving_side[0] != 'l') {
+        driving_side[0] = 'r';
+    }
     PGR_DBG("estimated driving side:%c", driving_side[0]);
 
     pgr_SPI_connect();
@@ -167,7 +170,7 @@ _pgr_withpointsdd(PG_FUNCTION_ARGS) {
         // distance FLOAT,
         //
         // directed BOOLEAN -- DEFAULT true,
-        // driving_side CHAR -- DEFAULT 'b',
+        // driving_side CHAR -- DEFAULT 'r',
         // details BOOLEAN -- DEFAULT false,
         // equicost BOOLEAN -- DEFAULT false,
 
