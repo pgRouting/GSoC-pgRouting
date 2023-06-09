@@ -236,8 +236,10 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
         }
 
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
-        values[1] = Int32GetDatum(path[funcctx->call_cntr].start_id + 1);
+        /* added route id */
+        values[1] = Int32GetDatum(path[funcctx->call_cntr].route_id); 
         values[2] = Int32GetDatum(path[funcctx->call_cntr].seq);
+        /* added start_id and end_id */
         values[3] = Int64GetDatum(path[funcctx->call_cntr].start_id);
         values[4] = Int64GetDatum(path[funcctx->call_cntr].end_id);
         values[5] = Int64GetDatum(path[funcctx->call_cntr].node);
