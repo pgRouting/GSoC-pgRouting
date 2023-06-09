@@ -82,16 +82,14 @@ CREATE FUNCTION pgr_ksp(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
-    OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT *
-    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[],ARRAY[$3]::BIGINT[], $4, $5, $6);
+    SELECT a.seq, a.path_id, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[],ARRAY[$3]::BIGINT[], $4, $5, $6) AS a;
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -112,7 +110,6 @@ CREATE FUNCTION pgr_ksp(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
-    OUT start_vid BIGINT,
     OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
@@ -120,8 +117,8 @@ CREATE FUNCTION pgr_ksp(
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT *
-    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4, $5, $6);
+    SELECT a.seq, a.path_id, a.path_seq, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4, $5, $6) AS a;
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -142,15 +139,14 @@ CREATE FUNCTION pgr_ksp(
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
     OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT *
-    FROM _pgr_ksp(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4, $5, $6);
+    SELECT a.seq, a.path_id, a.path_seq, a.start_vid, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_ksp(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4, $5, $6) as a;
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
