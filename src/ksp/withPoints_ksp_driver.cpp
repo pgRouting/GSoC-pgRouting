@@ -146,7 +146,6 @@ do_pgr_withPointsKsp(
         log << "\n";
 
         if (directed) {
-            log << "Working with directed Graph\n";
             pgrouting::DirectedGraph digraph(vertices, gType);
             digraph.insert_edges(edges, total_edges);
             digraph.insert_edges(pg_graph.new_edges());
@@ -156,21 +155,23 @@ do_pgr_withPointsKsp(
             log << digraph << "\n";
             log << "graph after inserting new edges\n";
             log << digraph << "\n";
-#endif
-
-//TODO
 
             Pgr_ksp< pgrouting::DirectedGraph  > fn_yen;
-            paths = fn_yen.Yen(digraph, start_vid, end_vid, k, heap_paths);
+#endif
+
+            paths = pgrouting::algorithms::Yen(digraph, combinations, k, heap_paths);
             // pgassert(true==false);
         } else {
+#if 0
             log << "Working with undirected Graph\n";
+#endif
             pgrouting::UndirectedGraph undigraph(gType);
             undigraph.insert_edges(edges, total_edges);
             undigraph.insert_edges(pg_graph.new_edges());
-
+#if 0
             Pgr_ksp< pgrouting::UndirectedGraph > fn_yen;
-            paths = fn_yen.Yen(undigraph, start_vid, end_vid, k, heap_paths);
+#endif
+            paths = pgrouting::algorithms::Yen(undigraph, combinations, k, heap_paths);
         }
 
 
