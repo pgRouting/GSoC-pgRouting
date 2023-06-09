@@ -74,30 +74,43 @@ process(
     }
 
     pgr_SPI_connect();
+
     char* log_msg = NULL;
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+    Edge_t *edges = NULL;
+    size_t total_edges = 0;
+
     Point_on_edge_t *points = NULL;
     size_t total_points = 0;
+
+    Edge_t *edges_of_points = NULL;
+    size_t total_edges_of_points = 0;
+
+    int64_t* start_pidsArr = NULL;
+    size_t size_start_pidsArr = 0;
+
+    int64_t* end_pidsArr = NULL;
+    size_t size_end_pidsArr = 0;
+
+    II_t_rt *combinationsArr = NULL;
+    size_t total_combinations = 0;
+
     pgr_get_points(points_sql, &points, &total_points, &err_msg);
     throw_error(err_msg, points_sql);
 
     char *edges_of_points_query = NULL;
     char *edges_no_points_query = NULL;
+
     get_new_queries(
             edges_sql, points_sql,
             &edges_of_points_query,
             &edges_no_points_query);
 
-
-    Edge_t *edges_of_points = NULL;
-    size_t total_edges_of_points = 0;
     pgr_get_edges(edges_of_points_query, &edges_of_points, &total_edges_of_points, true, false, &err_msg);
     throw_error(err_msg, edges_of_points_query);
 
-    Edge_t *edges = NULL;
-    size_t total_edges = 0;
     pgr_get_edges(edges_no_points_query, &edges, &total_edges, true, false, &err_msg);
     throw_error(err_msg, edges_no_points_query);
 
@@ -117,14 +130,13 @@ process(
     clock_t start_t = clock();
 
     do_pgr_withPointsKsp(
-            edges,
-            total_edges,
-            points,
-            total_points,
-            edges_of_points,
-            total_edges_of_points,
-            start_pid,
-            end_pid,
+            edges,           total_edges,
+            points,          total_points,
+            edges_of_points, total_edges_of_points,
+            combinationsArr, total_combinations,
+            start_pidsArr,   size_start_pidsArr,
+            end_pidsArr,     size_end_pidsArr,
+
             k,
 
             directed,
