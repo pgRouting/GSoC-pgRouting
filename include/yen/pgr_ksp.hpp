@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_YEN_PGR_KSP_HPP_
 #pragma once
 
-
+#include <map>
 #include <sstream>
 #include <deque>
 #include <vector>
@@ -241,7 +241,7 @@ class Pgr_ksp :  public Pgr_messages {
 }  // namespace yen
 
 /*
-* Added the Algorithm to calculate overloads
+* Added the namespace algorithm to calculate combinations
 */
 namespace algorithms {
 
@@ -250,7 +250,7 @@ namespace algorithms {
         G &graph,
         const std::map<int64_t, std::set<int64_t>> &combinations,
         size_t k,
-        bool heap_paths){
+        bool heap_paths) {
         std::deque<Path> paths;
         pgrouting::yen::Pgr_ksp<G> fn_yen;
 
@@ -271,7 +271,7 @@ namespace algorithms {
         return paths;
     }
 
-} // namespace algorithms
+}
 
 }  // namespace pgrouting
 
