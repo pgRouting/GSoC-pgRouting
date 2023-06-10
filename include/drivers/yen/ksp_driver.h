@@ -4,6 +4,9 @@ File: ksp_driver.h
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky_vergara@hotmail.com
 
+Copyright (c) 2023 Aniket Agarwal
+Mail: aniketgarg187@gmail.com
+
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -32,11 +35,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   include <cstddef>
 using Edge_t = struct Edge_t;
 using Path_rt = struct Path_rt;
+using II_t_rt = struct II_t_rt;
 #else
 #   include <stddef.h>
 #   include <stdint.h>
 typedef struct Edge_t Edge_t;
 typedef struct Path_rt Path_rt;
+typedef struct II_t_rt II_t_rt;
 #endif
 
 
@@ -47,13 +52,23 @@ extern "C" {
     void  do_pgr_ksp(
             Edge_t  *data_edges,
             size_t total_edges,
-            int64_t  start_vid,
-            int64_t end_vid,
+
+            II_t_rt  *combinations,
+            size_t total_combinations,
+
+            int64_t  *start_vids,
+            size_t size_start_vids,
+            int64_t  *end_vids,
+            size_t size_end_vids,
+
             size_t K,
+
             bool directed,
             bool heap_paths,
+
             Path_rt **return_tuples,
             size_t *return_count,
+
             char ** log_msg,
             char ** notice_msg,
             char ** err_msg);
