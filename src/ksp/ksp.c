@@ -166,7 +166,7 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
            heap_paths boolean
            */
         PGR_DBG("Calling process");
-        if (PG_NARGS() == 6){
+        if (PG_NARGS() == 6) {
             /*
              * many to many
              */
@@ -180,7 +180,7 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(5),
                 &path,
                 &result_count);
-        } else if (PG_NARGS() == 5){
+        } else if (PG_NARGS() == 5) {
             /*
              * combinations
              */
@@ -237,7 +237,7 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
 
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
         /* added route id */
-        values[1] = Int32GetDatum(path[funcctx->call_cntr].route_id); 
+        values[1] = Int32GetDatum(path[funcctx->call_cntr].route_id);
         values[2] = Int32GetDatum(path[funcctx->call_cntr].seq);
         /* added start_id and end_id */
         values[3] = Int64GetDatum(path[funcctx->call_cntr].start_id);
