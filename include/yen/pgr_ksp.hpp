@@ -271,7 +271,7 @@ namespace algorithms {
         return paths;
     }
 
-}
+}  // namespace algorithms
 
 }  // namespace pgrouting
 
