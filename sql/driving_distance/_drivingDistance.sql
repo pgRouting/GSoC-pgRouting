@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- pgr_drivingDistance
 ----------------------
 
---v3.0
+--v3.6
 CREATE FUNCTION _pgr_drivingDistance(
     edges_sql TEXT,
     start_vids ANYARRAY,
@@ -34,7 +34,7 @@ CREATE FUNCTION _pgr_drivingDistance(
     directed BOOLEAN DEFAULT TRUE,
     equicost BOOLEAN DEFAULT FALSE,
     OUT seq INTEGER,
-    OUT from_v  BIGINT,
+    OUT start_vid  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,

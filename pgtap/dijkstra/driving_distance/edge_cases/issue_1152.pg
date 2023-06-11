@@ -108,7 +108,7 @@ SELECT lives_ok($$
     $$);
 
 SELECT bag_has($$
-    SELECT from_v, node, edge, cost, agg_cost
+    SELECT start_vid, node, edge, cost, agg_cost
     FROM pgr_drivingdistance(
         'SELECT * FROM tmp_net',
         ARRAY[
