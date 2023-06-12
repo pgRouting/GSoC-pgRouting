@@ -9,7 +9,12 @@ Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail:
 
+Copyright (c) 2023 Abhinav Jain
+Mail: this.abhinav AT gmail.com
+
 ------
+
+
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,11 +39,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <deque>
 #include <vector>
 
-#include "yen/pgr_ksp.hpp"
-
-#include "withPoints/pgr_withPoints.hpp"
+#include "c_types/ii_t_rt.h"
+#include "cpp_common/combinations.h"
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
+
+#include "yen/pgr_ksp.hpp"
+#include "withPoints/pgr_withPoints.hpp"
 
 using pgrouting::yen::Pgr_ksp;
 
@@ -55,8 +62,14 @@ do_pgr_withPointsKsp(
         Edge_t  *edges,           size_t total_edges,
         Point_on_edge_t  *points_p,   size_t total_points,
         Edge_t  *edges_of_points, size_t total_edges_of_points,
+#if 0
         int64_t start_pid,
         int64_t end_pid,
+#endif
+        II_t_rt *combinationsArr, size_t total_combinations,
+        int64_t *start_pidsArr, size_t size_start_pidsArr,
+        int64_t *end_pidsArr, size_t size_end_pidsArr,
+
         size_t k,
         bool directed,
         bool heap_paths,
@@ -76,12 +89,14 @@ do_pgr_withPointsKsp(
     std::ostringstream err;
     std::ostringstream notice;
     try {
+        pgassert(total_edges != 0);
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
-        pgassert(total_edges != 0);
+        pgassert(total_combinations != 0 || (size_start_pidsArr != 0 && size_end_pidsArr != 0));
+
 
         pgrouting::Pg_points_graph pg_graph(
                 std::vector<Point_on_edge_t>(
@@ -102,7 +117,7 @@ do_pgr_withPointsKsp(
             return -1;
         }
 
-
+#if 0
         int64_t start_vid(start_pid);
         int64_t end_vid(end_pid);
 
@@ -111,9 +126,15 @@ do_pgr_withPointsKsp(
         log << "driving_side" << driving_side << "\n";
         log << "start_vid" << start_vid << "\n";
         log << "end_vid" << end_vid << "\n";
+#endif
+
         graphType gType = directed? DIRECTED: UNDIRECTED;
 
         std::deque< Path > paths;
+
+        auto combinations = total_combinations?
+            pgrouting::utilities::get_combinations(combinationsArr, total_combinations)
+            : pgrouting::utilities::get_combinations(start_pidsArr, size_start_pidsArr, end_pidsArr, size_end_pidsArr);
 
         auto vertices(pgrouting::extract_vertices(edges, total_edges));
         vertices = pgrouting::extract_vertices(vertices, pg_graph.new_edges());
@@ -125,27 +146,32 @@ do_pgr_withPointsKsp(
         log << "\n";
 
         if (directed) {
-            log << "Working with directed Graph\n";
             pgrouting::DirectedGraph digraph(vertices, gType);
             digraph.insert_edges(edges, total_edges);
+            digraph.insert_edges(pg_graph.new_edges());
+
+#if 0
             log << "graph after inserting edges\n";
             log << digraph << "\n";
-
-            digraph.insert_edges(pg_graph.new_edges());
             log << "graph after inserting new edges\n";
             log << digraph << "\n";
 
             Pgr_ksp< pgrouting::DirectedGraph  > fn_yen;
-            paths = fn_yen.Yen(digraph, start_vid, end_vid, k, heap_paths);
+#endif
+
+            paths = pgrouting::algorithms::Yen(digraph, combinations, k, heap_paths);
             // pgassert(true==false);
         } else {
+#if 0
             log << "Working with undirected Graph\n";
+#endif
             pgrouting::UndirectedGraph undigraph(gType);
             undigraph.insert_edges(edges, total_edges);
             undigraph.insert_edges(pg_graph.new_edges());
-
+#if 0
             Pgr_ksp< pgrouting::UndirectedGraph > fn_yen;
-            paths = fn_yen.Yen(undigraph, start_vid, end_vid, k, heap_paths);
+#endif
+            paths = pgrouting::algorithms::Yen(undigraph, combinations, k, heap_paths);
         }
 
 

@@ -49,8 +49,10 @@ void
 process(
         char* edges_sql,
         char* points_sql,
-        int64_t start_pid,
-        int64_t end_pid,
+        char* combinations_sql,
+        ArrayType *starts,
+        ArrayType *ends,
+
         int p_k,
 
         bool directed,
@@ -74,57 +76,85 @@ process(
     }
 
     pgr_SPI_connect();
+
     char* log_msg = NULL;
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+    Edge_t *edges = NULL;
+    size_t total_edges = 0;
+
     Point_on_edge_t *points = NULL;
     size_t total_points = 0;
+
+    Edge_t *edges_of_points = NULL;
+    size_t total_edges_of_points = 0;
+
+    int64_t* start_pidsArr = NULL;
+    size_t size_start_pidsArr = 0;
+
+    int64_t* end_pidsArr = NULL;
+    size_t size_end_pidsArr = 0;
+
+    II_t_rt *combinationsArr = NULL;
+    size_t total_combinations = 0;
+
     pgr_get_points(points_sql, &points, &total_points, &err_msg);
     throw_error(err_msg, points_sql);
 
     char *edges_of_points_query = NULL;
     char *edges_no_points_query = NULL;
+
     get_new_queries(
             edges_sql, points_sql,
             &edges_of_points_query,
             &edges_no_points_query);
 
-
-    Edge_t *edges_of_points = NULL;
-    size_t total_edges_of_points = 0;
     pgr_get_edges(edges_of_points_query, &edges_of_points, &total_edges_of_points, true, false, &err_msg);
     throw_error(err_msg, edges_of_points_query);
 
-    Edge_t *edges = NULL;
-    size_t total_edges = 0;
     pgr_get_edges(edges_no_points_query, &edges, &total_edges, true, false, &err_msg);
     throw_error(err_msg, edges_no_points_query);
+
+
+    if (starts && ends) {
+        start_pidsArr = pgr_get_bigIntArray(&size_start_pidsArr, starts, false, &err_msg);
+        throw_error(err_msg, "While getting start pids");
+        end_pidsArr = pgr_get_bigIntArray(&size_end_pidsArr, ends, false, &err_msg);
+        throw_error(err_msg, "While getting end pids");
+    } else if (combinations_sql) {
+        pgr_get_combinations(combinations_sql, &combinationsArr, &total_combinations, &err_msg);
+        throw_error(err_msg, combinations_sql);
+    }
 
     PGR_DBG("freeing allocated memory not used anymore");
     pfree(edges_of_points_query);
     pfree(edges_no_points_query);
 
     if ((total_edges + total_edges_of_points) == 0) {
-        PGR_DBG("No edges found");
-        (*result_count) = 0;
-        (*result_tuples) = NULL;
+        if (end_pidsArr) pfree(end_pidsArr);
+        if (start_pidsArr) pfree(start_pidsArr);
+        if (combinationsArr) pfree(combinationsArr);
         pgr_SPI_finish();
         return;
     }
 
-    PGR_DBG("Starting processing");
+    if (total_combinations == 0 && (size_start_pidsArr== 0 || size_end_pidsArr == 0)) {
+        if (edges) pfree(edges);
+        pgr_SPI_finish();
+        return;
+    }
+
     clock_t start_t = clock();
 
     do_pgr_withPointsKsp(
-            edges,
-            total_edges,
-            points,
-            total_points,
-            edges_of_points,
-            total_edges_of_points,
-            start_pid,
-            end_pid,
+            edges,           total_edges,
+            points,          total_points,
+            edges_of_points, total_edges_of_points,
+            combinationsArr, total_combinations,
+            start_pidsArr,   size_start_pidsArr,
+            end_pidsArr,     size_end_pidsArr,
+
             k,
 
             directed,
@@ -191,12 +221,14 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
 
         PGR_DBG("Calling process");
         PGR_DBG("initial driving side:%s",
-                text_to_cstring(PG_GETARG_TEXT_P(7)));
-        process(
+                text_to_cstring(PG_GETARG_TEXT_P(8)));
+        if(PG_NARGS() == 9){
+            process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
-                PG_GETARG_INT64(2),
-                PG_GETARG_INT64(3),
+                NULL,
+                PG_GETARG_ARRAYTYPE_P(2),
+                PG_GETARG_ARRAYTYPE_P(3),
                 PG_GETARG_INT32(4),
                 PG_GETARG_BOOL(5),
                 PG_GETARG_BOOL(6),
@@ -204,6 +236,20 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(8),
                 &result_tuples,
                 &result_count);
+        } else/* (PG_NARGS() == 7) */{
+            process(
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                text_to_cstring(PG_GETARG_TEXT_P(1)),
+                text_to_cstring(PG_GETARG_TEXT_P(2)),
+                NULL, NULL,
+                PG_GETARG_INT32(3),
+                PG_GETARG_BOOL(4),
+                PG_GETARG_BOOL(5),
+                text_to_cstring(PG_GETARG_TEXT_P(6)),
+                PG_GETARG_BOOL(7),
+                &result_tuples,
+                &result_count);
+        }
 
 
         funcctx->max_calls = result_count;
