@@ -71,7 +71,7 @@ extern "C" {
 
             char **,
             char **,
-            char ** );
+            char **);
 
 #ifdef __cplusplus
 }
