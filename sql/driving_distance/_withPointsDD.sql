@@ -34,7 +34,7 @@ CREATE FUNCTION _pgr_withPointsDD(
     distance FLOAT,
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'r',
+    driving_side CHAR DEFAULT 'b',
     details BOOLEAN DEFAULT false,
     equicost BOOLEAN DEFAULT false,
 
