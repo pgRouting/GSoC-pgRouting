@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 -- SINGLE
---v3.6
+--v2.6
 CREATE FUNCTION pgr_withPointsDD(
     TEXT,   --edges_sql (required)
     TEXT,   -- points_sql (required)
@@ -31,18 +31,17 @@ CREATE FUNCTION pgr_withPointsDD(
     FLOAT,  -- distance (required)
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'r',
+    driving_side CHAR DEFAULT 'b',
     details BOOLEAN DEFAULT false,
 
     OUT seq INTEGER,
-    OUT start_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT seq, start_vid, node, edge, cost, agg_cost
+    SELECT seq, node, edge, cost, agg_cost
     FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
@@ -50,7 +49,7 @@ COST 100
 ROWS 1000;
 
 -- MULTIPLE
---v3.6
+--v2.6
 CREATE FUNCTION pgr_withPointsDD(
     TEXT,     --edges_sql (required)
     TEXT,     -- points_sql (required)
@@ -58,7 +57,7 @@ CREATE FUNCTION pgr_withPointsDD(
     FLOAT,    -- distance (required)
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'r',
+    driving_side CHAR DEFAULT 'b',
     details BOOLEAN DEFAULT false,
     equicost BOOLEAN DEFAULT false,
 
@@ -90,7 +89,7 @@ IS 'pgr_withPointsDD(Single Vertex)
     - Distance
 - Optional Parameters
     - directed := true
-    - driving_side := r
+    - driving_side := b
     - details := false
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_withPointsDD.html
@@ -107,7 +106,7 @@ IS 'pgr_withPointsDD(Multiple Vertices)
     - Distance
 - Optional Parameters
     - directed := true
-    - driving_side := r
+    - driving_side := b
     - details := false
     - equicost := false
 - Documentation:
