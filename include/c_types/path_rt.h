@@ -2,7 +2,7 @@
 File: path_rt.h
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Mail: vicky AT erosion.dev
 
 ------
 
@@ -35,8 +35,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #endif
 
 struct Path_rt {
-    /*Added route_id*/
-    int16_t route_id;
     int seq;
     int64_t start_id;
     int64_t end_id;

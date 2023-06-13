@@ -2,10 +2,10 @@
 File: ksp_driver.h
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Mail: vicky AT erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-Mail: aniketgarg187@gmail.com
+Mail: aniketgarg187 AT gmail.com
 
 ------
 
@@ -50,28 +50,28 @@ extern "C" {
 #endif
 
     void  do_pgr_ksp(
-            Edge_t  *data_edges,
-            size_t total_edges,
+            Edge_t  *,
+            size_t,
 
-            II_t_rt  *combinations,
-            size_t total_combinations,
+            II_t_rt  *,
+            size_t,
 
-            int64_t  *start_vids,
-            size_t size_start_vids,
-            int64_t  *end_vids,
-            size_t size_end_vids,
+            int64_t  *,
+            size_t ,
+            int64_t  *,
+            size_t ,
 
-            size_t K,
+            size_t,
 
-            bool directed,
-            bool heap_paths,
+            bool,
+            bool,
 
-            Path_rt **return_tuples,
-            size_t *return_count,
+            Path_rt **,
+            size_t *,
 
-            char ** log_msg,
-            char ** notice_msg,
-            char ** err_msg);
+            char **,
+            char **,
+            char ** );
 
 #ifdef __cplusplus
 }

@@ -5,6 +5,7 @@ code_linter
 src/version/version.h
 run.sh
 taptest.sh
+get_signatures.sh
 .DS_Store
 .vagrant
 .directory

@@ -2,10 +2,10 @@
 File: ksp.c
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+vicky AT erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-aniketgarg187@gmail.com
+aniketgarg187 AT gmail.com
 
 ------
 
@@ -235,10 +235,22 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
+        int64_t path_id = 1;
+        int64_t seq = 1;
+        if (funcctx->call_cntr != 0) {
+            if (path[funcctx->call_cntr - 1].edge == -1) {
+                path_id = path[funcctx->call_cntr - 1].start_id + 1;
+                seq = 1;
+            } else {
+                path_id = path[funcctx->call_cntr - 1].start_id;
+                seq = path[funcctx->call_cntr - 1].end_id + 1;
+            }
+        }
+
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
         /* added route id */
-        values[1] = Int32GetDatum(path[funcctx->call_cntr].route_id);
-        values[2] = Int32GetDatum(path[funcctx->call_cntr].seq);
+        values[1] = Int32GetDatum(path_id);
+        values[2] = Int32GetDatum(seq);
         /* added start_id and end_id */
         values[3] = Int64GetDatum(path[funcctx->call_cntr].start_id);
         values[4] = Int64GetDatum(path[funcctx->call_cntr].end_id);
@@ -246,6 +258,10 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
         values[6] = Int64GetDatum(path[funcctx->call_cntr].edge);
         values[7] = Float8GetDatum(path[funcctx->call_cntr].cost);
         values[8] = Float8GetDatum(path[funcctx->call_cntr].agg_cost);
+
+
+        path[funcctx->call_cntr].start_id = path_id;
+        path[funcctx->call_cntr].end_id = seq;
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

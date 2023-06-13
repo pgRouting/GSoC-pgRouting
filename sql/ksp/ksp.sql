@@ -2,10 +2,10 @@
 File: ksp.sql
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+vicky AT erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-aniketgarg187@gmail.com
+aniketgarg187 AT gmail.com
 
 ------
 
@@ -45,7 +45,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- RETURNS SETOF RECORD AS
 -- $BODY$
 --     SELECT *
---     FROM _pgr_ksp(_pgr_get_statement($1), $2, $3, $4, $5, $6);
+--     FROM _pgr_ksp(_pgr_get_statement($1), $2, $3, $4, $5, $6) as a;
 -- $BODY$
 -- LANGUAGE SQL VOLATILE STRICT
 -- COST 100
@@ -67,9 +67,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --     - ${PROJECT_DOC_LINK}/pgr_KSP.html
 -- ';
 
-
 -- one-to-one
--- v3.6
+-- 3.6
 CREATE FUNCTION pgr_ksp(
     TEXT, -- edges_sql (required)
     BIGINT, -- from_vid (required)
@@ -82,14 +81,16 @@ CREATE FUNCTION pgr_ksp(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_id, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[],ARRAY[$3]::BIGINT[], $4, $5, $6) AS a;
+    SELECT *
+    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[],ARRAY[$3]::BIGINT[], $4, $5, $6);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -110,6 +111,7 @@ CREATE FUNCTION pgr_ksp(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
     OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
@@ -117,8 +119,8 @@ CREATE FUNCTION pgr_ksp(
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_id, a.path_seq, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4, $5, $6) AS a;
+    SELECT *
+    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4, $5, $6);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -139,14 +141,15 @@ CREATE FUNCTION pgr_ksp(
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
     OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_id, a.path_seq, a.start_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_ksp(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4, $5, $6) as a;
+    SELECT *
+    FROM _pgr_ksp(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4, $5, $6);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100

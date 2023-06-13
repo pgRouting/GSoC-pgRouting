@@ -2,10 +2,10 @@
 File: ksp_driver.cpp
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+vicky AT erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-aniketgarg187@gmail.com
+aniketgarg187 AT gmail.com
 
 ------
 

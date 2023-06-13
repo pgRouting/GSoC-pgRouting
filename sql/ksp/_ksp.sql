@@ -2,10 +2,10 @@
 File: _ksp.sql
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+vicky AT erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-aniketgarg187@gmail.com
+aniketgarg187 AT gmail.com
 
 ------
 
@@ -33,8 +33,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --v2.6
 -- CREATE FUNCTION _pgr_ksp(
 --     edges_sql TEXT,
---     start_vid INTEGER,
---     end_vid INTEGER,
+--     start_vid BIGINT,
+--     end_vid BIGINT,
 --     k INTEGER,
 
 --     directed BOOLEAN,
@@ -53,6 +53,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- 'MODULE_PATHNAME'
 -- LANGUAGE C VOLATILE STRICT;
 
+-- -- COMMENTS
+
+-- COMMENT ON FUNCTION _pgr_ksp(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN)
+-- IS 'pgRouting internal function';
 
 --v3.6
 CREATE FUNCTION _pgr_ksp(

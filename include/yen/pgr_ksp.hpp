@@ -2,10 +2,9 @@
 File: pgr_ksp.hpp
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
-
+Mail: vicky AT erosion.dev
 Copyright (c) 2023 Aniket Agarwal
-Mail: aniketgarg187@gmail.com
+Mail: aniketgarg187 AT gmail.com
 
 ------
 
