@@ -2,7 +2,7 @@
 File: basePath_SSEC.cpp
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+vicky AT erosion.dev
 
 ------
 
@@ -239,6 +239,7 @@ void Path::generate_postgres_data(
             std::numeric_limits<double>::infinity() : e.agg_cost;
         auto cost = std::fabs(e.cost - (std::numeric_limits<double>::max)()) < 1?
             std::numeric_limits<double>::infinity() : e.cost;
+
         (*postgres_data)[sequence] = {i, start_id(), end_id(), e.node, e.edge, cost, agg_cost};
         ++i;
         ++sequence;
@@ -267,10 +268,7 @@ void Path::get_pg_ksp_path(
         size_t &sequence, int routeId) const {
     for (unsigned int i = 0; i < path.size(); i++) {
         (*ret_path)[sequence].seq = static_cast<int>(i + 1);
-        /*
-        * keeping it start_id
-        */
-        (*ret_path)[sequence].start_id = start_id();
+        (*ret_path)[sequence].start_id = routeId;
         (*ret_path)[sequence].end_id = end_id();
         (*ret_path)[sequence].node = path[i].node;
         (*ret_path)[sequence].edge = path[i].edge;

@@ -1,8 +1,8 @@
 /*PGR-GNU*****************************************************************
-File: ksp.c
+File: v6ksp.c
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky AT erosion.dev
+Copyright (c) 2023 Aniket Agarwal
+aniketgarg187 AT gmail.com
 
 ------
 
@@ -32,17 +32,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/pgdata_getters.h"
 
-#include "drivers/yen/ksp_driver.h"
+#include "drivers/yen/v6ksp_driver.h"
 
-PGDLLEXPORT Datum _pgr_ksp(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_ksp);
+PGDLLEXPORT Datum _v6pgr_ksp(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_v6pgr_ksp);
 
 static
 void compute(
         char* edges_sql,
-        int64_t start_vertex,
-        int64_t end_vertex,
-
+        char* combinations_sql,
+        ArrayType *starts,
+        ArrayType *ends,
         int p_k,
         bool directed,
         bool heap_paths,
@@ -57,15 +57,28 @@ void compute(
 
     size_t k = (size_t)p_k;
 
+    int64_t* start_vidsArr = NULL;
+    size_t size_start_vidsArr = 0;
+
+    int64_t* end_vidsArr = NULL;
+    size_t size_end_vidsArr = 0;
+
+    II_t_rt *combinations = NULL;
+    size_t total_combinations = 0;
+
+    if (starts && ends) {
+        start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, starts, false, &err_msg);
+        throw_error(err_msg, "While getting start vids");
+        end_vidsArr = pgr_get_bigIntArray(&size_end_vidsArr, ends, false, &err_msg);
+        throw_error(err_msg, "While getting end vids");
+    } else if (combinations_sql) {
+        pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
+        throw_error(err_msg, combinations_sql);
+    }
+
     PGR_DBG("Load data");
     Edge_t *edges = NULL;
     size_t total_edges = 0;
-
-
-    if (start_vertex == end_vertex) {
-        pgr_SPI_finish();
-        return;
-    }
 
     pgr_get_edges(edges_sql, &edges, &total_edges, true, false, &err_msg);
     throw_error(err_msg, edges_sql);
@@ -83,11 +96,11 @@ void compute(
 
     clock_t start_t = clock();
 
-    do_pgr_ksp(
-            edges,
-            total_edges,
-            start_vertex,
-            end_vertex,
+    do_v6pgr_ksp(
+            edges, total_edges,
+            combinations, total_combinations,
+            start_vidsArr, size_start_vidsArr,
+            end_vidsArr, size_end_vidsArr,
             k,
             directed,
             heap_paths,
@@ -110,6 +123,9 @@ void compute(
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
 
+    if (start_vidsArr) pfree(start_vidsArr);
+    if (end_vidsArr) pfree(end_vidsArr);
+
 
     pgr_global_report(log_msg, notice_msg, err_msg);
 
@@ -118,8 +134,9 @@ void compute(
 }
 
 
+
 PGDLLEXPORT Datum
-_pgr_ksp(PG_FUNCTION_ARGS) {
+_v6pgr_ksp(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
     Path_rt      *path = NULL;
@@ -129,27 +146,37 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
-
-
-        /*
-           CREATE OR REPLACE FUNCTION _pgr_ksp(
-           sql text,
-           start_vid bigint,
-           end_vid bigint,
-           k integer,
-           directed boolean,
-           heap_paths boolean
-           */
         PGR_DBG("Calling process");
-        compute(
+        if (PG_NARGS() == 6) {
+            /*
+             * many to many
+             */
+            compute(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
-                PG_GETARG_INT64(1),
-                PG_GETARG_INT64(2),
+                NULL,
+                PG_GETARG_ARRAYTYPE_P(1),
+                PG_GETARG_ARRAYTYPE_P(2),
                 PG_GETARG_INT32(3),
                 PG_GETARG_BOOL(4),
                 PG_GETARG_BOOL(5),
                 &path,
                 &result_count);
+        } else if (PG_NARGS() == 5) {
+            /*
+             * combinations
+             */
+            compute(
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                text_to_cstring(PG_GETARG_TEXT_P(1)),
+                NULL,
+                NULL,
+                PG_GETARG_INT32(2),
+                PG_GETARG_BOOL(3),
+                PG_GETARG_BOOL(4),
+                &path,
+                &result_count);
+        }
+
         PGR_DBG("Total number of tuples to be returned %ld \n", result_count);
 
 
@@ -180,22 +207,40 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
         Datum *values;
         bool* nulls;
 
-        values = palloc(7 * sizeof(Datum));
-        nulls = palloc(7 * sizeof(bool));
+        values = palloc(9 * sizeof(Datum));
+        nulls = palloc(9 * sizeof(bool));
 
 
         size_t i;
-        for (i = 0; i < 7; ++i) {
+        for (i = 0; i < 9; ++i) {
             nulls[i] = false;
         }
 
+        int64_t path_id = 1;
+        int64_t seq = 1;
+        if (funcctx->call_cntr != 0) {
+            if (path[funcctx->call_cntr - 1].edge == -1) {
+                path_id = path[funcctx->call_cntr - 1].start_id + 1;
+                seq = 1;
+            } else {
+                path_id = path[funcctx->call_cntr - 1].start_id;
+                seq = path[funcctx->call_cntr - 1].end_id + 1;
+            }
+        }
+
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
-        values[1] = Int32GetDatum(path[funcctx->call_cntr].start_id + 1);
-        values[2] = Int32GetDatum(path[funcctx->call_cntr].seq);
-        values[3] = Int64GetDatum(path[funcctx->call_cntr].node);
-        values[4] = Int64GetDatum(path[funcctx->call_cntr].edge);
-        values[5] = Float8GetDatum(path[funcctx->call_cntr].cost);
-        values[6] = Float8GetDatum(path[funcctx->call_cntr].agg_cost);
+        values[1] = Int32GetDatum(path_id);
+        values[2] = Int32GetDatum(seq);
+        values[3] = Int64GetDatum(path[funcctx->call_cntr].start_id);
+        values[4] = Int64GetDatum(path[funcctx->call_cntr].end_id);
+        values[5] = Int64GetDatum(path[funcctx->call_cntr].node);
+        values[6] = Int64GetDatum(path[funcctx->call_cntr].edge);
+        values[7] = Float8GetDatum(path[funcctx->call_cntr].cost);
+        values[8] = Float8GetDatum(path[funcctx->call_cntr].agg_cost);
+
+
+        path[funcctx->call_cntr].start_id = path_id;
+        path[funcctx->call_cntr].end_id = seq;
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
