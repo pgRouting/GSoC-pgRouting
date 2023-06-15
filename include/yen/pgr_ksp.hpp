@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+
 #ifndef INCLUDE_YEN_PGR_KSP_HPP_
 #define INCLUDE_YEN_PGR_KSP_HPP_
 #pragma once

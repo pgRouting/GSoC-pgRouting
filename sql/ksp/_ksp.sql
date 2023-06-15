@@ -43,8 +43,6 @@ CREATE FUNCTION _pgr_ksp(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
-    OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
