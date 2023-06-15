@@ -43,7 +43,7 @@ CREATE FUNCTION pgr_withPointsDD(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
+    FROM _pgr_v6withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
