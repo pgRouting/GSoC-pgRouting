@@ -51,22 +51,17 @@ extern "C" {
 
 
     void do_pgr_many_withPointsDD(
-            Edge_t      *edges,             size_t total_edges,
-            Point_on_edge_t *points_p,          size_t total_points,
-            Edge_t      *edges_of_points,   size_t total_edges_of_points,
+            Edge_t*,          size_t,
+            Point_on_edge_t*, size_t,
+            Edge_t*,          size_t,
 
-            int64_t  *start_pids_arr,    size_t s_len,
-            double distance,
+            int64_t*,         size_t,
+            double,
 
-            bool directed,
-            char driving_side,
-            bool details,
-            bool equiCost,
+            bool, char, bool, bool,
 
-            Path_rt **return_tuples, size_t *return_count,
-            char** log_msg,
-            char** notice_msg,
-            char ** err_msg);
+            Path_rt**, size_t*,
+            char**, char**, char **);
 
 
 #ifdef __cplusplus
