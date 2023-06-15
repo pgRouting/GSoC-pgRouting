@@ -49,6 +49,11 @@ typedef struct Path_rt Path_rt;
 extern "C" {
 #endif
 
+    char estimate_drivingSide_dd(
+	    char, 
+	    bool, 
+	    char**);
+
 
     void do_withPointsDD(
             Edge_t*,          size_t,

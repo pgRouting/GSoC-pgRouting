@@ -53,19 +53,15 @@ void process(
 
         Path_rt **result_tuples,
         size_t *result_count) {
-    driving_side[0] = tolower(driving_side[0]);
-    if (strchr("rlb", driving_side[0]) == NULL) {
-        throw_error("Invalid value!", "driving_side: Valid values are 'R', 'r', 'L', 'l', 'B', 'b'");
-    }
-    else if (directed && driving_side[0] == 'b') {
-        throw_error("Invalid value!", "driving_side: 'Both' is only valid on undirected graphs");
-    }
-    PGR_DBG("estimated driving side:%c", driving_side[0]);
 
     pgr_SPI_connect();
     char* log_msg = NULL;
     char* notice_msg = NULL;
     char* err_msg = NULL;
+
+    driving_side[0] = estimate_drivingSide_dd(driving_side[0], directed, &err_msg);
+    throw_error(err_msg, "While estimating driving side");
+    PGR_DBG("estimated driving side:%c", driving_side[0]);
 
     size_t total_starts = 0;
     int64_t* start_pidsArr = pgr_get_bigIntArray(&total_starts, starts, false, &err_msg);
