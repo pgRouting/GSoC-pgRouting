@@ -283,7 +283,7 @@ void Path::get_pg_ksp_path(
 /* used by v6ksp */
 void Path::get_pg_v6ksp_path(
         Path_rt **ret_path,
-        size_t &sequence, int routeId) const {
+        size_t &sequence) const {
     for (unsigned int i = 0; i < path.size(); i++) {
         (*ret_path)[sequence].seq = static_cast<int>(i + 1);
         (*ret_path)[sequence].start_id = start_id();
