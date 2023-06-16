@@ -75,4 +75,4 @@ extern "C" {
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_YEN_KSP_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_YEN_V6KSP_DRIVER_H_

@@ -206,7 +206,7 @@ CREATE FUNCTION pgr_ksp(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM  _v6pgr_ksp(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6);
+    FROM  _v6pgr_ksp(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
