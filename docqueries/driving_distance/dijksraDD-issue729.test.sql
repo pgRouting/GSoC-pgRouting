@@ -19,7 +19,7 @@ FROM
             1,
             false)
     GROUP BY from_v) AS count
-    WHERE edges.source=count.from_v
+    WHERE edge_table.source=count.from_v
     ;
 
 ALTER TABLE edges
