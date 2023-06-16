@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 -- MULTIPLE
---v2.6
+--v3.6
 CREATE FUNCTION pgr_drivingDistance(
     TEXT,     -- edges_sql (required)
     ANYARRAY, -- from_vids (required)
@@ -33,7 +33,7 @@ CREATE FUNCTION pgr_drivingDistance(
     equicost BOOLEAN DEFAULT FALSE,
 
     OUT seq INTEGER,
-    OUT from_v  BIGINT,
+    OUT start_vid  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -49,7 +49,7 @@ ROWS 1000;
 
 
 -- SINGLE
---v3.0
+--v3.6
 CREATE FUNCTION pgr_drivingDistance(
     TEXT,   -- edges_sql (required)
     BIGINT, -- from_vid (requierd)
@@ -58,13 +58,14 @@ CREATE FUNCTION pgr_drivingDistance(
     directed BOOLEAN DEFAULT TRUE,
 
     OUT seq INTEGER,
+    OUT start_vid  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT seq, node, edge, cost, agg_cost
+    SELECT *
     FROM _pgr_drivingDistance(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3, $4, false);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
