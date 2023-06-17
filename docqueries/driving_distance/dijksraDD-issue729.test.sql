@@ -19,7 +19,7 @@ FROM
             1,
             false)
     GROUP BY start_vid) AS count
-    WHERE edges.source=count.start_vid
+    WHERE edge_table.source=count.start_vid
     ;
 
 ALTER TABLE edges
