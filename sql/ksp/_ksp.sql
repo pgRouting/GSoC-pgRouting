@@ -2,10 +2,10 @@
 File: _ksp.sql
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+vicky AT erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-aniketgarg187@gmail.com
+aniketgarg187 AT gmail.com
 
 ------
 
@@ -31,31 +31,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ---------------
 
 --v2.6
--- CREATE FUNCTION _pgr_ksp(
---     edges_sql TEXT,
---     start_vid INTEGER,
---     end_vid INTEGER,
---     k INTEGER,
+CREATE FUNCTION _pgr_ksp(
+    edges_sql TEXT,
+    start_vid BIGINT,
+    end_vid BIGINT,
+    k INTEGER,
 
---     directed BOOLEAN,
---     heap_paths BOOLEAN,
+    directed BOOLEAN,
+    heap_paths BOOLEAN,
 
---     OUT seq INTEGER,
---     OUT path_id INTEGER,
---     OUT path_seq INTEGER,
---     OUT start_vid BIGINT,
---     OUT end_vid BIGINT,
---     OUT node BIGINT,
---     OUT edge BIGINT,
---     OUT cost FLOAT,
---     OUT agg_cost FLOAT)
--- RETURNS SETOF RECORD AS
--- 'MODULE_PATHNAME'
--- LANGUAGE C VOLATILE STRICT;
+    OUT seq INTEGER,
+    OUT path_id INTEGER,
+    OUT path_seq INTEGER,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT;
 
+-- COMMENTS
+
+COMMENT ON FUNCTION _pgr_ksp(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN)
+IS 'pgRouting internal function';
 
 --v3.6
-CREATE FUNCTION _pgr_ksp(
+CREATE FUNCTION _v6pgr_ksp(
     edges_sql TEXT,
     start_vids ANYARRAY,
     end_vids ANYARRAY,
@@ -78,7 +80,7 @@ RETURNS SETOF RECORD AS
 LANGUAGE C VOLATILE STRICT;
 
 --v3.6
-CREATE FUNCTION _pgr_ksp(
+CREATE FUNCTION _v6pgr_ksp(
     edges_sql TEXT,
     combinations TEXT,
 
@@ -102,8 +104,8 @@ LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_ksp(TEXT, ANYARRAY, ANYARRAY, INTEGER, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION _v6pgr_ksp(TEXT, ANYARRAY, ANYARRAY, INTEGER, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
 
-COMMENT ON FUNCTION _pgr_ksp(TEXT, TEXT, INTEGER, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION _v6pgr_ksp(TEXT, TEXT, INTEGER, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';

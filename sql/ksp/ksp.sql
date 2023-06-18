@@ -2,10 +2,10 @@
 File: ksp.sql
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+vicky AT erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-aniketgarg187@gmail.com
+aniketgarg187 AT gmail.com
 
 ------
 
@@ -26,54 +26,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v2.6
--- CREATE FUNCTION pgr_ksp(
---     TEXT, -- edges_sql (required)
---     BIGINT, -- from_vids (required)
---     BIGINT,   -- to_vids (required)
---     INTEGER, -- K (required)
-
---     directed BOOLEAN DEFAULT true,
---     heap_paths BOOLEAN DEFAULT false,
-
---     OUT seq INTEGER,
---     OUT path_id INTEGER,
---     OUT path_seq INTEGER,
---     OUT node BIGINT,
---     OUT edge BIGINT,
---     OUT cost FLOAT,
---     OUT agg_cost FLOAT)
--- RETURNS SETOF RECORD AS
--- $BODY$
---     SELECT *
---     FROM _pgr_ksp(_pgr_get_statement($1), $2, $3, $4, $5, $6);
--- $BODY$
--- LANGUAGE SQL VOLATILE STRICT
--- COST 100
--- ROWS 1000;
-
--- -- COMMENTS
-
--- COMMENT ON FUNCTION pgr_ksp(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN)
--- IS 'pgr_KSP
--- - Parameters:
---     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
---     - From vertex identifier
---     - To vertex identifier
---     - K
--- - Optional Parameters
---     - directed := true
---     - heap_paths := false
--- - Documentation:
---     - ${PROJECT_DOC_LINK}/pgr_KSP.html
--- ';
-
-
--- one-to-one
--- v3.6
 CREATE FUNCTION pgr_ksp(
     TEXT, -- edges_sql (required)
-    BIGINT, -- from_vid (required)
-    BIGINT,   -- to_vid (required)
+    BIGINT, -- from_vids (required)
+    BIGINT,   -- to_vids (required)
     INTEGER, -- K (required)
 
     directed BOOLEAN DEFAULT true,
@@ -88,12 +44,57 @@ CREATE FUNCTION pgr_ksp(
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_id, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[],ARRAY[$3]::BIGINT[], $4, $5, $6) AS a;
+    SELECT *
+    FROM _pgr_ksp(_pgr_get_statement($1), $2, $3, $4, $5, $6);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
+
+-- COMMENTS
+
+COMMENT ON FUNCTION pgr_ksp(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN)
+IS 'pgr_KSP
+- Parameters:
+    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+    - From vertex identifier
+    - To vertex identifier
+    - K
+- Optional Parameters
+    - directed := true
+    - heap_paths := false
+- Documentation:
+    - ${PROJECT_DOC_LINK}/pgr_KSP.html
+';
+
+-- one-to-one
+-- 3.6
+-- CREATE FUNCTION pgr_ksp(
+--     TEXT, -- edges_sql (required)
+--     BIGINT, -- from_vid (required)
+--     BIGINT,   -- to_vid (required)
+--     INTEGER, -- K (required)
+
+--     directed BOOLEAN DEFAULT true,
+--     heap_paths BOOLEAN DEFAULT false,
+
+--     OUT seq INTEGER,
+--     OUT path_id INTEGER,
+--     OUT path_seq INTEGER,
+--     OUT start_vid BIGINT,
+--     OUT end_vid BIGINT,
+--     OUT node BIGINT,
+--     OUT edge BIGINT,
+--     OUT cost FLOAT,
+--     OUT agg_cost FLOAT)
+-- RETURNS SETOF RECORD AS
+-- $BODY$
+--     SELECT *
+--     FROM  _v6pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[],ARRAY[$3]::BIGINT[], $4, $5, $6);
+-- $BODY$
+-- LANGUAGE SQL VOLATILE STRICT
+-- COST 100
+-- ROWS 1000;
 
 
 -- one-to-many
@@ -110,6 +111,7 @@ CREATE FUNCTION pgr_ksp(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
     OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
@@ -117,8 +119,8 @@ CREATE FUNCTION pgr_ksp(
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_id, a.path_seq, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4, $5, $6) AS a;
+    SELECT *
+    FROM  _v6pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4, $5, $6);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -139,14 +141,15 @@ CREATE FUNCTION pgr_ksp(
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
     OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_id, a.path_seq, a.start_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_ksp(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4, $5, $6) as a;
+    SELECT *
+    FROM  _v6pgr_ksp(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4, $5, $6);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -175,7 +178,7 @@ CREATE FUNCTION pgr_ksp(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_ksp(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], $4, $5, $6);
+    FROM  _v6pgr_ksp(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], $4, $5, $6);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -203,7 +206,7 @@ CREATE FUNCTION pgr_ksp(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_ksp(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6);
+    FROM  _v6pgr_ksp(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -211,19 +214,19 @@ ROWS 1000;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_ksp(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN)
-IS 'pgr_KSP(One to One)
-- Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - From vertex identifier
-    - To vertex identifier
-    - K
-- Optional Parameters
-    - directed := true
-    - heap_paths := false
-- Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_KSP.html
-';
+-- COMMENT ON FUNCTION pgr_ksp(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN)
+-- IS 'pgr_KSP(One to One)
+-- - Parameters:
+--     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+--     - From vertex identifier
+--     - To vertex identifier
+--     - K
+-- - Optional Parameters
+--     - directed := true
+--     - heap_paths := false
+-- - Documentation:
+--     - ${PROJECT_DOC_LINK}/pgr_KSP.html
+-- ';
 
 COMMENT ON FUNCTION pgr_ksp(TEXT, BIGINT, ANYARRAY, INTEGER, BOOLEAN, BOOLEAN)
 IS 'pgr_KSP(One to Many)
