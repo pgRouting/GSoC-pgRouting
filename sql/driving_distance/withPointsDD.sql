@@ -133,10 +133,13 @@ CREATE FUNCTION pgr_withPointsDD(
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
+BEGIN
+  RAISE WARNING 'pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean) is been deprecated';
     SELECT seq, node, edge, cost, agg_cost
     FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
+END;
 $BODY$
-LANGUAGE SQL VOLATILE STRICT
+LANGUAGE plpgsql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
@@ -161,10 +164,13 @@ CREATE FUNCTION pgr_withPointsDD(
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
+BEGIN
+  RAISE WARNING 'pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean) is been deprecated';
     SELECT *
     FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8);
+END;
 $BODY$
-LANGUAGE SQL VOLATILE STRICT
+LANGUAGE plpgsql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
