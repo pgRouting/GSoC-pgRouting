@@ -7,7 +7,10 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail:
+Mail: vicky at erosion.dev
+
+Copyright (c) 2023 Abhinav Jain
+Mail: this.abhinav at gmail.com
 
 ------
 
@@ -54,10 +57,10 @@ process(
         ArrayType *ends,
 
         int p_k,
+        char *driving_side,
 
         bool directed,
         bool heap_paths,
-        char *driving_side,
         bool details,
 
         Path_rt **result_tuples,
@@ -69,9 +72,11 @@ process(
     size_t k = (size_t)p_k;
 
     driving_side[0] = (char) tolower(driving_side[0]);
+#if 0
     PGR_DBG("driving side:%c", driving_side[0]);
+#endif
     if (!((driving_side[0] == 'r')
-                || (driving_side[0] == 'l'))) {
+                || (driving_side[0] == 'l')) && !directed) {
         driving_side[0] = 'b';
     }
 
@@ -204,24 +209,6 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-
-        /*
-           CREATE OR REPLACE FUNCTION pgr_withPoint(
-           edges_sql TEXT,
-           points_sql TEXT,
-           start_pid INTEGER,
-           end_pid BIGINT,
-           k BIGINT,
-
-           directed BOOLEAN -- DEFAULT true,
-           heap_paths BOOLEAN -- DEFAULT false,
-           driving_side CHAR -- DEFAULT 'b',
-           details BOOLEAN -- DEFAULT false
-        */
-
-        PGR_DBG("Calling process");
-        PGR_DBG("initial driving side:%s",
-                text_to_cstring(PG_GETARG_TEXT_P(8)));
         if(PG_NARGS() == 9){
             process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
@@ -230,9 +217,9 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_ARRAYTYPE_P(2),
                 PG_GETARG_ARRAYTYPE_P(3),
                 PG_GETARG_INT32(4),
-                PG_GETARG_BOOL(5),
+                text_to_cstring(PG_GETARG_TEXT_P(5)),
                 PG_GETARG_BOOL(6),
-                text_to_cstring(PG_GETARG_TEXT_P(7)),
+                PG_GETARG_BOOL(7),
                 PG_GETARG_BOOL(8),
                 &result_tuples,
                 &result_count);
@@ -243,9 +230,9 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(2)),
                 NULL, NULL,
                 PG_GETARG_INT32(3),
-                PG_GETARG_BOOL(4),
+                text_to_cstring(PG_GETARG_TEXT_P(4)),
                 PG_GETARG_BOOL(5),
-                text_to_cstring(PG_GETARG_TEXT_P(6)),
+                PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
                 &result_tuples,
                 &result_count);
@@ -276,30 +263,46 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool*        nulls;
 
-        values = palloc(7 * sizeof(Datum));
-        nulls = palloc(7 * sizeof(bool));
+        values = palloc(9 * sizeof(Datum));
+        nulls = palloc(9 * sizeof(bool));
 
         size_t i;
-        for (i = 0; i < 7; ++i) {
+        for (i = 0; i < 9; ++i) {
             nulls[i] = false;
         }
 
         /*
-           OUT seq INTEGER, OUT path_id INTEGER, OUT path_seq INTEGER,
-           OUT node BIGINT, OUT edge BIGINT,
-           OUT cost FLOAT, OUT agg_cost FLOAT)
-           */
+           OUT seq INTEGER,
+           OUT path_id INTEGER,
+           OUT path_seq INTEGER,
+           OUT start_vid BIGINT,
+           OUT end_vid BIGINT,
+           OUT node BIGINT,
+           OUT edge BIGINT,
+           OUT cost FLOAT,
+           OUT agg_cost FLOAT
+        */
 
+        int64_t path_id = 1;
+        if (funcctx->call_cntr != 0) {
+            if (result_tuples[funcctx->call_cntr - 1].edge == -1) {
+                path_id = result_tuples[funcctx->call_cntr - 1].start_id + 1;
+            } else {
+                path_id = result_tuples[funcctx->call_cntr - 1].start_id;
+            }
+        }
 
-        // postgres starts counting from 1
-        values[0] = Int32GetDatum((int32_t)funcctx->call_cntr + 1);
-        values[1] = Int32GetDatum((int)
-                (result_tuples[funcctx->call_cntr].start_id + 1));
+        values[0] = Int32GetDatum(funcctx->call_cntr + 1);
+        values[1] = Int32GetDatum(path_id);
         values[2] = Int32GetDatum(result_tuples[funcctx->call_cntr].seq);
-        values[3] = Int64GetDatum(result_tuples[funcctx->call_cntr].node);
-        values[4] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
-        values[5] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
-        values[6] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
+        values[3] = Int32GetDatum(result_tuples[funcctx->call_cntr].start_id);
+        values[4] = Int32GetDatum(result_tuples[funcctx->call_cntr].end_id);
+        values[5] = Int64GetDatum(result_tuples[funcctx->call_cntr].node);
+        values[6] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
+        values[7] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
+        values[8] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
+
+        result_tuples[funcctx->call_cntr].start_id = path_id;
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
