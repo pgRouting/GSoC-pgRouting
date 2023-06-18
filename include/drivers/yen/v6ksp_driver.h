@@ -1,11 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: ksp_driver.h
+File: v6ksp_driver.h
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-Mail: aniketgarg187 at gmail.com
+Mail: aniketgarg187 AT gmail.com
 
 ------
 
@@ -25,8 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_YEN_KSP_DRIVER_H_
-#define INCLUDE_DRIVERS_YEN_KSP_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_YEN_V6KSP_DRIVER_H_
+#define INCLUDE_DRIVERS_YEN_V6KSP_DRIVER_H_
 #pragma once
 
 /* for size-t */
@@ -35,11 +33,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   include <cstddef>
 using Edge_t = struct Edge_t;
 using Path_rt = struct Path_rt;
+using II_t_rt = struct II_t_rt;
 #else
 #   include <stddef.h>
 #   include <stdint.h>
 typedef struct Edge_t Edge_t;
 typedef struct Path_rt Path_rt;
+typedef struct II_t_rt II_t_rt;
 #endif
 
 
@@ -47,36 +47,32 @@ typedef struct Path_rt Path_rt;
 extern "C" {
 #endif
 
-    void  pgr_do_ksp(
-            Edge_t*, size_t,
-            II_t_rt*, size_t,
-            int64_t*, size_t,
-            int64_t*, size_t,
+    void  do_v6pgr_ksp(
+            Edge_t  *,
             size_t,
-            bool,
-            bool,
-            Path_rt**,
-            size_t*,
-            char**,
-            char**,
-            char**);
 
-    void  do_pgr_ksp(
-            Edge_t  *data_edges,
-            size_t total_edges,
-            int64_t  start_vid,
-            int64_t end_vid,
-            size_t K,
-            bool directed,
-            bool heap_paths,
-            Path_rt **return_tuples,
-            size_t *return_count,
-            char ** log_msg,
-            char ** notice_msg,
-            char ** err_msg);
+            II_t_rt  *,
+            size_t,
+
+            int64_t  *,
+            size_t ,
+            int64_t  *,
+            size_t ,
+
+            size_t,
+
+            bool,
+            bool,
+
+            Path_rt **,
+            size_t *,
+
+            char **,
+            char **,
+            char **);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_YEN_KSP_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_YEN_V6KSP_DRIVER_H_
