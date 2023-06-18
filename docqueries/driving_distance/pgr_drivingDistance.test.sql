@@ -7,7 +7,7 @@ SELECT * FROM pgr_drivingDistance(
 /* --q6 */
 SELECT * FROM pgr_drivingDistance(
   'SELECT id, source, target, cost, reverse_cost FROM edges',
-  array[11, 16], 3.0, equicost => true);
+  ARRAY[11, 16], 3.0, equicost => true);
 /* --q10 */
 SELECT * FROM pgr_drivingDistance(
   'SELECT id, source, target, cost, reverse_cost FROM edges',
