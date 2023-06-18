@@ -2,8 +2,8 @@
 SET(LOCAL_FILES
     _withPointsDD.sql
     withPointsDD.sql
-    _v6withPointsDD.sql
-    v6withPointsDD.sql
+
+
     _drivingDistance.sql
     drivingDistance.sql
     )
