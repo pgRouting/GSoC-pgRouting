@@ -8,6 +8,9 @@ Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
+Copyright (c) 2023 Yige Huang
+Mail: square1ge at gmail.com
+
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -26,8 +29,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_DRIVING_DISTANCE_WITHPOINTS_DD_DRIVER_H_
-#define INCLUDE_DRIVERS_DRIVING_DISTANCE_WITHPOINTS_DD_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_DRIVING_DISTANCE_V6WITHPOINTS_DD_DRIVER_H_
+#define INCLUDE_DRIVERS_DRIVING_DISTANCE_V6WITHPOINTS_DD_DRIVER_H_
 #pragma once
 
 /* for size-t */
@@ -49,16 +52,21 @@ typedef struct Path_rt Path_rt;
 extern "C" {
 #endif
 
+    char estimate_drivingSide_dd(
+	    char, 
+	    bool, 
+	    char**);
 
-    void do_pgr_many_withPointsDD(
+
+    void do_withPointsDD(
             Edge_t*,          size_t,
             Point_on_edge_t*, size_t,
             Edge_t*,          size_t,
 
             int64_t*,         size_t,
-            double,
+            double, char,
 
-            bool, char, bool, bool,
+            bool, bool, bool,
 
             Path_rt**, size_t*,
             char**, char**, char **);
@@ -68,4 +76,4 @@ extern "C" {
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_DRIVING_DISTANCE_WITHPOINTS_DD_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_DRIVING_DISTANCE_V6WITHPOINTS_DD_DRIVER_H_

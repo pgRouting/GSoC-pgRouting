@@ -1,8 +1,16 @@
 /*PGR-GNU*****************************************************************
 File: _withPointsDD.sql
 
+Generated with Template by:
+Copyright (c) 2015 pgRouting developers
+Mail: project@pgrouting.org
+
+Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Mail: vicky at erosion.dev
+
+Copyright (c) 2023 Yige Huang
+Mail: square1ge at gmail.com
 
 ------
 
@@ -26,6 +34,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- pgr_withPointsDD
 -------------------
 
+--v3.6
+CREATE FUNCTION _pgr_v6withPointsDD(
+    edges_sql TEXT,
+    points_sql TEXT,
+    start_pid ANYARRAY,
+    distance FLOAT,
+    driving_side CHAR,
+
+    directed BOOLEAN DEFAULT true,
+    details BOOLEAN DEFAULT false,
+    equicost BOOLEAN DEFAULT false,
+
+    OUT seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT;
+
+-- COMMENTS
+
+COMMENT ON FUNCTION _pgr_v6withPointsDD(TEXT, TEXT, ANYARRAY, FLOAT, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+IS 'pgRouting internal function';
+
 --v3.0
 CREATE FUNCTION _pgr_withPointsDD(
     edges_sql TEXT,
@@ -34,7 +69,7 @@ CREATE FUNCTION _pgr_withPointsDD(
     distance FLOAT,
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'r',
+    driving_side CHAR DEFAULT 'b',
     details BOOLEAN DEFAULT false,
     equicost BOOLEAN DEFAULT false,
 

@@ -1,9 +1,16 @@
 /*PGR-GNU*****************************************************************
 File: many_to_dist_driving_distance.c
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_Vergara@hotmail.com
+Generated with Template by:
+Copyright (c) 2015 pgRouting developers
+Mail: project@pgrouting.org
 
+Function's developer:
+Copyright (c) 2015 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
+
+Copyright (c) 2023 Yige Huang
+Mail: square1ge at gmail.com
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -33,11 +40,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/pgdata_getters.h"
 
 #include "drivers/withPoints/get_new_queries.h"
-#include "drivers/driving_distance/withPoints_dd_driver.h"
+#include "drivers/driving_distance/v6withPoints_dd_driver.h"
 
 
-PGDLLEXPORT Datum _pgr_withpointsdd(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_withpointsdd);
+PGDLLEXPORT Datum _pgr_v6withpointsdd(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_v6withpointsdd);
 
 static
 void process(
@@ -45,21 +52,23 @@ void process(
         char* points_sql,
         ArrayType* starts,
         double distance,
+        char *driving_side,
 
         bool directed,
-        char *driving_side,
         bool details,
         bool equicost,
 
         Path_rt **result_tuples,
         size_t *result_count) {
-    driving_side[0] = estimate_drivingSide(driving_side[0]);
-    PGR_DBG("estimated driving side:%c", driving_side[0]);
 
     pgr_SPI_connect();
     char* log_msg = NULL;
     char* notice_msg = NULL;
     char* err_msg = NULL;
+
+    driving_side[0] = estimate_drivingSide_dd(driving_side[0], directed, &err_msg);
+    throw_error(err_msg, "While estimating driving side");
+    PGR_DBG("estimated driving side:%c", driving_side[0]);
 
     size_t total_starts = 0;
     int64_t* start_pidsArr = pgr_get_bigIntArray(&total_starts, starts, false, &err_msg);
@@ -103,15 +112,15 @@ void process(
 
     PGR_DBG("Starting timer");
     clock_t start_t = clock();
-    do_pgr_many_withPointsDD(
+    do_withPointsDD(
             edges,              total_edges,
             points,             total_points,
             edges_of_points,    total_edges_of_points,
             start_pidsArr,      total_starts,
             distance,
+            driving_side[0],
 
             directed,
-            driving_side[0],
             details,
             equicost,
 
@@ -143,7 +152,7 @@ void process(
 
 
 PGDLLEXPORT Datum
-_pgr_withpointsdd(PG_FUNCTION_ARGS) {
+_pgr_v6withpointsdd(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc               tuple_desc;
 
@@ -165,9 +174,9 @@ _pgr_withpointsdd(PG_FUNCTION_ARGS) {
         // points_sql TEXT,
         // start_pids anyarray,
         // distance FLOAT,
+        // driving_side CHAR,
         //
         // directed BOOLEAN -- DEFAULT true,
-        // driving_side CHAR -- DEFAULT 'b',
         // details BOOLEAN -- DEFAULT false,
         // equicost BOOLEAN -- DEFAULT false,
 
@@ -178,9 +187,9 @@ _pgr_withpointsdd(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
                 PG_GETARG_ARRAYTYPE_P(2),
                 PG_GETARG_FLOAT8(3),
+                text_to_cstring(PG_GETARG_TEXT_P(4)),
 
-                PG_GETARG_BOOL(4),
-                text_to_cstring(PG_GETARG_TEXT_P(5)),
+                PG_GETARG_BOOL(5),
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
                 &result_tuples, &result_count);
