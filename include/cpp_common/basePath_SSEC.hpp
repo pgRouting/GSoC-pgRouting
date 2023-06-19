@@ -138,7 +138,7 @@ class Path {
             Path_rt **ret_path,
             size_t &sequence, int routeId) const;
 
-    void get_pg_v6ksp_path(
+    void get_pg_v4ksp_path(
         Path_rt **ret_path,
         size_t &sequence) const;
 

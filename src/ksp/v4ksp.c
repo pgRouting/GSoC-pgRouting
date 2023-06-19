@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: v6ksp.c
+File: v4ksp.c
 
 Copyright (c) 2023 Aniket Agarwal
 aniketgarg187 AT gmail.com
@@ -32,13 +32,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/pgdata_getters.h"
 
-#include "drivers/yen/v6ksp_driver.h"
+#include "drivers/yen/v4ksp_driver.h"
 
-PGDLLEXPORT Datum _v6pgr_ksp(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_v6pgr_ksp);
+PGDLLEXPORT Datum _v4pgr_ksp(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_v4pgr_ksp);
 
 static
-void compute(
+void process(
         char* edges_sql,
         char* combinations_sql,
         ArrayType *starts,
@@ -96,7 +96,7 @@ void compute(
 
     clock_t start_t = clock();
 
-    do_v6pgr_ksp(
+    do_v4pgr_ksp(
             edges, total_edges,
             combinations, total_combinations,
             start_vidsArr, size_start_vidsArr,
@@ -136,7 +136,7 @@ void compute(
 
 
 PGDLLEXPORT Datum
-_v6pgr_ksp(PG_FUNCTION_ARGS) {
+_v4pgr_ksp(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
     Path_rt      *path = NULL;
@@ -151,7 +151,7 @@ _v6pgr_ksp(PG_FUNCTION_ARGS) {
             /*
              * many to many
              */
-            compute(
+            process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 NULL,
                 PG_GETARG_ARRAYTYPE_P(1),
@@ -165,7 +165,7 @@ _v6pgr_ksp(PG_FUNCTION_ARGS) {
             /*
              * combinations
              */
-            compute(
+            process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
                 NULL,
