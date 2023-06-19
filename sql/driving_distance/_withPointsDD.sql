@@ -3,7 +3,7 @@ File: _withPointsDD.sql
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
-Mail: project@pgrouting.org
+Mail: project at pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -------------------
 
 --v3.6
-CREATE FUNCTION _pgr_v6withPointsDD(
+CREATE FUNCTION _pgr_v4withPointsDD(
     edges_sql TEXT,
     points_sql TEXT,
     start_pid ANYARRAY,
@@ -58,7 +58,7 @@ LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_v6withPointsDD(TEXT, TEXT, ANYARRAY, FLOAT, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION _pgr_v4withPointsDD(TEXT, TEXT, ANYARRAY, FLOAT, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
 
 --v3.0

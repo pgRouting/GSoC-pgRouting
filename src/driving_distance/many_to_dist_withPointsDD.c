@@ -2,7 +2,7 @@
 File: many_to_dist_driving_distance.c
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_Vergara@hotmail.com
+Mail: vicky at erosion.dev
 
 ------
 

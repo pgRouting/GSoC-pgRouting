@@ -1,9 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: withPoints_dd_driver.cpp
+File: v4withPoints_dd_driver.cpp
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
-Mail: project@pgrouting.org
+Mail: project at pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 
-#include "drivers/driving_distance/v6withPoints_dd_driver.h"
+#include "drivers/driving_distance/withPoints_dd_driver.h"
 
 #include <sstream>
 #include <deque>

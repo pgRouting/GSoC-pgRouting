@@ -1,9 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: many_to_dist_driving_distance.c
+File: v4withPointsDD.c
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
-Mail: project@pgrouting.org
+Mail: project at pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
@@ -40,11 +40,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/pgdata_getters.h"
 
 #include "drivers/withPoints/get_new_queries.h"
-#include "drivers/driving_distance/v6withPoints_dd_driver.h"
+#include "drivers/driving_distance/withPoints_dd_driver.h"
 
 
-PGDLLEXPORT Datum _pgr_v6withpointsdd(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_v6withpointsdd);
+PGDLLEXPORT Datum _pgr_v4withpointsdd(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_v4withpointsdd);
 
 static
 void process(
@@ -152,7 +152,7 @@ void process(
 
 
 PGDLLEXPORT Datum
-_pgr_v6withpointsdd(PG_FUNCTION_ARGS) {
+_pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc               tuple_desc;
 
