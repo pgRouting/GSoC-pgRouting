@@ -6,7 +6,10 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail:
+Mail: vicky AT erosion.dev
+
+Copyright (c) 2023 Abhinav Jain
+Mail: this.abhinav AT gmail.com
 
 ------
 
@@ -51,14 +54,11 @@ typedef struct Path_rt Path_rt;
 extern "C" {
 #endif
 
-    int do_pgr_withPointsKsp(
+    int pgr_do_withPointsKsp(
             Edge_t*,           size_t,
             Point_on_edge_t*,  size_t,
             Edge_t*,           size_t,
-#if 0
-            int64_t start_pid,
-            int64_t end_pid,
-#endif
+
             II_t_rt*, size_t,
             int64_t*, size_t,
             int64_t*, size_t,

@@ -7,10 +7,10 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+Mail: vicky AT erosion.dev
 
 Copyright (c) 2023 Abhinav Jain
-Mail: this.abhinav at gmail.com
+Mail: this.abhinav AT gmail.com
 
 ------
 
@@ -72,11 +72,12 @@ process(
     size_t k = (size_t)p_k;
 
     driving_side[0] = (char) tolower(driving_side[0]);
-#if 0
-    PGR_DBG("driving side:%c", driving_side[0]);
-#endif
+
     if (!((driving_side[0] == 'r')
                 || (driving_side[0] == 'l')) && !directed) {
+        driving_side[0] = 'b';
+    } else if(!((driving_side[0] == 'r')
+                || (driving_side[0] == 'l'))){
         driving_side[0] = 'b';
     }
 
@@ -152,7 +153,7 @@ process(
 
     clock_t start_t = clock();
 
-    do_pgr_withPointsKsp(
+    pgr_do_withPointsKsp(
             edges,           total_edges,
             points,          total_points,
             edges_of_points, total_edges_of_points,
@@ -223,7 +224,7 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(8),
                 &result_tuples,
                 &result_count);
-        } else/* (PG_NARGS() == 7) */{
+        } else/* (PG_NARGS() == 8) */{
             process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
