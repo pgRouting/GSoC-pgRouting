@@ -58,14 +58,11 @@ using pgrouting::yen::Pgr_ksp;
 
 
 int
-do_pgr_withPointsKsp(
+pgr_do_withPointsKsp(
         Edge_t  *edges,           size_t total_edges,
         Point_on_edge_t  *points_p,   size_t total_points,
         Edge_t  *edges_of_points, size_t total_edges_of_points,
-#if 0
-        int64_t start_pid,
-        int64_t end_pid,
-#endif
+
         II_t_rt *combinationsArr, size_t total_combinations,
         int64_t *start_pidsArr, size_t size_start_pidsArr,
         int64_t *end_pidsArr, size_t size_end_pidsArr,
@@ -117,16 +114,6 @@ do_pgr_withPointsKsp(
             return -1;
         }
 
-#if 0
-        int64_t start_vid(start_pid);
-        int64_t end_vid(end_pid);
-
-        log << "start_pid" << start_pid << "\n";
-        log << "end_pid" << end_pid << "\n";
-        log << "driving_side" << driving_side << "\n";
-        log << "start_vid" << start_vid << "\n";
-        log << "end_vid" << end_vid << "\n";
-#endif
 
         graphType gType = directed? DIRECTED: UNDIRECTED;
 
@@ -139,38 +126,18 @@ do_pgr_withPointsKsp(
         auto vertices(pgrouting::extract_vertices(edges, total_edges));
         vertices = pgrouting::extract_vertices(vertices, pg_graph.new_edges());
 
-        log << "extracted vertices: ";
-        for (const auto& v : vertices) {
-            log << v.id << ", ";
-        }
-        log << "\n";
 
         if (directed) {
             pgrouting::DirectedGraph digraph(vertices, gType);
             digraph.insert_edges(edges, total_edges);
             digraph.insert_edges(pg_graph.new_edges());
 
-#if 0
-            log << "graph after inserting edges\n";
-            log << digraph << "\n";
-            log << "graph after inserting new edges\n";
-            log << digraph << "\n";
-
-            Pgr_ksp< pgrouting::DirectedGraph  > fn_yen;
-#endif
-
             paths = pgrouting::algorithms::Yen(digraph, combinations, k, heap_paths);
-            // pgassert(true==false);
         } else {
-#if 0
-            log << "Working with undirected Graph\n";
-#endif
             pgrouting::UndirectedGraph undigraph(gType);
             undigraph.insert_edges(edges, total_edges);
             undigraph.insert_edges(pg_graph.new_edges());
-#if 0
-            Pgr_ksp< pgrouting::UndirectedGraph > fn_yen;
-#endif
+
             paths = pgrouting::algorithms::Yen(undigraph, combinations, k, heap_paths);
         }
 
