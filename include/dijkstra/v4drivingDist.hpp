@@ -69,7 +69,7 @@ template < class G > class Pgr_dijkstra;
 
 template < class G >
 std::deque<Path>
-pgr_drivingDistance(
+pgr_v4drivingdistance(
         G &graph,
         std::vector< int64_t > start_vids,
         double distance,

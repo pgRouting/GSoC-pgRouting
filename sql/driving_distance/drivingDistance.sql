@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 -- MULTIPLE
 --v3.6
-CREATE FUNCTION pgr_drivingDistance(
+CREATE FUNCTION pgr_v4drivingDistance(
     TEXT,     -- edges_sql (required)
     ANYARRAY, -- from_vids (required)
     FLOAT,    -- distance (required)
@@ -44,7 +44,7 @@ CREATE FUNCTION pgr_drivingDistance(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_drivingDistance(_pgr_get_statement($1), $2, $3, $4, $5);
+    FROM _pgr_v4drivingDistance(_pgr_get_statement($1), $2, $3, $4, $5);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -53,7 +53,7 @@ ROWS 1000;
 
 -- SINGLE
 --v3.6
-CREATE FUNCTION pgr_drivingDistance(
+CREATE FUNCTION pgr_v4drivingDistance(
     TEXT,   -- edges_sql (required)
     BIGINT, -- from_vid (requierd)
     FLOAT,  -- distance (required)
@@ -69,7 +69,7 @@ CREATE FUNCTION pgr_drivingDistance(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_drivingDistance(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3, $4, false);
+    FROM _pgr_v4drivingDistance(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3, $4, false);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -77,8 +77,8 @@ ROWS 1000;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_drivingDistance(TEXT, BIGINT, FLOAT, BOOLEAN)
-IS 'pgr_drivingDistance(Single_vertex)
+COMMENT ON FUNCTION pgr_v4drivingDistance(TEXT, BIGINT, FLOAT, BOOLEAN)
+IS 'pgr_v4drivingDistance(Single_vertex)
 - Parameters:
    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
    - From vertex identifier
@@ -86,11 +86,11 @@ IS 'pgr_drivingDistance(Single_vertex)
 - Optional Parameters
    - directed := true
 - Documentation:
-   - ${PROJECT_DOC_LINK}/pgr_drivingDistance.html
+   - ${PROJECT_DOC_LINK}/pgr_v4drivingDistance.html
 ';
 
-COMMENT ON FUNCTION pgr_drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
-IS 'pgr_drivingDistance(Multiple vertices)
+COMMENT ON FUNCTION pgr_v4drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
+IS 'pgr_v4drivingDistance(Multiple vertices)
 - Parameters:
    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
    - From ARRAY[vertices identifiers]
@@ -99,7 +99,7 @@ IS 'pgr_drivingDistance(Multiple vertices)
    - directed := true
    - equicost := false
 - Documentation:
-   - ${PROJECT_DOC_LINK}/pgr_drivingDistance.html
+   - ${PROJECT_DOC_LINK}/pgr_v4drivingDistance.html
 ';
 
    /* Below functions are for backword compatibility*/

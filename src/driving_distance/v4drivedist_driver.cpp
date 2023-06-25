@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/driving_distance/drivedist_driver.h"
+#include "drivers/driving_distance/v4drivedist_driver.h"
 
 #include <sstream>
 #include <deque>
@@ -83,7 +83,7 @@ end_timing(
 #endif
 
 void
-do_pgr_driving_many_to_dist(
+do_pgr_v4driving_many_to_dist(
         Edge_t  *data_edges, size_t total_edges,
         int64_t *start_vertex, size_t s_len,
         double distance,
@@ -147,10 +147,10 @@ do_pgr_driving_many_to_dist(
 
 #ifdef WITH_TIME
             start_timing(start_t, begin_elapsed, begin);
-            log << "*******Calling the C++ call to pgr_drivingDistance: "
+            log << "*******Calling the C++ call to pgr_v4drivingdistance: "
                 << std::ctime(&start_t) << "\n";
 #endif
-            paths = pgr_drivingDistance(
+            paths = pgr_v4drivingdistance(
                     digraph, start_vertices, distance, equiCostFlag, log);
 #ifdef WITH_TIME
             end_timing(start_t, begin_elapsed, begin, log);
@@ -178,10 +178,10 @@ do_pgr_driving_many_to_dist(
 
 #ifdef WITH_TIME
             start_timing(start_t, begin_elapsed, begin);
-            log << "*******Calling the C++ call to pgr_drivingDistance: "
+            log << "*******Calling the C++ call to pgr_v4drivingdistance: "
                 << std::ctime(&start_t) << "\n";
 #endif
-            paths = pgr_drivingDistance(
+            paths = pgr_v4drivingdistance(
                     undigraph, start_vertices, distance, equiCostFlag, log);
 #ifdef WITH_TIME
             end_timing(start_t, begin_elapsed, begin, log);

@@ -44,7 +44,7 @@ typedef struct Path_rt Path_rt;
 extern "C" {
 #endif
 
-    void do_pgr_driving_many_to_dist(
+    void do_pgr_v4driving_many_to_dist(
             Edge_t* edges, size_t total_edges,
             int64_t* start_vertex, size_t s_len,
             double distance,
