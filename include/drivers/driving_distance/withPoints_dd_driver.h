@@ -2,11 +2,14 @@
 File: withPoints_driver.h
 
 Copyright (c) 2015 pgRouting developers
-Mail: project@pgrouting.org
+Mail: project at pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
+
+Copyright (c) 2023 Yige Huang
+Mail: square1ge at gmail.com
 
 ------
 
@@ -48,6 +51,25 @@ typedef struct Path_rt Path_rt;
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+    char estimate_drivingSide_dd(
+	    char, 
+	    bool, 
+	    char**);
+
+
+    void do_withPointsDD(
+            Edge_t*,          size_t,
+            Point_on_edge_t*, size_t,
+            Edge_t*,          size_t,
+
+            int64_t*,         size_t,
+            double, char,
+
+            bool, bool, bool,
+
+            Path_rt**, size_t*,
+            char**, char**, char **);
 
 
     void do_pgr_many_withPointsDD(
