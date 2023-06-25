@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: v6ksp_driver.h
+File: v4ksp_driver.h
 
 
 Copyright (c) 2023 Aniket Agarwal
@@ -23,8 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_YEN_V6KSP_DRIVER_H_
-#define INCLUDE_DRIVERS_YEN_V6KSP_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_YEN_V4KSP_DRIVER_H_
+#define INCLUDE_DRIVERS_YEN_V4KSP_DRIVER_H_
 #pragma once
 
 /* for size-t */
@@ -47,32 +47,28 @@ typedef struct II_t_rt II_t_rt;
 extern "C" {
 #endif
 
-    void  do_v6pgr_ksp(
-            Edge_t  *,
-            size_t,
+    void  do_v4pgr_ksp(
+            Edge_t*, size_t,
 
-            II_t_rt  *,
-            size_t,
+            II_t_rt*, size_t,
 
-            int64_t  *,
-            size_t ,
-            int64_t  *,
-            size_t ,
+            int64_t*, size_t,
+            int64_t*, size_t,
 
             size_t,
 
             bool,
             bool,
 
-            Path_rt **,
-            size_t *,
+            Path_rt**,
+            size_t*,
 
-            char **,
-            char **,
-            char **);
+            char**,
+            char**,
+            char**);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_YEN_V6KSP_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_YEN_V4KSP_DRIVER_H_

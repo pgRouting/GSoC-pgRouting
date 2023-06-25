@@ -70,34 +70,6 @@ IS 'pgr_KSP
     - ${PROJECT_DOC_LINK}/pgr_KSP.html
 ';
 
--- one-to-one
--- 3.6
--- CREATE FUNCTION pgr_ksp(
---     TEXT, -- edges_sql (required)
---     BIGINT, -- from_vid (required)
---     BIGINT,   -- to_vid (required)
---     INTEGER, -- K (required)
-
---     directed BOOLEAN DEFAULT true,
---     heap_paths BOOLEAN DEFAULT false,
-
---     OUT seq INTEGER,
---     OUT path_id INTEGER,
---     OUT path_seq INTEGER,
---     OUT start_vid BIGINT,
---     OUT end_vid BIGINT,
---     OUT node BIGINT,
---     OUT edge BIGINT,
---     OUT cost FLOAT,
---     OUT agg_cost FLOAT)
--- RETURNS SETOF RECORD AS
--- $BODY$
---     SELECT *
---     FROM  _v6pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[],ARRAY[$3]::BIGINT[], $4, $5, $6);
--- $BODY$
--- LANGUAGE SQL VOLATILE STRICT
--- COST 100
--- ROWS 1000;
 
 
 -- one-to-many

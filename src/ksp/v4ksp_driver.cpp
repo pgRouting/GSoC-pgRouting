@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 
-#include "drivers/yen/v6ksp_driver.h"
+#include "drivers/yen/v4ksp_driver.h"
 
 #include <sstream>
 #include <deque>
@@ -46,7 +46,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 using pgrouting::yen::Pgr_ksp;
 
 
-void  do_v6pgr_ksp(
+void  do_v4pgr_ksp(
         Edge_t *data_edges, size_t total_edges,
         II_t_rt *combinationsArr, size_t total_combinations,
         int64_t*  start_vids, size_t size_start_vids,
@@ -103,7 +103,7 @@ void  do_v6pgr_ksp(
             size_t sequence = 0;
             for (const auto &path : paths) {
                 if (path.size() > 0)
-                    path.get_pg_v6ksp_path(return_tuples, sequence);
+                    path.get_pg_v4ksp_path(return_tuples, sequence);
             }
         }
         *return_count = count;
