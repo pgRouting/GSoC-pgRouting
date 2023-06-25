@@ -280,8 +280,8 @@ void Path::get_pg_ksp_path(
     }
 }
 
-/* used by v6ksp */
-void Path::get_pg_v6ksp_path(
+/* used by v4ksp */
+void Path::get_pg_v4ksp_path(
         Path_rt **ret_path,
         size_t &sequence) const {
     for (unsigned int i = 0; i < path.size(); i++) {
