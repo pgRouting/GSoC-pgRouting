@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ----------------------
 
 --v3.6
-CREATE FUNCTION _pgr_drivingDistance(
+CREATE FUNCTION _pgr_v4drivingDistance(
     edges_sql TEXT,
     start_vids ANYARRAY,
     distance FLOAT,
@@ -48,7 +48,7 @@ LANGUAGE c VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION _pgr_v4drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
 
 /* Below functions are for backword compatibility*/
