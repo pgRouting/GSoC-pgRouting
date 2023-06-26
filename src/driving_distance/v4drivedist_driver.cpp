@@ -1,8 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: drivedist_driver.cpp
+File: v4drivedist_driver.cpp
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+Generated with Template by:                                                                                             
+Copyright (c) 20xx pgRouting developers                                                                                 
+Mail: project@pgrouting.org   
 
 Copyright (c) 2023 Aryan Gupta
 guptaaryan1010 AT gmail.com

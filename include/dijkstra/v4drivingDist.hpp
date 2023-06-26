@@ -1,13 +1,10 @@
 /*PGR-GNU*****************************************************************
 
-file: driveDist.hpp
+file: v4driveDist.hpp
 
-Copyright (c) 2015 pgRouting developers
-Mail: project@pgrouting.org
-
-Copyright (c) 2022 Celia Virginia Vergara Castillo
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky at erosion.dev
+Generated with Template by:                                                                                             
+Copyright (c) 20xx pgRouting developers                                                                                 
+Mail: project@pgrouting.org   
 
 Copyright (c) 2023 Aryan Gupta
 guptaaryan1010 AT gmail.com

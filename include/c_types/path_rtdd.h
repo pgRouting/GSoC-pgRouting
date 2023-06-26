@@ -1,8 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: path_rtdd.h
+File: path_dd_rt.h
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky AT erosion.dev
+Generated with Template by:                                                                                             
+Copyright (c) 20xx pgRouting developers                                                                                 
+Mail: project@pgrouting.org   
 
 Copyright (c) 2023 Aryan Gupta
 Mail: guptaaryan1010 AT gmail.com
@@ -26,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 /*! @file */
 
-#ifndef INCLUDE_C_TYPES_path_rtdd_H_
-#define INCLUDE_C_TYPES_path_rtdd_H_
+#ifndef INCLUDE_C_TYPES_PATH_DD_RT_H_
+#define INCLUDE_C_TYPES_PATH_DD_RT_H_
 #pragma once
 
 /* for int64_t */
@@ -37,7 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   include <stdint.h>
 #endif
 
-struct path_rtdd {
+struct path_dd_rt {
     int seq;
     int64_t depth;
     int64_t start_id;
@@ -48,4 +49,4 @@ struct path_rtdd {
     double agg_cost;
 };
 
-#endif  // INCLUDE_C_TYPES_path_rtdd_H_
+#endif  // INCLUDE_C_TYPES_PATH_DD_RT_H_
