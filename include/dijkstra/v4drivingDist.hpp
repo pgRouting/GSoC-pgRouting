@@ -3,8 +3,8 @@
 file: v4driveDist.hpp
 
 Generated with Template by:                                                                                             
-Copyright (c) 20xx pgRouting developers                                                                                 
-Mail: project@pgrouting.org   
+Copyright (c) 2023 pgRouting developers                                                                                 
+Mail: project AT pgrouting.org   
 
 Copyright (c) 2023 Aryan Gupta
 guptaaryan1010 AT gmail.com

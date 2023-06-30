@@ -2,8 +2,8 @@
 File: path_dd_rt.h
 
 Generated with Template by:                                                                                             
-Copyright (c) 20xx pgRouting developers                                                                                 
-Mail: project@pgrouting.org   
+Copyright (c) 2023 pgRouting developers                                                                                 
+Mail: project AT pgrouting.org   
 
 Copyright (c) 2023 Aryan Gupta
 Mail: guptaaryan1010 AT gmail.com
