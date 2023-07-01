@@ -40,29 +40,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "dijkstra/drivingDist.hpp"
 #include "withPoints/pgr_withPoints.hpp"
 #include "driving_distance/withPointsDD.hpp"
-
 #include "c_types/mst_rt.h"
-
 #include "cpp_common/pgr_alloc.hpp"
 
 
 char
-estimate_drivingSide_dd(char driving_side, bool directed, char** err_msg){
+estimate_drivingSide_dd(char driving_side, bool directed, char** err_msg) {
     using pgrouting::pgr_msg;
     try {
         char d_side = static_cast<char>(tolower(driving_side));
         if (strchr("rlb", d_side) == NULL) {
             throw std::string("Invalid driving side specified!");
-        }
-        else if (directed && d_side == 'b') {
+        } else if (directed && d_side == 'b') {
             throw std::string("Cannot use 'b' driving side with directed graph!");
-        }
-        else{
+        } else {
             return d_side;
         }
     } catch (const std::string &ex) {
         *err_msg = pgr_msg(ex.c_str());
-        return '\0'; // Or some other appropriate default value
+        return '\0';
     } catch(...) {
         *err_msg = pgr_msg("Caught unknown exception!");
         return '\0';
@@ -161,9 +157,8 @@ do_withPointsDD(
 
             paths = pgr_drivingDistance(
                     digraph, start_vids, distance, equiCost, log);
-
-	    pgrouting::functions::ShortestPath_tree<pgrouting::DirectedGraph> spt;
-	    results = spt.get_depths(digraph, paths, details);
+            pgrouting::functions::ShortestPath_tree<pgrouting::DirectedGraph> spt;
+            results = spt.get_depths(digraph, paths, details);
         } else {
             pgrouting::UndirectedGraph undigraph(gType);
             undigraph.insert_edges(edges, total_edges);
@@ -172,8 +167,8 @@ do_withPointsDD(
             paths = pgr_drivingDistance(
                     undigraph, start_vids, distance, equiCost, log);
 
-	    pgrouting::functions::ShortestPath_tree<pgrouting::UndirectedGraph> spt;
-	    results = spt.get_depths(undigraph, paths, details);
+            pgrouting::functions::ShortestPath_tree<pgrouting::UndirectedGraph> spt;
+            results = spt.get_depths(undigraph, paths, details);
         }
 
         size_t count(results.size());
@@ -184,7 +179,7 @@ do_withPointsDD(
             return;
         }
         *return_tuples = pgr_alloc(count, (*return_tuples));
-	for (size_t i = 0; i < count; i++) {
+        for (size_t i = 0; i < count; i++) {
             *((*return_tuples) + i) = results[i];
         }
         (*return_count) = count;
