@@ -3,7 +3,7 @@ BEGIN
 SET client_min_messages TO NOTICE;
 SET
 /* --q5 */
-SELECT * FROM pgr_drivingDistance(
+SELECT * FROM pgr_v4drivingDistance(
   'SELECT id, source, target, cost, reverse_cost FROM edges',
   11, 3.0);
  seq | start_vid | node | edge | cost | agg_cost
@@ -24,7 +24,7 @@ SELECT * FROM pgr_drivingDistance(
 (13 rows)
 
 /* --q6 */
-SELECT * FROM pgr_drivingDistance(
+SELECT * FROM pgr_v4drivingDistance(
   'SELECT id, source, target, cost, reverse_cost FROM edges',
   array[11, 16], 3.0, equicost => true);
  seq | start_vid | node | edge | cost | agg_cost
@@ -45,7 +45,7 @@ SELECT * FROM pgr_drivingDistance(
 (13 rows)
 
 /* --q10 */
-SELECT * FROM pgr_drivingDistance(
+SELECT * FROM pgr_v4drivingDistance(
   'SELECT id, source, target, cost, reverse_cost FROM edges',
   array[11, 16], 3.0, directed => false);
  seq | start_vid | node | edge | cost | agg_cost
