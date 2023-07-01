@@ -47,6 +47,7 @@ CREATE FUNCTION _pgr_v4withPointsDD(
     equicost BOOLEAN DEFAULT false,
 
     OUT seq INTEGER,
+    OUT depth BIGINT,
     OUT start_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
