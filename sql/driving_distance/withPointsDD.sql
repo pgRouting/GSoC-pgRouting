@@ -40,6 +40,7 @@ CREATE FUNCTION pgr_withPointsDD(
     details BOOLEAN DEFAULT false,
 
     OUT seq INTEGER,
+    OUT depth BIGINT,
     OUT start_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
@@ -68,6 +69,7 @@ CREATE FUNCTION pgr_withPointsDD(
     equicost BOOLEAN DEFAULT false,
 
     OUT seq INTEGER,
+    OUT depth BIGINT,
     OUT start_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
@@ -140,6 +142,7 @@ RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
   RAISE WARNING 'pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean) is been deprecated';
+  RETURN QUERY
     SELECT seq, node, edge, cost, agg_cost
     FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
 END;
@@ -171,6 +174,7 @@ RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
   RAISE WARNING 'pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean) is been deprecated';
+  RETURN QUERY
     SELECT *
     FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8);
 END;
