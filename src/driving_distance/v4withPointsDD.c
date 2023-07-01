@@ -32,12 +32,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 
-#include "c_types/path_rt.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
-
 #include "c_common/pgdata_getters.h"
+#include "c_types/mst_rt.h"
 
 #include "drivers/withPoints/get_new_queries.h"
 #include "drivers/driving_distance/withPoints_dd_driver.h"
@@ -58,7 +57,7 @@ void process(
         bool details,
         bool equicost,
 
-        Path_rt **result_tuples,
+	MST_rt **result_tuples,
         size_t *result_count) {
 
     pgr_SPI_connect();
@@ -154,10 +153,10 @@ void process(
 PGDLLEXPORT Datum
 _pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
-    TupleDesc               tuple_desc;
+    TupleDesc           tuple_desc;
 
     /**********************************************************************/
-    Path_rt  *result_tuples = 0;
+    MST_rt  *result_tuples = NULL;
     size_t result_count = 0;
     /**********************************************************************/
 
@@ -181,7 +180,7 @@ _pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
         // equicost BOOLEAN -- DEFAULT false,
 
 
-        PGR_DBG("Calling driving_many_to_dist_driver");
+        PGR_DBG("Calling withPoints_dd_driver");
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
@@ -214,16 +213,16 @@ _pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
     funcctx = SRF_PERCALL_SETUP();
 
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (Path_rt*) funcctx->user_fctx;
+    result_tuples = (MST_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;
         Datum        result;
-        Datum *values;
-        bool* nulls;
+        Datum        *values;
+        bool*        nulls;
 
         /**********************************************************************/
-        size_t numb = 6;
+        size_t numb = 7;
         values = palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
 
@@ -233,11 +232,12 @@ _pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
         }
 
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].start_id);
-        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].node);
-        values[3] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
-        values[4] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
-        values[5] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
+        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].depth);
+        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].from_v);
+        values[3] = Int64GetDatum(result_tuples[funcctx->call_cntr].node);
+        values[4] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
+        values[5] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
+        values[6] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
 
         /**********************************************************************/
 
