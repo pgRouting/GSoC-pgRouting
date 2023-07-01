@@ -57,9 +57,8 @@ void process(
         bool details,
         bool equicost,
 
-	MST_rt **result_tuples,
+    MST_rt **result_tuples,
         size_t *result_count) {
-
     pgr_SPI_connect();
     char* log_msg = NULL;
     char* notice_msg = NULL;
