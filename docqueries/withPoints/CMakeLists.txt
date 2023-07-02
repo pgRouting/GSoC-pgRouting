@@ -4,6 +4,7 @@ SET(LOCAL_FILES
     doc-pgr_withPointsCost
     doc-pgr_withPointsDD
     doc-pgr_withPointsKSP
+    doc-pgr_withPointsKSPv3.6
     doc-pgr_withPoints
     withPointsVia
     )
