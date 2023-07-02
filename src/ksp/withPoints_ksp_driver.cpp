@@ -159,11 +159,10 @@ pgr_do_withPointsKsp(
         *return_tuples = pgr_alloc(count, (*return_tuples));
 
         size_t sequence = 0;
-        int route_id = 0;
+        // int route_id = 0;
         for (const auto &path : paths) {
             if (path.size() > 0)
-                path.get_pg_ksp_path(return_tuples, sequence, route_id);
-            ++route_id;
+                path.get_pg_withPointsKSP_path(return_tuples, sequence);
         }
 
         if (count != sequence) {
