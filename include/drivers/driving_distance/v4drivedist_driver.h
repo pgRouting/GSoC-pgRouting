@@ -1,8 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: boost_interface_drivedist.h
+File: v4drivedist_driver.h
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky at erosion.dev
+Generated with Template by:                                                                                             
+Copyright (c) 2023 pgRouting developers                                                                                 
+Mail: project AT pgrouting.org   
 
 Copyright (c) 2023 Aryan Gupta
 guptaaryan1010 AT gmail.com
@@ -24,8 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_DRIVING_DISTANCE_v4drivedist_driver_H_
-#define INCLUDE_DRIVERS_DRIVING_DISTANCE_v4drivedist_driver_H_
+#ifndef INCLUDE_DRIVERS_DRIVING_DISTANCE_V4DRIVEDIST_DRIVER_H_
+#define INCLUDE_DRIVERS_DRIVING_DISTANCE_V4DRIVEDIST_DRIVER_H_
 
 /* for size-t */
 #ifdef __cplusplus
@@ -59,4 +60,4 @@ extern "C" {
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_DRIVING_DISTANCE_v4drivedist_driver_H_
+#endif  //INCLUDE_DRIVERS_DRIVING_DISTANCE_V4DRIVEDIST_DRIVER_H_

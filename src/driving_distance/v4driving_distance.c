@@ -1,8 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: many_to_dist_driving_distance.c
+File: v4driving_distance.c
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky at erosion.dev
+Generated with Template by:                                                                                             
+Copyright (c) 2023 pgRouting developers                                                                                 
+Mail: project AT pgrouting.org   
 
 Copyright (c) 2023 Aryan Gupta
 guptaaryan1010 AT gmail.com
@@ -33,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 
 #include "c_common/pgdata_getters.h"
-#include "drivers/driving_distance/drivedist_driver.h"
+#include "drivers/driving_distance/v4drivedist_driver.h"
 
 
 PGDLLEXPORT Datum _pgr_v4drivingdistance(PG_FUNCTION_ARGS);
@@ -69,7 +70,7 @@ void process(
 
     PGR_DBG("Starting timer");
     clock_t start_t = clock();
-    do_pgr_driving_many_to_dist(
+    do_pgr_v4driving_many_to_dist(
             edges, total_tuples,
             start_vidsArr, size_start_vidsArr,
             distance,
@@ -80,7 +81,7 @@ void process(
             &notice_msg,
             &err_msg);
 
-    time_msg("processing pgr_drivingDistance()",
+    time_msg("processing pgr_v4drivingDistance()",
             start_t, clock());
 
     if (err_msg && (*result_tuples)) {
