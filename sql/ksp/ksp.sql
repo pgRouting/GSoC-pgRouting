@@ -38,6 +38,8 @@ CREATE FUNCTION pgr_ksp(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -45,7 +47,7 @@ CREATE FUNCTION pgr_ksp(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_ksp(_pgr_get_statement($1), $2, $3, $4, $5, $6);
+    FROM _v4pgr_ksp(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], $4, $5, $6);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
