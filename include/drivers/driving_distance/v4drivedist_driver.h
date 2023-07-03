@@ -33,12 +33,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   include <cstdint>
 #   include <cstddef>
 using Edge_t = struct Edge_t;
-using Path_rt = struct Path_rt;
+using MST_rt = struct MST_rt;
 #else
 #   include <stddef.h>
 #   include <stdint.h>
 typedef struct Edge_t Edge_t;
-typedef struct Path_rt Path_rt;
+typedef struct MST_rt MST_rt;
 #endif
 
 #ifdef __cplusplus
@@ -51,7 +51,7 @@ extern "C" {
             double distance,
             bool directed,
             bool equicost,
-            Path_rt** return_tuples, size_t* return_count,
+            MST_rt** return_tuples, size_t* return_count,
             char **log_msg,
             char **notice_msg,
             char **err_msg);

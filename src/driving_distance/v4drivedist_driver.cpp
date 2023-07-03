@@ -90,7 +90,7 @@ do_pgr_v4driving_many_to_dist(
         double distance,
         bool directedFlag,
         bool equiCostFlag,
-        Path_rt **return_tuples, size_t *return_count,
+        MST_rt **return_tuples, size_t *return_count,
         char **log_msg,
         char **notice_msg,
         char **err_msg) {
