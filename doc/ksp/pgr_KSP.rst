@@ -23,6 +23,17 @@ pgr_KSP
 
 .. rubric:: Availability
 
+* Version 3.6.0
+
+  * New **proposed** functions:
+
+    * ``pgr_ksp`` (`One to Many`_)
+    * ``pgr_ksp`` (`Many to One`_)
+    * ``pgr_ksp`` (`Many to Many`_)
+    * ``pgr_ksp`` (`Combinations`_)
+  
+  * ``pgr_ksp`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns.
+
 * Version 2.1.0
 
   * Signature change
@@ -48,10 +59,28 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_KSP(`Edges SQL`_, **start vid**, **end vid**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vid**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vids**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vid**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vids**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
    | **options:** ``[directed, heap_paths]``
 
    | RETURNS SET OF |ksp-result|
+   | OR EMPTY SET
+
+.. index::
+    single: ksp(One to One)
+
+One to One
+...............................................................................
+
+.. admonition:: \ \
+   :class: signatures
+
+   | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vid**, **K**, [**options**])
+
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths from :math:`6` to :math:`17` on a directed graph.
@@ -59,6 +88,95 @@ Signatures
 .. literalinclude:: doc-ksp.queries
     :start-after: --q1
     :end-before: --q2
+
+.. index::
+    single: ksp(One to Many)
+
+One to Many
+...............................................................................
+
+.. admonition:: \ \
+   :class: signatures
+
+   | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vids**, **K**, [**options**])
+
+   | RETURNS SET OF |short-generic-result|
+   | OR EMPTY SET
+
+:Example: Get 2 paths from vertex :math:`6` to vertices :math:`\{10, 17\}` on a directed graph.
+
+.. literalinclude:: doc-ksp.queries
+    :start-after: --q3
+    :end-before: --q4
+
+.. index::
+    single: ksp(Many to One)
+
+Many to One
+...............................................................................
+
+.. admonition:: \ \
+   :class: signatures
+
+   | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vid**, **K**, [**options**])
+
+   | RETURNS SET OF |short-generic-result|
+   | OR EMPTY SET
+
+:Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17 on a directed graph.
+
+.. literalinclude:: doc-ksp.queries
+    :start-after: --q4
+    :end-before: --q5
+
+.. index::
+    single: ksp(Many to Many)
+
+Many to Many
+...............................................................................
+
+.. admonition:: \ \
+   :class: signatures
+
+   | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vids**, **K**, [**options**])
+
+   | RETURNS SET OF |short-generic-result|
+   | OR EMPTY SET
+
+:Example: Get 2 paths vertices :math:`\{6, 1\}` to vertices :math:`\{10, 17\}` on a directed graph.
+
+.. literalinclude:: doc-ksp.queries
+    :start-after: --q5
+    :end-before: --q6
+
+.. index::
+   single: ksp(Combinations)
+
+Combinations
+...............................................................................
+
+.. admonition:: \ \
+   :class: signatures
+
+   | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
+
+   | RETURNS SET OF |short-generic-result|
+   | OR EMPTY SET
+
+:Example: Using a combinations table on an **directed** graph
+
+The combinations table:
+
+.. literalinclude:: doc-pgr_dijkstra.queries
+    :start-after: -- q51
+    :end-before: -- q52
+
+The query:
+
+.. literalinclude:: doc-ksp.queries
+    :start-after: -- q6
+    :end-before: -- q7
+
 
 Parameters
 -------------------------------------------------------------------------------
@@ -76,10 +194,10 @@ Parameters
    * - `Edges SQL`_
      - ``TEXT``
      - SQL query as described.
-   * - **start vid**
+   * - **start_vid**
      - **ANY-INTEGER**
      - Identifier of the departure vertex.
-   * - **end vid**
+   * - **end_vid**
      - **ANY-INTEGER**
      - Identifier of the departure vertex.
    * - **K**
@@ -134,6 +252,13 @@ Edges SQL
     :start-after: basic_edges_sql_start
     :end-before: basic_edges_sql_end
 
+Combinations SQL
+...............................................................................
+
+.. include:: pgRouting-concepts.rst
+    :start-after: basic_combinations_sql_start
+    :end-before: basic_combinations_sql_end
+
 Result Columns
 -------------------------------------------------------------------------------
 
@@ -157,7 +282,7 @@ agg_cost)``
      - ``INTEGER``
      - Path identifier.
 
-       * Has value **1** for the first of a path from **start vid** to
+       * Has value **1** for the first of a path from **start_vid** to
          **end_vid**
    * - ``path_seq``
      - ``INTEGER``
@@ -165,7 +290,7 @@ agg_cost)``
        path.
    * - ``node``
      - ``BIGINT``
-     - Identifier of the node in the path from **start vid** to **end vid**
+     - Identifier of the node in the path from **start_vid** to **end_vid**
    * - ``edge``
      - ``BIGINT``
      - Identifier of the edge used to go from ``node`` to the next node in the
@@ -178,7 +303,7 @@ agg_cost)``
        * :math:`0` for the last ``node`` of the path.
    * - ``agg_cost``
      - ``FLOAT``
-     - Aggregate cost from **start vid** to ``node``.
+     - Aggregate cost from **start_vid** to ``node``.
 
 .. ksp_returns_end
 
