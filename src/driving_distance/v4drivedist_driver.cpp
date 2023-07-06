@@ -35,7 +35,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
-
 #undef WITH_TIME
 #ifdef WITH_TIME
 #include <ctime>
@@ -115,6 +114,7 @@ do_pgr_v4driving_many_to_dist(
         graphType gType = directedFlag? DIRECTED: UNDIRECTED;
 
         std::deque<Path> paths;
+        std::deque<MST_rt> results;
         std::vector<int64_t> start_vertices(start_vertex, start_vertex + s_len);
 
         auto vertices(pgrouting::extract_vertices(data_edges, total_edges));
@@ -153,6 +153,8 @@ do_pgr_v4driving_many_to_dist(
 #endif
             paths = pgr_v4drivingdistance(
                     digraph, start_vertices, distance, equiCostFlag, log);
+            pgrouting::functions::ShortestPath_tree<pgrouting::DirectedGraph> spt;
+            results = spt.get_depths(digraph, paths);
 #ifdef WITH_TIME
             end_timing(start_t, begin_elapsed, begin, log);
 #endif
@@ -184,12 +186,14 @@ do_pgr_v4driving_many_to_dist(
 #endif
             paths = pgr_v4drivingdistance(
                     undigraph, start_vertices, distance, equiCostFlag, log);
+            pgrouting::functions::ShortestPath_tree<pgrouting::UndirectedGraph> spt;
+            results = spt.get_depths(undigraph, paths);
 #ifdef WITH_TIME
             end_timing(start_t, begin_elapsed, begin, log);
 #endif
         }
 
-        size_t count(count_tuples(paths));
+        size_t count(results.size());
 
 
         if (count == 0) {
@@ -198,8 +202,10 @@ do_pgr_v4driving_many_to_dist(
             return;
         }
         *return_tuples = pgr_alloc(count, (*return_tuples));
-        auto trueCount(collapse_paths(return_tuples, paths));
-        *return_count = trueCount;
+        for (size_t i = 0; i < count; i++) {
+            *((*return_tuples) + i) = results[i];
+        }
+        (*return_count) = count;
 
 
         *log_msg = log.str().empty()?
