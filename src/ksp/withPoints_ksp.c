@@ -76,9 +76,11 @@ process(
     if (!((driving_side[0] == 'r')
                 || (driving_side[0] == 'l')) && !directed) {
         driving_side[0] = 'b';
-    } else if(!((driving_side[0] == 'r')
-                || (driving_side[0] == 'l'))){
-        driving_side[0] = 'b';
+    }
+    
+    if(!((driving_side[0] == 'r')
+                || (driving_side[0] == 'l') || (driving_side[0] == 'b'))){
+        return;
     }
 
     pgr_SPI_connect();
