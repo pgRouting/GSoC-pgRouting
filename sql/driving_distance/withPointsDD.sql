@@ -77,10 +77,21 @@ CREATE FUNCTION pgr_withPointsDD(
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
+BEGIN
+    IF LOWER($5) NOT IN ('r', 'l', 'b') THEN
+        RAISE EXCEPTION 'Invalid driving side specified!'
+        USING HINT = format('Value found: %s', $5);
+    ELSEIF $6 AND LOWER($5) = 'b' THEN
+        RAISE EXCEPTION 'Cannot use ''b'' driving side with directed graph!'
+        USING HINT = 'Use ''r'' or ''l'' instead.';
+    END IF;
+
+    RETURN QUERY
     SELECT *
     FROM _pgr_v4withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8);
+END;
 $BODY$
-LANGUAGE SQL VOLATILE STRICT
+LANGUAGE plpgsql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
@@ -141,8 +152,8 @@ CREATE FUNCTION pgr_withPointsDD(
 RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
-  RAISE WARNING 'pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean) is been deprecated';
-  RETURN QUERY
+    RAISE WARNING 'pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean) is been deprecated';
+    RETURN QUERY
     SELECT seq, node, edge, cost, agg_cost
     FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
 END;
