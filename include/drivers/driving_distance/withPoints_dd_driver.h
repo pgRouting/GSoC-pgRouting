@@ -54,12 +54,6 @@ typedef struct MST_rt MST_rt;
 extern "C" {
 #endif
 
-    char estimate_drivingSide_dd(
-	    char, 
-	    bool, 
-	    char**);
-
-
     void do_withPointsDD(
             Edge_t*,          size_t,
             Point_on_edge_t*, size_t,
