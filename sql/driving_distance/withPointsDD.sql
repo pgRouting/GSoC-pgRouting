@@ -154,8 +154,8 @@ $BODY$
 BEGIN
     RAISE WARNING 'pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean) is been deprecated';
     RETURN QUERY
-    SELECT seq, node, edge, cost, agg_cost
-    FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
+    SELECT a.seq, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT
