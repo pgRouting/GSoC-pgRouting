@@ -44,28 +44,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_alloc.hpp"
 
 
-char
-estimate_drivingSide_dd(char driving_side, bool directed, char** err_msg) {
-    using pgrouting::pgr_msg;
-    try {
-        char d_side = static_cast<char>(tolower(driving_side));
-        if (strchr("rlb", d_side) == NULL) {
-            throw std::string("Invalid driving side specified!");
-        } else if (directed && d_side == 'b') {
-            throw std::string("Cannot use 'b' driving side with directed graph!");
-        } else {
-            return d_side;
-        }
-    } catch (const std::string &ex) {
-        *err_msg = pgr_msg(ex.c_str());
-        return '\0';
-    } catch(...) {
-        *err_msg = pgr_msg("Caught unknown exception!");
-        return '\0';
-    }
-}
-
-
 /**********************************************************************/
 // CREATE OR REPLACE FUNCTION pgr_withPointsDD(
 // edges_sql TEXT,
