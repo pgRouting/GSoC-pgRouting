@@ -174,8 +174,8 @@ The combinations table:
 The query:
 
 .. literalinclude:: doc-ksp.queries
-    :start-after: -- q6
-    :end-before: -- q7
+    :start-after: --q6
+    :end-before: --q7
 
 
 Parameters
@@ -311,13 +311,35 @@ agg_cost)``
 Additional Examples
 -------------------------------------------------------------------------------
 
-:Example: Get 2 paths from :math:`6` to :math:`17` on an undirected graph
+:Example: Get 2 paths from :math:`6` to :math:`17` on an **undirected** graph
 
 Also get the paths in the heap.
 
 .. literalinclude:: doc-ksp.queries
     :start-after: --q2
     :end-before: --q3
+
+:Example: Get 2 paths using combinations table on an **undirected** graph
+
+Also get the paths in the heap.
+
+.. literalinclude:: doc-ksp.queries
+    :start-after: --q7
+    :end-before: --q8
+
+:Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17 on a **undirected** graph.
+
+.. literalinclude:: doc-ksp.queries
+    :start-after: --q8
+    :end-before: --q9
+
+:Example: Get 2 paths vertices :math:`\{6, 1\}` to vertices :math:`\{10, 17\}` on a directed graph.
+
+Also get the paths in the heap.
+
+.. literalinclude:: doc-ksp.queries
+    :start-after: --q9
+    :end-before: --q10
 
 See Also
 -------------------------------------------------------------------------------
