@@ -27,4 +27,16 @@ SELECT * FROM pgr_KSP(
   'SELECT id, source, target, cost, reverse_cost FROM edges', 
   'SELECT source, target FROM combinations', 2);
 /* --q7 */
+SELECT * FROM pgr_KSP(
+  'SELECT id, source, target, cost, reverse_cost FROM edges', 
+  'SELECT source, target FROM combinations', 2, directed => false, heap_paths => true);
+/* --q8 */
+SELECT * FROM pgr_KSP(
+  'select id, source, target, cost, reverse_cost from edges', 
+  ARRAY[6, 1], 17, 2, directed => false);
+/* --q9 */
+SELECT * FROM pgr_KSP(
+  'select id, source, target, cost, reverse_cost from edges',
+  ARRAY[6, 1], ARRAY[10, 17], 2, heap_paths => true);
+/* --q10 */
 
