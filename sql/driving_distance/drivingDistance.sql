@@ -37,6 +37,7 @@ CREATE FUNCTION pgr_v4drivingDistance(
 
     OUT seq INTEGER,
     OUT start_vid  BIGINT,
+    OUT depth  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -62,6 +63,7 @@ CREATE FUNCTION pgr_v4drivingDistance(
 
     OUT seq INTEGER,
     OUT start_vid  BIGINT,
+    OUT depth  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
