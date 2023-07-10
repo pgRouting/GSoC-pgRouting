@@ -107,4 +107,4 @@ CREATE FUNCTION _pgr_withPointsKSP(
 -- COMMENTS
 
 COMMENT ON FUNCTION _pgr_withPointsKSP(TEXT, TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgRouting internal function';
+IS 'pgRouting deprecated function';
