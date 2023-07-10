@@ -83,6 +83,7 @@ IS 'pgRouting internal function';
 COMMENT ON FUNCTION _pgr_v4withPointsKSP(TEXT, TEXT, TEXT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
 
+/*TODO remove on v4*/
 --v3.0
 CREATE FUNCTION _pgr_withPointsKSP(
     edges_sql TEXT,
