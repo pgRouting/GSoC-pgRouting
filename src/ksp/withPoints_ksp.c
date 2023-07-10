@@ -79,7 +79,7 @@ processv4(
                 || (driving_side[0] == 'l')) && !directed) {
         driving_side[0] = 'b';
     }
-    
+
     if(!((driving_side[0] == 'r')
                 || (driving_side[0] == 'l') || (driving_side[0] == 'b'))){
         return;
@@ -91,42 +91,34 @@ processv4(
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
-    Edge_t *edges = NULL;
-    size_t total_edges = 0;
-
     Point_on_edge_t *points = NULL;
     size_t total_points = 0;
-
-    Edge_t *edges_of_points = NULL;
-    size_t total_edges_of_points = 0;
-
-    int64_t* start_pidsArr = NULL;
-    size_t size_start_pidsArr = 0;
-
-    int64_t* end_pidsArr = NULL;
-    size_t size_end_pidsArr = 0;
-
-    II_t_rt *combinationsArr = NULL;
-    size_t total_combinations = 0;
-
     pgr_get_points(points_sql, &points, &total_points, &err_msg);
     throw_error(err_msg, points_sql);
 
     char *edges_of_points_query = NULL;
     char *edges_no_points_query = NULL;
-
     get_new_queries(
             edges_sql, points_sql,
             &edges_of_points_query,
             &edges_no_points_query);
 
+    Edge_t *edges_of_points = NULL;
+    size_t total_edges_of_points = 0;
     pgr_get_edges(edges_of_points_query, &edges_of_points, &total_edges_of_points, true, false, &err_msg);
     throw_error(err_msg, edges_of_points_query);
 
+    Edge_t *edges = NULL;
+    size_t total_edges = 0;
     pgr_get_edges(edges_no_points_query, &edges, &total_edges, true, false, &err_msg);
     throw_error(err_msg, edges_no_points_query);
 
-
+    int64_t* start_pidsArr = NULL;
+    size_t size_start_pidsArr = 0;
+    int64_t* end_pidsArr = NULL;
+    size_t size_end_pidsArr = 0;
+    II_t_rt *combinationsArr = NULL;
+    size_t total_combinations = 0;
     if (starts && ends) {
         start_pidsArr = pgr_get_bigIntArray(&size_start_pidsArr, starts, false, &err_msg);
         throw_error(err_msg, "While getting start pids");
@@ -142,6 +134,7 @@ processv4(
     pfree(edges_no_points_query);
 
     if ((total_edges + total_edges_of_points) == 0) {
+        elog(ERROR, "Invalid Graph");
         if (end_pidsArr) pfree(end_pidsArr);
         if (start_pidsArr) pfree(start_pidsArr);
         if (combinationsArr) pfree(combinationsArr);
@@ -150,6 +143,7 @@ processv4(
     }
 
     if (total_combinations == 0 && (size_start_pidsArr== 0 || size_end_pidsArr == 0)) {
+        elog(ERROR, "No cominations");
         if (edges) pfree(edges);
         pgr_SPI_finish();
         return;
@@ -191,10 +185,10 @@ processv4(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
-
-    pfree(edges);
-    pfree(edges_of_points);
-    pfree(points);
+    if (edges) pfree(edges);
+    if (start_pidsArr) pfree(start_pidsArr);
+    if (end_pidsArr) pfree(end_pidsArr);
+    if (combinationsArr) pfree(combinationsArr);
 
     pgr_SPI_finish();
 }
