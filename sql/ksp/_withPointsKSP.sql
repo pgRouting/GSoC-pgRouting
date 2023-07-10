@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --------------------
 
 --v3.6
-CREATE FUNCTION _pgr_withPointsKSP(
+CREATE FUNCTION _pgr_v4withPointsKSP(
     edges_sql TEXT,
     points_sql TEXT,
     start_vids ANYARRAY,
@@ -53,7 +53,7 @@ CREATE FUNCTION _pgr_withPointsKSP(
     LANGUAGE c STABLE STRICT;
 
 --v3.6
-CREATE FUNCTION _pgr_withPointsKSP(
+CREATE FUNCTION _pgr_v4withPointsKSP(
     edges_sql TEXT,
     points_sql TEXT,
     combinations_sql TEXT,
@@ -77,10 +77,10 @@ CREATE FUNCTION _pgr_withPointsKSP(
     'MODULE_PATHNAME'
     LANGUAGE c STABLE STRICT;
 
-COMMENT ON FUNCTION _pgr_withPointsKSP(TEXT, TEXT, ANYARRAY, ANYARRAY, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION _pgr_v4withPointsKSP(TEXT, TEXT, ANYARRAY, ANYARRAY, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
 
-COMMENT ON FUNCTION _pgr_withPointsKSP(TEXT, TEXT, TEXT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION _pgr_v4withPointsKSP(TEXT, TEXT, TEXT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
 
 --v3.0

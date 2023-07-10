@@ -51,7 +51,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, $7, $8, $9);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, $7, $8, $9);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -83,7 +83,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[], $5, $6, $7, $8, $9);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[], $5, $6, $7, $8, $9);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -115,7 +115,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, $7, $8, $9);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, $7, $8, $9);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -147,7 +147,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[], $5, $6, $7, $8, $9);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[], $5, $6, $7, $8, $9);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -178,7 +178,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3), $4, $5, $6, $7, $8);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3), $4, $5, $6, $7, $8);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -186,7 +186,7 @@ ROWS 1000;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_withPointsKSP(TEXT, TEXT, BIGINT, BIGINT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION pgr_v4withPointsKSP(TEXT, TEXT, BIGINT, BIGINT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgr_withPointsKSP
 - PROPOSED
 - Parameters:
@@ -203,7 +203,7 @@ IS 'pgr_withPointsKSP
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_withPointsKSP.html';
 
-COMMENT ON FUNCTION pgr_withPointsKSP(TEXT, TEXT, BIGINT, ANYARRAY, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION pgr_v4withPointsKSP(TEXT, TEXT, BIGINT, ANYARRAY, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgr_withPointsKSP
 - PROPOSED
 - Parameters:
@@ -220,7 +220,7 @@ IS 'pgr_withPointsKSP
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_withPointsKSP.html';
 
-COMMENT ON FUNCTION pgr_withPointsKSP(TEXT, TEXT, ANYARRAY, BIGINT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION pgr_v4withPointsKSP(TEXT, TEXT, ANYARRAY, BIGINT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgr_withPointsKSP
 - PROPOSED
 - Parameters:
@@ -237,7 +237,7 @@ IS 'pgr_withPointsKSP
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_withPointsKSP.html';
 
-COMMENT ON FUNCTION pgr_withPointsKSP(TEXT, TEXT, ANYARRAY, ANYARRAY, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION pgr_v4withPointsKSP(TEXT, TEXT, ANYARRAY, ANYARRAY, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgr_withPointsKSP
 - PROPOSED
 - Parameters:
@@ -254,7 +254,7 @@ IS 'pgr_withPointsKSP
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_withPointsKSP.html';
 
-COMMENT ON FUNCTION pgr_withPointsKSP(TEXT, TEXT, TEXT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION pgr_v4withPointsKSP(TEXT, TEXT, TEXT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgr_withPointsKSP
 - PROPOSED
 - Parameters:
