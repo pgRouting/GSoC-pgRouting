@@ -5,7 +5,7 @@ SET extra_float_digits=-3;
 SELECT * FROM pgr_withPointsKSP(
     'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, -2, 2, 'b');
+    -1, -2, 2, 'l');
 /* --q2 */
 SELECT * FROM pgr_withPointsKSP(
     'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
