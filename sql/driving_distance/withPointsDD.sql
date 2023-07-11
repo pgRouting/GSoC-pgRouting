@@ -132,6 +132,7 @@ IS 'pgr_withPointsDD(Multiple Vertices)
     - ${PROJECT_DOC_LINK}/pgr_withPointsDD.html
 ';
 
+/* TODO remove on V4 */
 -- SINGLE
 --v2.6
 CREATE FUNCTION pgr_withPointsDD(
@@ -198,35 +199,8 @@ ROWS 1000;
 -- COMMENTS
 
 COMMENT ON FUNCTION pgr_withPointsDD(TEXT, TEXT, BIGINT, FLOAT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPointsDD(Single Vertex)
-- PROPOSED
-- Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - Points SQL with columns: [pid], edge_id, fraction[,side]
-    - From vertex identifier
-    - Distance
-- Optional Parameters
-    - directed := true
-    - driving_side := b
-    - details := false
-- Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_withPointsDD.html
-';
+IS 'pgRouting deprecated function';
 
 
 COMMENT ON FUNCTION pgr_withPointsDD(TEXT, TEXT, ANYARRAY, FLOAT, BOOLEAN, CHAR, BOOLEAN, BOOLEAN)
-IS 'pgr_withPointsDD(Multiple Vertices)
-- PROPOSED
-- Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - Points SQL with columns: [pid], edge_id, fraction[,side]
-    - From ARRAY[vertices identifiers]
-    - Distance
-- Optional Parameters
-    - directed := true
-    - driving_side := b
-    - details := false
-    - equicost := false
-- Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_withPointsDD.html
-';
+IS 'pgRouting deprecated function';
