@@ -26,6 +26,14 @@
 
 .. rubric:: Availability
 
+* Version 3.6.0
+
+  * Standarizing output columns to |short-generic-result| **TODO** use mst as
+    guide
+
+    * ``pgr_withPointsDD`` (`Single vertex`_) added ``depth`` column.
+    * ``pgr_withPointsDD`` (`Multiple vertices`_) added ``depth`` column.
+
 * Version 2.2.0
 
   * New **proposed** function
@@ -45,10 +53,10 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vid**, **distance**, [**options A**])
-   | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vids**, **distance**, [**options B**])
-   | **options A:** ``[directed, driving_side, details]``
-   | **options B:** ``[directed, driving_side, details, equicost]``
+   | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vid**, **distance**, **driving side**, [**options A**])
+   | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vids**, **distance**, **driving side**, [**options B**])
+   | **options A:** ``[directed, details]``
+   | **options B:** ``[directed, details, equicost]``
 
    | RETURNS SET OF |result-generic-no-seq|
    | OR EMPTY SET
@@ -65,7 +73,7 @@ Single vertex
    | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vid**, **distance**, [**options**])
    | **options:** ``[directed, driving_side, details]``
 
-   | RETURNS SET OF |result-1-1-no-seq|
+   | RETURNS SET OF |result-1-1-no-seq| use mst as guide
    | OR EMPTY SET
 
 :Example: Right side driving topology, from point :math:`1` within a distance of
@@ -87,7 +95,7 @@ Multiple vertices
    | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vids**, **distance**, [**options**])
    | **options:** ``[directed, driving_side, details, equicost]``
 
-   | RETURNS SET OF |result-m-1-no-seq|
+   | RETURNS SET OF |result-m-1-no-seq| use mst as guide
    | OR EMPTY SET
 
 :Example: From point :math:`1` and vertex :math:`16` within a distance of
