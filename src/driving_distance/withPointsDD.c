@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: v4withPointsDD.c
+File: withPointsDD.c
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
@@ -32,9 +32,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 
+#include "c_types/path_rt.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
+
 #include "c_common/pgdata_getters.h"
 #include "c_types/mst_rt.h"
 
@@ -51,14 +53,33 @@ void process(
         char* points_sql,
         ArrayType* starts,
         double distance,
-        char *driving_side,
 
         bool directed,
+        char *driving_side,
         bool details,
         bool equicost,
 
-    MST_rt **result_tuples,
+        MST_rt **result_tuples,
         size_t *result_count) {
+    driving_side[0] = (char) tolower(driving_side[0]);
+
+    /* TODO validate the driver side */
+    if (!((driving_side[0] == 'r')
+                || (driving_side[0] == 'l')) && !directed) {
+        driving_side[0] = 'b';
+    }
+
+    if(!((driving_side[0] == 'r')
+                || (driving_side[0] == 'l') || (driving_side[0] == 'b'))){
+        throw_error("Ilegal value on driving side", "Allowed values r, b, l");
+        /*
+        or do the elog
+           https://www.postgresql.org/docs/current/error-message-reporting.html
+           example:
+        elog(ERROR, "Couldn't create query plan via SPI: %s", sql);*/
+        return;
+    }
+
     pgr_SPI_connect();
     char* log_msg = NULL;
     char* notice_msg = NULL;
@@ -106,7 +127,7 @@ void process(
 
     PGR_DBG("Starting timer");
     clock_t start_t = clock();
-    do_withPointsDD(
+    pgr_do_withPointsDD(
             edges,              total_edges,
             points,             total_points,
             edges_of_points,    total_edges_of_points,
@@ -150,10 +171,8 @@ _pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
-    /**********************************************************************/
     MST_rt  *result_tuples = NULL;
     size_t result_count = 0;
-    /**********************************************************************/
 
 
     if (SRF_IS_FIRSTCALL()) {
@@ -162,17 +181,6 @@ _pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
 
-        /**********************************************************************/
-        // CREATE OR REPLACE FUNCTION pgr_withPointsDD(
-        // edges_sql TEXT,
-        // points_sql TEXT,
-        // start_pids anyarray,
-        // distance FLOAT,
-        // driving_side CHAR,
-        //
-        // directed BOOLEAN -- DEFAULT true,
-        // details BOOLEAN -- DEFAULT false,
-        // equicost BOOLEAN -- DEFAULT false,
 
 
         PGR_DBG("Calling withPoints_dd_driver");
@@ -181,9 +189,9 @@ _pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
                 PG_GETARG_ARRAYTYPE_P(2),
                 PG_GETARG_FLOAT8(3),
-                text_to_cstring(PG_GETARG_TEXT_P(4)),
 
                 PG_GETARG_BOOL(5),
+                text_to_cstring(PG_GETARG_TEXT_P(4)),
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
                 &result_tuples, &result_count);
