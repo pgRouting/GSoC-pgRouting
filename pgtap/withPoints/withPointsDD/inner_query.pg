@@ -20,8 +20,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(168);
+SELECT plan(336);
 
+-- SINGLE VERTEX
+SELECT style_dijkstra('pgr_withPointsDD(', ', $$SELECT * from pointsOfInterest$$, 2, 3.8, $$r$$, true)');
+SELECT innerquery_points('pgr_withPointsDD($$SELECT * FROM edge_table$$,', ', 2, 3.8, $$l$$,true)');
+-- MULTIPLE VERTEX
+SELECT style_dijkstra('pgr_withPointsDD(', ', $$SELECT * from pointsOfInterest$$, ARRAY[2,3], 3.8, $$l$$,true)');
+SELECT innerquery_points('pgr_withPointsDD($$SELECT * FROM edge_table$$,', ', ARRAY[2,3], 3.8, $$r$$,true)');
+
+/* TODO remove tests on v4 of the old signatures */
+/* TODO remove this comment: do not show the warnings */
+SET client_min_messages TO ERROR;
 -- SINGLE VERTEX
 SELECT style_dijkstra('pgr_withPointsDD(', ', $$SELECT * from pointsOfInterest$$, 2, 3.8, true)');
 SELECT innerquery_points('pgr_withPointsDD($$SELECT * FROM edge_table$$,', ', 2, 3.8, true)');
@@ -29,5 +39,6 @@ SELECT innerquery_points('pgr_withPointsDD($$SELECT * FROM edge_table$$,', ', 2,
 SELECT style_dijkstra('pgr_withPointsDD(', ', $$SELECT * from pointsOfInterest$$, ARRAY[2,3], 3.8, true)');
 SELECT innerquery_points('pgr_withPointsDD($$SELECT * FROM edge_table$$,', ', ARRAY[2,3], 3.8, true)');
 
+SET client_min_messages TO WARNING;
 SELECT finish();
 ROLLBACK;
