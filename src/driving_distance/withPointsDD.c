@@ -234,7 +234,7 @@ _pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        values[0] = Int32GetDatum(funcctx->call_cntr + 1);
+        values[0] = Int64GetDatum(funcctx->call_cntr + 1);
         values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].depth);
         values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].from_v);
         values[3] = Int64GetDatum(result_tuples[funcctx->call_cntr].node);
