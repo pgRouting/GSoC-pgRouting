@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 BEGIN;
 
-SELECT plan(11);
+SELECT CASE WHEN min_version('3.6.0') THEN plan(11) ELSE plan(7) END;
 
 SELECT has_function('pgr_withpointsdd');
 
@@ -28,17 +28,32 @@ SELECT has_function('pgr_withpointsdd');
 /* Q: Do we test for those new signatures on v3.1.3? NO */
 /* Q: Does this sql code as it is is testing the new signatures on v3.1.3? YES */
 /* Q: what needs to be done? i HAVE to check for min_version */
+/* Choosing adding a function */
+
+CREATE OR REPLACE FUNCTION test_types_check()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF min_version('3.6.0') THEN
+
+RETURN QUERY
 SELECT has_function('pgr_withpointsdd', ARRAY['text','text','bigint','double precision','character','boolean','boolean']);
+RETURN QUERY
 SELECT has_function('pgr_withpointsdd', ARRAY['text','text','anyarray','double precision','character','boolean','boolean','boolean']);
 
+RETURN QUERY
 SELECT function_returns('pgr_withpointsdd', ARRAY['text','text','bigint','double precision','character','boolean','boolean'],'setof record');
+RETURN QUERY
 SELECT function_returns('pgr_withpointsdd', ARRAY['text','text','anyarray','double precision','character','boolean','boolean','boolean'],'setof record');
 
+END IF;
 
 /* TODO remove last 2 rows on v4 */
 /* TODO delete this comment
 This is the idea of the query below
 if is current version (3.6) then use all 4 results else use only old functions results */
+RETURN QUERY
 SELECT CASE WHEN min_version('3.6.0')
 THEN collect_tap (
   set_eq(
@@ -75,12 +90,21 @@ ELSE collect_tap(
 END;
 
 /* TODO remove on v4 this are the old signatures */
+RETURN QUERY
 SELECT has_function('pgr_withpointsdd', ARRAY['text','text','bigint','double precision','boolean','character','boolean']);
+RETURN QUERY
 SELECT has_function('pgr_withpointsdd', ARRAY['text','text','anyarray','double precision','boolean','character','boolean','boolean']);
 
+RETURN QUERY
 SELECT function_returns('pgr_withpointsdd', ARRAY['text','text','bigint','double precision','boolean','character','boolean'],'setof record');
+RETURN QUERY
 SELECT function_returns('pgr_withpointsdd', ARRAY['text','text','anyarray','double precision','boolean','character','boolean','boolean'],'setof record');
 
+END;
+$BODY$
+language plpgsql;
+
+SELECT test_types_check();
 
 SELECT finish();
 ROLLBACK;
