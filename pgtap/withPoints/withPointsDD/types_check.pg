@@ -23,6 +23,11 @@ SELECT plan(11);
 
 SELECT has_function('pgr_withpointsdd');
 
+/* TODO remove this comments */
+/* this are the new signatures, that appear on v3.6.0 */
+/* Q: Do we test for those new signatures on v3.1.3? NO */
+/* Q: Does this sql code as it is is testing the new signatures on v3.1.3? YES */
+/* Q: what needs to be done? i HAVE to check for min_version */
 SELECT has_function('pgr_withpointsdd', ARRAY['text','text','bigint','double precision','character','boolean','boolean']);
 SELECT has_function('pgr_withpointsdd', ARRAY['text','text','anyarray','double precision','character','boolean','boolean','boolean']);
 
