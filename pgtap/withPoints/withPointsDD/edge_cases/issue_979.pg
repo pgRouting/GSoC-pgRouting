@@ -23,6 +23,12 @@ BEGIN;
 SELECT PLAN(6);
 
 
+/* copy to suffix "old" that will be with out changes*/
+/* in original file USE new signature */
+/* everything on a function */
+/* skip the test and return when the version is not 3.6.0 dont forget the case on the plan
+ Use as guide pgtap/astar/astar/compare_dijkstra/combinations.pg
+ */
 ---
 --- DIRECTED GRAPH
 ---
