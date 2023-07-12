@@ -22,13 +22,15 @@ BEGIN;
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT CASE WHEN min_version('3.6.0') THEN plan(336) ELSE plan(168) END;
 
-CREATE FUNCTION test_innerquery()
+CREATE OR REPLACE FUNCTION test_innerquery()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
 
+/* TODO remove usless comments */
+/* Q: what are we NOT doing when the version is for example 3.1.3? */
 IF min_version('3.6.0') THEN
-
+/* A: Not exectuting this code aka not doing this tests */
 -- SINGLE VERTEX
 RETURN QUERY
 SELECT style_dijkstra('pgr_withPointsDD(', ', $$SELECT * from pointsOfInterest$$, 2, 3.8, $$r$$, true)');
