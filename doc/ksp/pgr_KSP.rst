@@ -66,7 +66,7 @@ Signatures
    | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
    | **options:** ``[directed, heap_paths]``
 
-   | RETURNS SET OF |ksp-result|
+   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
    | OR EMPTY SET
 
 .. index::
@@ -80,7 +80,7 @@ One to One
 
    | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vid**, **K**, [**options**])
 
-   | RETURNS SET OF |short-generic-result|
+   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
    | OR EMPTY SET
 
 :Example: Get 2 paths from :math:`6` to :math:`17` on a directed graph.
@@ -100,7 +100,7 @@ One to Many
 
    | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vids**, **K**, [**options**])
 
-   | RETURNS SET OF |short-generic-result|
+   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
    | OR EMPTY SET
 
 :Example: Get 2 paths from vertex :math:`6` to vertices :math:`\{10, 17\}` on a directed graph.
@@ -120,10 +120,10 @@ Many to One
 
    | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vid**, **K**, [**options**])
 
-   | RETURNS SET OF |short-generic-result|
+   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
    | OR EMPTY SET
 
-:Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17 on a directed graph.
+:Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17` on a directed graph.
 
 .. literalinclude:: doc-ksp.queries
     :start-after: --q4
@@ -140,7 +140,7 @@ Many to Many
 
    | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vids**, **K**, [**options**])
 
-   | RETURNS SET OF |short-generic-result|
+   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
    | OR EMPTY SET
 
 :Example: Get 2 paths vertices :math:`\{6, 1\}` to vertices :math:`\{10, 17\}` on a directed graph.
@@ -160,7 +160,7 @@ Combinations
 
    | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
 
-   | RETURNS SET OF |short-generic-result|
+   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
    | OR EMPTY SET
 
 :Example: Using a combinations table on an **directed** graph
@@ -327,7 +327,7 @@ Also get the paths in the heap.
     :start-after: --q7
     :end-before: --q8
 
-:Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17 on a **undirected** graph.
+:Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17` on a **undirected** graph.
 
 .. literalinclude:: doc-ksp.queries
     :start-after: --q8
