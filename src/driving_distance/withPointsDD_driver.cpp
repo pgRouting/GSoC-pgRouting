@@ -122,8 +122,13 @@ pgr_do_withPointsDD(
 
             paths = pgr_drivingDistance(
                     digraph, start_vids, distance, equiCost, log);
+		    /*for (auto &path : paths) {
+				if (!details) {
+                    pg_graph.eliminate_details_dd(path);
+                }
+			}*/
             pgrouting::functions::ShortestPath_tree<pgrouting::DirectedGraph> spt;
-            results = spt.get_depths(digraph, paths, details);
+            results = spt.get_depths(digraph, pg_graph, paths, details);
         } else {
             pgrouting::UndirectedGraph undigraph(gType);
             undigraph.insert_edges(edges, total_edges);
@@ -133,7 +138,7 @@ pgr_do_withPointsDD(
                     undigraph, start_vids, distance, equiCost, log);
 
             pgrouting::functions::ShortestPath_tree<pgrouting::UndirectedGraph> spt;
-            results = spt.get_depths(undigraph, paths, details);
+            results = spt.get_depths(undigraph, pg_graph, paths, details);
         }
 
         size_t count(results.size());
