@@ -2,7 +2,7 @@
 /*PGR-GNU*****************************************************************
 
 Copyright (c) 2018  pgRouting developers
-Mail: project@pgrouting.org
+Mail: project at pgrouting.org
 
 ------
 This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 BEGIN;
 
-SELECT PLAN(6);
+SELECT CASE WHEN min_version('3.6.0') THEN plan(12) ELSE plan(6) END;
 
 
 /* copy to suffix "old" that will be with out changes*/
@@ -29,18 +29,6 @@ SELECT PLAN(6);
 /* skip the test and return when the version is not 3.6.0 dont forget the case on the plan
  Use as guide pgtap/astar/astar/compare_dijkstra/combinations.pg
  */
----
---- DIRECTED GRAPH
----
--------- both driving sides
-
-PREPARE q1 AS
-SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
-    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 6.8, driving_side := 'b', details := false)
-ORDER BY seq;
-
 
 SELECT
     node::BIGINT, edge::BIGINT, round(cost, 12) AS cost, round(agg_cost, 12) AS agg_cost
@@ -63,22 +51,6 @@ FROM
     (   3 ,    3 ,    1 ,      5.6)
 ) AS t (node, edge, cost, agg_cost);
 
-
-SELECT set_eq('q1',
-    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test1$$,
-    'Should be aggregating individual costs: both driving sides, DIR');
-
-
-
--------- right driving side
-
-PREPARE q2 AS
-SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
-    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 6.8, driving_side := 'r', details := false);
-
-
 SELECT
     node::BIGINT, edge::BIGINT, cost::FLOAT, agg_cost::FLOAT
 INTO test2
@@ -99,21 +71,6 @@ FROM
     (  12 ,   13 ,    1 ,      5.4),
     (   3 ,    3 ,    1 ,      6.4)
 ) AS t (node, edge, cost, agg_cost);
-
-
-SELECT set_eq('q2',
-    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test2$$,
-    'Should be aggregating individual costs: right driving side, DIR');
-
--------- left driving side
-
-PREPARE q3 AS
-SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
-    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 6.8, driving_side := 'l', details := false)
-ORDER BY seq;
-
 
 SELECT
     node::BIGINT, edge::BIGINT, cost::FLOAT, agg_cost::FLOAT
@@ -136,16 +93,6 @@ FROM
   (  3 ,    3 ,    1 ,      5.6)
 ) AS t (node, edge, cost, agg_cost);
 
-
-SELECT set_eq('q3',
-    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test3$$,
-    'Should be aggregating individual costs: left driving side, DIR');
-
----
---- UNDIRECTED GRAPH
----
-
--- all results on udirected graph are "allegedly" equal
 SELECT
     node::BIGINT, cost::FLOAT, agg_cost::FLOAT
 INTO test4
@@ -167,18 +114,76 @@ FROM
     (  12 ,    1 ,      4.6)
 ) AS t (node, cost, agg_cost);
 
+CREATE OR REPLACE FUNCTION test_function()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF min_version('3.6.0') THEN
+---
+--- DIRECTED GRAPH
+---
+-------- both driving sides
+
+PREPARE q1 AS
+SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
+    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+    -1, 6.8, 'b', details := false)
+ORDER BY seq;
+
+RETURN QUERY
+SELECT set_eq('q1',
+    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test1$$,
+    'Should be aggregating individual costs: both driving sides, DIR');
+
+
+-------- right driving side
+
+PREPARE q2 AS
+SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
+    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+    -1, 6.8, 'r', details := false);
+
+RETURN QUERY
+SELECT set_eq('q2',
+    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test2$$,
+    'Should be aggregating individual costs: right driving side, DIR');
+
+
+-------- left driving side
+
+PREPARE q3 AS
+SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
+    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+    -1, 6.8, 'l', details := false)
+ORDER BY seq;
+
+RETURN QUERY
+SELECT set_eq('q3',
+    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test3$$,
+    'Should be aggregating individual costs: left driving side, DIR');
+
+---
+--- UNDIRECTED GRAPH
+---
+
+-- all results on udirected graph are "allegedly" equal
+
 -------- both driving sides
 
 PREPARE q4 AS
 SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 6.8, driving_side := 'b', details := false, directed:=false);
+    -1, 6.8, 'b', details := false, directed:=false);
 
+RETURN QUERY
 SELECT set_eq('q4',
     $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
     'Should be aggregating individual costs: both driving sides, UNDI');
-
 
 
 -------- right driving side
@@ -187,12 +192,13 @@ PREPARE q5 AS
 SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 6.8, driving_side := 'r', details := false, directed:=false);
+    -1, 6.8, 'r', details := false, directed:=false);
 
-
+RETURN QUERY
 SELECT set_eq('q5',
     $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
     'Should be aggregating individual costs: right driving side, UNDI');
+
 
 -------- left driving side
 
@@ -200,12 +206,114 @@ PREPARE q6 AS
 SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 6.8, driving_side := 'l', details := false, directed:=false);
+    -1, 6.8, 'l', details := false, directed:=false);
 
-
+RETURN QUERY
 SELECT set_eq('q6',
     $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
     'Should be aggregating individual costs: left driving side, UNDI');
 
-SELECT * FROM finish();
+END IF;
+
+
+
+/* TODO remove tests on v4 of the old signatures */
+SET client_min_messages TO ERROR;
+---
+--- DIRECTED GRAPH
+---
+-------- both driving sides
+
+PREPARE q1_old AS
+SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
+    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+    -1, 6.8, driving_side := 'b', details := false)
+ORDER BY seq;
+
+RETURN QUERY
+SELECT set_eq('q1_old',
+    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test1$$,
+    'Should be aggregating individual costs: both driving sides, DIR');
+
+
+-------- right driving side
+
+PREPARE q2_old AS
+SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
+    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+    -1, 6.8, driving_side := 'r', details := false);
+
+RETURN QUERY
+SELECT set_eq('q2_old',
+    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test2$$,
+    'Should be aggregating individual costs: right driving side, DIR');
+
+
+-------- left driving side
+
+PREPARE q3_old AS
+SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
+    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+    -1, 6.8, driving_side := 'l', details := false)
+ORDER BY seq;
+
+RETURN QUERY
+SELECT set_eq('q3_old',
+    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test3$$,
+    'Should be aggregating individual costs: left driving side, DIR');
+
+---
+--- UNDIRECTED GRAPH
+---
+
+-------- both driving sides
+
+PREPARE q4_old AS
+SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
+    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+    -1, 6.8, driving_side := 'b', details := false, directed:=false);
+
+RETURN QUERY
+SELECT set_eq('q4_old',
+    $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
+    'Should be aggregating individual costs: both driving sides, UNDI');
+
+
+-------- right driving side
+
+PREPARE q5_old AS
+SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
+    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+    -1, 6.8, driving_side := 'r', details := false, directed:=false);
+
+RETURN QUERY
+SELECT set_eq('q5_old',
+    $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
+    'Should be aggregating individual costs: right driving side, UNDI');
+
+
+-------- left driving side
+
+PREPARE q6_old AS
+SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
+    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
+    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+    -1, 6.8, driving_side := 'l', details := false, directed:=false);
+
+
+RETURN QUERY
+SELECT set_eq('q6_old',
+    $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
+    'Should be aggregating individual costs: left driving side, UNDI');
+END;
+$BODY$
+language plpgsql;
+
+SELECT test_function();
+SELECT finish();
 ROLLBACK;
