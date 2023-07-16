@@ -51,7 +51,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, $7, $8, $9);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, $7, $8, $9);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -83,7 +83,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[], $5, $6, $7, $8, $9);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[], $5, $6, $7, $8, $9);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -115,7 +115,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, $7, $8, $9);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, $7, $8, $9);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -147,7 +147,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[], $5, $6, $7, $8, $9);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[], $5, $6, $7, $8, $9);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -178,7 +178,7 @@ CREATE FUNCTION pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3), $4, $5, $6, $7, $8);
+    FROM _pgr_v4withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3), $4, $5, $6, $7, $8);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -288,10 +288,13 @@ CREATE FUNCTION pgr_withPointsKSP(
     OUT cost FLOAT, OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
+BEGIN
+    RAISE WARNING 'pgr_withPointsKSP(text,text,bigint,bigint,integer,boolean,boolean,char,boolean) deprecated on v3.6.0';
     SELECT *
     FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8, $9);
+END
 $BODY$
-LANGUAGE SQL VOLATILE STRICT
+LANGUAGE plpgsql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
@@ -299,6 +302,7 @@ ROWS 1000;
 
 COMMENT ON FUNCTION pgr_withPointsKSP(TEXT, TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
 IS 'pgr_withPointsKSP
+- Deprecated signature in v3.6.0
 - PROPOSED
 - Parameters:
     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
