@@ -37,8 +37,8 @@ CREATE FUNCTION _pgr_v4drivingDistance(
     directed BOOLEAN DEFAULT TRUE,
     equicost BOOLEAN DEFAULT FALSE,
     OUT seq INTEGER,
-    OUT start_vid  BIGINT,
     OUT depth  BIGINT,
+    OUT start_vid  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -52,7 +52,7 @@ LANGUAGE c VOLATILE STRICT;
 COMMENT ON FUNCTION _pgr_v4drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
 
-/* Below functions are for backword compatibility*/
+/* Below functions are for backward compatibility*/
 
 --v3.0
 CREATE FUNCTION _pgr_drivingDistance(
@@ -74,4 +74,4 @@ LANGUAGE c VOLATILE STRICT;
 -- COMMENTS
 
 COMMENT ON FUNCTION _pgr_drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
-IS 'pgRouting internal function';
+IS 'pgRouting deprecated function';

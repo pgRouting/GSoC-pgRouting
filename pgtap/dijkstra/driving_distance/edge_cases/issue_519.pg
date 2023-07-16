@@ -23,19 +23,20 @@ UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(3);
 
 PREPARE q1 AS
-SELECT 1 AS from_v, node, edge, cost, agg_cost FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
+SELECT 1 AS start_vid, node, edge, cost, agg_cost FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
     1, 3.5);
 
 PREPARE q2 AS
-SELECT 5 AS from_v, node, edge, cost, agg_cost  FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
+SELECT 5 AS start_vid, node, edge, cost, agg_cost  FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
     5, 3.5);
 
 PREPARE q3 AS
-SELECT 25 AS from_v, node, edge, cost, agg_cost  FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
+SELECT 25 AS start_vid, node, edge, cost, agg_cost  FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
     25, 3.5);
 
+/* TODO check C/C++ code because it is crashing the server when using ARRAY'
 Prepare q4 AS
-SELECT from_v, node, edge, cost, agg_cost FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
+SELECT start_vid, node, edge, cost, agg_cost FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
     ARRAY[1, 5, 25], 3.5);
 
 

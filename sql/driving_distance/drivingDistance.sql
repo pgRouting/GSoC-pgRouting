@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 -- MULTIPLE
 --v3.6
-CREATE FUNCTION pgr_v4drivingDistance(
+CREATE FUNCTION pgr_drivingDistance(
     TEXT,     -- edges_sql (required)
     ANYARRAY, -- from_vids (required)
     FLOAT,    -- distance (required)
@@ -36,8 +36,8 @@ CREATE FUNCTION pgr_v4drivingDistance(
     equicost BOOLEAN DEFAULT FALSE,
 
     OUT seq INTEGER,
-    OUT start_vid  BIGINT,
     OUT depth  BIGINT,
+    OUT start_vid  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -54,7 +54,7 @@ ROWS 1000;
 
 -- SINGLE
 --v3.6
-CREATE FUNCTION pgr_v4drivingDistance(
+CREATE FUNCTION pgr_drivingDistance(
     TEXT,   -- edges_sql (required)
     BIGINT, -- from_vid (requierd)
     FLOAT,  -- distance (required)
@@ -62,8 +62,8 @@ CREATE FUNCTION pgr_v4drivingDistance(
     directed BOOLEAN DEFAULT TRUE,
 
     OUT seq INTEGER,
-    OUT start_vid  BIGINT,
     OUT depth  BIGINT,
+    OUT start_vid  BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -79,7 +79,7 @@ ROWS 1000;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_v4drivingDistance(TEXT, BIGINT, FLOAT, BOOLEAN)
+COMMENT ON FUNCTION pgr_drivingDistance(TEXT, BIGINT, FLOAT, BOOLEAN)
 IS 'pgr_v4drivingDistance(Single_vertex)
 - Parameters:
    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
@@ -91,7 +91,7 @@ IS 'pgr_v4drivingDistance(Single_vertex)
    - ${PROJECT_DOC_LINK}/pgr_v4drivingDistance.html
 ';
 
-COMMENT ON FUNCTION pgr_v4drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION pgr_drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
 IS 'pgr_v4drivingDistance(Multiple vertices)
 - Parameters:
    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
@@ -104,80 +104,4 @@ IS 'pgr_v4drivingDistance(Multiple vertices)
    - ${PROJECT_DOC_LINK}/pgr_v4drivingDistance.html
 ';
 
-   /* Below functions are for backword compatibility*/
 
--- MULTIPLE
---v2.6
-CREATE FUNCTION pgr_drivingDistance(
-    TEXT,     -- edges_sql (required)
-    ANYARRAY, -- from_vids (required)
-    FLOAT,    -- distance (required)
-
-    directed BOOLEAN DEFAULT TRUE,
-    equicost BOOLEAN DEFAULT FALSE,
-
-    OUT seq INTEGER,
-    OUT from_v  BIGINT,
-    OUT node BIGINT,
-    OUT edge BIGINT,
-    OUT cost FLOAT,
-    OUT agg_cost FLOAT)
-RETURNS SETOF RECORD AS
-$BODY$
-    SELECT *
-    FROM _pgr_drivingDistance(_pgr_get_statement($1), $2, $3, $4, $5);
-$BODY$
-LANGUAGE SQL VOLATILE STRICT
-COST 100
-ROWS 1000;
-
-
--- SINGLE
---v3.0
-CREATE FUNCTION pgr_drivingDistance(
-    TEXT,   -- edges_sql (required)
-    BIGINT, -- from_vid (requierd)
-    FLOAT,  -- distance (required)
-
-    directed BOOLEAN DEFAULT TRUE,
-
-    OUT seq INTEGER,
-    OUT node BIGINT,
-    OUT edge BIGINT,
-    OUT cost FLOAT,
-    OUT agg_cost FLOAT)
-RETURNS SETOF RECORD AS
-$BODY$
-    SELECT seq, node, edge, cost, agg_cost
-    FROM _pgr_drivingDistance(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3, $4, false);
-$BODY$
-LANGUAGE SQL VOLATILE STRICT
-COST 100
-ROWS 1000;
-
--- COMMENTS
-
-COMMENT ON FUNCTION pgr_drivingDistance(TEXT, BIGINT, FLOAT, BOOLEAN)
-IS 'pgr_drivingDistance(Single_vertex)
-- Parameters:
-   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-   - From vertex identifier
-   - Distance from vertex identifier
-- Optional Parameters
-   - directed := true
-- Documentation:
-   - ${PROJECT_DOC_LINK}/pgr_drivingDistance.html
-';
-
-COMMENT ON FUNCTION pgr_drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
-IS 'pgr_drivingDistance(Multiple vertices)
-- Parameters:
-   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-   - From ARRAY[vertices identifiers]
-   - Distance from vertices identifiers
-- Optional Parameters
-   - directed := true
-   - equicost := false
-- Documentation:
-   - ${PROJECT_DOC_LINK}/pgr_drivingDistance.html
-';
