@@ -122,11 +122,7 @@ pgr_do_withPointsDD(
 
             paths = pgr_drivingDistance(
                     digraph, start_vids, distance, equiCost, log);
-		    /*for (auto &path : paths) {
-				if (!details) {
-                    pg_graph.eliminate_details_dd(path);
-                }
-			}*/
+
             pgrouting::functions::ShortestPath_tree<pgrouting::DirectedGraph> spt;
             results = spt.get_depths(digraph, pg_graph, paths, details);
         } else {

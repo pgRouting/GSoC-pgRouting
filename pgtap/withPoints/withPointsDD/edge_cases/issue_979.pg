@@ -22,14 +22,6 @@ BEGIN;
 
 SELECT CASE WHEN min_version('3.6.0') THEN plan(12) ELSE plan(6) END;
 
-
-/* copy to suffix "old" that will be with out changes*/
-/* in original file USE new signature */
-/* everything on a function */
-/* skip the test and return when the version is not 3.6.0 dont forget the case on the plan
- Use as guide pgtap/astar/astar/compare_dijkstra/combinations.pg
- */
-
 SELECT
     node::BIGINT, edge::BIGINT, round(cost, 12) AS cost, round(agg_cost, 12) AS agg_cost
 INTO test1
