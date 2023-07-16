@@ -54,7 +54,7 @@ typedef struct MST_rt MST_rt;
 extern "C" {
 #endif
 
-    void do_withPointsDD(
+    void pgr_do_withPointsDD(
             Edge_t*,          size_t,
             Point_on_edge_t*, size_t,
             Edge_t*,          size_t,
@@ -68,6 +68,7 @@ extern "C" {
             char**, char**, char **);
 
 
+    /* TODO remove on V4 */
     void do_pgr_many_withPointsDD(
             Edge_t*,          size_t,
             Point_on_edge_t*, size_t,

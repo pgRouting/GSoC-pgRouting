@@ -44,21 +44,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_alloc.hpp"
 
 
-/**********************************************************************/
-// CREATE OR REPLACE FUNCTION pgr_withPointsDD(
-// edges_sql TEXT,
-// points_sql TEXT,
-// start_pids anyarray,
-// distance FLOAT,
-// driving_side CHAR,
-//
-// details BOOLEAN -- DEFAULT false,
-// directed BOOLEAN -- DEFAULT true,
-// equicost BOOLEAN -- DEFAULT false,
-
-
 void
-do_withPointsDD(
+pgr_do_withPointsDD(
         Edge_t      *edges,             size_t total_edges,
         Point_on_edge_t *points_p,          size_t total_points,
         Edge_t      *edges_of_points,   size_t total_edges_of_points,
@@ -135,8 +122,9 @@ do_withPointsDD(
 
             paths = pgr_drivingDistance(
                     digraph, start_vids, distance, equiCost, log);
+
             pgrouting::functions::ShortestPath_tree<pgrouting::DirectedGraph> spt;
-            results = spt.get_depths(digraph, paths, details);
+            results = spt.get_depths(digraph, pg_graph, paths, details);
         } else {
             pgrouting::UndirectedGraph undigraph(gType);
             undigraph.insert_edges(edges, total_edges);
@@ -146,7 +134,7 @@ do_withPointsDD(
                     undigraph, start_vids, distance, equiCost, log);
 
             pgrouting::functions::ShortestPath_tree<pgrouting::UndirectedGraph> spt;
-            results = spt.get_depths(undigraph, paths, details);
+            results = spt.get_depths(undigraph, pg_graph, paths, details);
         }
 
         size_t count(results.size());
