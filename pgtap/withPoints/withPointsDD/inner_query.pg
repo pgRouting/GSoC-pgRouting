@@ -2,7 +2,7 @@
 /*PGR-GNU*****************************************************************
 
 Copyright (c) 2018  pgRouting developers
-Mail: project@pgrouting.org
+Mail: project at pgrouting.org
 
 ------
 This program is free software; you can redistribute it and/or modify
@@ -27,10 +27,7 @@ RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
 
-/* TODO remove usless comments */
-/* Q: what are we NOT doing when the version is for example 3.1.3? */
 IF min_version('3.6.0') THEN
-/* A: Not exectuting this code aka not doing this tests */
 -- SINGLE VERTEX
 RETURN QUERY
 SELECT style_dijkstra('pgr_withPointsDD(', ', $$SELECT * from pointsOfInterest$$, 2, 3.8, $$r$$, true)');
@@ -44,8 +41,6 @@ SELECT innerquery_points('pgr_withPointsDD($$SELECT * FROM edge_table$$,', ', AR
 
 END IF;
 
-/* TODO remove tests on v4 of the old signatures */
-/* TODO remove this comment: do not show the warnings */
 SET client_min_messages TO ERROR;
 -- SINGLE VERTEX
 RETURN QUERY
@@ -57,8 +52,6 @@ RETURN QUERY
 SELECT style_dijkstra('pgr_withPointsDD(', ', $$SELECT * from pointsOfInterest$$, ARRAY[2,3], 3.8, true)');
 RETURN QUERY
 SELECT innerquery_points('pgr_withPointsDD($$SELECT * FROM edge_table$$,', ', ARRAY[2,3], 3.8, true)');
-
-SET client_min_messages TO WARNING;
 
 END;
 $BODY$

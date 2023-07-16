@@ -69,14 +69,9 @@ void process(
         driving_side[0] = 'b';
     }
 
-    if(!((driving_side[0] == 'r')
-                || (driving_side[0] == 'l') || (driving_side[0] == 'b'))){
-        throw_error("Ilegal value on driving side", "Allowed values r, b, l");
-        /*
-        or do the elog
-           https://www.postgresql.org/docs/current/error-message-reporting.html
-           example:
-        elog(ERROR, "Couldn't create query plan via SPI: %s", sql);*/
+    if (!((driving_side[0] == 'r')
+                || (driving_side[0] == 'l') || (driving_side[0] == 'b'))) {
+        throw_error("Illegal value on driving side", "Allowed values: r, R, b, B, l, L");
         return;
     }
 
