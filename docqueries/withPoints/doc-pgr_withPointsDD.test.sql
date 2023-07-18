@@ -18,6 +18,7 @@ SELECT * FROM pgr_withPointsDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, 3.3, 'b',
+  directed => false,
   details => true);
 /* -- q5 */
 SELECT * FROM pgr_withPointsDD(
