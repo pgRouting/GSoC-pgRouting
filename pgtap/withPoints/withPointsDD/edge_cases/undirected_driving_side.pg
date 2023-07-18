@@ -17,16 +17,11 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
-
+/* TODO remove in v4 */
 BEGIN;
 
-SELECT CASE WHEN min_version('3.6.0') THEN plan(6) ELSE plan(3) END;
+SELECT PLAN(3);
 
-CREATE OR REPLACE FUNCTION test_function()
-RETURNS SETOF TEXT AS
-$BODY$
-BEGIN
-IF min_version('3.6.0') THEN
 
 -- because the graph is undirected, It will not matter the side of the point
 
@@ -39,62 +34,12 @@ PREPARE q1 AS
 SELECT seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_withPointsDD(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 4.8, 'b', details := true, directed:=false)
-ORDER BY seq;
-
--------- right driving side
-
-PREPARE q2 AS
-SELECT seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_withPointsDD(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
-    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 4.8, 'r', details := true, directed:=false)
-ORDER BY seq;
-
-
--------- left driving side
-
-PREPARE q3 AS
-SELECT seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_withPointsDD(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
-    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 4.8, 'l', details := true, directed:=false)
-ORDER BY seq;
-
-RETURN QUERY
-SELECT set_eq('q1', 'q2',
-    'Should be equal: both driving sides with right driving side');
-
-RETURN QUERY
-SELECT set_eq('q1', 'q3',
-    'Should be equal: both driving sides with left driving side');
-
-RETURN QUERY
-SELECT set_eq('q2', 'q3',
-    'Should be equal: right driving sides with left driving side');
-
-END IF;
-
-
-/* TODO remove tests on v4 of the old signatures */
-SET client_min_messages TO ERROR;
--- because the graph is undirected, It will not matter the side of the point
-
---- UNDIRECTED GRAPH
----
-
-
--------- both driving sides
-PREPARE q1_old AS
-SELECT seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_withPointsDD(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
-    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
     -1, 4.8, driving_side := 'b', details := true, directed:=false)
 ORDER BY seq;
 
 -------- right driving side
 
-PREPARE q2_old AS
+PREPARE q2 AS
 SELECT seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_withPointsDD(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
@@ -104,29 +49,22 @@ ORDER BY seq;
 
 -------- left driving side
 
-PREPARE q3_old AS
+PREPARE q3 AS
 SELECT seq, node, edge, cost::TEXT, agg_cost::TEXT FROM pgr_withPointsDD(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
     -1, 4.8, driving_side := 'l', details := true, directed:=false)
 ORDER BY seq;
 
-RETURN QUERY
-SELECT set_eq('q1_old', 'q2_old',
+
+SELECT set_eq('q1', 'q2',
     'Should be equal: both driving sides with right driving side');
 
-RETURN QUERY
-SELECT set_eq('q1_old', 'q3_old',
+SELECT set_eq('q1', 'q3',
     'Should be equal: both driving sides with left driving side');
 
-RETURN QUERY
-SELECT set_eq('q2_old', 'q3_old',
+SELECT set_eq('q2', 'q3',
     'Should be equal: right driving sides with left driving side');
 
-END;
-$BODY$
-language plpgsql;
-
-SELECT test_function();
 SELECT * FROM finish();
 ROLLBACK;
