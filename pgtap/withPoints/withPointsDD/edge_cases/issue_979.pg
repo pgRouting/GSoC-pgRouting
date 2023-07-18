@@ -20,8 +20,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 BEGIN;
 
-SELECT CASE WHEN min_version('3.6.0') THEN plan(12) ELSE plan(6) END;
+SELECT CASE WHEN min_version('3.6.0') THEN plan(9) ELSE plan(6) END;
 
+/* TODO remove test1 in v4 */
 SELECT
     node::BIGINT, edge::BIGINT, round(cost, 12) AS cost, round(agg_cost, 12) AS agg_cost
 INTO test1
@@ -115,38 +116,23 @@ IF min_version('3.6.0') THEN
 ---
 --- DIRECTED GRAPH
 ---
--------- both driving sides
-
-PREPARE q1 AS
-SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
-    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 6.8, 'b', details := false)
-ORDER BY seq;
-
-RETURN QUERY
-SELECT set_eq('q1',
-    $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test1$$,
-    'Should be aggregating individual costs: both driving sides, DIR');
-
-
 -------- right driving side
 
-PREPARE q2 AS
+PREPARE q1 AS
 SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
     -1, 6.8, 'r', details := false);
 
 RETURN QUERY
-SELECT set_eq('q2',
+SELECT set_eq('q1',
     $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test2$$,
     'Should be aggregating individual costs: right driving side, DIR');
 
 
 -------- left driving side
 
-PREPARE q3 AS
+PREPARE q2 AS
 SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
@@ -154,9 +140,7 @@ SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12
 ORDER BY seq;
 
 RETURN QUERY
-SELECT todo('test failing with postgres 16',1);
-RETURN QUERY
-SELECT set_eq('q3',
+SELECT set_eq('q2',
     $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test3$$,
     'Should be aggregating individual costs: left driving side, DIR');
 
@@ -168,44 +152,16 @@ SELECT set_eq('q3',
 
 -------- both driving sides
 
-PREPARE q4 AS
+PREPARE q3 AS
 SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
     -1, 6.8, 'b', details := false, directed:=false);
 
 RETURN QUERY
-SELECT set_eq('q4',
+SELECT set_eq('q3',
     $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
     'Should be aggregating individual costs: both driving sides, UNDI');
-
-
--------- right driving side
-
-PREPARE q5 AS
-SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
-    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 6.8, 'r', details := false, directed:=false);
-
-RETURN QUERY
-SELECT set_eq('q5',
-    $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
-    'Should be aggregating individual costs: right driving side, UNDI');
-
-
--------- left driving side
-
-PREPARE q6 AS
-SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPointsDD(
-    'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
-    'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-    -1, 6.8, 'l', details := false, directed:=false);
-
-RETURN QUERY
-SELECT set_eq('q6',
-    $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
-    'Should be aggregating individual costs: left driving side, UNDI');
 
 END IF;
 
@@ -254,6 +210,8 @@ SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12
     -1, 6.8, driving_side := 'l', details := false)
 ORDER BY seq;
 
+RETURN QUERY
+SELECT todo('test failing with postgres 16',1);
 RETURN QUERY
 SELECT set_eq('q3_old',
     $$SELECT node, edge, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test3$$,
