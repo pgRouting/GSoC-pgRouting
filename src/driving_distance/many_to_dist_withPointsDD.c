@@ -63,15 +63,12 @@ void process_v4(
         size_t *result_count) {
     driving_side[0] = (char) tolower(driving_side[0]);
 
-    /* TODO validate the driver side */
-    if (!((driving_side[0] == 'r')
-                || (driving_side[0] == 'l')) && !directed) {
-        driving_side[0] = 'b';
+    if (!(driving_side[0] == 'r' || driving_side[0] == 'l') && directed) {
+        elog(ERROR, "If graph is directed, the driving side can only be 'r' or 'l'");
+        return;
     }
-
-    if (!((driving_side[0] == 'r')
-                || (driving_side[0] == 'l') || (driving_side[0] == 'b'))) {
-        throw_error("Illegal value on driving side", "Allowed values: r, R, b, B, l, L");
+    if (!(driving_side[0] == 'b') && !directed) {
+        elog(ERROR, "If graph is undirected, the driving side can only be 'b'");
         return;
     }
 
