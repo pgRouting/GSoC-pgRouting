@@ -2,7 +2,7 @@
 File: basePath_SSEC.cpp
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky AT erosion.dev
+vicky at erosion.dev
 
 ------
 
