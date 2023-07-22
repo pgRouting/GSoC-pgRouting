@@ -281,8 +281,8 @@ PGDLLEXPORT Datum _pgr_v4withpointsksp(PG_FUNCTION_ARGS) {
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
         values[1] = Int32GetDatum(path_id);
         values[2] = Int32GetDatum(result_tuples[funcctx->call_cntr].seq);
-        values[3] = Int32GetDatum(result_tuples[funcctx->call_cntr].start_id);
-        values[4] = Int32GetDatum(result_tuples[funcctx->call_cntr].end_id);
+        values[3] = Int64GetDatum(result_tuples[funcctx->call_cntr].start_id);
+        values[4] = Int64GetDatum(result_tuples[funcctx->call_cntr].end_id);
         values[5] = Int64GetDatum(result_tuples[funcctx->call_cntr].node);
         values[6] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
         values[7] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
