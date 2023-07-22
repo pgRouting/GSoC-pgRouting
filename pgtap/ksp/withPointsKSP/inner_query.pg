@@ -22,8 +22,8 @@ BEGIN;
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(168);
 
-SELECT style_dijkstra('pgr_withPointsKSP(', ', $$SELECT * from pointsOfInterest$$, 2, 3, 2, &&l&&, true)');
-SELECT innerquery_points('pgr_withPointsKSP($$SELECT * FROM edge_table$$,', ', 2, 3, 2, &&r&&, true)');
+SELECT style_dijkstra('pgr_withPointsKSP(', ', $$SELECT * from pointsOfInterest$$, 2, 3, 2, $$l$$, true)');
+SELECT innerquery_points('pgr_withPointsKSP($$SELECT * FROM edge_table$$,', ', 2, 3, 2, $$r$$, true)');
 
 /* TODO Remove on v4*/
 -- ONE TO ONE
