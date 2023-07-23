@@ -2,10 +2,10 @@
 File: ksp.sql
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky AT erosion.dev
+vicky at erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-aniketgarg187 AT gmail.com
+aniketgarg187 at gmail.com
 
 ------
 
@@ -25,13 +25,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+
+-- one-to-one
 --v2.6
 CREATE FUNCTION pgr_ksp(
-    TEXT, -- edges_sql (required)
-    BIGINT, -- from_vids (required)
-    BIGINT,   -- to_vids (required)
-    INTEGER, -- K (required)
-
+    TEXT,
+    BIGINT,
+    BIGINT,
+    INTEGER,
     directed BOOLEAN DEFAULT true,
     heap_paths BOOLEAN DEFAULT false,
 
@@ -53,32 +54,14 @@ LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- COMMENTS
-
-COMMENT ON FUNCTION pgr_ksp(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN)
-IS 'pgr_KSP
-- Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - From vertex identifier
-    - To vertex identifier
-    - K
-- Optional Parameters
-    - directed := true
-    - heap_paths := false
-- Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_KSP.html
-';
-
-
 
 -- one-to-many
 -- v3.6
 CREATE FUNCTION pgr_ksp(
-    TEXT, -- edges_sql (required)
-    BIGINT, -- from_vid (required)
-    ANYARRAY,   -- to_vids (required)
-    INTEGER, -- K (required)
-
+    TEXT,
+    BIGINT,
+    ANYARRAY,
+    INTEGER,
     directed BOOLEAN DEFAULT true,
     heap_paths BOOLEAN DEFAULT false,
 
@@ -103,11 +86,10 @@ ROWS 1000;
 -- many-to-one
 -- v3.6
 CREATE FUNCTION pgr_ksp(
-    TEXT, -- edges_sql (required)
-    ANYARRAY, -- from_vids (required)
-    BIGINT,   -- to_vid (required)
-    INTEGER, -- K (required)
-
+    TEXT,
+    ANYARRAY,
+    BIGINT,
+    INTEGER,
     directed BOOLEAN DEFAULT true,
     heap_paths BOOLEAN DEFAULT false,
 
@@ -132,11 +114,10 @@ ROWS 1000;
 -- many-to-many
 -- v3.6
 CREATE FUNCTION pgr_ksp(
-    TEXT, -- edges_sql (required)
-    ANYARRAY, -- from_vids (required)
-    ANYARRAY,   -- to_vids (required)
-    INTEGER, -- K (required)
-
+    TEXT,
+    ANYARRAY,
+    ANYARRAY,
+    INTEGER,
     directed BOOLEAN DEFAULT true,
     heap_paths BOOLEAN DEFAULT false,
 
@@ -161,10 +142,9 @@ ROWS 1000;
 -- combinations
 -- v3.6
 CREATE FUNCTION pgr_ksp(
-    TEXT, -- edges_sql (required)
-    TEXT, -- combinations_sql (required)
-    INTEGER, -- K (required)
-
+    TEXT,
+    TEXT,
+    INTEGER,
     directed BOOLEAN DEFAULT true,
     heap_paths BOOLEAN DEFAULT false,
 
@@ -187,6 +167,20 @@ COST 100
 ROWS 1000;
 
 -- COMMENTS
+
+COMMENT ON FUNCTION pgr_ksp(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN)
+IS 'pgr_KSP
+- Parameters:
+    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+    - From vertex identifier
+    - To vertex identifier
+    - K
+- Optional Parameters
+    - directed := true
+    - heap_paths := false
+- Documentation:
+    - ${PROJECT_DOC_LINK}/pgr_KSP.html
+';
 
 COMMENT ON FUNCTION pgr_ksp(TEXT, BIGINT, ANYARRAY, INTEGER, BOOLEAN, BOOLEAN)
 IS 'pgr_KSP(One to Many)

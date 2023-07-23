@@ -2,10 +2,10 @@
 File: _ksp.sql
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky AT erosion.dev
+vicky at erosion.dev
 
 Copyright (c) 2023 Aniket Agarwal
-aniketgarg187 AT gmail.com
+aniketgarg187 at gmail.com
 
 ------
 
