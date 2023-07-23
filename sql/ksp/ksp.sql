@@ -54,23 +54,6 @@ LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- COMMENTS
-
-COMMENT ON FUNCTION pgr_ksp(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN)
-IS 'pgr_KSP
-- Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - From vertex identifier
-    - To vertex identifier
-    - K
-- Optional Parameters
-    - directed := true
-    - heap_paths := false
-- Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_KSP.html
-';
-
-
 
 -- one-to-many
 -- v3.6
