@@ -1,9 +1,16 @@
 /*PGR-GNU*****************************************************************
 File: many_to_dist_driving_distance.c
 
+Generated with Template by:
+Copyright (c) 2015 pgRouting developers
+Mail: project at pgrouting.org
+
+Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
+Copyright (c) 2023 Yige Huang
+Mail: square1ge at gmail.com
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -29,6 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
+#include "c_types/mst_rt.h"
 
 #include "c_common/pgdata_getters.h"
 
@@ -36,6 +44,212 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "drivers/driving_distance/withPoints_dd_driver.h"
 
 
+PGDLLEXPORT Datum _pgr_v4withpointsdd(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_v4withpointsdd);
+
+static
+void process_v4(
+        char* edges_sql,
+        char* points_sql,
+        ArrayType* starts,
+        double distance,
+
+        bool directed,
+        char *driving_side,
+        bool details,
+        bool equicost,
+
+        MST_rt **result_tuples,
+        size_t *result_count) {
+    driving_side[0] = (char) tolower(driving_side[0]);
+
+    if (!(driving_side[0] == 'r' || driving_side[0] == 'l') && directed) {
+        elog(ERROR, "If graph is directed, the driving side can only be 'r' or 'l'");
+        return;
+    }
+    if (!(driving_side[0] == 'b') && !directed) {
+        elog(ERROR, "If graph is undirected, the driving side can only be 'b'");
+        return;
+    }
+
+    pgr_SPI_connect();
+    char* log_msg = NULL;
+    char* notice_msg = NULL;
+    char* err_msg = NULL;
+
+    size_t total_starts = 0;
+    int64_t* start_pidsArr = pgr_get_bigIntArray(&total_starts, starts, false, &err_msg);
+    throw_error(err_msg, "While getting start vids");
+    PGR_DBG("sourcesArr size %ld ", total_starts);
+
+    Point_on_edge_t *points = NULL;
+    size_t total_points = 0;
+    pgr_get_points(points_sql, &points, &total_points, &err_msg);
+    throw_error(err_msg, points_sql);
+
+    char *edges_of_points_query = NULL;
+    char *edges_no_points_query = NULL;
+    get_new_queries(
+            edges_sql, points_sql,
+            &edges_of_points_query,
+            &edges_no_points_query);
+
+
+    Edge_t *edges_of_points = NULL;
+    size_t total_edges_of_points = 0;
+    pgr_get_edges(edges_of_points_query, &edges_of_points, &total_edges_of_points, true, false, &err_msg);
+    throw_error(err_msg, edges_of_points_query);
+
+    Edge_t *edges = NULL;
+    size_t total_edges = 0;
+    pgr_get_edges(edges_no_points_query, &edges, &total_edges, true, false, &err_msg);
+    throw_error(err_msg, edges_no_points_query);
+
+    PGR_DBG("freeing allocated memory not used anymore");
+    pfree(edges_of_points_query);
+    pfree(edges_no_points_query);
+
+    if ((total_edges + total_edges_of_points) == 0) {
+        if (edges) pfree(edges);
+        if (edges_of_points) pfree(edges_of_points);
+        if (points) pfree(points);
+        pgr_SPI_finish();
+        return;
+    }
+
+    PGR_DBG("Starting timer");
+    clock_t start_t = clock();
+    pgr_do_withPointsDD(
+            edges,              total_edges,
+            points,             total_points,
+            edges_of_points,    total_edges_of_points,
+            start_pidsArr,      total_starts,
+            distance,
+            driving_side[0],
+
+            directed,
+            details,
+            equicost,
+
+            result_tuples,
+            result_count,
+            &log_msg,
+            &notice_msg,
+            &err_msg);
+    time_msg(" processing withPointsDD starts", start_t, clock());
+
+    if (err_msg && (*result_tuples)) {
+        pfree(*result_tuples);
+        (*result_count) = 0;
+        (*result_tuples) = NULL;
+    }
+
+    pgr_global_report(log_msg, notice_msg, err_msg);
+
+    if (log_msg) pfree(log_msg);
+    if (notice_msg) pfree(notice_msg);
+    if (err_msg) pfree(err_msg);
+    if (edges) pfree(edges);
+    if (edges_of_points) pfree(edges_of_points);
+    if (points) pfree(points);
+    if (start_pidsArr) pfree(start_pidsArr);
+    pgr_SPI_finish();
+}
+
+
+
+PGDLLEXPORT Datum
+_pgr_v4withpointsdd(PG_FUNCTION_ARGS) {
+    FuncCallContext     *funcctx;
+    TupleDesc           tuple_desc;
+
+    MST_rt  *result_tuples = NULL;
+    size_t result_count = 0;
+
+
+    if (SRF_IS_FIRSTCALL()) {
+        MemoryContext   oldcontext;
+        funcctx = SRF_FIRSTCALL_INIT();
+        oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+
+
+
+
+        PGR_DBG("Calling withPoints_dd_driver");
+        process_v4(
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                text_to_cstring(PG_GETARG_TEXT_P(1)),
+                PG_GETARG_ARRAYTYPE_P(2),
+                PG_GETARG_FLOAT8(3),
+
+                PG_GETARG_BOOL(5),
+                text_to_cstring(PG_GETARG_TEXT_P(4)),
+                PG_GETARG_BOOL(6),
+                PG_GETARG_BOOL(7),
+                &result_tuples, &result_count);
+
+        /**********************************************************************/
+
+        funcctx->max_calls = result_count;
+
+        funcctx->user_fctx = result_tuples;
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
+                != TYPEFUNC_COMPOSITE)
+            ereport(ERROR,
+                    (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+                     errmsg("function returning record called in context "
+                         "that cannot accept type record")));
+
+        funcctx->tuple_desc = tuple_desc;
+
+        MemoryContextSwitchTo(oldcontext);
+    }
+
+    funcctx = SRF_PERCALL_SETUP();
+
+    tuple_desc = funcctx->tuple_desc;
+    result_tuples = (MST_rt*) funcctx->user_fctx;
+
+    if (funcctx->call_cntr < funcctx->max_calls) {
+        HeapTuple    tuple;
+        Datum        result;
+        Datum        *values;
+        bool*        nulls;
+
+        /**********************************************************************/
+        size_t numb = 7;
+        values = palloc(numb * sizeof(Datum));
+        nulls = palloc(numb * sizeof(bool));
+
+        size_t i;
+        for (i = 0; i < numb; ++i) {
+            nulls[i] = false;
+        }
+
+        values[0] = Int64GetDatum(funcctx->call_cntr + 1);
+        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].depth);
+        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].from_v);
+        values[3] = Int64GetDatum(result_tuples[funcctx->call_cntr].node);
+        values[4] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
+        values[5] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
+        values[6] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
+
+        /**********************************************************************/
+
+        tuple = heap_form_tuple(tuple_desc, values, nulls);
+        result = HeapTupleGetDatum(tuple);
+
+        pfree(values);
+        pfree(nulls);
+
+        SRF_RETURN_NEXT(funcctx, result);
+    } else {
+        SRF_RETURN_DONE(funcctx);
+    }
+}
+
+
+/* TODO remove old code in v4 */
 PGDLLEXPORT Datum _pgr_withpointsdd(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_withpointsdd);
 
