@@ -74,8 +74,8 @@ processv4(
     size_t k = (size_t)p_k;
 
     driving_side[0] = (char) tolower(driving_side[0]);
-    if(!((driving_side[0] == 'r')
-                || (driving_side[0] == 'l') || (driving_side[0] == 'b'))){
+    if (!((driving_side[0] == 'r')
+                || (driving_side[0] == 'l') || (driving_side[0] == 'b'))) {
         elog(ERROR, "Driving side is not selected or Invalid Values");
         return;
     }
@@ -207,7 +207,7 @@ PGDLLEXPORT Datum _pgr_v4withpointsksp(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        if(PG_NARGS() == 9){
+        if (PG_NARGS() == 9) {
             processv4(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
@@ -221,7 +221,7 @@ PGDLLEXPORT Datum _pgr_v4withpointsksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(8),
                 &result_tuples,
                 &result_count);
-        } else/* (PG_NARGS() == 8) */{
+        } else /* (PG_NARGS() == 8) */ {
             processv4(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
