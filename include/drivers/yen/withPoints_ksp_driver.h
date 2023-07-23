@@ -69,7 +69,7 @@ extern "C" {
 
             Path_rt**, size_t*,
             char**, char**, char**);
-            
+
 /*TODO remove on v4*/
     int do_pgr_withPointsKsp(
             Edge_t  *edges,             size_t total_edges,
