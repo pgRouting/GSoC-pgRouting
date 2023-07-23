@@ -42,8 +42,8 @@ CREATE FUNCTION pgr_withPointsKSP(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
-    OUT start_vid INTEGER,
-    OUT end_vid INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -74,8 +74,8 @@ CREATE FUNCTION pgr_withPointsKSP(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
-    OUT start_vid INTEGER,
-    OUT end_vid INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -106,8 +106,8 @@ CREATE FUNCTION pgr_withPointsKSP(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
-    OUT start_vid INTEGER,
-    OUT end_vid INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -138,8 +138,8 @@ CREATE FUNCTION pgr_withPointsKSP(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
-    OUT start_vid INTEGER,
-    OUT end_vid INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -169,8 +169,8 @@ CREATE FUNCTION pgr_withPointsKSP(
     OUT seq INTEGER,
     OUT path_id INTEGER,
     OUT path_seq INTEGER,
-    OUT start_vid INTEGER,
-    OUT end_vid INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -290,8 +290,8 @@ RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
     RAISE WARNING 'pgr_withPointsKSP(text,text,bigint,bigint,integer,boolean,boolean,char,boolean) deprecated on v3.6.0';
-    SELECT *
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8, $9);
+    RETURN QUERY
+    SELECT * FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8, $9);
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT

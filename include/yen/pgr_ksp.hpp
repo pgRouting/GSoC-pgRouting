@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 #include <set>
 #include <limits>
+#include <map>
 
 #include "dijkstra/dijkstra.hpp"
 #include "cpp_common/pgr_assert.h"
@@ -246,7 +247,7 @@ namespace algorithms {
         G &graph,
         const std::map<int64_t, std::set<int64_t>> &combinations,
         size_t k,
-        bool heap_paths){
+        bool heap_paths) {
         std::deque<Path> paths;
         pgrouting::yen::Pgr_ksp<G> fn_yen;
 
@@ -267,7 +268,7 @@ namespace algorithms {
         return paths;
     }
 
-} // namespace algorithms
+}  // namespace algorithms
 
 }  // namespace pgrouting
 
