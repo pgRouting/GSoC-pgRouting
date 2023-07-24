@@ -44,23 +44,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <limits>
 #include <map>
 #include <numeric>
+#include <utility>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
-#include "c_types/ii_t_rt.h"
 #include "cpp_common/basePath_SSEC.hpp"
 #include "cpp_common/pgr_base_graph.hpp"
 #include "cpp_common/interruption.h"
 #include "visitors/dijkstra_visitors.hpp"
-#include <deque>
-#include <set>
-#include <vector>
-#include <utility>
 
 #include <visitors/dfs_visitor_with_root.hpp>
-#include "cpp_common/basePath_SSEC.hpp"
 #include <visitors/edges_order_dfs_visitor.hpp>
 #include <boost/graph/filtered_graph.hpp>
 
@@ -516,8 +511,8 @@ class ShortestPath_tree{
              const G&);
 
      std::deque<MST_rt> dfs_order(
-			 const G&,
-			 int64_t);
+             const G&,
+             int64_t);
 
      void get_edges_from_path(
              const G&,
@@ -556,7 +551,9 @@ ShortestPath_tree<G>::get_results(
         }
 
         if (depth[u] == 0 && depth[v] == 0) {
-	    if (graph[u].id != root) std::swap(u, v);
+        if (graph[u].id != root) {
+            std::swap(u, v);
+        }
             if (!p_root && graph[u].id > graph[v].id) std::swap(u, v);
 
             root = p_root? p_root: graph[u].id;
@@ -573,7 +570,7 @@ ShortestPath_tree<G>::get_results(
         depth[v] = depth[u] == -1? 1 : depth[u] + 1;
 
         if (graph[v].id < 0) depth[v] = depth[u];
-        if (graph[v].id > 0){
+        if (graph[v].id > 0) {
             results.push_back({
                 root,
                     depth[v],
@@ -621,7 +618,7 @@ ShortestPath_tree<G>::dfs_order(const G &graph, int64_t root) {
         } else {
             results.push_back({root, 0, root, -1, 0.0, 0.0});
         }
-     
+
         return results;
     }
 
@@ -630,19 +627,17 @@ template <class G>
 void
 ShortestPath_tree<G>::get_edges_from_path(
          const G& graph,
-         const Path path){
-	// m_spanning_tree.clear();
-	
-    for (size_t i = 0; i < path.size(); i++){
+         const Path path) {
+    for (size_t i = 0; i < path.size(); i++) {
         auto u = graph.get_V(path[i].node);
 
-        for (size_t j = i+1; j < path.size(); j++){
+        for (size_t j = i+1; j < path.size(); j++) {
             auto v = graph.get_V(path[j].node);
-			double cost = path[j].cost;
+            double cost = path[j].cost;
             auto edge = graph.get_edge(u, v, cost);
-            if(graph.target(edge) == v 
-					&& path[i].agg_cost+cost == path[j].agg_cost 
-					&& graph[edge].id == path[j].edge){
+            if (graph.target(edge) == v
+                    && path[i].agg_cost+cost == path[j].agg_cost
+                    && graph[edge].id == path[j].edge) {
                 this->m_spanning_tree.edges.insert(edge);
             }
         }
@@ -654,13 +649,12 @@ std::deque<MST_rt>
 ShortestPath_tree<G>::get_depths(
         G &graph,
         std::deque<Path> paths) {
-    
     std::deque<MST_rt> results;
 
     for (const Path& path : paths) {
-		get_edges_from_path(graph, path);
-		int64_t root = path.start_id();
-		auto result = this->dfs_order(graph, root);
+        get_edges_from_path(graph, path);
+        int64_t root = path.start_id();
+        auto result = this->dfs_order(graph, root);
 
         std::sort(result.begin(), result.end(),
                 [](const MST_rt &l, const  MST_rt &r)
@@ -670,12 +664,12 @@ ShortestPath_tree<G>::get_depths(
                 {return l.agg_cost < r.agg_cost;});
 
         results.insert(results.end(), result.begin(), result.end());
-	}
+    }
     return results;
 }
 
 
-}
+}  // namespace functions
 }  // namespace pgrouting
 
 
