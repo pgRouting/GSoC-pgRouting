@@ -34,7 +34,7 @@ PREPARE q3 AS
 SELECT 25 AS start_vid, node, edge, cost, agg_cost  FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
     25, 3.5);
 
-/* TODO check C/C++ code because it is crashing the server when using ARRAY'
+/* TODO check C/C++ code because it is crashing the server when using ARRAY*/
 Prepare q4 AS
 SELECT start_vid, node, edge, cost, agg_cost FROM pgr_drivingDistance( 'select id, source, target, cost from edge_table',
     ARRAY[1, 5, 25], 3.5);
