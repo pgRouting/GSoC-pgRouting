@@ -67,7 +67,7 @@ SELECT set_eq(
   $$SELECT  proallargtypes from pg_proc where proname = 'pgr_drivingdistance'$$,
   $$VALUES
   ('{25,20,701,16,23,20,20,701,701}'::OID[]),
-  ('{25,2277,701,16,16,20,20,20,20,701,701}'::OID[])
+  ('{25,2277,701,16,16,23,20,20,20,701,701}'::OID[])
   $$);
 END IF;
 END;

@@ -92,7 +92,7 @@ language plpgsql;
 
 SELECT * FROM issue1154();
 SELECT lives_ok($$
-    SELECT seq, start_vid, node, edge, cost, agg_cost
+    SELECT seq, $$ || CASE WHEN min_version('3.6.0') THEN 'start_vid' ELSE 'from_v' END || $$, node, edge, cost, agg_cost
     FROM pgr_drivingdistance(
         'SELECT * FROM tmp_net',
         ARRAY[
