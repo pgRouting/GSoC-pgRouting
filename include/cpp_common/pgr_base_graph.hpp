@@ -529,7 +529,7 @@ class Pgr_base_graph {
        @return V: The vertex descriptor of the vertex
        */
      V get_V(int64_t vid) const {
-        //  pgassert(has_vertex(vid));
+         pgassert(has_vertex(vid));
          return vertices_map.find(vid)->second;
      }
 
