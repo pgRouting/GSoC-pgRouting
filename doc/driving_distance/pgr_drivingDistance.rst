@@ -21,6 +21,12 @@
    Boost Graph Inside
 
 .. rubric:: Availability
+* Version 3.6.0
+
+  * Standarizing output columns to |result-bfs|
+
+    * ``pgr_drivingdistance`` (`Single vertex`_) added ``depth`` and ``start_vid`` column.
+    * ``pgr_drivingdistance`` (`Multiple vertices`_) added ``depth`` column.
 
 * Version 2.1.0:
 
@@ -49,7 +55,7 @@ Signatures
    | pgr_drivingDistance(`Edges SQL`_, **Root vids**, **distance**, [**options**])
    | **options:** [directed, equicost]
 
-   | RETURNS SET OF |result-dij-dd|
+   | RETURNS SET OF |result-bfs|
 
 .. index::
    single: drivingDistance(Single vertex)
@@ -62,7 +68,7 @@ Single Vertex
 
    | pgr_drivingDistance(`Edges SQL`_, **Root vid**,  **distance**, [``directed``])
 
-   | RETURNS SET OF |result-1-1|
+   | RETURNS SET OF |result-bfs|
 
 :Example: From vertex :math:`11` for a distance of :math:`3.0`
 
@@ -82,7 +88,7 @@ Multiple Vertices
    | pgr_drivingDistance(`Edges SQL`_, **Root vids**, **distance**, [**options**])
    | **options:** [directed, equicost]
 
-   | RETURNS SET OF |result-dij-dd-m|
+   | RETURNS SET OF |result-bfs|
 
 :Example: From vertices :math:`\{11, 16\}` for a distance of :math:`3.0` with
           equi-cost on a directed graph
@@ -142,43 +148,9 @@ Edges SQL
 Result Columns
 -------------------------------------------------------------------------------
 
-Returns SET OF ``(seq, from_v, node, edge, cost, agg_cost)``
-
-.. list-table::
-   :width: 81
-   :widths: auto
-   :header-rows: 1
-
-   * - Parameter
-     - Type
-     - Description
-   * - ``seq``
-     - ``BIGINT``
-     - Sequential value starting from :math:`1`.
-   * - ``[from_v]``
-     - ``BIGINT``
-     - Identifier of the root vertex.
-
-   * - ``node``
-     - ``BIGINT``
-     - Identifier of ``node`` within the limits from ``from_v``.
-   * - ``edge``
-     - ``BIGINT``
-     - Identifier of the ``edge`` used to arrive to ``node``.
-
-       - :math:`0` when ``node`` = ``from_v``.
-
-   * - ``cost``
-     - ``FLOAT``
-     - Cost to traverse ``edge``.
-   * - ``agg_cost``
-     - ``FLOAT``
-     - Aggregate cost from ``from_v`` to ``node``.
-
-Where:
-
-:ANY-INTEGER: SMALLINT, INTEGER, BIGINT
-:ANY-NUMERIC: SMALLINT, INTEGER, BIGINT, REAL, FLOAT, NUMERIC
+.. include:: BFS-category.rst
+   :start-after: mst-bfs-dfs-dd-result-columns-start
+   :end-before: mst-bfs-dfs-dd-result-columns-end
 
 Additional Examples
 -------------------------------------------------------------------------------
