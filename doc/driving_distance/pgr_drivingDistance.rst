@@ -21,6 +21,7 @@
    Boost Graph Inside
 
 .. rubric:: Availability
+   
 * Version 3.6.0
 
   * Standarizing output columns to |result-bfs|
