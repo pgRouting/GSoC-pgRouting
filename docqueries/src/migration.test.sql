@@ -283,3 +283,8 @@ SELECT seq, node, edge, cost, agg_cost FROM pgr_withPointsDD(
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   -5, 2.3, 'r');
 /* --withpointsdd5 */
+/* --withPointsKSP1 */
+SELECT * FROM pgr_withPointsKSP(
+  $$SELECT * FROM edges$$,
+  6, 10);
+/* --withPointsKSP1 */
