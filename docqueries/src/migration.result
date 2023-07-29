@@ -785,5 +785,11 @@ SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_bdAstar(
 (6 rows)
 
 /* --bdastar5 */
+/* --withPointsKSP1 */
+SELECT * FROM pgr_withPointsKSP(
+  $$SELECT * FROM edges$$,
+  6, 10);
+ERROR:  function pgr_withpointsksp(unknown, integer, integer) does not exist at character 55
+/* --withPointsKSP1 */
 ROLLBACK;
 ROLLBACK

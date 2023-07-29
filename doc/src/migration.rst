@@ -38,6 +38,43 @@ Migration of functions that add new columns
 .. contents:: Contents
    :local:
 
+Migration of ``pgr_withPointsKSP``
+-------------------------------------------------------------------------------
+
+Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__
+
+Signatures to be migrated:
+
+* ``pgr_withPointsKSP`` (`One to One`)
+
+:Before Migration:
+
+* Output columns were |old-pid-result|
+
+  * Depending on the overload used, the columns ``start_vid`` and ``end_vid``
+    might be missing:
+
+    * ``pgr_withPointsKSP`` (`One to One`) does not have ``start_vid`` and ``end_vid``.
+
+:Migration:
+
+* Be aware of the existance of the additional columns.
+
+* In ``pgr_withPointsKSP`` (`One to One`)
+
+  * ``start_vid`` contains the **start vid** parameter value.
+  * ``end_vid`` contains the **end vid** parameter value.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsKSP1
+   :end-before: --withPointsKSP1
+
+* If needed filter out the added columns, for example:
+
+.. literalinclude:: migration.queries
+   :start-after: --astar4
+   :end-before: --astar5
+
 Migration of ``pgr_aStar``
 -------------------------------------------------------------------------------
 

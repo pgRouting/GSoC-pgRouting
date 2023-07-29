@@ -261,3 +261,8 @@ SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_bdAstar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   6, 10);
 /* --bdastar5 */
+/* --withPointsKSP1 */
+SELECT * FROM pgr_withPointsKSP(
+  $$SELECT * FROM edges$$,
+  6, 10);
+/* --withPointsKSP1 */
