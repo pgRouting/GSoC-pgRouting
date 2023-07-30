@@ -74,13 +74,13 @@ processv4(
     size_t k = (size_t)p_k;
 
     driving_side[0] = (char) tolower(driving_side[0]);
-    if (!((driving_side[0] == 'r')
-                || (driving_side[0] == 'l') || (driving_side[0] == 'b'))) {
+    if (directed) {
+        if (!((driving_side[0] == 'r') || (driving_side[0] == 'l'))) {
+                    elog(ERROR, "Driving side is not selected or Invalid Values");
+                    return;
+                }
+    } else if (!(driving_side[0] == 'b')) {
         elog(ERROR, "Driving side is not selected or Invalid Values");
-        return;
-    }
-    if (driving_side[0] == 'b' && directed) {
-        elog(ERROR, "If graph is directed, the driving side cannot be 'b'");
         return;
     }
 

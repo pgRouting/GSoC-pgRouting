@@ -873,7 +873,7 @@ SELECT * FROM pgr_withPointsKSP(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   6, 10, 1,'r');
- seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost 
+ seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
 -----+---------+----------+-----------+---------+------+------+------+----------
    1 |       1 |        1 |         6 |      10 |    6 |    4 |    1 |        0
    2 |       1 |        2 |         6 |      10 |    7 |    8 |    1 |        1
@@ -888,7 +888,7 @@ SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_withPointsKSP(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   6, 10, 1,'r');
- seq | path_seq | node | edge | cost | agg_cost 
+ seq | path_seq | node | edge | cost | agg_cost
 -----+----------+------+------+------+----------
    1 |        1 |    6 |    4 |    1 |        0
    2 |        2 |    7 |    8 |    1 |        1
