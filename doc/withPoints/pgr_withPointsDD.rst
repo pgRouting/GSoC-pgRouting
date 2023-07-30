@@ -138,11 +138,16 @@ Parameters
      - Upper limit for the inclusion of a node in the result.
    * - **driving side**
      - ``CHAR``
-     - Value in [``r``, ``R``, ``l``, ``L``, ``b``, ``B``] indicating if the driving side is:
+     - - Value in [``r``, ``R``, ``l``, ``L``, ``b``, ``B``] indicating if the driving side is:
 
-       - ``r``, ``R`` for right driving side,
-       - ``l``, ``L`` for left driving side.
-       - ``b``, ``B`` for both.
+         - ``r``, ``R`` for right driving side,
+         - ``l``, ``L`` for left driving side.
+         - ``b``, ``B`` for both.
+
+       - Valid values differ for directed and undirected graphs:
+
+         - In directed graphs: [``r``, ``R``, ``l``, ``L``].
+         - In undirected graphs: [``b``, ``B``].
 
 Where:
 
