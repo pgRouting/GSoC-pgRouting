@@ -217,11 +217,11 @@ Parameters
      - Number of required paths
    * - **driving_side**
      - **CHAR**
-     - Value in [``r``, ``l``, ``b``] indicating if the driving side is:
+     - Value in [``r``, ``R``, ``l``, ``L``, ``b``, ``B``] indicating if the driving side is:
 
-       - ``r`` for right driving side
-       - ``l`` for left driving side
-       - ``b`` for both
+       - [``r``, ``R``] for right driving side (for directed graph only)
+       - [``l``, ``L``] for left driving side (for directed graph only)
+       - [``b``, ``B``] for both (only for undirected graph)
 
 Where:
 
