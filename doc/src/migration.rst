@@ -67,13 +67,13 @@ Signatures to be migrated:
 
 .. literalinclude:: migration.queries
    :start-after: --withPointsKSP1
-   :end-before: --withPointsKSP1
+   :end-before: --withPointsKSP2
 
 * If needed filter out the added columns, for example:
 
 .. literalinclude:: migration.queries
-   :start-after: --astar4
-   :end-before: --astar5
+   :start-after: --withPointsKSP2
+   :end-before: --withPointsKSP3
 
 Migration of ``pgr_aStar``
 -------------------------------------------------------------------------------
