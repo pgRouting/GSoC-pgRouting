@@ -10,7 +10,7 @@ SELECT * FROM pgr_withPointsKSP(
 SELECT * FROM pgr_withPointsKSP(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  -1, ARRAY[-3, 7], 2, 'r',
+  -1, ARRAY[-3, 7], 2, 'B',
   directed => false);
 /* --q3 */
 SELECT * FROM pgr_withPointsKSP(
