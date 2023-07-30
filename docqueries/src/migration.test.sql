@@ -244,3 +244,12 @@ SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_aStar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   6, 10);
 /* --astar5 */
+/* --ksp1 */
+SELECT * FROM pgr_KSP(
+  'SELECT id, source, target, cost, reverse_cost FROM edges',
+  6, 17, 2);
+/* --ksp2 */
+SELECT seq, path_id, path_seq, node, edge, cost, agg_cost FROM pgr_KSP(
+  'SELECT id, source, target, cost, reverse_cost FROM edges',
+  6, 17, 2);
+/* --ksp3 */
