@@ -28,10 +28,21 @@
 
 * Version 3.6.0
 
+  * New proposed signatures:
+
+    * ``pgr_withPointsDD`` (`Single vertex`_)
+    * ``pgr_withPointsDD`` (`Multiple vertices`_)
+
+  * Deprecated signatures:
+
+    * ``pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)``
+    * ``pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)``
+
   * Standarizing output columns to |result-bfs|
 
     * ``pgr_withPointsDD`` (`Single vertex`_) added ``depth`` and ``start_vid`` column.
     * ``pgr_withPointsDD`` (`Multiple vertices`_) added ``depth`` column.
+
 
 * Version 2.2.0
 
