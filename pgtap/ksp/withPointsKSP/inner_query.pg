@@ -20,10 +20,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(168);
+SELECT plan(516);
 
-SELECT style_dijkstra('pgr_withPointsKSP(', ', $$SELECT * from pointsOfInterest$$, 2, 3, 2, $$l$$, true)');
-SELECT innerquery_points('pgr_withPointsKSP($$SELECT * FROM edge_table$$,', ', 2, 3, 2, $$r$$, true)');
+-- ONE TO ONE
+SELECT style_dijkstra('pgr_withPointsKSP(', ', $$SELECT * from pointsOfInterest$$, 2, 3, 1, $$r$$,true)');
+SELECT innerquery_points('pgr_withPointsKSP($$SELECT * FROM edge_table$$,', ', 2, 3, 1, $$l$$, true)');
+-- ONE TO MANY
+SELECT style_dijkstra('pgr_withPointsKSP(', ', $$SELECT * from pointsOfInterest$$, 2, ARRAY[3], 1, $$r$$, true)');
+SELECT innerquery_points('pgr_withPointsKSP($$SELECT * FROM edge_table$$,', ', 2, ARRAY[3], 1, $$l$$, true)');
+-- MANY TO ONE
+SELECT style_dijkstra('pgr_withPointsKSP(', ', $$SELECT * from pointsOfInterest$$, ARRAY[2], 3, 2, $$r$$, true)');
+SELECT innerquery_points('pgr_withPointsKSP($$SELECT * FROM edge_table$$,', ', ARRAY[2], 3, 2, $$l$$, true)');
+-- MANY TO MANY
+SELECT style_dijkstra('pgr_withPointsKSP(', ', $$SELECT * from pointsOfInterest$$, ARRAY[2], ARRAY[3], 2, $$l$$, true)');
+SELECT innerquery_points('pgr_withPointsKSP($$SELECT * FROM edge_table$$,', ', ARRAY[2], ARRAY[3],  2, $$l$$, true)');
+
+-- COMBINATIONS
+CREATE OR REPLACE FUNCTION inner_query() RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF min_version('3.6.0') THEN
+    RETURN QUERY SELECT style_dijkstra('pgr_withPointsKSP(', ', $$SELECT * from pointsOfInterest$$, $$SELECT * FROM combinations_table$$, 2, $$r$$, true)');
+    RETURN QUERY SELECT innerquery_points('pgr_withPointsKSP($$SELECT * FROM edge_table$$,', ', $$SELECT * FROM combinations_table$$, 2, $$r$$, true)');
+    RETURN QUERY SELECT innerquery_combinations('pgr_withPointsKSP($$SELECT * FROM edge_table$$, $$SELECT * from pointsOfInterest$$,',', 2, $$r$$, true)');
+  ELSE
+    RETURN QUERY SELECT skip(2, 'Combinations signature added on 3.6.0');
+  END IF;
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT inner_query();
 
 /* TODO Remove on v4*/
 -- ONE TO ONE
