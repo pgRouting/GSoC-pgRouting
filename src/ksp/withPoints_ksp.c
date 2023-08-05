@@ -133,7 +133,6 @@ processv4(
     pfree(edges_no_points_query);
 
     if ((total_edges + total_edges_of_points) == 0) {
-        elog(ERROR, "Invalid Graph");
         if (end_pidsArr) pfree(end_pidsArr);
         if (start_pidsArr) pfree(start_pidsArr);
         if (combinationsArr) pfree(combinationsArr);
@@ -142,7 +141,6 @@ processv4(
     }
 
     if (total_combinations == 0 && (size_start_pidsArr== 0 || size_end_pidsArr == 0)) {
-        elog(ERROR, "No cominations");
         if (edges) pfree(edges);
         pgr_SPI_finish();
         return;
