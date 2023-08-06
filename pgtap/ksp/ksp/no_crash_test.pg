@@ -49,134 +49,153 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
-    -- one to one
-    params = ARRAY[
-    '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
-    '1::BIGINT',
-    '2::BIGINT',
-    '3'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    'NULL::INTEGER'
-    ]::TEXT[];
+    IF min_version('3.6.0') THEN
+        -- one to one
+        params = ARRAY[
+        '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
+        '1::BIGINT',
+        '2::BIGINT',
+        '3'
+        ]::TEXT[];
+        subs = ARRAY[
+        'NULL',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        'NULL::INTEGER'
+        ]::TEXT[];
 
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT',
-    'NULL::BIGINT',
-    'NULL::INTEGER'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+        subs = ARRAY[
+        'NULL',
+        'NULL::BIGINT',
+        'NULL::BIGINT',
+        'NULL::INTEGER'
+        ]::TEXT[];
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
 
-    -- one to many
-    params = ARRAY[
-    '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
-    '1::BIGINT',
-    'ARRAY[2, 5]::BIGINT[]',
-    '3'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    'NULL::INTEGER'
-    ]::TEXT[];
+        -- one to many
+        params = ARRAY[
+        '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
+        '1::BIGINT',
+        'ARRAY[2, 5]::BIGINT[]',
+        '2'
+        ]::TEXT[];
+        subs = ARRAY[
+        'NULL',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        'NULL::INTEGER'
+        ]::TEXT[];
 
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT',
-    'NULL::BIGINT[]',
-    'NULL::INTEGER'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+        subs = ARRAY[
+        'NULL',
+        'NULL::BIGINT',
+        'NULL::BIGINT[]',
+        'NULL::INTEGER'
+        ]::TEXT[];
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
 
-    -- many to one
-    params = ARRAY[
-    '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
-    'ARRAY[1, 5]::BIGINT[]',
-    '2::BIGINT',
-    '3'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    'NULL::INTEGER'
-    ]::TEXT[];
+        -- many to one
+        params = ARRAY[
+        '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
+        'ARRAY[2, 5]::BIGINT[]',
+        '1',
+        '2'
+        ]::TEXT[];
+        subs = ARRAY[
+        'NULL',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        'NULL::INTEGER'
+        ]::TEXT[];
 
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT[]',
-    'NULL::BIGINT',
-    'NULL::INTEGER'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+        subs = ARRAY[
+        'NULL',
+        'NULL::BIGINT[]',
+        'NULL::BIGINT',
+        'NULL::INTEGER'
+        ]::TEXT[];
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
 
-    -- many to many
-    params = ARRAY[
-    '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
-    'ARRAY[1, 5]::BIGINT[]',
-    'ARRAY[2, 5]::BIGINT[]',
-    '3'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    'NULL::INTEGER'
-    ]::TEXT[];
+        -- many to many
+        params = ARRAY[
+        '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
+        'ARRAY[1]::BIGINT[]',
+        'ARRAY[2, 5]::BIGINT[]',
+        '1'
+        ]::TEXT[];
+        subs = ARRAY[
+        'NULL',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        'NULL::INTEGER'
+        ]::TEXT[];
 
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT[]',
-    'NULL::BIGINT[]',
-    'NULL::INTEGER'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+        subs = ARRAY[
+        'NULL',
+        'NULL::BIGINT[]',
+        'NULL::BIGINT[]',
+        'NULL::INTEGER'
+        ]::TEXT[];
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
 
-    -- combinations
-    IF NOT min_version('3.6.0') THEN
-    RETURN QUERY
-    SELECT skip(1, 'Combinations functionality is new on 3.6.0');
-    RETURN;
+        -- combinations
+        RETURN QUERY
+        SELECT isnt_empty('combinations', 'Should be not empty to tests be meaningful');
+        RETURN QUERY
+        SELECT is_empty('null_combinations', 'Should be empty to tests be meaningful');
+
+        params = ARRAY[
+        '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
+        '$$combinations$$',
+        '1'
+        ]::TEXT[];
+        subs = ARRAY[
+        'NULL',
+        '$$(SELECT source, target FROM combinations_table  WHERE source IN (-1))$$',
+        'NULL::INTEGER'
+        ]::TEXT[];
+
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+
+        subs = ARRAY[
+        'NULL',
+        'NULL::TEXT',
+        'NULL::INTEGER'
+        ]::TEXT[];
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+    ELSE
+        -- one to one
+        params = ARRAY[
+        '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$'
+        ,'1::BIGINT',
+        '2::BIGINT',
+        '3'
+        ]::TEXT[];
+        subs = ARRAY[
+        'NULL',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+        'NULL::INTEGER'
+        ]::TEXT[];
+
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
+
+        subs = ARRAY[
+        'NULL',
+        'NULL::BIGINT',
+        'NULL::BIGINT',
+        'NULL::INTEGER'
+        ]::TEXT[];
+        RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
     END IF;
-
-    RETURN QUERY
-    SELECT isnt_empty('combinations', 'Should be not empty to tests be meaningful');
-    RETURN QUERY
-    SELECT is_empty('null_combinations', 'Should be empty to tests be meaningful');
-
-    params = ARRAY[
-    '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
-    '$$combinations$$',
-    '3'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '$$(SELECT source, target FROM combinations_table  WHERE source IN (-1))$$',
-    'NULL::INTEGER'
-    ]::TEXT[];
-
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
-
-    subs = ARRAY[
-    'NULL',
-    'NULL::TEXT',
-    'NULL::INTEGER'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_ksp', params, subs);
-
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
