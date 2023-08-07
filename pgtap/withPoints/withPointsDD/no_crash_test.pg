@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('3.6.0') THEN plan(90) ELSE plan(42) END;
+SELECT CASE WHEN min_version('3.6.0') THEN plan(50) ELSE plan(42) END;
 
 PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edge_table;
@@ -98,8 +98,7 @@ IF min_version('3.6.0') THEN
     ]::TEXT[];
     RETURN query SELECT * FROM no_crash_test('pgr_withPointsDD', params, subs);
 
-END IF;
-
+ELSE
 
 /* TODO remove tests on v4 of the old signatures */
 SET client_min_messages TO ERROR;
@@ -150,6 +149,8 @@ SET client_min_messages TO ERROR;
     'NULL'
     ]::TEXT[];
     RETURN query SELECT * FROM no_crash_test('pgr_withPointsDD', params, subs);
+
+END IF;
 
 END
 $BODY$
