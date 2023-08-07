@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 BEGIN;
 
-SELECT CASE WHEN min_version('3.6.0') THEN plan(9) ELSE plan(6) END;
+SELECT CASE WHEN min_version('3.6.0') THEN plan(3) ELSE plan(6) END;
 
 /* TODO remove test1 in v4 */
 SELECT
@@ -163,8 +163,7 @@ SELECT set_eq('q3',
     $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
     'Should be aggregating individual costs: both driving sides, UNDI');
 
-END IF;
-
+ELSE
 
 
 /* TODO remove tests on v4 of the old signatures */
@@ -262,6 +261,8 @@ RETURN QUERY
 SELECT set_eq('q6_old',
     $$SELECT node, round(cost::numeric, 12) AS cost, round(agg_cost::numeric, 12) AS agg_cost FROM test4$$,
     'Should be aggregating individual costs: left driving side, UNDI');
+END IF;
+
 END;
 $BODY$
 language plpgsql;

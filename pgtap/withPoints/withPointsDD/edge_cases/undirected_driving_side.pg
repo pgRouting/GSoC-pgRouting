@@ -21,13 +21,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 SELECT PLAN(3);
+-- TEST of deprecated signature
+-- This test does not make sense on new signatures due to the fact that
+-- if graph is undircted then the only valid parameter of driving side can only be 'b'
 
 
 -- because the graph is undirected, It will not matter the side of the point
 
 --- UNDIRECTED GRAPH
 ---
-
 
 -------- both driving sides
 PREPARE q1 AS
