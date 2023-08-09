@@ -94,7 +94,6 @@ do_pgr_v4driving_many_to_dist(
                     undigraph, start_vertices, distance, equiCostFlag, log);
             pgrouting::functions::ShortestPath_tree<pgrouting::UndirectedGraph> spt;
             results = spt.get_depths(undigraph, paths);
-
         }
 
         size_t count(results.size());
