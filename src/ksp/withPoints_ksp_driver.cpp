@@ -169,7 +169,7 @@ do_pgr_withPointsKsp(
         int route_id = 0;
         for (const auto &path : paths) {
             if (path.size() > 0)
-                path.get_pg_ksp_path(return_tuples, sequence, route_id);
+                path.get_pg_ksp_path(return_tuples, sequence);
             ++route_id;
         }
 

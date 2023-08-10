@@ -34,10 +34,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "yen/pgr_ksp.hpp"
 
+#include "cpp_common/combinations.h"
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
 #include "cpp_common/pgr_base_graph.hpp"
+
+#include "c_types/ii_t_rt.h"
 
 /* New Code */
 void  pgr_do_ksp(
@@ -97,7 +100,7 @@ void  pgr_do_ksp(
             size_t sequence = 0;
             for (const auto &path : paths) {
                 if (path.size() > 0)
-                    path.get_pg_v4ksp_path(return_tuples, sequence);
+                    path.get_pg_ksp_path(return_tuples, sequence);
             }
         }
         *return_count = count;
@@ -131,7 +134,7 @@ void  pgr_do_ksp(
 }
 
 
-/* Old Code*/
+/* TODO remove Old Code*/
 void  do_pgr_ksp(
         Edge_t *data_edges,
         size_t total_edges,
@@ -188,7 +191,7 @@ void  do_pgr_ksp(
             size_t sequence = 0;
             for (const auto &path : paths) {
                 if (path.size() > 0)
-                    path.get_pg_v4ksp_path(return_tuples, sequence);
+                    path.get_pg_ksp_path(return_tuples, sequence);
             }
         }
         *return_count = count;

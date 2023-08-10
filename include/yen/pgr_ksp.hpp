@@ -2,9 +2,9 @@
 File: pgr_ksp.hpp
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky AT erosion.dev
+Mail: vicky at erosion.dev
 Copyright (c) 2023 Aniket Agarwal
-Mail: aniketgarg187 AT gmail.com
+Mail: aniketgarg187 at gmail.com
 
 ------
 
@@ -240,9 +240,6 @@ class Pgr_ksp :  public Pgr_messages {
 
 }  // namespace yen
 
-/*
-* Added the namespace algorithm to calculate combinations
-*/
 namespace algorithms {
 
     template <class G>
