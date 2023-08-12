@@ -6,10 +6,10 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky AT erosion.dev
+Mail: vicky at erosion.dev
 
 Copyright (c) 2023 Abhinav Jain
-Mail: this.abhinav AT gmail.com
+Mail: this.abhinav at gmail.com
 
 ------
 
@@ -69,25 +69,6 @@ extern "C" {
 
             Path_rt**, size_t*,
             char**, char**, char**);
-
-/*TODO remove on v4*/
-    int do_pgr_withPointsKsp(
-            Edge_t  *edges,             size_t total_edges,
-            Point_on_edge_t  *points,       size_t total_points,
-            Edge_t  *edges_of_points,   size_t total_edges_of_points,
-            int64_t start_pid,
-            int64_t end_pid,
-            size_t k,
-            bool directed,
-            bool heap_paths,
-            char driving_side,
-            bool details,
-
-            Path_rt **return_tuples,
-            size_t *return_count,
-            char ** log_msg,
-            char ** notice_msg,
-            char ** err_msg);
 
 
 #ifdef __cplusplus
