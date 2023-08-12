@@ -43,15 +43,12 @@ extern "C" {
 #endif
 
     void do_pgr_driving_many_to_dist(
-            Edge_t* edges, size_t total_edges,
-            int64_t* start_vertex, size_t s_len,
-            double distance,
-            bool directed,
-            bool equicost,
-            Path_rt** return_tuples, size_t* return_count,
-            char **log_msg,
-            char **notice_msg,
-            char **err_msg);
+            Edge_t* , size_t ,
+            int64_t* , size_t ,
+            double ,
+            bool , bool,
+            Path_rt** , size_t* ,
+            char **,char **,char **);
 
 #ifdef __cplusplus
 }
