@@ -7,10 +7,10 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail:
+Mail: vicky at erosion.dev
 
 Copyright (c) 2023 Abhinav Jain
-Mail: this.abhinav AT gmail.com
+Mail: this.abhinav at gmail.com
 
 ------
 
@@ -151,10 +151,9 @@ pgr_do_withPointsKsp(
         *return_tuples = pgr_alloc(count, (*return_tuples));
 
         size_t sequence = 0;
-        // int route_id = 0;
         for (const auto &path : paths) {
             if (path.size() > 0)
-                path.get_pg_withPointsKSP_path(return_tuples, sequence);
+                path.get_pg_ksp_path(return_tuples, sequence);
         }
 
         if (count != sequence) {
@@ -312,7 +311,7 @@ do_pgr_withPointsKsp(
         int route_id = 0;
         for (const auto &path : paths) {
             if (path.size() > 0)
-                path.get_pg_ksp_path(return_tuples, sequence, route_id);
+                path.get_pg_ksp_path(return_tuples, sequence);
             ++route_id;
         }
 
