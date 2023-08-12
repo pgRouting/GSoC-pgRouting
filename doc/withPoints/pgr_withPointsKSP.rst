@@ -35,7 +35,7 @@ pgr_withPointsKSP - Proposed
     * ``pgr_withPointsKSP`` (`Many to Many`_)
     * ``pgr_withPointsKSP`` (`Combinations`_)
 
-  * Standarizing output columns to |new-withPointsKSP-result|
+  * Standarizing output columns to |nksp-result|
 
     * ``pgr_withPointsKSP`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns.
 
@@ -69,7 +69,7 @@ Signatures
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, `Combinations SQL`_, **K**, **driving_side**, [**options**])
    | **options:**  ``[directed, heap_paths, details]``
 
-   | RETURNS SET OF |new-withPointsKSP-result|
+   | RETURNS SET OF |ksp-result|
    | OR EMPTY SET
 
 .. index::
@@ -84,7 +84,7 @@ One to One
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vid**, **end vid**, **K**, **driving_side**, [**options**])
    | **options:**  ``[directed, heap_paths, details]``
 
-   | RETURNS SET OF |new-withPointsKSP-result|
+   | RETURNS SET OF |nksp-result|
    | OR EMTPY SET
 
 :Example: Get 2 paths from Point :math:`1` to point :math:`2` on a directed
@@ -110,7 +110,7 @@ One to Many
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vid**, **end vids**, **K**, **driving_side**, [**options**])
    | **options:**  ``[directed, heap_paths, details]``
 
-   | RETURNS SET OF |new-withPointsKSP-result|
+   | RETURNS SET OF |ksp-result|
    | OR EMTPY SET
 
 :Example: Get 2 paths from point :math:`1` to point :math:`3` and vertex :math:`7` on an
@@ -132,7 +132,7 @@ Many to One
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vids**, **end vid**, **K**, **driving_side**, [**options**])
    | **options:**  ``[directed, heap_paths, details]``
 
-   | RETURNS SET OF |new-withPointsKSP-result|
+   | RETURNS SET OF |ksp-result|
    | OR EMTPY SET
 
 :Example: Get a path from point :math:`1` and vertex :math:`6` to point :math:`3` on a **directed**
@@ -154,7 +154,7 @@ Many to Many
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, **K**, **driving_side**, [**options**])
    | **options:**  ``[directed, heap_paths, details]``
 
-   | RETURNS SET OF |new-withPointsKSP-result|
+   | RETURNS SET OF |nksp-result|
    | OR EMTPY SET
 
 :Example: Get a path from point :math:`1` and vertex :math:`6` to point :math:`3` and vertex :math:`1` on a **directed**
@@ -176,7 +176,7 @@ Combinations
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, `Combinations SQL`_, **K**, **driving_side**, [**options**])
    | **options:**  ``[directed, heap_paths, details]``
 
-   | RETURNS SET OF |new-withPointsKSP-result|
+   | RETURNS SET OF |ksp-result|
    | OR EMTPY SET
 
 :Example: Using a combinations table on an **directed** graph
