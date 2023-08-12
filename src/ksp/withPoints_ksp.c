@@ -370,15 +370,17 @@ process(
     PGR_DBG("Starting processing");
     clock_t start_t = clock();
 
-    do_pgr_withPointsKsp(
+    pgr_do_withPointsKsp(
             edges,
             total_edges,
             points,
             total_points,
             edges_of_points,
             total_edges_of_points,
-            start_pid,
-            end_pid,
+            NULL, 0,
+
+            &start_pid, 1,
+            &end_pid, 1,
             k,
 
             directed,
