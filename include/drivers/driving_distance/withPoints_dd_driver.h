@@ -58,30 +58,14 @@ extern "C" {
             Edge_t*,          size_t,
             Point_on_edge_t*, size_t,
             Edge_t*,          size_t,
-
             int64_t*,         size_t,
-            double, char,
 
-            bool, bool, bool,
+            double, char, bool, bool, bool, bool,
 
+            /* TODO  remove the following line on v4 */
+            Path_rt**, size_t*,
             MST_rt**, size_t*,
             char**, char**, char **);
-
-
-    /* TODO remove on V4 */
-    void do_pgr_many_withPointsDD(
-            Edge_t*,          size_t,
-            Point_on_edge_t*, size_t,
-            Edge_t*,          size_t,
-
-            int64_t*,         size_t,
-            double,
-
-            bool, char, bool, bool,
-
-            Path_rt**, size_t*,
-            char**, char**, char **);
-
 
 #ifdef __cplusplus
 }
