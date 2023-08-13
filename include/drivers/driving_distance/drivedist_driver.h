@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: v4drivedist_driver.h
+File: drivedist_driver.h
 
 Generated with Template by:                                                                                             
 Copyright (c) 2023 pgRouting developers                                                                                 
@@ -25,8 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_DRIVING_DISTANCE_V4DRIVEDIST_DRIVER_H_
-#define INCLUDE_DRIVERS_DRIVING_DISTANCE_V4DRIVEDIST_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_DRIVING_DISTANCE_DRIVEDIST_DRIVER_H_
+#define INCLUDE_DRIVERS_DRIVING_DISTANCE_DRIVEDIST_DRIVER_H_
 
 /* for size-t */
 #ifdef __cplusplus
@@ -47,11 +47,11 @@ typedef struct MST_rt MST_rt;
 extern "C" {
 #endif
 
-    void do_pgr_v4driving_many_to_dist(
+    void do_pgr_driving_many_to_dist(
             Edge_t* , size_t ,
             int64_t* , size_t ,
             double ,
-            bool ,bool, bool,
+            bool , bool, bool,
              /* TODO  remove the following line on v4 */
             Path_rt**, size_t*,
             MST_rt** , size_t* r,
@@ -61,4 +61,4 @@ extern "C" {
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_DRIVING_DISTANCE_V4DRIVEDIST_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_DRIVING_DISTANCE_DRIVEDIST_DRIVER_H_

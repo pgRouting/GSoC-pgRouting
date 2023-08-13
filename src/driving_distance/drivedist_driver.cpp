@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: v4drivedist_driver.cpp
+File: drivedist_driver.cpp
 
 Generated with Template by:                                                                                             
 Copyright (c) 2023 pgRouting developers                                                                                 
@@ -25,20 +25,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/driving_distance/v4drivedist_driver.h"
+#include "drivers/driving_distance/drivedist_driver.h"
 
 #include <sstream>
 #include <deque>
 #include <vector>
 
-#include "dijkstra/v4drivingDist.hpp"
+#include "dijkstra/drivingDist.hpp"
 
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
 
 void
-do_pgr_v4driving_many_to_dist(
+do_pgr_driving_many_to_dist(
         Edge_t  *data_edges, size_t total_edges,
         int64_t *start_vertex, size_t s_len,
         double distance,
@@ -82,7 +82,7 @@ do_pgr_v4driving_many_to_dist(
 
             digraph.insert_edges(data_edges, total_edges, true);
 
-            paths = pgr_v4drivingdistance(
+            paths = pgr_drivingdistance(
                     digraph, start_vertices, distance, equiCostFlag, log);
             if (do_new) {
                 pgrouting::functions::ShortestPath_tree<pgrouting::DirectedGraph> spt;
@@ -94,7 +94,7 @@ do_pgr_v4driving_many_to_dist(
             undigraph.insert_edges(data_edges, total_edges, true);
 
 
-            paths = pgr_v4drivingdistance(
+            paths = pgr_drivingdistance(
                     undigraph, start_vertices, distance, equiCostFlag, log);
             if (do_new) {
                 pgrouting::functions::ShortestPath_tree<pgrouting::UndirectedGraph> spt;
@@ -119,7 +119,6 @@ do_pgr_v4driving_many_to_dist(
         } else {
         /* old code */
         for (auto &path : paths) {
-
             std::sort(path.begin(), path.end(),
                     [](const Path_t &l, const  Path_t &r)
                     {return l.node < r.node;});
@@ -136,7 +135,6 @@ do_pgr_v4driving_many_to_dist(
         *return_old_tuples = pgr_alloc(count, (*return_old_tuples));
         *return_old_count = collapse_paths(return_old_tuples, paths);
         }
-        
 
         *log_msg = log.str().empty()?
             *log_msg :

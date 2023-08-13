@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 
 #include "c_common/pgdata_getters.h"
-#include "drivers/driving_distance/v4drivedist_driver.h"
+#include "drivers/driving_distance/drivedist_driver.h"
 
 
 PGDLLEXPORT Datum _pgr_drivingdistance(PG_FUNCTION_ARGS);
@@ -75,7 +75,7 @@ void process(
 
     PGR_DBG("Starting timer");
     clock_t start_t = clock();
-    do_pgr_v4driving_many_to_dist(
+    do_pgr_driving_many_to_dist(
             edges, total_tuples,
             start_vidsArr, size_start_vidsArr,
             distance,

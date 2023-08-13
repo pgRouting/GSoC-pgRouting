@@ -3,5 +3,5 @@ ADD_LIBRARY(driving_distance OBJECT
     driving_distance.c
 
     withPoints_dd_driver.cpp
-    v4drivedist_driver.cpp
+    drivedist_driver.cpp
  )

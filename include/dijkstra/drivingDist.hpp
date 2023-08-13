@@ -1,6 +1,6 @@
 /*PGR-GNU*****************************************************************
 
-file: v4drivingDist.hpp
+file: drivingDist.hpp
 
 Generated with Template by:                                                                                             
 Copyright (c) 2023 pgRouting developers                                                                                 
@@ -31,8 +31,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DIJKSTRA_V4DRIVEDIST_HPP_
-#define INCLUDE_DIJKSTRA_V4DRIVEDIST_HPP_
+#ifndef INCLUDE_DIJKSTRA_DRIVEDIST_HPP_
+#define INCLUDE_DIJKSTRA_DRIVEDIST_HPP_
 #pragma once
 
 #include <deque>
@@ -73,7 +73,7 @@ template < class G > class Pgr_dijkstra;
 
 template < class G >
 std::deque<Path>
-pgr_v4drivingdistance(
+pgr_drivingdistance(
         G &graph,
         std::vector< int64_t > start_vids,
         double distance,
