@@ -246,13 +246,13 @@ SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_aStar(
 /* --astar5 */
 /* --withPointsKSP1 */
 SELECT * FROM pgr_withPointsKSP(
-  $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
+  $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   6, 10, 1,'r');
 
 /* --withPointsKSP2 */
 SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_withPointsKSP(
-  $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
+  $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   6, 10, 1,'r');
 
