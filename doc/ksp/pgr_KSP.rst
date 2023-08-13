@@ -25,14 +25,14 @@ pgr_KSP
 
 * Version 3.6.0
 
-  * New **proposed** functions:
+  * ``pgr_ksp`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns.
+
+  * New **overloades** functions:
 
     * ``pgr_ksp`` (`One to Many`_)
     * ``pgr_ksp`` (`Many to One`_)
     * ``pgr_ksp`` (`Many to Many`_)
     * ``pgr_ksp`` (`Combinations`_)
-  
-  * ``pgr_ksp`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns.
 
 * Version 2.1.0
 
@@ -59,14 +59,14 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vid**, **K**, [**options**])
-   | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vids**, **K**, [**options**])
-   | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vid**, **K**, [**options**])
-   | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vids**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start vid**, **end vid**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start vid**, **end vids**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start vids**, **end vid**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start vids**, **end vids**, **K**, [**options**])
    | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
    | **options:** ``[directed, heap_paths]``
 
-   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+   | RETURNS SET OF |nksp-result|
    | OR EMPTY SET
 
 .. index::
@@ -78,9 +78,9 @@ One to One
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vid**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start vid**, **end vid**, **K**, [**options**])
 
-   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+   | RETURNS SET OF |nksp-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths from :math:`6` to :math:`17` on a directed graph.
@@ -98,9 +98,9 @@ One to Many
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_KSP(`Edges SQL`_, **start_vid**, **end_vids**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start vid**, **end vids**, **K**, [**options**])
 
-   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+   | RETURNS SET OF |nksp-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths from vertex :math:`6` to vertices :math:`\{10, 17\}` on a directed graph.
@@ -118,9 +118,9 @@ Many to One
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vid**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start vids**, **end vid**, **K**, [**options**])
 
-   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+   | RETURNS SET OF |nksp-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17` on a directed graph.
@@ -138,9 +138,9 @@ Many to Many
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_KSP(`Edges SQL`_, **start_vids**, **end_vids**, **K**, [**options**])
+   | pgr_KSP(`Edges SQL`_, **start vids**, **end vids**, **K**, [**options**])
 
-   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+   | RETURNS SET OF |nksp-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths vertices :math:`\{6, 1\}` to vertices :math:`\{10, 17\}` on a directed graph.
@@ -160,10 +160,10 @@ Combinations
 
    | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
 
-   | RETURNS SET OF ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+   | RETURNS SET OF |nksp-result|
    | OR EMPTY SET
 
-:Example: Using a combinations table on an **directed** graph
+:Example: Using a combinations table on an directed graph
 
 The combinations table:
 
@@ -199,7 +199,7 @@ Parameters
      - Identifier of the departure vertex.
    * - **end_vid**
      - **ANY-INTEGER**
-     - Identifier of the arrival vertex.
+     - Identifier of the destination vertex.
    * - **K**
      - **ANY-INTEGER**
      - Number of required paths
@@ -264,8 +264,7 @@ Result Columns
 
 .. ksp_returns_start
 
-Returns set of ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost,
-agg_cost)``
+Returns set of |nksp-result|
 
 .. list-table::
    :width: 81
@@ -282,15 +281,15 @@ agg_cost)``
      - ``INTEGER``
      - Path identifier.
 
-       * Has value **1** for the first of a path from **start_vid** to
-         **end_vid**
+       * Has value **1** for the first of a path from **start vid** to
+         **end vid**
    * - ``path_seq``
      - ``INTEGER``
      - Relative position in the path. Has value **1** for the beginning of a
        path.
    * - ``node``
      - ``BIGINT``
-     - Identifier of the node in the path from **start_vid** to **end_vid**
+     - Identifier of the node in the path from **start vid** to **end vid**
    * - ``edge``
      - ``BIGINT``
      - Identifier of the edge used to go from ``node`` to the next node in the
@@ -303,7 +302,7 @@ agg_cost)``
        * :math:`0` for the last ``node`` of the path.
    * - ``agg_cost``
      - ``FLOAT``
-     - Aggregate cost from **start_vid** to ``node``.
+     - Aggregate cost from **start vid** to ``node``.
 
 .. ksp_returns_end
 
@@ -311,7 +310,7 @@ agg_cost)``
 Additional Examples
 -------------------------------------------------------------------------------
 
-:Example: Get 2 paths from :math:`6` to :math:`17` on an **undirected** graph
+:Example: Get 2 paths from :math:`6` to :math:`17` on an undirected graph
 
 Also get the paths in the heap.
 
@@ -319,7 +318,7 @@ Also get the paths in the heap.
     :start-after: --q2
     :end-before: --q3
 
-:Example: Get 2 paths using combinations table on an **undirected** graph
+:Example: Get 2 paths using combinations table on an undirecte graph
 
 Also get the paths in the heap.
 
@@ -327,7 +326,7 @@ Also get the paths in the heap.
     :start-after: --q7
     :end-before: --q8
 
-:Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17` on a **undirected** graph.
+:Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17` on a undirected graph.
 
 .. literalinclude:: doc-ksp.queries
     :start-after: --q8
