@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <algorithm>
 
-#include "dijkstra/drivingDist.hpp"
+#include "dijkstra/v4drivingDist.hpp"
 #include "withPoints/pgr_withPoints.hpp"
 
 
@@ -129,14 +129,14 @@ do_pgr_many_withPointsDD(
             pgrouting::DirectedGraph digraph(gType);
             digraph.insert_edges(edges, total_edges);
             digraph.insert_edges(pg_graph.new_edges());
-            paths = pgr_drivingDistance(
+            paths = pgr_v4drivingdistance(
                     digraph, start_vids, distance, equiCost, log);
         } else {
             pgrouting::UndirectedGraph undigraph(gType);
             undigraph.insert_edges(edges, total_edges);
             undigraph.insert_edges(pg_graph.new_edges());
 
-            paths = pgr_drivingDistance(
+            paths = pgr_v4drivingdistance(
                     undigraph, start_vids, distance, equiCost, log);
         }
 
