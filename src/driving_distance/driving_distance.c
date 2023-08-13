@@ -35,7 +35,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_common/pgdata_getters.h"
 #include "drivers/driving_distance/drivedist_driver.h"
-#include "drivers/driving_distance/v4drivedist_driver.h"
 
 
 PGDLLEXPORT Datum _pgr_drivingdistance(PG_FUNCTION_ARGS);
@@ -51,6 +50,9 @@ void process(
         float8 distance,
         bool directed,
         bool equicost,
+        bool is_new,
+        Path_rt **result_old_tuples,
+        size_t *result_old_count,
         MST_rt **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
@@ -73,12 +75,14 @@ void process(
 
     PGR_DBG("Starting timer");
     clock_t start_t = clock();
-    do_pgr_v4driving_many_to_dist(
+    do_pgr_driving_many_to_dist(
             edges, total_tuples,
             start_vidsArr, size_start_vidsArr,
             distance,
             directed,
             equicost,
+            is_new,
+            result_old_tuples, result_old_count,
             result_tuples, result_count,
             &log_msg,
             &notice_msg,
@@ -110,10 +114,10 @@ _pgr_v4drivingdistance(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    /**********************************************************************/
-    MST_rt* result_tuples = 0;
+    Path_rt  *result_old_tuples = 0;
+    size_t result_old_count = 0;
+    MST_rt  *result_tuples = 0;
     size_t result_count = 0;
-    /**********************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
@@ -121,18 +125,16 @@ _pgr_v4drivingdistance(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        /**********************************************************************/
-
-        PGR_DBG("Calling driving_many_to_dist_driver");
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_ARRAYTYPE_P(1),
                 PG_GETARG_FLOAT8(2),
                 PG_GETARG_BOOL(3),
                 PG_GETARG_BOOL(4),
+                true,
+                &result_old_tuples, &result_old_count,
                 &result_tuples, &result_count);
 
-        /**********************************************************************/
 
         funcctx->max_calls = result_count;
 
@@ -195,76 +197,15 @@ _pgr_v4drivingdistance(PG_FUNCTION_ARGS) {
  * TODO(v4) remove old code
  * its code that is used when there is an old version of SQL 3.5 and under
  */
-static
-void process_old(
-        char* edges_sql,
-        ArrayType *starts,
-        float8 distance,
-        bool directed,
-        bool equicost,
-        Path_rt **result_tuples,
-        size_t *result_count) {
-    pgr_SPI_connect();
-    char* log_msg = NULL;
-    char* notice_msg = NULL;
-    char* err_msg = NULL;
-
-    size_t size_start_vidsArr = 0;
-    int64_t* start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, starts, false, &err_msg);
-    throw_error(err_msg, "While getting start vids");
-
-    Edge_t *edges = NULL;
-    size_t total_tuples = 0;
-    pgr_get_edges(edges_sql, &edges, &total_tuples, true, false, &err_msg);
-    throw_error(err_msg, edges_sql);
-
-    if (total_tuples == 0) {
-        return;
-    }
-
-    PGR_DBG("Starting timer");
-    clock_t start_t = clock();
-    do_pgr_driving_many_to_dist(
-            edges, total_tuples,
-            start_vidsArr, size_start_vidsArr,
-            distance,
-            directed,
-            equicost,
-            result_tuples, result_count,
-            &log_msg,
-            &notice_msg,
-            &err_msg);
-
-    time_msg("processing pgr_drivingDistance()",
-            start_t, clock());
-
-    if (err_msg && (*result_tuples)) {
-        pfree(*result_tuples);
-        (*result_tuples) = NULL;
-        (*result_count) = 0;
-    }
-
-    pgr_global_report(log_msg, notice_msg, err_msg);
-
-    if (log_msg) pfree(log_msg);
-    if (notice_msg) pfree(notice_msg);
-    if (err_msg) pfree(err_msg);
-    if (edges) pfree(edges);
-    if (start_vidsArr) pfree(start_vidsArr);
-
-    pgr_SPI_finish();
-}
-
-
 PGDLLEXPORT Datum
 _pgr_drivingdistance(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    /**********************************************************************/
     Path_rt* result_tuples = 0;
     size_t result_count = 0;
-    /**********************************************************************/
+    MST_rt  *result_new_tuples = 0;
+    size_t result_new_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
@@ -272,18 +213,18 @@ _pgr_drivingdistance(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        /**********************************************************************/
 
         PGR_DBG("Calling driving_many_to_dist_driver");
-        process_old(
+        process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_ARRAYTYPE_P(1),
                 PG_GETARG_FLOAT8(2),
                 PG_GETARG_BOOL(3),
                 PG_GETARG_BOOL(4),
-                &result_tuples, &result_count);
+                false,
+                &result_tuples, &result_count,
+                &result_new_tuples, &result_new_count);
 
-        /**********************************************************************/
 
         funcctx->max_calls = result_count;
 
@@ -339,4 +280,3 @@ _pgr_drivingdistance(PG_FUNCTION_ARGS) {
         SRF_RETURN_DONE(funcctx);
     }
 }
-
