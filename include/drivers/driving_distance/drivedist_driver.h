@@ -48,7 +48,7 @@ extern "C" {
             double ,
             bool , bool,
             Path_rt** , size_t* ,
-            char **,char **,char **);
+            char **, char **, char **);
 
 #ifdef __cplusplus
 }
