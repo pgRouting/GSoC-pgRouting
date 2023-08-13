@@ -101,7 +101,7 @@ void  pgr_do_ksp(
             size_t sequence = 0;
             for (const auto &path : paths) {
                 if (path.size() > 0)
-                    path.get_pg_v4ksp_path(return_tuples, sequence);
+                    path.get_pg_ksp_path(return_tuples, sequence);
             }
         }
         *return_count = count;
@@ -135,7 +135,7 @@ void  pgr_do_ksp(
 }
 
 
-/* Old Code*/
+/* TODO remove Old Code*/
 void  do_pgr_ksp(
         Edge_t *data_edges,
         size_t total_edges,
@@ -193,7 +193,7 @@ void  do_pgr_ksp(
             int route_id = 0;
             for (const auto &path : paths) {
                 if (path.size() > 0)
-                    path.get_pg_ksp_path(return_tuples, sequence, route_id);
+                    path.get_pg_ksp_path(return_tuples, sequence);
                 ++route_id;
             }
         }

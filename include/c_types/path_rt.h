@@ -2,7 +2,7 @@
 File: path_rt.h
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky AT erosion.dev
+Mail: vicky_vergara@hotmail.com
 
 ------
 
