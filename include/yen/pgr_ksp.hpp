@@ -240,9 +240,6 @@ class Pgr_ksp :  public Pgr_messages {
 
 }  // namespace yen
 
-/*
-* Added the namespace algorithm to calculate combinations
-*/
 namespace algorithms {
 
     template <class G>
