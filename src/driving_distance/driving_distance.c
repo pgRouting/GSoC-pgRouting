@@ -280,4 +280,3 @@ _pgr_drivingdistance(PG_FUNCTION_ARGS) {
         SRF_RETURN_DONE(funcctx);
     }
 }
-
