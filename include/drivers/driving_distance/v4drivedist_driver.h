@@ -33,11 +33,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   include <cstdint>
 #   include <cstddef>
 using Edge_t = struct Edge_t;
+using Path_rt = struct Path_rt;
 using MST_rt = struct MST_rt;
 #else
 #   include <stddef.h>
 #   include <stdint.h>
 typedef struct Edge_t Edge_t;
+typedef struct Path_rt Path_rt;
 typedef struct MST_rt MST_rt;
 #endif
 
@@ -46,15 +48,14 @@ extern "C" {
 #endif
 
     void do_pgr_v4driving_many_to_dist(
-            Edge_t* edges, size_t total_edges,
-            int64_t* start_vertex, size_t s_len,
-            double distance,
-            bool directed,
-            bool equicost,
-            MST_rt** return_tuples, size_t* return_count,
-            char **log_msg,
-            char **notice_msg,
-            char **err_msg);
+            Edge_t* , size_t ,
+            int64_t* , size_t ,
+            double ,
+            bool ,bool, bool,
+             /* TODO  remove the following line on v4 */
+            Path_rt**, size_t*,
+            MST_rt** , size_t* r,
+            char **, char **, char **);
 
 #ifdef __cplusplus
 }

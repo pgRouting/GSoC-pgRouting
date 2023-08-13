@@ -44,7 +44,9 @@ do_pgr_v4driving_many_to_dist(
         double distance,
         bool directedFlag,
         bool equiCostFlag,
-        MST_rt **return_tuples, size_t *return_count,
+        bool do_new,
+        Path_rt **return_old_tuples, size_t *return_old_count,
+        MST_rt  **return_tuples,     size_t *return_count,
         char **log_msg,
         char **notice_msg,
         char **err_msg) {
@@ -82,8 +84,10 @@ do_pgr_v4driving_many_to_dist(
 
             paths = pgr_v4drivingdistance(
                     digraph, start_vertices, distance, equiCostFlag, log);
-            pgrouting::functions::ShortestPath_tree<pgrouting::DirectedGraph> spt;
-            results = spt.get_depths(digraph, paths);
+            if (do_new) {
+                pgrouting::functions::ShortestPath_tree<pgrouting::DirectedGraph> spt;
+                results = spt.get_depths(digraph, paths);
+            }
         } else {
             pgrouting::UndirectedGraph undigraph(vertices, gType);
 
@@ -92,10 +96,13 @@ do_pgr_v4driving_many_to_dist(
 
             paths = pgr_v4drivingdistance(
                     undigraph, start_vertices, distance, equiCostFlag, log);
-            pgrouting::functions::ShortestPath_tree<pgrouting::UndirectedGraph> spt;
-            results = spt.get_depths(undigraph, paths);
+            if (do_new) {
+                pgrouting::functions::ShortestPath_tree<pgrouting::UndirectedGraph> spt;
+                results = spt.get_depths(undigraph, paths);
+            }
         }
 
+        if (do_new) {
         size_t count(results.size());
 
 
@@ -109,7 +116,27 @@ do_pgr_v4driving_many_to_dist(
             *((*return_tuples) + i) = results[i];
         }
         (*return_count) = count;
+        } else {
+        /* old code */
+        for (auto &path : paths) {
 
+            std::sort(path.begin(), path.end(),
+                    [](const Path_t &l, const  Path_t &r)
+                    {return l.node < r.node;});
+            std::stable_sort(path.begin(), path.end(),
+                    [](const Path_t &l, const  Path_t &r)
+                    {return l.agg_cost < r.agg_cost;});
+        }
+        size_t count(count_tuples(paths));
+
+        if (count == 0) {
+            *notice_msg = pgr_msg("No return values was found");
+            return;
+        }
+        *return_old_tuples = pgr_alloc(count, (*return_old_tuples));
+        *return_old_count = collapse_paths(return_old_tuples, paths);
+        }
+        
 
         *log_msg = log.str().empty()?
             *log_msg :
