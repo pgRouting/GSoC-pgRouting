@@ -89,7 +89,6 @@ pgr_drivingdistance(
 }
 
 
-//******************************************
 
 template < class G >
 class Pgr_dijkstra {

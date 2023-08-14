@@ -52,7 +52,7 @@ LANGUAGE c VOLATILE STRICT;
 COMMENT ON FUNCTION _pgr_v4drivingDistance(TEXT, ANYARRAY, FLOAT, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
 
-/* Below functions are for backward compatibility*/
+/* Below functions are for backward compatibility to be removed on v4*/
 
 --v3.0
 CREATE FUNCTION _pgr_drivingDistance(
