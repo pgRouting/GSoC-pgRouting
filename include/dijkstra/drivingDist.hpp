@@ -485,6 +485,7 @@ class Pgr_dijkstra {
      std::ostringstream log;
      //@}
 };
+/* This code has been wrote with reference to pgr_mst.hpp*/
 namespace functions {
 
 template <class G>

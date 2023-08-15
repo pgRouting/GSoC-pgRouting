@@ -20,6 +20,9 @@ Results can be different because of the changes.
 
 Migrating functions:
 
+:doc:`pgr_drivingDistance` signatures have changed, with the addition of new columns
+in the new signatures.
+
 :doc:`pgr_maxCardinalityMatch` works only for undirected graphs, therefore the
 ``directed`` flag has been removed.
 
@@ -66,18 +69,23 @@ Signatures to be migrated:
   * ``start_vid`` contains the **start vid** parameter value.
   * ``depth`` contains the **depth** parameter value.
 
-.. literalinclude:: pgr_drivingDistance.queries
-   :start-after: --q5
-   :end-before: --q6
+.. literalinclude:: migration.queries
+   :start-after: --drivingdistance1
+   :end-before: --drivingdistance2
 
 * In ``pgr_drivingdistance`` (`Multiple vertices`)
 
   * ``depth`` contains the **depth** parameter value.
 
-.. literalinclude:: pgr_drivingDistance.queries
-   :start-after: --q6
-   :end-before: --q10
+.. literalinclude:: migration.queries
+   :start-after: --drivingdistance2
+   :end-before: --drivingdistance3
 
+* If needed filter out the added columns, for example:
+
+.. literalinclude:: migration.queries
+   :start-after: --drivingdistance3
+   :end-before: --drivingdistance4
 
 Migration of ``pgr_aStar``
 -------------------------------------------------------------------------------
