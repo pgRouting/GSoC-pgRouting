@@ -194,10 +194,10 @@ Parameters
    * - `Edges SQL`_
      - ``TEXT``
      - SQL query as described.
-   * - **start_vid**
+   * - **start vid**
      - **ANY-INTEGER**
      - Identifier of the departure vertex.
-   * - **end_vid**
+   * - **end vid**
      - **ANY-INTEGER**
      - Identifier of the destination vertex.
    * - **K**
