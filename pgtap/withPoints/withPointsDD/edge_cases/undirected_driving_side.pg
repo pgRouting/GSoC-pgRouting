@@ -24,7 +24,7 @@ SELECT PLAN(3);
 -- TEST of deprecated signature
 -- This test does not make sense on new signatures due to the fact that
 -- if graph is undircted then the only valid parameter of driving side can only be 'b'
-
+SET client_min_messages TO ERROR;
 
 -- because the graph is undirected, It will not matter the side of the point
 
