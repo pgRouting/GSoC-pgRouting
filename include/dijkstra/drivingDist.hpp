@@ -521,6 +521,7 @@ class ShortestPath_tree{
 
  private:
      /* Member */
+     Path m_path;
 
      struct InSpanning {
          std::set<E> edges;
@@ -539,7 +540,6 @@ ShortestPath_tree<G>::get_results(
         const G &graph) {
     std::deque<MST_rt> results;
 
-    std::vector<double> agg_cost(graph.num_vertices(), 0);
     std::vector<int64_t> depth(graph.num_vertices(), 0);
     int64_t root(p_root);
 
@@ -566,23 +566,28 @@ ShortestPath_tree<G>::get_results(
                     0.0,
                     0.0 });
         }
-        agg_cost[v] = agg_cost[u] + graph[edge].cost;
         depth[v] = depth[u] == -1? 1 : depth[u] + 1;
+
+        int64_t node_id = graph[v].id;
+        auto path_index = std::find_if(m_path.begin(), m_path.end(),
+                [&node_id](Path_t &path_item)
+                {return node_id == path_item.node;});
 
         if (graph[v].id < 0) depth[v] = depth[u];
         if (graph[v].id > 0) {
             results.push_back({
                 root,
                     depth[v],
-                    graph[v].id,
-                    graph[edge].id,
-                    graph[edge].cost,
-                    agg_cost[v]
+                    path_index->node,
+                    path_index->edge,
+                    path_index->cost,
+                    path_index->agg_cost
             });
         }
     }
     return results;
 }
+
 
 template <class G>
 std::deque<MST_rt>
@@ -628,25 +633,24 @@ void
 ShortestPath_tree<G>::get_edges_from_path(
          const G& graph,
          const Path path) {
-    for (size_t i = 0; i < path.size(); i++) {
-        if (graph.has_vertex(path[i].node)) {
-            auto u = graph.get_V(path[i].node);
+    m_spanning_tree.clear();
 
-            for (size_t j = i+1; j < path.size(); j++) {
-                if (graph.has_vertex(path[j].node)) {
-                auto v = graph.get_V(path[j].node);
-                double cost = path[j].cost;
-                auto edge = graph.get_edge(u, v, cost);
-                if (graph.target(edge) == v
-                        && path[i].agg_cost+cost == path[j].agg_cost
-                        && graph[edge].id == path[j].edge) {
-                    this->m_spanning_tree.edges.insert(edge);
-                }
-                }
+    for (size_t i = 0; i < path.size(); i++) {
+        auto u = graph.get_V(path[i].node);
+
+        for (size_t j = i+1; j < path.size(); j++) {
+            auto v = graph.get_V(path[j].node);
+            double cost = path[j].cost;
+            auto edge = graph.get_edge(u, v, cost);
+            if (graph.target(edge) == v
+                    && path[i].agg_cost+cost == path[j].agg_cost
+                    && graph[edge].id == path[j].edge) {
+                this->m_spanning_tree.edges.insert(edge);
             }
         }
     }
 }
+
 
 template <class G>
 std::deque<MST_rt>
@@ -656,6 +660,7 @@ ShortestPath_tree<G>::get_depths(
     std::deque<MST_rt> results;
 
     for (const Path& path : paths) {
+        m_path = path;
         get_edges_from_path(graph, path);
         int64_t root = path.start_id();
         auto result = this->dfs_order(graph, root);
