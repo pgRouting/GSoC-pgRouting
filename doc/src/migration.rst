@@ -20,6 +20,9 @@ Results can be different because of the changes.
 
 Migrating functions:
 
+:doc:`pgr_drivingDistance` signatures have changed, with the addition of new columns
+in the new signatures.
+
 :doc:`pgr_withPointsDD` signatures have changed, with the addition of new columns
 in the new signatures. It works mainly for driving cases, therefore the ``driving side``
 parameter changed from optional to compulsory, and its valid values differ for
@@ -42,6 +45,52 @@ Migration of functions that add new columns
 
 .. contents:: Contents
    :local:
+
+Migration of ``pgr_drivingdistance``
+-------------------------------------------------------------------------------
+
+Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__
+
+Signatures to be migrated:
+
+* ``pgr_drivingdistance`` (`Single vertex`)
+* ``pgr_drivingdistance`` (`Multiple vertices`)
+
+:Before Migration:
+
+* Output columns were |result-dij-dd-m|
+
+  * Depending on the vertices, the column ``start_vid`` might be missing and the depth column is not in any one of them:
+
+    * ``pgr_drivingdistance`` (`Single vertex`) does not have ``start_vid`` and ``depth``.
+    * ``pgr_drivingdistance`` (`Multiple vertices`) does not have ``depth``.
+
+:Migration:
+
+* Be aware of the existance of the additional columns.
+
+* In ``pgr_drivingdistance`` (`Single vertex`)
+
+  * ``start_vid`` contains the **start vid** parameter value.
+  * ``depth`` contains the **depth** parameter value.
+
+.. literalinclude:: migration.queries
+   :start-after: --drivingdistance1
+   :end-before: --drivingdistance2
+
+* In ``pgr_drivingdistance`` (`Multiple vertices`)
+
+  * ``depth`` contains the **depth** parameter value.
+
+.. literalinclude:: migration.queries
+   :start-after: --drivingdistance2
+   :end-before: --drivingdistance3
+
+* If needed filter out the added columns, for example:
+
+.. literalinclude:: migration.queries
+   :start-after: --drivingdistance3
+   :end-before: --drivingdistance4
 
 Migration of ``pgr_withPointsDD``
 -------------------------------------------------------------------------------
