@@ -636,9 +636,11 @@ ShortestPath_tree<G>::get_edges_from_path(
     m_spanning_tree.clear();
 
     for (size_t i = 0; i < path.size(); i++) {
+        if (graph.has_vertex(path[i].node)) {
         auto u = graph.get_V(path[i].node);
 
         for (size_t j = i+1; j < path.size(); j++) {
+            if (graph.has_vertex(path[i].node)) {
             auto v = graph.get_V(path[j].node);
             double cost = path[j].cost;
             auto edge = graph.get_edge(u, v, cost);
@@ -646,6 +648,8 @@ ShortestPath_tree<G>::get_edges_from_path(
                     && path[i].agg_cost+cost == path[j].agg_cost
                     && graph[edge].id == path[j].edge) {
                 this->m_spanning_tree.edges.insert(edge);
+            }
+            }
             }
         }
     }
