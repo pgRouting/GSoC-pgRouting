@@ -239,7 +239,8 @@ sub generate_upgrade_script {
             push @commands, drop_special_case_function("pgr_bdastar(text,bigint,bigint,boolean,integer,numeric,numeric)");
             push @commands, drop_special_case_function("pgr_bdastar(text,bigint,anyarray,boolean,integer,numeric,numeric)");
             push @commands, drop_special_case_function("pgr_bdastar(text,anyarray,bigint,boolean,integer,numeric,numeric)");
-
+            push @commands, drop_special_case_function("pgr_drivingdistance(text,anyarray,double precision,boolean,boolean)");
+            push @commands, drop_special_case_function("pgr_drivingdistance(text,bigint,double precision,boolean)");
         }
 
     }
