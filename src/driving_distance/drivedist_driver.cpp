@@ -117,7 +117,7 @@ do_pgr_driving_many_to_dist(
         }
         (*return_count) = count;
         } else {
-        /* old code */
+        /* old code to be removed on v4 */
         for (auto &path : paths) {
             std::sort(path.begin(), path.end(),
                     [](const Path_t &l, const  Path_t &r)

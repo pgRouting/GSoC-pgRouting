@@ -162,7 +162,6 @@ _pgr_v4drivingdistance(PG_FUNCTION_ARGS) {
         Datum *values;
         bool* nulls;
 
-        /**********************************************************************/
         size_t numb = 7;
         values = palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
@@ -179,7 +178,6 @@ _pgr_v4drivingdistance(PG_FUNCTION_ARGS) {
         values[5] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
         values[6] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
 
-        /**********************************************************************/
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
 
@@ -252,7 +250,6 @@ _pgr_drivingdistance(PG_FUNCTION_ARGS) {
         Datum *values;
         bool* nulls;
 
-        /**********************************************************************/
         size_t numb = 6;
         values = palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
@@ -268,7 +265,6 @@ _pgr_drivingdistance(PG_FUNCTION_ARGS) {
         values[4] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
         values[5] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
 
-        /**********************************************************************/
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
 

@@ -244,3 +244,17 @@ SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_aStar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   6, 10);
 /* --astar5 */
+/* --drivingdistance1 */
+SELECT * FROM pgr_drivingDistance(
+  $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
+  7, 2.0);
+/* --drivingdistance2 */
+SELECT * FROM pgr_drivingDistance(
+  $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
+  array[7, 16], 2.0, directed => false);
+/* --drivingdistance3 */
+SELECT seq, start_vid, node, edge, cost, agg_cost FROM pgr_drivingDistance(
+  $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
+  array[7, 16], 2.0, directed => false);
+/* --drivingdistance4 */
+
