@@ -370,17 +370,15 @@ process(
     PGR_DBG("Starting processing");
     clock_t start_t = clock();
 
-    pgr_do_withPointsKsp(
+    do_pgr_withPointsKsp(
             edges,
             total_edges,
             points,
             total_points,
             edges_of_points,
             total_edges_of_points,
-            NULL, 0,
-
-            &start_pid, 1,
-            &end_pid, 1,
+            start_pid,
+            end_pid,
             k,
 
             directed,
@@ -501,24 +499,14 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
 
 
         // postgres starts counting from 1
-        int64_t path_id = 1;
-        if (funcctx->call_cntr != 0) {
-            if (result_tuples[funcctx->call_cntr - 1].edge == -1) {
-                path_id = result_tuples[funcctx->call_cntr - 1].start_id + 1;
-            } else {
-                path_id = result_tuples[funcctx->call_cntr - 1].start_id;
-            }
-        }
-
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
-        values[1] = Int32GetDatum(path_id);
+        values[1] = Int32GetDatum((int)
+                (result_tuples[funcctx->call_cntr].start_id + 1));
         values[2] = Int32GetDatum(result_tuples[funcctx->call_cntr].seq);
         values[3] = Int64GetDatum(result_tuples[funcctx->call_cntr].node);
         values[4] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
         values[5] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
         values[6] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
-
-        result_tuples[funcctx->call_cntr].start_id = path_id;
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

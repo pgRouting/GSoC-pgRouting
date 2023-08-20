@@ -189,15 +189,6 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        int64_t path_id = 1;
-        if (funcctx->call_cntr != 0) {
-            if (path[funcctx->call_cntr - 1].edge == -1) {
-                path_id = path[funcctx->call_cntr - 1].start_id + 1;
-            } else {
-                path_id = path[funcctx->call_cntr - 1].start_id;
-            }
-        }
-
         values[0] = Int32GetDatum((int32_t)funcctx->call_cntr + 1);
         values[1] = Int32GetDatum((int32_t)path[funcctx->call_cntr].start_id + 1);
         values[2] = Int32GetDatum(path[funcctx->call_cntr].seq);
@@ -205,8 +196,6 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
         values[4] = Int64GetDatum(path[funcctx->call_cntr].edge);
         values[5] = Float8GetDatum(path[funcctx->call_cntr].cost);
         values[6] = Float8GetDatum(path[funcctx->call_cntr].agg_cost);
-
-        path[funcctx->call_cntr].start_id = path_id;
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
