@@ -136,9 +136,9 @@ class Path {
 
     void get_pg_ksp_path(
             Path_rt **ret_path,
-            size_t &sequence) const;
+            size_t &sequence, int routeId) const;
 
-    void get_pg_withPointsKSP_path(
+    void get_pg_nksp_path(
             Path_rt **ret_path,
             size_t &sequence) const;
 

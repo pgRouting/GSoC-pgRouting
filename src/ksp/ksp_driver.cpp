@@ -93,9 +93,11 @@ void  do_pgr_ksp(
             *return_tuples = pgr_alloc(count, (*return_tuples));
 
             size_t sequence = 0;
+            int route_id = 0;
             for (const auto &path : paths) {
                 if (path.size() > 0)
-                    path.get_pg_ksp_path(return_tuples, sequence);
+                    path.get_pg_ksp_path(return_tuples, sequence, route_id);
+                ++route_id;
             }
         }
         *return_count = count;
