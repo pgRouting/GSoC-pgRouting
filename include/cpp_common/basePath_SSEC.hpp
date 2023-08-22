@@ -136,7 +136,11 @@ class Path {
 
     void get_pg_ksp_path(
             Path_rt **ret_path,
-            size_t &sequence, int routeId) const;
+            size_t &sequence) const;
+
+    void get_pg_v4ksp_path(
+        Path_rt **ret_path,
+        size_t &sequence) const;
 
     void get_pg_turn_restricted_path(
             Path_rt **ret_path,
