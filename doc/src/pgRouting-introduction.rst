@@ -65,7 +65,7 @@ This Release Contributors
 
 Individuals in this release (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
+Aniket Agarwal,
 Aryan Gupta,
 Ashish Kumar,
 Cayetano Benavent,
