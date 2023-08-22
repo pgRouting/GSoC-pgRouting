@@ -31,18 +31,12 @@ in the new signatures. It works mainly for driving cases, therefore the ``drivin
 parameter changed from optional to compulsory, and its valid values differ for
 directed and undirected graphs.
 
-
 :doc:`pgr_maxCardinalityMatch` works only for undirected graphs, therefore the
 ``directed`` flag has been removed.
 
 :doc:`pgr_trsp` signatures have changed and many issues have been fixed in the new
 signatures. This section will show how to migrate from the old signatures to the
 new replacement functions. This also affects the restrictions.
-
-:doc:`pgr_withPointsDD` signatures have changed, with the addition of new columns
-in the new signatures. It works mainly for driving cases, therefore the ``driving side``
-parameter changed from optional to compulsory, and its valid values differ for
-directed and undirected graphs.
 
 .. warning::
    All deprecated functions will be removed on next mayor version 4.0.0

@@ -297,7 +297,6 @@ _pgr_turnrestrictedpath(text,text,bigint,bigint,integer,boolean,boolean,boolean,
 pgr_turnrestrictedpath(text,text,bigint,bigint,integer,boolean,boolean,boolean,boolean)
 _pgr_v4drivingdistance(text,anyarray,double precision,boolean,boolean)
 _pgr_v4withpointsdd(text,text,anyarray,double precision,character,boolean,boolean,boolean)
-_pgr_v4withpointsdd(text,text,anyarray,double precision,character,boolean,boolean,boolean)
 pgr_version()
 _pgr_versionless(text,text)
 _pgr_vrponedepot(text,text,text,integer)
