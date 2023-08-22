@@ -2,7 +2,7 @@
 File: basePath_SSEC.cpp
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+vicky at erosion.dev
 
 ------
 
@@ -265,10 +265,10 @@ void Path::get_pg_dd_path(
 /* used by ksp */
 void Path::get_pg_ksp_path(
         Path_rt **ret_path,
-        size_t &sequence, int routeId) const {
+        size_t &sequence) const {
     for (unsigned int i = 0; i < path.size(); i++) {
         (*ret_path)[sequence].seq = static_cast<int>(i + 1);
-        (*ret_path)[sequence].start_id = routeId;
+        (*ret_path)[sequence].start_id = start_id();
         (*ret_path)[sequence].end_id = end_id();
         (*ret_path)[sequence].node = path[i].node;
         (*ret_path)[sequence].edge = path[i].edge;
