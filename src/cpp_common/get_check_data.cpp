@@ -282,12 +282,10 @@ get_array(ArrayType *v, size_t *arrlen, bool allow_empty) {
 
     if (ndim != 1) {
         throw std::string("One dimension expected");
-        return nullptr;
     }
 
     if (nitems <= 0) {
         throw std::string("No elements found");
-        return nullptr;
     }
 
     get_typlenbyvalalign(element_type, &typlen, &typbyval, &typalign);
@@ -443,7 +441,11 @@ double getFloat8(
 }
 
 /*!
- * [DatumGetCString](https://doxygen.postgresql.org/postgres_8h.html#ae401c8476d1a12b420e3061823a206a7)
+ * [SPI_getvalue](https://doxygen.postgresql.org/spi_8c.html#ae53c12ff90592f67e4e40ad0af24205b
+ which calls OidOutputFunctionCall, which calls
+ OutputFunctionCall - https://doxygen.postgresql.org/fmgr_8c.html#ae19cff34818e4a6c90523e8bb02c3420
+ which returns pointer to CString
+  )
  * @note under development Not used, not tested
  * @param[in] tuple   input row to be examined.
  * @param[in]  tupdesc  tuple descriptor
@@ -452,7 +454,7 @@ double getFloat8(
  */
 
 char* getText(const HeapTuple tuple, const TupleDesc &tupdesc,  const pgrouting::Column_info_t &info) {
-    return DatumGetCString(SPI_getvalue(tuple, tupdesc, info.colNumber));
+    return SPI_getvalue(tuple, tupdesc, info.colNumber);
 }
 
 }  // namespace pgrouting

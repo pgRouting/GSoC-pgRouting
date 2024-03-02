@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v3.6.0-dev\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-29 14:31+0000\n"
+"POT-Creation-Date: 2023-08-20 14:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3730,7 +3730,7 @@ msgstr ""
 msgid "The aggregate cost."
 msgstr ""
 
-msgid "Adcanced Documentation"
+msgid "Advanced Documentation"
 msgstr ""
 
 msgid "A flow network is a directed graph where each edge has a capacity and a flow. The flow through an edge must not exceed the capacity of the edge. Additionally, the incoming and outgoing flow of a node must be equal except for source which only has outgoing flow, and the destination(sink) which only has incoming flow."
@@ -3952,6 +3952,9 @@ msgstr ""
 msgid ":doc:`pgr_trsp` signatures have changed and many issues have been fixed in the new signatures. This section will show how to migrate from the old signatures to the new replacement functions. This also affects the restrictions."
 msgstr ""
 
+msgid ":doc:`pgr_withPointsDD` signatures have changed, with the addition of new columns in the new signatures. It works mainly for driving cases, therefore the ``driving side`` parameter changed from optional to compulsory, and its valid values differ for directed and undirected graphs."
+msgstr ""
+
 msgid "All deprecated functions will be removed on next mayor version 4.0.0"
 msgstr ""
 
@@ -4027,6 +4030,36 @@ msgstr ""
 msgid "Starting from `v3.5 <https://docs.pgrouting.org/3.5/en/contraction-family.html#case-1-both-source-and-target-belong-to-the-contracted-graph>`__ the function ``my_dijkstra`` returns the new additional columns of ``pgr_dijkstra``."
 msgstr ""
 
+msgid "Migration of ``pgr_bdAstar``"
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`One to One`)"
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`One to Many`)"
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`Many to One`)"
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`One to One`) does not have ``start_vid`` and ``end_vid``."
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`One to Many`) does not have ``start_vid``."
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`Many to One`) does not have ``end_vid``."
+msgstr ""
+
+msgid "In ``pgr_bdAstar`` (`One to One`)"
+msgstr ""
+
+msgid "In ``pgr_bdAstar`` (`One to Many`)"
+msgstr ""
+
+msgid "In ``pgr_bdAstar`` (`Many to One`)"
+msgstr ""
+
 msgid "Migration of ``pgr_dijkstra``"
 msgstr ""
 
@@ -4061,6 +4094,48 @@ msgid "In ``pgr_dijkstra`` (`Many to One`)"
 msgstr ""
 
 msgid "If needed add the new columns, for example:"
+msgstr ""
+
+msgid "Migration of ``pgr_withPointsDD``"
+msgstr ""
+
+msgid "``pgr_withPointsDD`` (`Single vertex`)"
+msgstr ""
+
+msgid "``pgr_withPointsDD`` (`Multiple vertices`)"
+msgstr ""
+
+msgid "``driving_side`` parameter is optional."
+msgstr ""
+
+msgid "Output columns were |result-generic-no-seq|"
+msgstr ""
+
+msgid "Depending on the overload used, the columns ``start_vid`` might be missing:"
+msgstr ""
+
+msgid "``pgr_withPointsDD`` (`Single vertex`) does not have ``start_vid``"
+msgstr ""
+
+msgid "``driving side`` parameter is compulsory, and valid values differ for directed and undirected graphs."
+msgstr ""
+
+msgid "Does not have a default value."
+msgstr ""
+
+msgid "In directed graph, valid values are [``r``, ``R``, ``l``, ``L``]"
+msgstr ""
+
+msgid "In undirected graph, valid values are [``b``, ``B``]"
+msgstr ""
+
+msgid "In ``pgr_withPointsDD`` (`Single vertex`)"
+msgstr ""
+
+msgid "``depth`` contains the **depth** parameter value."
+msgstr ""
+
+msgid "In ``pgr_withPointsDD`` (`Multiple vertices`)"
 msgstr ""
 
 msgid "Migration of functions that change inner query columns names"
@@ -4271,9 +4346,6 @@ msgid "The floating point type of the ``Edges SQL`` can only be ``FLOAT``."
 msgstr ""
 
 msgid "``directed`` flag is compulsory."
-msgstr ""
-
-msgid "Does not have a default value."
 msgstr ""
 
 msgid "Does not autodetect if ``reverse_cost`` column exist."
@@ -6031,7 +6103,7 @@ msgstr ""
 msgid "Individuals in this release (in alphabetical order)"
 msgstr ""
 
-msgid "Ashish Kumar, Cayetano Benavent, Daniel Kastl, Nitish Chauhan, Rajat Shinde, Regina Obe, Shobhit Chaurasia, Swapnil Joshi, Virginia Vergara"
+msgid "Ashish Kumar, Cayetano Benavent, Daniel Kastl, Nitish Chauhan, Rajat Shinde, Regina Obe, Shobhit Chaurasia, Swapnil Joshi, Virginia Vergara, Yige Huang"
 msgstr ""
 
 msgid "And all the people that give us a little of their time making comments, finding issues, making pull requests etc.  in any of our products: osm2pgrouting, pgRouting, pgRoutingLayer, workshop."
@@ -6058,7 +6130,7 @@ msgstr ""
 msgid "Individuals (in alphabetical order)"
 msgstr ""
 
-msgid "Aasheesh Tiwari, Aditya Pratap Singh, Adrien Berchet, Akio Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Ashraf Hossain, Ashish Kumar, Cayetano Benavent, Christian Gonzalez, Daniel Kastl, Dave Potts, David Techer, Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Florian Thurkow, Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith Reddy, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit Kumar, Vidhan Jain, Virginia Vergara"
+msgid "Aasheesh Tiwari, Aditya Pratap Singh, Adrien Berchet, Akio Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Ashraf Hossain, Ashish Kumar, Cayetano Benavent, Christian Gonzalez, Daniel Kastl, Dave Potts, David Techer, Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Florian Thurkow, Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith Reddy, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
 msgstr ""
 
 msgid "Corporate Sponsors (in alphabetical order)"
@@ -6475,7 +6547,7 @@ msgstr ""
 msgid "``pgr_aStar`` — Shortest path using the A* algorithm."
 msgstr ""
 
-msgid "Version 3.5.0"
+msgid "Version 3.6.0"
 msgstr ""
 
 msgid "Standarizing output columns to |short-generic-result|"
@@ -6532,7 +6604,7 @@ msgstr ""
 msgid "`pgr_aStar(` `Many to Many`_ `)`"
 msgstr ""
 
-msgid "``start_vid`` and ``end_vid`` in the result is used to distinguish to which path it belongs."
+msgid "`pgr_aStar(` `Combinations`_ `)`"
 msgstr ""
 
 msgid "pgr_aStar(`Edges SQL`_, **start vid**, **end vid**, [**options**])"
@@ -7159,6 +7231,15 @@ msgstr ""
 msgid "``pgr_bdAstar`` — Shortest path using the bidirectional A* algorithm."
 msgstr ""
 
+msgid "``pgr_bdAstar`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns."
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`One to Many`_) added ``end_vid`` column."
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`Many to One`_) added ``start_vid`` column."
+msgstr ""
+
 msgid "``pgr_bdAstar`` (`Combinations`_)"
 msgstr ""
 
@@ -7189,6 +7270,9 @@ msgstr ""
 msgid "`pgr_bdAstar(` `Many to Many`_ `)`"
 msgstr ""
 
+msgid "`pgr_bdAstar(` `Combinations`_ `)`"
+msgstr ""
+
 msgid "pgr_bdAstar(`Edges SQL`_, **start vid**, **end vid**, [**options**])"
 msgstr ""
 
@@ -7202,18 +7286,6 @@ msgid "pgr_bdAstar(`Edges SQL`_, **start vids**, **end vids**, [**options**])"
 msgstr ""
 
 msgid "pgr_bdAstar(`Edges SQL`_, `Combinations SQL`_, [**options**])"
-msgstr ""
-
-msgid "RETURNS SET OF |old-generic-result|"
-msgstr ""
-
-msgid "RETURNS SET OF |result-1-1|"
-msgstr ""
-
-msgid "RETURNS SET OF |result-1-m|"
-msgstr ""
-
-msgid "RETURNS SET OF |result-m-1|"
 msgstr ""
 
 msgid "pgr_bdAstarCost"
@@ -7297,10 +7369,22 @@ msgstr ""
 msgid "pgr_bdDijkstra(`Edges SQL`_, `Combinations SQL`_ , [``directed``])"
 msgstr ""
 
+msgid "RETURNS SET OF |old-generic-result|"
+msgstr ""
+
+msgid "RETURNS SET OF |result-1-1|"
+msgstr ""
+
 msgid "From vertex :math:`6` to vertex  :math:`10` on a **directed** graph"
 msgstr ""
 
+msgid "RETURNS SET OF |result-1-m|"
+msgstr ""
+
 msgid "From vertex :math:`6` to vertices :math:`\\{10, 17\\}` on a **directed** graph"
+msgstr ""
+
+msgid "RETURNS SET OF |result-m-1|"
 msgstr ""
 
 msgid "From vertices :math:`\\{6, 1\\}` to vertex :math:`17` on a **directed** graph"
@@ -8602,6 +8686,9 @@ msgstr ""
 msgid "``pgr_dijkstra`` — Shortest path(s) using Dijkstra algorithm."
 msgstr ""
 
+msgid "Version 3.5.0"
+msgstr ""
+
 msgid "``pgr_dijkstra`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns."
 msgstr ""
 
@@ -9265,7 +9352,7 @@ msgstr ""
 msgid "``equicost``"
 msgstr ""
 
-msgid "When ``true`` the node will only appear in the closest ``from_v`` list."
+msgid "When ``true`` the node will only appear in the closest ``start_vid`` list."
 msgstr ""
 
 msgid "When ``false`` which resembles several calls using the single starting point signatures. Tie brakes are arbitrary."
@@ -12577,7 +12664,7 @@ msgstr ""
 msgid "Official functions changes"
 msgstr ""
 
-msgid "aStar"
+msgid "`2516 <https://github.com/pgRouting/pgrouting/pull/2516>` Standarize output pgr_aStar"
 msgstr ""
 
 msgid "``pgr_aStar`` (`One to One`) added ``start_vid`` and ``end_vid`` columns."
@@ -12587,6 +12674,18 @@ msgid "``pgr_aStar`` (`One to Many`) added ``end_vid`` column."
 msgstr ""
 
 msgid "``pgr_aStar`` (`Many to One`) added ``start_vid`` column."
+msgstr ""
+
+msgid "`2523 <https://github.com/pgRouting/pgrouting/pull/2523>` Standarize output pgr_bdAstar"
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`One to One`) added ``start_vid`` and ``end_vid`` columns."
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`One to Many`) added ``end_vid`` column."
+msgstr ""
+
+msgid "``pgr_bdAstar`` (`Many to One`) added ``start_vid`` column."
 msgstr ""
 
 msgid "C/C++ code enhancements"
@@ -12608,6 +12707,9 @@ msgid "`2517 <https://github.com/pgRouting/pgrouting/pull/2517>` Astar code simp
 msgstr ""
 
 msgid "`2521 <https://github.com/pgRouting/pgrouting/pull/2521>` Dijkstra code simplification."
+msgstr ""
+
+msgid "`2522 <https://github.com/pgRouting/pgrouting/pull/2522>` bdAstar code simplification."
 msgstr ""
 
 msgid "Documentation"
@@ -15134,7 +15236,4 @@ msgid "pgr_withPointsDD is pgr_drivingDistance **with points**"
 msgstr ""
 
 msgid "pgr_withPointsvia is pgr_dijkstraVia **with points**"
-msgstr ""
-
-msgid "Advanced Documentation"
 msgstr ""

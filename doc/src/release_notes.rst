@@ -24,13 +24,24 @@ pgRouting 3.6.0 Release Notes
 
 .. rubric:: Official functions changes
 
-* aStar
+* `2516 <https://github.com/pgRouting/pgrouting/pull/2516>` Standarize output
+  pgr_aStar
 
   * Standarizing output columns to |short-generic-result|
 
     * ``pgr_aStar`` (`One to One`) added ``start_vid`` and ``end_vid`` columns.
     * ``pgr_aStar`` (`One to Many`) added ``end_vid`` column.
     * ``pgr_aStar`` (`Many to One`) added ``start_vid`` column.
+
+* `2523 <https://github.com/pgRouting/pgrouting/pull/2523>` Standarize output
+  pgr_bdAstar
+
+  * Standarizing output columns to |short-generic-result|
+
+    * ``pgr_bdAstar`` (`One to One`) added ``start_vid`` and ``end_vid`` columns.
+    * ``pgr_bdAstar`` (`One to Many`) added ``end_vid`` column.
+    * ``pgr_bdAstar`` (`Many to One`) added ``start_vid`` column.
+
 
 .. rubric:: C/C++ code enhancements
 
@@ -45,6 +56,8 @@ pgRouting 3.6.0 Release Notes
 * `2517 <https://github.com/pgRouting/pgrouting/pull/2517>` Astar code
   simplification.
 * `2521 <https://github.com/pgRouting/pgrouting/pull/2521>` Dijkstra code
+  simplification.
+* `2522 <https://github.com/pgRouting/pgrouting/pull/2522>` bdAstar code
   simplification.
 
 .. rubric:: Documentation
