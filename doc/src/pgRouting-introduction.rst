@@ -106,6 +106,7 @@ Akio Takubo,
 Andrea Nardelli,
 Anthony Tasca,
 Anton Patrushev,
+Arun Thakur
 Ashraf Hossain,
 Ashish Kumar,
 Cayetano Benavent,
