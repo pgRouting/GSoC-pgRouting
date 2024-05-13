@@ -5,6 +5,8 @@ https://gitter.im/pgRouting/pgrouting](https://badges.gitter.im/Join%20Chat.svg)
 [Join discourse](https://discourse.osgeo.org/c/pgrouting/15)
 
 
+foo
+
 ## Branches
 
 * The *main* branch has the development of the next micro release
