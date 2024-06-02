@@ -1,14 +1,14 @@
 /*PGR-GNU*****************************************************************
 
-File: _floydWarshall.sql
+File: centrality.sql
 
 Template:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function developer:
-Copyright (c) 2015 Vicky Vergara
-vicky_vergara@hotmail.com
+Copyright (c) 2024 Arun Thakur
+bedupako12mas@gmail.com
 
 ------
 
@@ -28,23 +28,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
----------------------
--- pgr_floydWarshall
----------------------
-
---v3.0
-CREATE FUNCTION _pgr_floydWarshall(
-    edges_sql TEXT,
-    directed BOOLEAN,
+--v3.7
+CREATE FUNCTION pgr_centrality(
+    TEXT,    -- edges_sql (required)
+    directed BOOLEAN DEFAULT true,
 
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C VOLATILE STRICT;
+$BODY$
+
+    SELECT start_vid, end_vid, agg_cost
+    FROM _pgr_centrality(_pgr_get_statement($1), $2);
+
+$BODY$
+LANGUAGE SQL VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_floydWarshall(TEXT, BOOLEAN)
-IS 'pgRouting internal function';
+COMMENT ON FUNCTION pgr_centrality(TEXT, BOOLEAN)
+IS 'pgr_centrality
+- Parameters:
+    - edges SQL with columns: source, target, cost [,reverse_cost])
+- Optional Parameters:
+    - directed := true
+- Documentation:
+    - ${PROJECT_DOC_LINK}/pgr_centrality.html
+';
