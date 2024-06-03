@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2024 Arun Thakur
-Mail: bedupako12mas@gmail.com
+Mail: bedupako12mas at gmail.com
 
 ------
 
@@ -35,10 +35,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
-#include "drivers/allpairs/floydWarshall_driver.h"
+#include "drivers/metrics/centrality_driver.h"
 
-PGDLLEXPORT Datum _pgr_floydwarshall(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_floydwarshall);
+PGDLLEXPORT Datum _pgr_centrality(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_centrality);
 
 static
 void
@@ -53,14 +53,14 @@ process(
     char* err_msg = NULL;
 
     clock_t start_t = clock();
-    pgr_do_floydWarshall(
+    pgr_do_centrality(
             edges_sql,
             directed,
             result_tuples,
             result_count,
             &log_msg,
             &err_msg);
-    time_msg(" processing FloydWarshall", start_t, clock());
+    time_msg(" processing Centrality", start_t, clock());
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
@@ -79,7 +79,7 @@ process(
 
 
 PGDLLEXPORT Datum
-_pgr_floydwarshall(PG_FUNCTION_ARGS) {
+_pgr_centrality(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
