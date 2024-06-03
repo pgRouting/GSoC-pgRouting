@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2024 Arun Thakur
-Mail: bedupako12mas@gmail.com
+Mail: bedupako12mas at gmail.com
 
 ------
 
@@ -27,13 +27,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/allpairs/floydWarshall_driver.h"
+#include "drivers/metrics/centrality_driver.h"
 
 #include <sstream>
 #include <deque>
 #include <vector>
 #include <string>
-
+//TODO: Right now this is doing the floyd warshall, creating the centrality algorithm is pending
 #include "allpairs/pgr_allpairs.hpp"
 #include "cpp_common/pgdata_getters.hpp"
 
@@ -41,7 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 void
-pgr_do_floydWarshall(
+pgr_do_centrality(
         char *edges_sql,
         bool directed,
 
