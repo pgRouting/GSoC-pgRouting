@@ -101,9 +101,8 @@ Result columns
 See Also
 -------------------------------------------------------------------------------
 
-* :doc:`pgr_johnson`
-* Boost `floyd-Warshall
-  <https://www.boost.org/libs/graph/doc/floyd_warshall_shortest.html>`_
+* Boost `centrality
+  <https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html>`_
 * Queries uses the :doc:`sampledata` network.
 
 .. rubric:: Indices and tables
