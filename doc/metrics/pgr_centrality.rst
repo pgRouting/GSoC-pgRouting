@@ -10,39 +10,28 @@
 |
 
 
-``pgr_floydWarshall``
+``pgr_centrality``
 ===============================================================================
 
-``pgr_floydWarshall`` - Returns the sum of the costs of the shortest path for
-each pair of nodes in the graph using Floyd-Warshall algorithm.
+``pgr_centrality`` - Returns the relative betweeness centrality of 
+all edges in a graph using Brandes Algorithm.
 
 .. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/floyd_warshall_shortest.html
+   :target: https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html
 
    Boost Graph Inside
 
 .. rubric:: Availability
-
-* Version 2.2.0
-
-  * Signature change
-  * Old signature no longer supported
-
-* Version 2.0.0
-
-  * **Official** function
+.. TODO: Add availability
 
 Description
 -------------------------------------------------------------------------------
 
-The Floyd-Warshall algorithm, also known as Floyd's algorithm, is a good choice
-to calculate the sum of the costs of the shortest path for each pair of nodes in
-the graph, for *dense graphs*.
-We use Boost's implementation which runs in :math:`\Theta(V^3)` time,
-
-.. include:: allpairs-family.rst
-   :start-after: characteristics_start
-   :end-before: characteristics_end
+The Brandes Algorithm for utilises the sparse nature of graphs to evaluating the
+betweenness centrality score of all edges/vertices.
+We use Boost's implementation which runs in :math:`\Theta(VE)` for unweighted 
+graphs and :math:`Theta(VE + V(V+E)log(V))` for weighted graphs and uses
+:math:`\Theta(VE)` space.
 
 Signatures
 -------------------------------------------------------------------------------
@@ -52,15 +41,15 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   pgr_floydWarshall(`Edges SQL`_, [``directed``])
+   pgr_centrality(`Edges SQL`_, [``directed``])
 
-   | Returns set of |matrix-result|
+   | Returns set of ```(seq, edge_id, betweenness_centrality)``` 
    | OR EMPTY SET
 
-
+.. TODO: Fix this when docqueries are made 
 :Example: For a directed subgraph with edges :math:`\{1, 2, 3, 4\}`.
 
-.. literalinclude:: doc-floydWarshall.queries
+.. literalinclude:: floydWarshall.queries
    :start-after: -- q1
    :end-before: -- q2
 
@@ -91,9 +80,23 @@ Edges SQL
 Result columns
 -------------------------------------------------------------------------------
 
-.. include:: pgRouting-concepts.rst
-    :start-after: return_cost_start
-    :end-before: return_cost_end
+.. list-table::
+	:width: 81
+	:widths: auto
+	:header-rows: 1
+	
+	* - Column
+	  - Type
+	  - Description
+	* - ``seq``
+	  - ``INTEGER``
+	  - Sequential Value starting from ``1``
+	* - ``edge_id``
+	  - ``BIGINT``
+	  - Identifier of the edge
+	* - ``centrality``
+	  - ``FLOAT``	
+	  - relative betweenness centrality score of the edge (will be in range [0,1])
 
 See Also
 -------------------------------------------------------------------------------
