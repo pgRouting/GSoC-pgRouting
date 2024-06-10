@@ -30,7 +30,7 @@ Description
 The Brandes Algorithm for utilises the sparse nature of graphs to evaluating the
 betweenness centrality score of all edges/vertices.
 We use Boost's implementation which runs in :math:`\Theta(VE)` for unweighted 
-graphs and :math:`Theta(VE + V(V+E)log(V))` for weighted graphs and uses
+graphs and :math:`\Theta(VE + V(V+E) \log V)` for weighted graphs and uses
 :math:`\Theta(VE)` space.
 
 Signatures

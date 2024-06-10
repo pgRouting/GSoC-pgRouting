@@ -1,7 +1,6 @@
 # Do not use extensions
 SET(LOCAL_FILES
-    doc-floydWarshall
-    doc-johnson
+	centrality
     )
 
 foreach (f ${LOCAL_FILES})
