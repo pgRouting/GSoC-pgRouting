@@ -1,10 +1,8 @@
 
 SET(LOCAL_FILES
-    _johnson.sql
-    johnson.sql
-    _floydWarshall.sql
-    floydWarshall.sql
-    )
+    _centrality.sql
+    centrality.sql
+)
 
 foreach (f ${LOCAL_FILES})
     configure_file(${f} ${f})

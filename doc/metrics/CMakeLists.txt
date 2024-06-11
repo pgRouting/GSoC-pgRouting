@@ -1,8 +1,7 @@
 
 SET(LOCAL_FILES
-    allpairs-family.rst
-    pgr_floydWarshall.rst
-    pgr_johnson.rst
+    metrics-family.rst
+    pgr_centrality.rst
     )
 
 foreach (f ${LOCAL_FILES})
