@@ -34,6 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <string>
 //TODO: Right now this is doing the floyd warshall, creating the centrality algorithm is pending
+#include "metrics/centrality.hpp"
 #include "allpairs/pgr_allpairs.hpp"
 #include "cpp_common/pgdata_getters.hpp"
 

@@ -4,8 +4,8 @@ File: pgr_allpairs.hpp
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Copyright (c) 2024 Arun Thakur
+Mail: bedupako12mas@gmail.com
 
 ------
 
