@@ -50,33 +50,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_alloc.hpp"
 
 namespace pgrouting  {
-template < class G > class Pgr_allpairs;
+template < class G > class Pgr_metrics;
 
 // user's functions
 template < class G >
 void
-pgr_floydWarshall(G &graph, std::vector< IID_t_rt> &rows) {
-    Pgr_allpairs< G > fn_floydWarshall;
-    fn_floydWarshall.floydWarshall(graph, rows);
+pgr_centrality(G &graph, std::vector< IID_t_rt> &rows) {
+    Pgr_metrics< G > fn_centrality;
+    fn_centrality.centrality(graph, rows);
 }
 
 // for postgres
 template < class G >
 void
-pgr_floydWarshall(
+pgr_centrality(
         G &graph,
         size_t &result_tuple_count,
         IID_t_rt **postgres_rows) {
-    Pgr_allpairs< G > fn_floydWarshall;
-    fn_floydWarshall.floydWarshall(graph, result_tuple_count, postgres_rows);
+    Pgr_metrics< G > fn_centrality;
+    fn_centrality.centrality(graph, result_tuple_count, postgres_rows);
 }
 
 
 // template class
 template < class G >
-class Pgr_allpairs {
+class Pgr_metrics {
  public:
-     void floydWarshall(
+     void centrality(
              G &graph,
              size_t &result_tuple_count,
              IID_t_rt **postgres_rows) {
@@ -98,7 +98,7 @@ class Pgr_allpairs {
          make_result(graph, matrix, result_tuple_count, postgres_rows);
      }
 
-     void floydWarshall(
+     void centrality(
              G &graph,
              std::vector< IID_t_rt> &rows) {
          std::vector< std::vector<double>> matrix;
