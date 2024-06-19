@@ -35,7 +35,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <string>
 //TODO: Right now this is doing the floyd warshall, creating the centrality algorithm is pending
 #include "metrics/centrality.hpp"
-#include "allpairs/pgr_allpairs.hpp"
 #include "cpp_common/pgdata_getters.hpp"
 
 #include "cpp_common/pgr_assert.hpp"
@@ -75,12 +74,12 @@ pgr_do_centrality(
             log << "Processing Directed graph\n";
             pgrouting::DirectedGraph digraph;
             digraph.insert_edges(edges);
-            pgr_floydWarshall(digraph, *return_count, return_tuples);
+            pgr_centrality(digraph, *return_count, return_tuples);
         } else {
             log << "Processing Undirected graph\n";
             pgrouting::UndirectedGraph undigraph;
             undigraph.insert_edges(edges);
-            pgr_floydWarshall(undigraph, *return_count, return_tuples);
+            pgr_centrality(undigraph, *return_count, return_tuples);
         }
 
 
