@@ -38,6 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/property_map/property_map.hpp>
+#include <boost/graph/betweenness_centrality.hpp>
 #include <boost/graph/johnson_all_pairs_shortest.hpp>
 #include <boost/graph/floyd_warshall_shortest.hpp>
 
@@ -76,7 +77,13 @@ pgr_centrality(
 template < class G >
 class Pgr_metrics {
  public:
-     void centrality(
+	 typedef typename G::V V;
+     typedef typename G::E E;
+     typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
+     typedef boost::graph_traits<Graph>::vertices_size_type size_type;
+     typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;	 
+
+	 void centrality(
              G &graph,
              size_t &result_tuple_count,
              IID_t_rt **postgres_rows) {
@@ -118,8 +125,41 @@ class Pgr_metrics {
 
          make_result(graph, matrix, rows);
      }
+	 void betweennessCentrality (
+			 const G &graph,
+			 size_t &result_tuple_count,
+			 IID_t_rt **postgres_rows ){
+		 std::map<V,double> centrality_score;
+		 boost::associative_property_map<std::map<Vertex,double>> centrality_map(centrality_score);
+		 /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
+		 CHECK_FOR_INTERRUPTS();
+
+		 boost::brandes_betweenness_centrality(graph, centrality_map);
+		 std::map<int64_t,double> centrality_results;
+		 boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
+		 for(boost::tie(vi, vi_end) = vertices(graph); vi != vi_end; ++vi) {
+		 	centrality_results[graph[*vi].id] = centrality_map[*vi];	
+		 }
+	 }
 
  private:
+	 void generate_results(
+			 const G &graph,
+			 const std::map<int64_t, double> centrality_results,
+			 size_t &result_tuple_count,
+			 IID_t_rt **postgres_rows) const {
+		 result_tuple_count = centrality_results.size();
+		 *postgres_rows = pgr_alloc(result_tuple_count, (*postgres_rows));
+
+
+		 size_t seq = 0;
+		 for(auto results : centrality_results) {
+		 	(*postgres_rows)[seq].from_vid = results.first;
+			(*postgres_rows)[seq].to_vid = 0;
+			(*postgres_rows)[seq].cost = results.second;
+			seq++;		
+		 }
+	 }
      void make_matrix(
              size_t v_size,
              std::vector< std::vector<double>> &matrix) const {
