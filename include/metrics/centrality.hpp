@@ -38,6 +38,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/property_map/property_map.hpp>
+#include <boost/graph/betweenness_centrality.hpp>
+#include <boost/graph/graph_traits.hpp>
 #include <boost/graph/johnson_all_pairs_shortest.hpp>
 #include <boost/graph/floyd_warshall_shortest.hpp>
 
@@ -68,7 +70,7 @@ pgr_centrality(
         size_t &result_tuple_count,
         IID_t_rt **postgres_rows) {
     Pgr_metrics< G > fn_centrality;
-    fn_centrality.centrality(graph, result_tuple_count, postgres_rows);
+    fn_centrality.betweennessCentrality(graph, result_tuple_count, postgres_rows);
 }
 
 
@@ -76,126 +78,55 @@ pgr_centrality(
 template < class G >
 class Pgr_metrics {
  public:
-     void centrality(
-             G &graph,
-             size_t &result_tuple_count,
-             IID_t_rt **postgres_rows) {
-         std::vector< std::vector<double>> matrix;
-         make_matrix(graph.num_vertices(), matrix);
-         inf_plus<double> combine;
+	 using Graph = typename G::B_G;
+     using Vertex = typename G::V;
+	 
+	 void betweennessCentrality (
+			 const G &graph,
+			 size_t &result_tuple_count,
+			 IID_t_rt **postgres_rows ){
+		 	 std::map<int64_t, double> centrality_map;
+			 std::vector<double> centrality_score(boost::num_vertices(graph.graph));
 
-         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
-         CHECK_FOR_INTERRUPTS();
+		 /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
+		 CHECK_FOR_INTERRUPTS();
+		 boost::brandes_betweenness_centrality(
+				 graph.graph,
+				 boost::centrality_map(
+					 boost::make_iterator_property_map(
+						 centrality_score.begin(),
+						 boost::get(boost::vertex_index, graph.graph)
+					 )
+				 )
+		 );
 
-         boost::floyd_warshall_all_pairs_shortest_paths(
-                 graph.graph,
-                 matrix,
-                 weight_map(get(&pgrouting::Basic_edge::cost, graph.graph)).
-                 distance_combine(combine).
-                 distance_inf((std::numeric_limits<double>::max)()).
-                 distance_zero(0));
+		 typename boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
+		 for(boost::tie(vi, vi_end) = boost::vertices(graph.graph); vi != vi_end; ++vi) {
+			 int64_t id = graph.graph[*vi].id;
+			 centrality_map[id] = centrality_score[boost::get(boost::vertex_index, graph.graph, *vi)];
+		 }
+		 
+		 generate_results(centrality_map, result_tuple_count, postgres_rows);
 
-         make_result(graph, matrix, result_tuple_count, postgres_rows);
-     }
-
-     void centrality(
-             G &graph,
-             std::vector< IID_t_rt> &rows) {
-         std::vector< std::vector<double>> matrix;
-         make_matrix(graph.num_vertices(), matrix);
-         inf_plus<double> combine;
-
-         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
-         CHECK_FOR_INTERRUPTS();
-
-         boost::floyd_warshall_all_pairs_shortest_paths(
-                 graph.graph,
-                 matrix,
-                 weight_map(get(&pgrouting::Basic_edge::cost, graph.graph)).
-                 distance_combine(combine).
-                 distance_inf((std::numeric_limits<double>::max)()).
-                 distance_zero(0));
-
-         make_result(graph, matrix, rows);
-     }
+	 }
 
  private:
-     void make_matrix(
-             size_t v_size,
-             std::vector< std::vector<double>> &matrix) const {
-         // TODO(vicky) in one step
-         matrix.resize(v_size);
-         for (size_t i=0; i < v_size; i++)
-             matrix[i].resize(v_size);
-     }
-
-     void make_result(
-             const G &graph,
-             const std::vector< std::vector<double> > &matrix,
-             size_t &result_tuple_count,
-             IID_t_rt **postgres_rows) const {
-         result_tuple_count = count_rows(graph, matrix);
-         *postgres_rows = pgr_alloc(result_tuple_count, (*postgres_rows));
+	 void generate_results(
+			 const std::map<int64_t, double> centrality_results,
+			 size_t &result_tuple_count,
+			 IID_t_rt **postgres_rows) const {
+		 result_tuple_count = centrality_results.size();
+		 *postgres_rows = pgr_alloc(result_tuple_count, (*postgres_rows));
 
 
-         size_t seq = 0;
-         for (typename G::V v_i = 0; v_i < graph.num_vertices(); v_i++) {
-             for (typename G::V v_j = 0; v_j < graph.num_vertices(); v_j++) {
-                 if (v_i == v_j) continue;
-                 if (matrix[v_i][v_j] != (std::numeric_limits<double>::max)()) {
-                     (*postgres_rows)[seq].from_vid = graph[v_i].id;
-                     (*postgres_rows)[seq].to_vid = graph[v_j].id;
-                     (*postgres_rows)[seq].cost =  matrix[v_i][v_j];
-                     seq++;
-                 }  // if
-             }  // for j
-         }  // for i
-     }
-
-
-     size_t count_rows(
-             const G &graph,
-             const std::vector< std::vector<double> > &matrix) const {
-         size_t result_tuple_count = 0;
-         for (size_t i = 0; i < graph.num_vertices(); i++) {
-             for (size_t j = 0; j < graph.num_vertices(); j++) {
-                 if (i == j) continue;
-                 if (matrix[i][j] != (std::numeric_limits<double>::max)()) {
-                     result_tuple_count++;
-                 }  // if
-             }  // for j
-         }  // for i
-         return result_tuple_count;
-     }
-
-     void make_result(
-             G &graph,
-             std::vector< std::vector<double> > &matrix,
-             std::vector< IID_t_rt> &rows) {
-         size_t count = count_rows(graph, matrix);
-         rows.resize(count);
-         size_t seq = 0;
-
-         for (typename G::V v_i = 0; v_i < graph.num_vertices(); v_i++) {
-             for (typename G::V v_j = 0; v_j < graph.num_vertices(); v_j++) {
-                 if (matrix[v_i][v_j] != (std::numeric_limits<double>::max)()) {
-                     rows[seq] =
-                     {graph[v_i].id, graph[v_j].id, matrix[v_i][v_j]};
-                     seq++;
-                 }  // if
-             }  // for j
-         }  // for i
-     }
-
-     template <typename T>
-     struct inf_plus {
-         T operator()(const T& a, const T& b) const {
-             T inf = (std::numeric_limits<T>::max)();
-             if (a == inf || b == inf)
-                 return inf;
-             return a + b;
-         }
-     };
+		 size_t seq = 0;
+		 for(auto results : centrality_results) {
+		 	(*postgres_rows)[seq].from_vid = results.first;
+			(*postgres_rows)[seq].to_vid = 0;
+			(*postgres_rows)[seq].cost = results.second;
+			seq++;		
+		 }
+	 }
 };
 
 }  // namespace pgrouting
