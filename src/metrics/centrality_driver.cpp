@@ -33,8 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <deque>
 #include <vector>
 #include <string>
-//TODO: Right now this is doing the floyd warshall, creating the centrality algorithm is pending
-#include "metrics/centrality.hpp"
+#include "metrics/betweennessCentrality.hpp"
 #include "cpp_common/pgdata_getters.hpp"
 
 #include "cpp_common/pgr_assert.hpp"
