@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: centrality.hpp
+File: betweennessCentrality.hpp
 
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,8 +26,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 
-#ifndef INCLUDE_METRICS_CENTRALITY_HPP_
-#define INCLUDE_METRICS_CENTRALITY_HPP_
+#ifndef INCLUDE_METRICS_BETWEENNESSCENTRALITY_HPP_
+#define INCLUDE_METRICS_BETWEENNESSCENTRALITY_HPP_
 #pragma once
 
 #include <deque>
@@ -131,4 +131,4 @@ class Pgr_metrics {
 
 }  // namespace pgrouting
 
-#endif  // INCLUDE_METRICS_CENTRALITY_HPP_
+#endif  // INCLUDE_METRICS_BETWEENNESSCENTRALITY_HPP_
