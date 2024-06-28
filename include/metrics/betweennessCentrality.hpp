@@ -48,18 +48,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_alloc.hpp"
 
 namespace pgrouting  {
-template < class G > class Pgr_metrics;
+template <class G> class Pgr_metrics;
 
-// user's functions
-template < class G >
-void
-pgr_centrality(G &graph, std::vector< IID_t_rt> &rows) {
-    Pgr_metrics< G > fn_centrality;
-    fn_centrality.centrality(graph, rows);
-}
 
 // for postgres
-template < class G >
+template <class G>
 void
 pgr_centrality(
         G &graph,
@@ -71,7 +64,7 @@ pgr_centrality(
 
 
 // template class
-template < class G >
+template <class G>
 class Pgr_metrics {
  public:
 	 using Graph = typename G::B_G;

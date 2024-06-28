@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: floydWarshall_driver.h
+File: betweennessCentrality_driver.h
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_METRICS_CENTRALITY_DRIVER_H_
-#define INCLUDE_DRIVERS_METRICS_CENTRALITY_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_METRICS_BETWEENNESSCENTRALITY_DRIVER_H_
+#define INCLUDE_DRIVERS_METRICS_BETWEENNESSCENTRALITY_DRIVER_H_
 #pragma once
 
 /* for size-t */
@@ -61,4 +61,4 @@ pgr_do_centrality(
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_METRICS_CENTRALITY_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_METRICS_BETWEENNESSCENTRALITY_DRIVER_H_
