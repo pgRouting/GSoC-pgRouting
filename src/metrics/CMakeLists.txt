@@ -1,4 +1,4 @@
 ADD_LIBRARY(metrics OBJECT
-		centrality.c
-		centrality_driver.cpp
+		betweennessCentrality.c
+		betweennessCentrality_driver.cpp
     )

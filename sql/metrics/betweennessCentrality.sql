@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --v3.7
 CREATE FUNCTION pgr_centrality(
     TEXT,    -- edges_sql (required)
-    directed BOOLEAN DEFAULT true,
+    directed BOOLEAN DEFAULT false,
 
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
