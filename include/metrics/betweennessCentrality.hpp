@@ -54,7 +54,7 @@ template <class G> class Pgr_metrics;
 // for postgres
 template <class G>
 void
-pgr_centrality(
+pgr_betweennessCentrality(
         G &graph,
         size_t &result_tuple_count,
         IID_t_rt **postgres_rows) {

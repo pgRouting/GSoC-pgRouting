@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: centrality_driver.cpp
+File: betweennessCentrality_driver.cpp
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
@@ -73,12 +73,12 @@ pgr_do_centrality(
             log << "Processing Directed graph\n";
             pgrouting::DirectedGraph digraph;
             digraph.insert_edges(edges);
-            pgr_centrality(digraph, *return_count, return_tuples);
+            pgr_betweennessCentrality(digraph, *return_count, return_tuples);
         } else {
             log << "Processing Undirected graph\n";
             pgrouting::UndirectedGraph undigraph;
             undigraph.insert_edges(edges);
-            pgr_centrality(undigraph, *return_count, return_tuples);
+            pgr_betweennessCentrality(undigraph, *return_count, return_tuples);
         }
 
 
