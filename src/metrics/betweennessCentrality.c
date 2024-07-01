@@ -37,8 +37,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/metrics/betweennessCentrality_driver.h"
 
-PGDLLEXPORT Datum _pgr_centrality(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_centrality);
+PGDLLEXPORT Datum _pgr_betweennesscentrality(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_betweennesscentrality);
 
 static
 void
@@ -53,7 +53,7 @@ process(
     char* err_msg = NULL;
 
     clock_t start_t = clock();
-    pgr_do_centrality(
+    pgr_do_betweennesscentrality(
             edges_sql,
             directed,
             result_tuples,
@@ -79,7 +79,7 @@ process(
 
 
 PGDLLEXPORT Datum
-_pgr_centrality(PG_FUNCTION_ARGS) {
+_pgr_betweennesscentrality(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 

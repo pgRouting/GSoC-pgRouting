@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 void
-pgr_do_centrality(
+pgr_do_betweennesscentrality(
         char *edges_sql,
         bool directed,
 
@@ -73,12 +73,12 @@ pgr_do_centrality(
             log << "Processing Directed graph\n";
             pgrouting::DirectedGraph digraph;
             digraph.insert_edges(edges);
-            pgr_betweennessCentrality(digraph, *return_count, return_tuples);
+            pgr_betweennesscentrality(digraph, *return_count, return_tuples);
         } else {
             log << "Processing Undirected graph\n";
             pgrouting::UndirectedGraph undigraph;
             undigraph.insert_edges(edges);
-            pgr_betweennessCentrality(undigraph, *return_count, return_tuples);
+            pgr_betweennesscentrality(undigraph, *return_count, return_tuples);
         }
 
 

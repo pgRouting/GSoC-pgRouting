@@ -48,7 +48,7 @@ extern "C" {
 #endif
 
 void
-pgr_do_centrality(
+pgr_do_betweennesscentrality(
     char*,
     bool,
 

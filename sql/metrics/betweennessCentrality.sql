@@ -1,6 +1,6 @@
 /*PGR-GNU*****************************************************************
 
-File: centrality.sql
+File: betweennessCentrality.sql
 
 Template:
 Copyright (c) 2015 pgRouting developers
@@ -29,26 +29,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v3.7
-CREATE FUNCTION pgr_centrality(
+CREATE FUNCTION pgr_betweennesscentrality(
     TEXT,    -- edges_sql (required)
     directed BOOLEAN DEFAULT false,
 
     OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
+	OUT end_vid BIGINT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
 
     SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_centrality(_pgr_get_statement($1), $2);
+    FROM _pgr_betweennesscentrality(_pgr_get_statement($1), $2);
 
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_centrality(TEXT, BOOLEAN)
-IS 'pgr_centrality
+COMMENT ON FUNCTION pgr_betweennesscentrality(TEXT, BOOLEAN)
+IS 'pgr_betweennessCentrality
 - Parameters:
     - edges SQL with columns: source, target, cost [,reverse_cost])
 - Optional Parameters:
