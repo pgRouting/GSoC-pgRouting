@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: centrality_driver.cpp
+File: betweennessCentrality_driver.cpp
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
@@ -27,21 +27,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/metrics/centrality_driver.h"
+#include "drivers/metrics/betweennessCentrality_driver.h"
 
 #include <sstream>
 #include <deque>
 #include <vector>
 #include <string>
-//TODO: Right now this is doing the floyd warshall, creating the centrality algorithm is pending
-#include "metrics/centrality.hpp"
+#include "metrics/betweennessCentrality.hpp"
 #include "cpp_common/pgdata_getters.hpp"
 
 #include "cpp_common/pgr_assert.hpp"
 
 
 void
-pgr_do_centrality(
+pgr_do_betweennesscentrality(
         char *edges_sql,
         bool directed,
 
@@ -74,12 +73,12 @@ pgr_do_centrality(
             log << "Processing Directed graph\n";
             pgrouting::DirectedGraph digraph;
             digraph.insert_edges(edges);
-            pgr_centrality(digraph, *return_count, return_tuples);
+            pgr_betweennesscentrality(digraph, *return_count, return_tuples);
         } else {
             log << "Processing Undirected graph\n";
             pgrouting::UndirectedGraph undigraph;
             undigraph.insert_edges(edges);
-            pgr_centrality(undigraph, *return_count, return_tuples);
+            pgr_betweennesscentrality(undigraph, *return_count, return_tuples);
         }
 
 

@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: centrality.hpp
+File: betweennessCentrality.hpp
 
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,22 +26,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 
-#ifndef INCLUDE_METRICS_CENTRALITY_HPP_
-#define INCLUDE_METRICS_CENTRALITY_HPP_
+#ifndef INCLUDE_METRICS_BETWEENNESSCENTRALITY_HPP_
+#define INCLUDE_METRICS_BETWEENNESSCENTRALITY_HPP_
 #pragma once
 
-#include <deque>
 #include <vector>
-#include <set>
-#include <limits>
+#include <map>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/betweenness_centrality.hpp>
 #include <boost/graph/graph_traits.hpp>
-#include <boost/graph/johnson_all_pairs_shortest.hpp>
-#include <boost/graph/floyd_warshall_shortest.hpp>
 
 #include "c_types/iid_t_rt.h"
 #include "cpp_common/basePath_SSEC.hpp"
@@ -52,20 +48,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_alloc.hpp"
 
 namespace pgrouting  {
-template < class G > class Pgr_metrics;
+template <class G> class Pgr_metrics;
 
-// user's functions
-template < class G >
-void
-pgr_centrality(G &graph, std::vector< IID_t_rt> &rows) {
-    Pgr_metrics< G > fn_centrality;
-    fn_centrality.centrality(graph, rows);
-}
 
 // for postgres
-template < class G >
+template <class G>
 void
-pgr_centrality(
+pgr_betweennesscentrality(
         G &graph,
         size_t &result_tuple_count,
         IID_t_rt **postgres_rows) {
@@ -75,7 +64,7 @@ pgr_centrality(
 
 
 // template class
-template < class G >
+template <class G>
 class Pgr_metrics {
  public:
 	 using Graph = typename G::B_G;
@@ -85,50 +74,47 @@ class Pgr_metrics {
 			 const G &graph,
 			 size_t &result_tuple_count,
 			 IID_t_rt **postgres_rows ){
-		 	 std::map<int64_t, double> centrality_map;
-			 std::vector<double> centrality_score(boost::num_vertices(graph.graph));
+		 
+		 std::vector<double> centrality(boost::num_vertices(graph.graph), 0.0);
+		 auto centrality_map = boost::make_iterator_property_map(centrality.begin(),
+				 												 boost::get(boost::vertex_index, graph.graph)
+				 												);
 
 		 /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
 		 CHECK_FOR_INTERRUPTS();
 		 boost::brandes_betweenness_centrality(
 				 graph.graph,
-				 boost::centrality_map(
-					 boost::make_iterator_property_map(
-						 centrality_score.begin(),
-						 boost::get(boost::vertex_index, graph.graph)
-					 )
-				 )
+				 centrality_map
 		 );
-
-		 typename boost::graph_traits<Graph>::vertex_iterator vi, vi_end;
-		 for(boost::tie(vi, vi_end) = boost::vertices(graph.graph); vi != vi_end; ++vi) {
-			 int64_t id = graph.graph[*vi].id;
-			 centrality_map[id] = centrality_score[boost::get(boost::vertex_index, graph.graph, *vi)];
+		 if(boost::num_vertices(graph.graph) > 2){
+		 	boost::relative_betweenness_centrality(
+				 graph.graph,
+				 centrality_map
+		 	);
 		 }
 		 
-		 generate_results(centrality_map, result_tuple_count, postgres_rows);
-
+		 generate_results(graph, centrality, result_tuple_count, postgres_rows);
 	 }
 
  private:
 	 void generate_results(
-			 const std::map<int64_t, double> centrality_results,
+			 const G &graph,
+			 const std::vector<double> centrality_results,
 			 size_t &result_tuple_count,
 			 IID_t_rt **postgres_rows) const {
 		 result_tuple_count = centrality_results.size();
 		 *postgres_rows = pgr_alloc(result_tuple_count, (*postgres_rows));
 
-
 		 size_t seq = 0;
-		 for(auto results : centrality_results) {
-		 	(*postgres_rows)[seq].from_vid = results.first;
+	 	 for(typename G::V v_i = 0; v_i < graph.num_vertices(); ++v_i) {
+		 	(*postgres_rows)[seq].from_vid = graph[v_i].id;
 			(*postgres_rows)[seq].to_vid = 0;
-			(*postgres_rows)[seq].cost = results.second;
-			seq++;		
+			(*postgres_rows)[seq].cost = centrality_results[v_i];
+			seq++;
 		 }
 	 }
 };
 
 }  // namespace pgrouting
 
-#endif  // INCLUDE_METRICS_CENTRALITY_HPP_
+#endif  // INCLUDE_METRICS_BETWEENNESSCENTRALITY_HPP_

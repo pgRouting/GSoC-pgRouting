@@ -1,13 +1,14 @@
 /*PGR-GNU*****************************************************************
-File: floydWarshall_driver.h
 
-Generated with Template by:
+File: _betweennessCentrality.sql
+
+Template:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
+Function developer:
 Copyright (c) 2024 Arun Thakur
-Mail: bedupako12mas at gmail.com
+bedupako12mas@gmail.com
 
 ------
 
@@ -27,38 +28,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_METRICS_CENTRALITY_DRIVER_H_
-#define INCLUDE_DRIVERS_METRICS_CENTRALITY_DRIVER_H_
-#pragma once
+--------------------------------
+-- pgr_betweennessCentrality
+--------------------------------
 
-/* for size-t */
-#ifdef __cplusplus
-#   include <cstddef>
-using IID_t_rt = struct IID_t_rt;
-#else
-#   include <stddef.h>
-#include <stdbool.h>
-typedef struct IID_t_rt IID_t_rt;
-#endif
+--v3.7
+CREATE FUNCTION _pgr_betweennesscentrality(
+    edges_sql TEXT,
+    directed BOOLEAN,
 
+    OUT vid BIGINT,
+    OUT betweenness_centrality FLOAT)
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT;
 
+-- COMMENTS
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void
-pgr_do_centrality(
-    char*,
-    bool,
-
-    IID_t_rt**,
-    size_t*,
-    char**,
-    char**);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif  // INCLUDE_DRIVERS_METRICS_CENTRALITY_DRIVER_H_
+COMMENT ON FUNCTION _pgr_betweennesscentrality(TEXT, BOOLEAN)
+IS 'pgRouting internal function';

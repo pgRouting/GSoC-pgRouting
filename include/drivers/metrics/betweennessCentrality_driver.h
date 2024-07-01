@@ -1,14 +1,13 @@
 /*PGR-GNU*****************************************************************
+File: betweennessCentrality_driver.h
 
-File: centrality.sql
-
-Template:
+Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Function developer:
+Function's developer:
 Copyright (c) 2024 Arun Thakur
-bedupako12mas@gmail.com
+Mail: bedupako12mas at gmail.com
 
 ------
 
@@ -28,31 +27,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---v3.7
-CREATE FUNCTION pgr_centrality(
-    TEXT,    -- edges_sql (required)
-    directed BOOLEAN DEFAULT true,
+#ifndef INCLUDE_DRIVERS_METRICS_BETWEENNESSCENTRALITY_DRIVER_H_
+#define INCLUDE_DRIVERS_METRICS_BETWEENNESSCENTRALITY_DRIVER_H_
+#pragma once
 
-    OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
-    OUT agg_cost FLOAT)
-RETURNS SETOF RECORD AS
-$BODY$
+/* for size-t */
+#ifdef __cplusplus
+#   include <cstddef>
+using IID_t_rt = struct IID_t_rt;
+#else
+#   include <stddef.h>
+#include <stdbool.h>
+typedef struct IID_t_rt IID_t_rt;
+#endif
 
-    SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_centrality(_pgr_get_statement($1), $2);
 
-$BODY$
-LANGUAGE SQL VOLATILE STRICT;
 
--- COMMENTS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-COMMENT ON FUNCTION pgr_centrality(TEXT, BOOLEAN)
-IS 'pgr_centrality
-- Parameters:
-    - edges SQL with columns: source, target, cost [,reverse_cost])
-- Optional Parameters:
-    - directed := true
-- Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_centrality.html
-';
+void
+pgr_do_betweennesscentrality(
+    char*,
+    bool,
+
+    IID_t_rt**,
+    size_t*,
+    char**,
+    char**);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // INCLUDE_DRIVERS_METRICS_BETWEENNESSCENTRALITY_DRIVER_H_

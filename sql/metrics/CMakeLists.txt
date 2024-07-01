@@ -1,7 +1,7 @@
 
 SET(LOCAL_FILES
-    _centrality.sql
-    centrality.sql
+    _betweennessCentrality.sql
+    betweennessCentrality.sql
 )
 
 foreach (f ${LOCAL_FILES})
