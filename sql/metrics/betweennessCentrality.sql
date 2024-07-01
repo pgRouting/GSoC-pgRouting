@@ -33,13 +33,12 @@ CREATE FUNCTION pgr_betweennesscentrality(
     TEXT,    -- edges_sql (required)
     directed BOOLEAN DEFAULT false,
 
-    OUT start_vid BIGINT,
-	OUT end_vid BIGINT,
-    OUT agg_cost FLOAT)
+    OUT vid BIGINT,
+    OUT betweenness_centrality FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
 
-    SELECT start_vid, end_vid, agg_cost
+    SELECT vid, betweenness_centrality
     FROM _pgr_betweennesscentrality(_pgr_get_statement($1), $2);
 
 $BODY$

@@ -37,9 +37,8 @@ CREATE FUNCTION _pgr_betweennesscentrality(
     edges_sql TEXT,
     directed BOOLEAN,
 
-    OUT start_vid BIGINT,
-	OUT end_vid BIGINT,
-    OUT agg_cost FLOAT)
+    OUT vid BIGINT,
+    OUT betweenness_centrality FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
