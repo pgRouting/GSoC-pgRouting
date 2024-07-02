@@ -69,7 +69,7 @@ class Pgr_metrics {
  public:
 	 using Graph = typename G::B_G;
      using Vertex = typename G::V;
-	 
+
 	 void betweennessCentrality (
 			 const G &graph,
 			 size_t &result_tuple_count,
@@ -86,12 +86,10 @@ class Pgr_metrics {
 				 graph.graph,
 				 centrality_map
 		 );
-		 if(boost::num_vertices(graph.graph) > 2){
-		 	boost::relative_betweenness_centrality(
-				 graph.graph,
-				 centrality_map
-		 	);
-		 }
+		 boost::relative_betweenness_centrality(
+			graph.graph,
+			centrality_map
+		 );
 		 
 		 generate_results(graph, centrality, result_tuple_count, postgres_rows);
 	 }

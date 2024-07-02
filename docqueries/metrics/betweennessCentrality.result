@@ -5,24 +5,15 @@ SET
 /* -- q1 */
 SELECT * FROM pgr_betweennesscentrality(
   'SELECT id, source, target, cost, reverse_cost
-  FROM edges where id < 5'
-) ORDER BY start_vid, end_vid;
- start_vid | end_vid | agg_cost
------------+---------+----------
-         5 |       6 |        1
-         5 |       7 |        2
-         6 |       5 |        1
-         6 |       7 |        1
-         7 |       5 |        2
-         7 |       6 |        1
-        10 |       5 |        2
-        10 |       6 |        1
-        10 |       7 |        2
-        15 |       5 |        3
-        15 |       6 |        2
-        15 |       7 |        3
-        15 |      10 |        1
-(13 rows)
+  FROM edges where id IN (6,7)', directed => false
+) ORDER BY vid;
+
+ vid | betweenness_centrality 
+-----+------------------------
+   1 |                      0
+   3 |                      1
+   7 |                      0
+(3 rows)
 
 /* -- q2 */
 ROLLBACK;

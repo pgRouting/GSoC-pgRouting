@@ -3,6 +3,6 @@
 /* -- q1 */
 SELECT * FROM pgr_betweennesscentrality(
   'SELECT id, source, target, cost, reverse_cost
-  FROM edges where id < 5'
-) ORDER BY start_vid, end_vid;
+  FROM edges where id IN (6,7)',
+) ORDER BY vid;
 /* -- q2 */
