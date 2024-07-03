@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --v3.7
 CREATE FUNCTION pgr_betweennesscentrality(
     TEXT,    -- edges_sql (required)
-    directed BOOLEAN DEFAULT false,
+    directed BOOLEAN DEFAULT true,
 
     OUT vid BIGINT,
     OUT betweenness_centrality FLOAT)

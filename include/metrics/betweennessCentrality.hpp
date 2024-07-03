@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <vector>
 #include <map>
+#include <type_traits>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -69,7 +70,8 @@ class Pgr_metrics {
  public:
 	 using Graph = typename G::B_G;
      using Vertex = typename G::V;
-
+	 typedef typename boost::graph_traits<Graph>::directed_category directed_category;
+	 
 	 void betweennessCentrality (
 			 const G &graph,
 			 size_t &result_tuple_count,
@@ -86,11 +88,13 @@ class Pgr_metrics {
 				 graph.graph,
 				 centrality_map
 		 );
-		 boost::relative_betweenness_centrality(
-			graph.graph,
-			centrality_map
-		 );
-		 
+		 if(boost::num_vertices(graph.graph) > 2) {
+		 	boost::relative_betweenness_centrality(
+				graph.graph,
+				centrality_map
+		 	);
+		 }
+
 		 generate_results(graph, centrality, result_tuple_count, postgres_rows);
 	 }
 
@@ -108,6 +112,9 @@ class Pgr_metrics {
 		 	(*postgres_rows)[seq].from_vid = graph[v_i].id;
 			(*postgres_rows)[seq].to_vid = 0;
 			(*postgres_rows)[seq].cost = centrality_results[v_i];
+			if(std::is_same<directed_category, boost::bidirectional_tag>::value) {
+				(*postgres_rows)[seq].cost = centrality_results[v_i]/2.0;
+			}
 			seq++;
 		 }
 	 }
