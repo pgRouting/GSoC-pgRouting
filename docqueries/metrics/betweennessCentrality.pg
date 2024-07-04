@@ -1,8 +1,65 @@
 -- CopyRight(c) pgRouting developers
 -- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
-/* -- q1 */
-SELECT * FROM pgr_betweennesscentrality(
+
+/* Implicit Cases (directed) */
+SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
-  FROM edges where id IN (6,7)',
+  FROM edges where id < 2'
 ) ORDER BY vid;
-/* -- q2 */
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 3'
+) ORDER BY vid;
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 4'
+) ORDER BY vid;
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 5'
+) ORDER BY vid;
+
+/* Explicit Cases (undirected) */
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 2', directed => false
+) ORDER BY vid;
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 3', directed => false
+) ORDER BY vid;
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 4', directed => false
+) ORDER BY vid;
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 5', directed => false
+) ORDER BY vid;
+
+/* Explicit Cases (directed) */
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 2', directed => true 
+) ORDER BY vid;
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 3', directed => true
+) ORDER BY vid;
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 4', directed => true
+) ORDER BY vid;
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 5', directed => true
+) ORDER BY vid;

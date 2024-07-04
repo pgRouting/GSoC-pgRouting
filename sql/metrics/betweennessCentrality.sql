@@ -29,16 +29,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v3.7
-CREATE FUNCTION pgr_betweennesscentrality(
+CREATE FUNCTION pgr_betweennessCentrality(
     TEXT,    -- edges_sql (required)
     directed BOOLEAN DEFAULT true,
 
     OUT vid BIGINT,
-    OUT betweenness_centrality FLOAT)
+    OUT centrality FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
 
-    SELECT vid, betweenness_centrality
+    SELECT vid, centrality
     FROM _pgr_betweennesscentrality(_pgr_get_statement($1), $2);
 
 $BODY$
@@ -46,7 +46,7 @@ LANGUAGE SQL VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_betweennesscentrality(TEXT, BOOLEAN)
+COMMENT ON FUNCTION pgr_betweennessCentrality(TEXT, BOOLEAN)
 IS 'pgr_betweennessCentrality
 - Parameters:
     - edges SQL with columns: source, target, cost [,reverse_cost])

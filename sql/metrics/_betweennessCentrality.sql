@@ -33,12 +33,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --------------------------------
 
 --v3.7
-CREATE FUNCTION _pgr_betweennesscentrality(
+CREATE FUNCTION _pgr_betweennessCentrality(
     edges_sql TEXT,
     directed BOOLEAN,
 
     OUT vid BIGINT,
-    OUT betweenness_centrality FLOAT)
+    OUT centrality FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;

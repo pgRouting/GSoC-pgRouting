@@ -53,7 +53,7 @@ process(
     char* err_msg = NULL;
 
     clock_t start_t = clock();
-    pgr_do_betweennesscentrality(
+    pgr_do_betweennessCentrality(
             edges_sql,
             directed,
             result_tuples,

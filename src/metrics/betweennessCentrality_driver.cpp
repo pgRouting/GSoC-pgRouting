@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 void
-pgr_do_betweennesscentrality(
+pgr_do_betweennessCentrality(
         char *edges_sql,
         bool directed,
 
