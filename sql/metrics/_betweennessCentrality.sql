@@ -45,5 +45,5 @@ LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_betweennesscentrality(TEXT, BOOLEAN)
+COMMENT ON FUNCTION _pgr_betweennessCentrality(TEXT, BOOLEAN)
 IS 'pgRouting internal function';
