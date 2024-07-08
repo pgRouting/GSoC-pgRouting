@@ -2,28 +2,146 @@ BEGIN;
 BEGIN
 SET client_min_messages TO NOTICE;
 SET
-/* -- q1 */
-SELECT * FROM pgr_betweennesscentrality(
+/* Implicit Cases (directed) */
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 2'
+) ORDER BY vid;
+ vid | centrality 
+-----+------------
+   5 |          0
+   6 |          0
+(2 rows)
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 3'
+) ORDER BY vid;
+ vid | centrality 
+-----+------------
+   5 |          0
+   6 |        0.5
+  10 |          0
+(3 rows)
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 4'
+) ORDER BY vid;
+ vid |     centrality     
+-----+--------------------
+   5 |                  0
+   6 | 0.3333333333333333
+  10 | 0.3333333333333333
+  15 |                  0
+(4 rows)
+
+SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 5'
-) ORDER BY start_vid, end_vid;
- start_vid | end_vid | agg_cost
------------+---------+----------
-         5 |       6 |        1
-         5 |       7 |        2
-         6 |       5 |        1
-         6 |       7 |        1
-         7 |       5 |        2
-         7 |       6 |        1
-        10 |       5 |        2
-        10 |       6 |        1
-        10 |       7 |        2
-        15 |       5 |        3
-        15 |       6 |        2
-        15 |       7 |        3
-        15 |      10 |        1
-(13 rows)
+) ORDER BY vid;
+ vid | centrality 
+-----+------------
+   5 |          0
+   6 |        0.5
+   7 |          0
+  10 |       0.25
+  15 |          0
+(5 rows)
 
-/* -- q2 */
+/* Explicit Cases (undirected) */
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 2', directed => false
+) ORDER BY vid;
+ vid | centrality 
+-----+------------
+   5 |          0
+   6 |          0
+(2 rows)
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 3', directed => false
+) ORDER BY vid;
+ vid | centrality 
+-----+------------
+   5 |          0
+   6 |          1
+  10 |          0
+(3 rows)
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 4', directed => false
+) ORDER BY vid;
+ vid |     centrality     
+-----+--------------------
+   5 |                  0
+   6 | 0.6666666666666666
+  10 | 0.6666666666666666
+  15 |                  0
+(4 rows)
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 5', directed => false
+) ORDER BY vid;
+ vid |     centrality     
+-----+--------------------
+   5 |                  0
+   6 | 0.8333333333333333
+   7 |                  0
+  10 |                0.5
+  15 |                  0
+(5 rows)
+
+/* Explicit Cases (directed) */
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 2', directed => true 
+) ORDER BY vid;
+ vid | centrality 
+-----+------------
+   5 |          0
+   6 |          0
+(2 rows)
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 3', directed => true
+) ORDER BY vid;
+ vid | centrality 
+-----+------------
+   5 |          0
+   6 |        0.5
+  10 |          0
+(3 rows)
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 4', directed => true
+) ORDER BY vid;
+ vid |     centrality     
+-----+--------------------
+   5 |                  0
+   6 | 0.3333333333333333
+  10 | 0.3333333333333333
+  15 |                  0
+(4 rows)
+
+SELECT * FROM pgr_betweennessCentrality(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges where id < 5', directed => true
+) ORDER BY vid;
+ vid | centrality 
+-----+------------
+   5 |          0
+   6 |        0.5
+   7 |          0
+  10 |       0.25
+  15 |          0
+(5 rows)
+
 ROLLBACK;
 ROLLBACK

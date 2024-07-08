@@ -1,7 +1,6 @@
 
 SET(LOCAL_FILES
-    metrics-family.rst
-    pgr_centrality.rst
+    pgr_betweennessCentrality.rst
     )
 
 foreach (f ${LOCAL_FILES})
