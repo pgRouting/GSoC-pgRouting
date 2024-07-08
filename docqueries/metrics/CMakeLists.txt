@@ -1,6 +1,6 @@
 # Do not use extensions
 SET(LOCAL_FILES
-	betweennessCentrality.pg
+	betweennessCentrality
     )
 
 foreach (f ${LOCAL_FILES})

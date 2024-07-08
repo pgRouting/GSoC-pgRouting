@@ -14,7 +14,7 @@
 ===============================================================================
 
 ``pgr_betweennessCentrality`` - Returns the relative betweeness centrality of 
-all edges in a graph using Brandes Algorithm.
+all vertices in a graph using Brandes Algorithm.
 
 .. figure:: images/boost-inside.jpeg
    :target: https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html
@@ -29,9 +29,7 @@ Description
 
 The Brandes Algorithm for utilises the sparse nature of graphs to evaluating the
 betweenness centrality score of all edges/vertices.
-We use Boost's implementation which runs in :math:`\Theta(VE)` for unweighted 
-graphs and :math:`Theta(VE + V(V+E)log(V))` for weighted graphs and uses
-:math:`\Theta(VE)` space.
+We use Boost's implementation which runs in :math:`\Theta(VE)` time and uses :math:`\Theta(VE)` space.
 
 Signatures
 -------------------------------------------------------------------------------
@@ -43,7 +41,7 @@ Signatures
 
    pgr_betweennessCentrality(`Edges SQL`_, [``directed``])
 
-   | Returns set of ```(seq, edge_id, betweenness_centrality)``` 
+   | Returns set of ```(seq, vid, centrality)``` 
    | OR EMPTY SET
 
 .. TODO: Fix this when docqueries are made 
@@ -91,12 +89,12 @@ Result columns
 	* - ``seq``
 	  - ``INTEGER``
 	  - Sequential Value starting from ``1``
-	* - ``edge_id``
+	* - ``vid``
 	  - ``BIGINT``
-	  - Identifier of the edge
+	  - Identifier of the vertex
 	* - ``centrality``
 	  - ``FLOAT``	
-	  - relative betweenness centrality score of the edge (will be in range [0,1])
+	  - relative betweenness centrality score of the vertex (will be in range [0,1])
 
 See Also
 -------------------------------------------------------------------------------
