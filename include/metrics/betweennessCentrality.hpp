@@ -78,15 +78,18 @@ class Pgr_metrics {
 			 IID_t_rt **postgres_rows ){
 		 
 		 std::vector<double> centrality(boost::num_vertices(graph.graph), 0.0);
+
 		 auto centrality_map = boost::make_iterator_property_map(centrality.begin(),
 				 												 boost::get(boost::vertex_index, graph.graph)
 				 												);
-
+		 
+		 
 		 /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
 		 CHECK_FOR_INTERRUPTS();
 		 boost::brandes_betweenness_centrality(
 				 graph.graph,
 				 centrality_map
+
 		 );
 		 if(boost::num_vertices(graph.graph) > 2) {
 		 	boost::relative_betweenness_centrality(
