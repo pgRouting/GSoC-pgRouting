@@ -78,15 +78,39 @@ class Pgr_metrics {
 			 IID_t_rt **postgres_rows ){
 		 
 		 std::vector<double> centrality(boost::num_vertices(graph.graph), 0.0);
+		 std::vector<double> edge_centrality_vec(num_edges(graph.graph), 0.0);
+		 std::vector<std::vector<Vertex>> incoming_vec(num_vertices(graph.graph));
+		 std::vector<double> distance_vec(num_vertices(graph.graph));
+		 std::vector<double> dependency_vec(num_vertices(graph.graph));
+		 std::vector<size_t> path_count_vec(num_vertices(graph.graph));
+
 		 auto centrality_map = boost::make_iterator_property_map(centrality.begin(),
 				 												 boost::get(boost::vertex_index, graph.graph)
 				 												);
-
+		 
+		 auto edge_centrality_map = boost::make_iterator_property_map(edge_centrality_vec.begin(),
+				 													  boost::get(boost::edge_index, graph.graph)
+																	 );
+		 
+		 auto incoming_map = boost::make_iterator_property_map(incoming_vec.begin(),
+																	  boost:: get(boost::vertex_index, graph.graph)
+															  );
+		 auto distance_map = boost::make_iterator_property_map(distance_vec.begin(),
+															   boost:: get(boost::vertex_index, graph.graph)
+															  );
+		 auto dependency_map = boost::make_iterator_property_map(dependency_vec.begin(), 
+				  											     boost::get(boost::vertex_index, graph.graph)
+																);
+		 auto path_count_map = boost::make_iterator_property_map(path_count_vec.begin(), 
+				 												 boost::get(boost::vertex_index, graph.graph)
+																);
+		 
 		 /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
 		 CHECK_FOR_INTERRUPTS();
 		 boost::brandes_betweenness_centrality(
 				 graph.graph,
 				 centrality_map
+
 		 );
 		 if(boost::num_vertices(graph.graph) > 2) {
 		 	boost::relative_betweenness_centrality(
