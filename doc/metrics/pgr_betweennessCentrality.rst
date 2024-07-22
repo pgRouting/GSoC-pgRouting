@@ -47,9 +47,9 @@ Signatures
 .. TODO: Fix this when docqueries are made 
 :Example: For a directed subgraph with edges :math:`\{1, 2, 3, 4\}`.
 
-.. literalinclude:: floydWarshall.queries
+.. literalinclude:: betweennessCentrality.queries
    :start-after: -- q1
-   :end-before: -- q2
+   :end-before: Implicit Cases (directed)
 
 Parameters
 -------------------------------------------------------------------------------
