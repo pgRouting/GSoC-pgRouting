@@ -45,6 +45,7 @@ Signatures
    | OR EMPTY SET
 
 .. TODO: Fix this when docqueries are made 
+
 :Example: For a directed subgraph with edges :math:`\{1, 2, 3, 4\}`.
 
 .. literalinclude:: betweennessCentrality.queries
