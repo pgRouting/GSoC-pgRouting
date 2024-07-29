@@ -1,0 +1,44 @@
+/*PGR-GNU*****************************************************************
+
+Copyright (c) 2024  pgRouting developers
+Mail: project@pgrouting.org
+
+------
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ********************************************************************PGR-GNU*/
+
+BEGIN;
+
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT plan(15);
+
+SELECT test_agg_cost('pgr_floydWarshall', true);
+SELECT test_agg_cost('pgr_floydWarshall', false);
+SELECT allPairs_test_flags('pgr_floydwarshall');
+
+PREPARE q2 AS
+SELECT * FROM pgr_floydWarshall(
+    'SELECT source, target, cost, reverse_cost FROM edges'
+);
+
+PREPARE q3 AS
+SELECT * FROM pgr_floydWarshall(
+    'SELECT source, target, cost FROM edges',
+    true
+);
+
+SELECT lives_ok('q2', 'SHOULD WORK: without id with flag');
+SELECT lives_ok('q3', 'SHOULD WORK: without id, with flag');
+
+SELECT finish();
+ROLLBACK;
