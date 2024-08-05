@@ -45,7 +45,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_base_graph.hpp"
 #include "cpp_common/interruption.hpp"
 
-// TODO(vicky) don't keep it here
+// TODO(arun) don't keep it here
 #include "cpp_common/pgr_alloc.hpp"
 
 namespace pgrouting  {
@@ -68,59 +68,55 @@ pgr_betweennesscentrality(
 template <class G>
 class Pgr_metrics {
  public:
-	 using Graph = typename G::B_G;
+     using Graph = typename G::B_G;
      using Vertex = typename G::V;
-	 typedef typename boost::graph_traits<Graph>::directed_category directed_category;
-	 
-	 void betweennessCentrality (
-			 const G &graph,
-			 size_t &result_tuple_count,
-			 IID_t_rt **postgres_rows ){
-		 
-		 std::vector<double> centrality(boost::num_vertices(graph.graph), 0.0);
+     typedef typename boost::graph_traits<Graph>::directed_category directed_category;
 
-		 auto centrality_map = boost::make_iterator_property_map(centrality.begin(),
-				 												 boost::get(boost::vertex_index, graph.graph)
-				 												);
-		 
-		 
-		 /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
-		 CHECK_FOR_INTERRUPTS();
-		 boost::brandes_betweenness_centrality(
-				 graph.graph,
-				 centrality_map
+     void betweennessCentrality(
+             const G &graph,
+             size_t &result_tuple_count,
+             IID_t_rt **postgres_rows ) {
+         std::vector<double> centrality(boost::num_vertices(graph.graph), 0.0);
 
-		 );
-		 if(boost::num_vertices(graph.graph) > 2) {
-		 	boost::relative_betweenness_centrality(
-				graph.graph,
-				centrality_map
-		 	);
-		 }
+         auto centrality_map = boost::make_iterator_property_map(centrality.begin(),
+                                                                  boost::get(boost::vertex_index, graph.graph));
 
-		 generate_results(graph, centrality, result_tuple_count, postgres_rows);
-	 }
+
+         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
+         CHECK_FOR_INTERRUPTS();
+         boost::brandes_betweenness_centrality(
+                 graph.graph,
+                 centrality_map);
+
+         if (boost::num_vertices(graph.graph) > 2) {
+             boost::relative_betweenness_centrality(
+                graph.graph,
+                centrality_map);
+         }
+
+         generate_results(graph, centrality, result_tuple_count, postgres_rows);
+     }
 
  private:
-	 void generate_results(
-			 const G &graph,
-			 const std::vector<double> centrality_results,
-			 size_t &result_tuple_count,
-			 IID_t_rt **postgres_rows) const {
-		 result_tuple_count = centrality_results.size();
-		 *postgres_rows = pgr_alloc(result_tuple_count, (*postgres_rows));
+     void generate_results(
+             const G &graph,
+             const std::vector<double> centrality_results,
+             size_t &result_tuple_count,
+             IID_t_rt **postgres_rows) const {
+         result_tuple_count = centrality_results.size();
+         *postgres_rows = pgr_alloc(result_tuple_count, (*postgres_rows));
 
-		 size_t seq = 0;
-	 	 for(typename G::V v_i = 0; v_i < graph.num_vertices(); ++v_i) {
-		 	(*postgres_rows)[seq].from_vid = graph[v_i].id;
-			(*postgres_rows)[seq].to_vid = 0;
-			(*postgres_rows)[seq].cost = centrality_results[v_i];
-			if(std::is_same<directed_category, boost::bidirectional_tag>::value) {
-				(*postgres_rows)[seq].cost = centrality_results[v_i]/2.0;
-			}
-			seq++;
-		 }
-	 }
+         size_t seq = 0;
+          for (typename G::V v_i = 0; v_i < graph.num_vertices(); ++v_i) {
+             (*postgres_rows)[seq].from_vid = graph[v_i].id;
+            (*postgres_rows)[seq].to_vid = 0;
+            (*postgres_rows)[seq].cost = centrality_results[v_i];
+            if (std::is_same<directed_category, boost::bidirectional_tag>::value) {
+                (*postgres_rows)[seq].cost = centrality_results[v_i]/2.0;
+            }
+            seq++;
+         }
+     }
 };
 
 }  // namespace pgrouting
