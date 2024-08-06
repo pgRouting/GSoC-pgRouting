@@ -70,6 +70,8 @@ Individuals in this release v3.7.x (in alphabetical order)
 
 Regina Obe,
 Vicky Vergara
+FAN WU
+
 
 
 And all the people that give us a little of their time making comments, finding
