@@ -45,8 +45,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_base_graph.hpp"
 #include "cpp_common/interruption.hpp"
 
-// TODO(arun) don't keep it here
 #include "cpp_common/pgr_alloc.hpp"
+
+/**
+ * @ brief The main file which calls the respective boost function
+ *
+ * Contains actual implementation of the function and the calling
+ * of the respective boost function
+ */
 
 namespace pgrouting  {
 template <class G> class Pgr_metrics;
@@ -79,7 +85,7 @@ class Pgr_metrics {
          std::vector<double> centrality(boost::num_vertices(graph.graph), 0.0);
 
          auto centrality_map = boost::make_iterator_property_map(centrality.begin(),
-                                                                  boost::get(boost::vertex_index, graph.graph));
+                                                                 boost::get(boost::vertex_index, graph.graph));
 
 
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
