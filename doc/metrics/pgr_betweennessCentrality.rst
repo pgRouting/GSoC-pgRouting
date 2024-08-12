@@ -22,7 +22,12 @@ using Brandes Algorithm
    Boost Graph Inside
 
 .. rubric:: Availability
-.. TODO: Add availability
+
+* Version 3.7.0
+  
+  * New **experimental** signature:
+
+    * ``pgr_betweennessCentrality``
 
 Description
 -------------------------------------------------------------------------------
