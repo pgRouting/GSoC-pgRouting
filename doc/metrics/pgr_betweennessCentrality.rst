@@ -27,9 +27,12 @@ using Brandes Algorithm
 Description
 -------------------------------------------------------------------------------
 
-The Brandes Algorithm takes advantage of the sparse graphs to evaluating the
+The Brandes Algorithm takes advantage of the sparse graphs for evaluating the
 betweenness centrality score of all vertices.
-We use Boost's implementation which runs in :math:`\Theta(VE)` time and uses :math:`\Theta(VE)` space.
+
+This implementation work for both directed and undirected graphs.
+
+- Running time: :math:`\Theta(VE)` time and uses :math:`\Theta(VE)` space.
 
 Signatures
 -------------------------------------------------------------------------------
