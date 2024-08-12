@@ -46,7 +46,7 @@ Signatures
 
    pgr_betweennessCentrality(`Edges SQL`_, [``directed``])
 
-   | Returns set of ``(seq, vid, centrality)``
+   | Returns set of ``(vid, centrality)``
 
 .. TODO: Fix this when docqueries are made 
 
@@ -91,9 +91,6 @@ Result columns
 	* - Column
 	  - Type
 	  - Description
-	* - ``seq``
-	  - ``INTEGER``
-	  - Sequential Value starting from ``1``
 	* - ``vid``
 	  - ``BIGINT``
 	  - Identifier of the vertex
@@ -104,9 +101,9 @@ Result columns
 See Also
 -------------------------------------------------------------------------------
 
-* Boost `centrality
+* Boost's `betweenness_centrality
   <https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html>`_
-* Queries uses the :doc:`sampledata` network.
+* Queries use the :doc:`sampledata` network.
 
 .. rubric:: Indices and tables
 
