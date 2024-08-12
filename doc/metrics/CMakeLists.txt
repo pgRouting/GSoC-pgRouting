@@ -1,7 +1,8 @@
 
 SET(LOCAL_FILES
-    pgr_betweennessCentrality.rst
-    )
+    metrics-family.rst
+		pgr_betweennessCentrality.rst 
+   )
 
 foreach (f ${LOCAL_FILES})
     configure_file(${f} "${PGR_DOCUMENTATION_SOURCE_DIR}/${f}")
