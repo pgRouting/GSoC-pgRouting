@@ -32,7 +32,8 @@ betweenness centrality score of all vertices.
 
 This implementation work for both directed and undirected graphs.
 
-- Running time: :math:`\Theta(VE)` time and uses :math:`\Theta(VE)` space.
+- Running time:  :math:`\Theta(VE)` time 
+- Running space: :math:`\Theta(VE)` space.
 
 Signatures
 -------------------------------------------------------------------------------
