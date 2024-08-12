@@ -32,9 +32,9 @@ betweenness centrality score of all vertices.
 
 This implementation work for both directed and undirected graphs.
 
-- Running time:  :math:`\Theta(VE)` time 
-- Running space: :math:`\Theta(VE)` space.
-- Throws when there are no edges in the graph.
+- Running time:  :math:`\Theta(VE)` 
+- Running space: :math:`\Theta(VE)`
+- Throws when there are no edges in the graph
 
 Signatures
 -------------------------------------------------------------------------------
@@ -46,8 +46,7 @@ Signatures
 
    pgr_betweennessCentrality(`Edges SQL`_, [``directed``])
 
-   | Returns set of ```(seq, vid, centrality)``` 
-   | OR EMPTY SET
+   | Returns set of ``(seq, vid, centrality)``
 
 .. TODO: Fix this when docqueries are made 
 
