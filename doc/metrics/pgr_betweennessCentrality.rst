@@ -13,8 +13,8 @@
 ``pgr_betweennessCentrality``
 ===============================================================================
 
-``pgr_betweennessCentrality`` - Returns the relative betweeness centrality of 
-all vertices in a graph using Brandes Algorithm.
+``pgr_betweennessCentrality`` - Calculates the relative betweeness centrality
+using Brandes Algorithm
 
 .. figure:: images/boost-inside.jpeg
    :target: https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html
@@ -27,8 +27,8 @@ all vertices in a graph using Brandes Algorithm.
 Description
 -------------------------------------------------------------------------------
 
-The Brandes Algorithm for utilises the sparse nature of graphs to evaluating the
-betweenness centrality score of all edges/vertices.
+The Brandes Algorithm takes advantage of the sparse graphs to evaluating the
+betweenness centrality score of all vertices.
 We use Boost's implementation which runs in :math:`\Theta(VE)` time and uses :math:`\Theta(VE)` space.
 
 Signatures
@@ -95,7 +95,7 @@ Result columns
 	  - Identifier of the vertex
 	* - ``centrality``
 	  - ``FLOAT``	
-	  - relative betweenness centrality score of the vertex (will be in range [0,1])
+	  - Relative betweenness centrality score of the vertex (will be in range [0,1])
 
 See Also
 -------------------------------------------------------------------------------
