@@ -106,13 +106,11 @@ class Pgr_metrics {
          CHECK_FOR_INTERRUPTS();
          boost::brandes_betweenness_centrality(
                  graph.graph,
-                 centrality_map
-         );
+                 centrality_map);
          if (boost::num_vertices(graph.graph) > 2) {
              boost::relative_betweenness_centrality(
                 graph.graph,
-                centrality_map
-				     );
+                centrality_map);
          }
 
          generate_results(graph, centrality, result_tuple_count, postgres_rows);
