@@ -36,6 +36,7 @@ The Brandes Algorithm takes advantage of the sparse graphs for evaluating the
 betweenness centrality score of all vertices.
 
 .. TODO: Paraphrase
+
 Betweenness centrality measures the extent to which a vertex lies on paths
 between other vertices. Vertices with high betweenness may have considerable
 influence within a network by virtue of their control over information passing
@@ -63,15 +64,14 @@ Signatures
 
    | Returns set of ``(vid, centrality)``
 
-.. TODO: Fix this when docqueries are made
-
-:Example: For a directed subgraph with edges :math:`\{1, 2, 3, 4\}`.
+:Example: For a directed graph with edges :math:`\{1, 2, 3, 4\}`.
 
 .. literalinclude:: betweennessCentrality.queries
    :start-after: -- q1
    :end-before: Implicit Cases (directed)
 
 .. TODO: Paraphrase
+
 .. rubric:: Explanation
 
 * The betweenness centrality are between parenthesis.
