@@ -71,6 +71,32 @@ Signatures
    :start-after: -- q1
    :end-before: Implicit Cases (directed)
 
+.. TODO: Paraphrase
+.. rubric:: Explanation
+
+* The betweenness centrality are between parenthesis.
+* The leaf vertices have betweenness centrality :math:`0`.
+* Betweenness centrality of vertex :math:`6` is higher than of vertex :math:`10`.
+
+  * Removing vertex :math:`6` will create three graph components.
+  * Removing vertex :math:`10` will create two graph components.
+
+.. graphviz::
+
+    digraph G {
+        5, 7, 15 [shape=circle;style=filled;width=.5;color=deepskyblue;fontsize=8;fixedsize=true;];
+        6, 10 [shape=circle;style=filled;width=.5;color=green;fontsize=8;fixedsize=true;];
+        5 [pos="0,0!";label="5 (0)"];
+        6 [pos="0,1!"label="6 (0.5)"];
+        7 [pos="0,2!"label="7 (0)"];
+        10 [pos="1,1!"label="10 (0.25)"];
+        15 [pos="2,1!"label="15 (0)"];
+        5 -> 6 [dir=both;label="1  "];
+        6->7 [dir=both;label="4  "];
+        10->6 [label="3"];
+        15->10 [label="4"];
+    }
+
 Parameters
 -------------------------------------------------------------------------------
 
