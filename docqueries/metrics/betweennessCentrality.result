@@ -4,8 +4,8 @@ SET client_min_messages TO NOTICE;
 SET
 /* -- q1 */
 SELECT * FROM pgr_betweennessCentrality(
-  'SELECT id, source, target, cost, reverse_cost
-  FROM edges where id < 5'
+'SELECT id, source, target, cost, reverse_cost
+FROM edges where id < 5'
 ) ORDER BY vid;
  vid | centrality
 -----+------------
@@ -21,7 +21,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 2'
 ) ORDER BY vid;
- vid | centrality 
+ vid | centrality
 -----+------------
    5 |          0
    6 |          0
@@ -31,7 +31,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 3'
 ) ORDER BY vid;
- vid | centrality 
+ vid | centrality
 -----+------------
    5 |          0
    6 |        0.5
@@ -42,7 +42,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 4'
 ) ORDER BY vid;
- vid |     centrality     
+ vid |     centrality
 -----+--------------------
    5 |                  0
    6 | 0.3333333333333333
@@ -54,7 +54,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 5'
 ) ORDER BY vid;
- vid | centrality 
+ vid | centrality
 -----+------------
    5 |          0
    6 |        0.5
@@ -68,7 +68,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 2', directed => false
 ) ORDER BY vid;
- vid | centrality 
+ vid | centrality
 -----+------------
    5 |          0
    6 |          0
@@ -78,7 +78,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 3', directed => false
 ) ORDER BY vid;
- vid | centrality 
+ vid | centrality
 -----+------------
    5 |          0
    6 |          1
@@ -89,7 +89,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 4', directed => false
 ) ORDER BY vid;
- vid |     centrality     
+ vid |     centrality
 -----+--------------------
    5 |                  0
    6 | 0.6666666666666666
@@ -101,7 +101,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 5', directed => false
 ) ORDER BY vid;
- vid |     centrality     
+ vid |     centrality
 -----+--------------------
    5 |                  0
    6 | 0.8333333333333333
@@ -113,9 +113,9 @@ SELECT * FROM pgr_betweennessCentrality(
 /* Explicit Cases (directed) */
 SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
-  FROM edges where id < 2', directed => true 
+  FROM edges where id < 2', directed => true
 ) ORDER BY vid;
- vid | centrality 
+ vid | centrality
 -----+------------
    5 |          0
    6 |          0
@@ -125,7 +125,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 3', directed => true
 ) ORDER BY vid;
- vid | centrality 
+ vid | centrality
 -----+------------
    5 |          0
    6 |        0.5
@@ -136,7 +136,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 4', directed => true
 ) ORDER BY vid;
- vid |     centrality     
+ vid |     centrality
 -----+--------------------
    5 |                  0
    6 | 0.3333333333333333
@@ -148,7 +148,7 @@ SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
   FROM edges where id < 5', directed => true
 ) ORDER BY vid;
- vid | centrality 
+ vid | centrality
 -----+------------
    5 |          0
    6 |        0.5
