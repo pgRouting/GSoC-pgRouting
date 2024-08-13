@@ -70,8 +70,6 @@ Signatures
    :start-after: -- q1
    :end-before: Implicit Cases (directed)
 
-.. TODO: Paraphrase
-
 .. rubric:: Explanation
 
 * The betweenness centrality are between parenthesis.
