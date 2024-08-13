@@ -51,7 +51,7 @@ SELECT * FROM pgr_betweennessCentrality(
 /* Explicit Cases (directed) */
 SELECT * FROM pgr_betweennessCentrality(
   'SELECT id, source, target, cost, reverse_cost
-  FROM edges where id < 2', directed => true 
+  FROM edges where id < 2', directed => true
 ) ORDER BY vid;
 
 SELECT * FROM pgr_betweennessCentrality(

@@ -134,4 +134,3 @@ _pgr_betweennesscentrality(PG_FUNCTION_ARGS) {
         SRF_RETURN_DONE(funcctx);
     }
 }
-

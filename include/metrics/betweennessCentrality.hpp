@@ -87,7 +87,7 @@ class Pgr_metrics {
 		 *
 		 * @see [boost::brandes_betweenness_centrality]
 		 * (https://www.boost.org/doc/libs/1_85_0/libs/graph/doc/betweenness_centrality.html)
-		 */		 
+		 */
      using Graph = typename G::B_G;
      using V = typename G::V;
      using E = typename G::E;

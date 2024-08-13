@@ -24,7 +24,7 @@ using Brandes Algorithm
 .. rubric:: Availability
 
 * Version 3.7.0
-  
+
   * New **experimental** function:
 
     * ``pgr_betweennessCentrality``
@@ -37,7 +37,7 @@ betweenness centrality score of all vertices.
 
 This implementation work for both directed and undirected graphs.
 
-- Running time:  :math:`\Theta(VE)` 
+- Running time:  :math:`\Theta(VE)`
 - Running space: :math:`\Theta(VE)`
 - Throws when there are no edges in the graph
 
@@ -53,7 +53,7 @@ Signatures
 
    | Returns set of ``(vid, centrality)``
 
-.. TODO: Fix this when docqueries are made 
+.. TODO: Fix this when docqueries are made
 
 :Example: For a directed subgraph with edges :math:`\{1, 2, 3, 4\}`.
 
@@ -92,7 +92,7 @@ Result columns
 	:width: 81
 	:widths: auto
 	:header-rows: 1
-	
+
 	* - Column
 	  - Type
 	  - Description
@@ -100,7 +100,7 @@ Result columns
 	  - ``BIGINT``
 	  - Identifier of the vertex
 	* - ``centrality``
-	  - ``FLOAT``	
+	  - ``FLOAT``
 	  - Relative betweenness centrality score of the vertex (will be in range [0,1])
 
 See Also

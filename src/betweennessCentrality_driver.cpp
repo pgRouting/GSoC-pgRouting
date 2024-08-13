@@ -140,4 +140,3 @@ _pgr_centrality(PG_FUNCTION_ARGS) {
         SRF_RETURN_DONE(funcctx);
     }
 }
-
