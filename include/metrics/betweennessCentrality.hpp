@@ -45,8 +45,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_base_graph.hpp"
 #include "cpp_common/interruption.hpp"
 
-// TODO(arun) don't keep it here
 #include "cpp_common/pgr_alloc.hpp"
+
+/**
+ * @ brief The main file which calls the respective boost function
+ *
+ * Contains actual implementation of the function and the calling
+ * of the respective boost function
+ */
 
 namespace pgrouting  {
 template <class G> class Pgr_metrics;
@@ -68,8 +74,23 @@ pgr_betweennesscentrality(
 template <class G>
 class Pgr_metrics {
  public:
+    /** @name betweennessCentrality
+		 *  @{
+		 *
+		 */
+
+    /** @brief betweennessCentrality function
+		 *
+		 * It does all the processing and returns the results.
+		 *
+		 * @param graph  the graph containing the edges
+		 *
+		 * @see [boost::brandes_betweenness_centrality]
+		 * (https://www.boost.org/doc/libs/1_85_0/libs/graph/doc/betweenness_centrality.html)
+		 */		 
      using Graph = typename G::B_G;
-     using Vertex = typename G::V;
+     using V = typename G::V;
+     using E = typename G::E;
      typedef typename boost::graph_traits<Graph>::directed_category directed_category;
 
      void betweennessCentrality(
@@ -77,17 +98,15 @@ class Pgr_metrics {
              size_t &result_tuple_count,
              IID_t_rt **postgres_rows ) {
          std::vector<double> centrality(boost::num_vertices(graph.graph), 0.0);
-
+         // stores the centrality values for all vertices of the graph
          auto centrality_map = boost::make_iterator_property_map(centrality.begin(),
-                                                                  boost::get(boost::vertex_index, graph.graph));
-
+                                                                 boost::get(boost::vertex_index, graph.graph));
 
          /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
          boost::brandes_betweenness_centrality(
                  graph.graph,
                  centrality_map);
-
          if (boost::num_vertices(graph.graph) > 2) {
              boost::relative_betweenness_centrality(
                 graph.graph,
