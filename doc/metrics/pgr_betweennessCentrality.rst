@@ -37,14 +37,14 @@ betweenness centrality score of all vertices.
 
 .. TODO: Paraphrase
 
-Betweenness centrality measures the extent to which a vertex lies on paths
-between other vertices. Vertices with high betweenness may have considerable
-influence within a network by virtue of their control over information passing
-between others.
+Betweenness centrality measures the extent to which a vertex lies on the
+shortest paths between all other pairs of vertices. Vertices with a high
+betweenness centrality score may have considerable influence in a network by the
+virtue of their control over the information passing between others.
 
-They are also the ones whose removal from the network will most
-disrupt communications between other vertices because they lie on the largest
-number of paths taken by messages.
+The removal of these nodes will affect the network by disrupting the
+communication in the network because they lie on the larget number of paths
+taken by messages.
 
 This implementation work for both directed and undirected graphs.
 
