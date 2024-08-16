@@ -42,7 +42,7 @@ betweenness centrality score may have considerable influence in a network by the
 virtue of their control over the shortest paths passing between them.
 
 The removal of these vertices will affect the network by disrupting the
-network as most of the shortest paths between vertices pass through them.
+it, as most of the shortest paths between vertices pass through them.
 
 This implementation work for both directed and undirected graphs.
 
