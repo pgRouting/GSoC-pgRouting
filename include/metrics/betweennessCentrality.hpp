@@ -5,7 +5,7 @@ Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2024 Arun Thakur
-Mail: bedupako12mas@gmail.com
+Mail: bedupako12mas at gmail.com
 
 ------
 

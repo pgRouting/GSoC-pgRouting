@@ -8,7 +8,7 @@ Mail: project@pgrouting.org
 
 Function developer:
 Copyright (c) 2024 Arun Thakur
-bedupako12mas@gmail.com
+Mail: bedupako12mas at gmail.com
 
 ------
 
