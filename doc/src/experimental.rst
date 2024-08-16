@@ -83,6 +83,12 @@ Experimental Functions
    :start-after: index from here
    :end-before: index to here
 
+:doc:`metrics-family`
+
+.. include:: metrics-family.rst
+   :start-after: index experimental from here
+   :end-before: index experimental to here
+
 :doc:`TRSP-family`
 
 .. include:: TRSP-family.rst
@@ -96,6 +102,7 @@ Experimental Functions
    transformation-family
    components-family
    ordering-family
+   metrics-family
 
 .. rubric:: categories
 
@@ -121,7 +128,6 @@ Experimental Functions
 - :doc:`pgr_transitiveClosure`
 - :doc:`pgr_lengauerTarjanDominatorTree`
 - :doc:`pgr_hawickCircuits`
-- :doc:`pgr_betweennessCentrality`
 
 .. toctree::
   :hidden:
@@ -137,7 +143,6 @@ Experimental Functions
   pgr_transitiveClosure
   pgr_lengauerTarjanDominatorTree
   pgr_hawickCircuits
-  pgr_betweennessCentrality
 
 
 See Also

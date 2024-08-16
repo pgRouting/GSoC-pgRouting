@@ -13,8 +13,8 @@
 ``pgr_betweennessCentrality``
 ===============================================================================
 
-``pgr_betweennessCentrality`` - Returns the relative betweeness centrality of 
-all vertices in a graph using Brandes Algorithm.
+``pgr_betweennessCentrality`` - Calculates the relative betweeness centrality
+using Brandes Algorithm
 
 .. figure:: images/boost-inside.jpeg
    :target: https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html
@@ -22,14 +22,33 @@ all vertices in a graph using Brandes Algorithm.
    Boost Graph Inside
 
 .. rubric:: Availability
-.. TODO: Add availability
+
+* Version 3.7.0
+
+  * New **experimental** function:
+
+    * ``pgr_betweennessCentrality``
 
 Description
 -------------------------------------------------------------------------------
 
-The Brandes Algorithm for utilises the sparse nature of graphs to evaluating the
-betweenness centrality score of all edges/vertices.
-We use Boost's implementation which runs in :math:`\Theta(VE)` time and uses :math:`\Theta(VE)` space.
+The Brandes Algorithm takes advantage of the sparse graphs for evaluating the
+betweenness centrality score of all vertices.
+
+
+Betweenness centrality measures the extent to which a vertex lies on the
+shortest paths between all other pairs of vertices. Vertices with a high
+betweenness centrality score may have considerable influence in a network by the
+virtue of their control over the shortest paths passing between them.
+
+The removal of these vertices will affect the network by disrupting the
+it, as most of the shortest paths between vertices pass through them.
+
+This implementation work for both directed and undirected graphs.
+
+- Running time:  :math:`\Theta(VE)`
+- Running space: :math:`\Theta(VE)`
+- Throws when there are no edges in the graph
 
 Signatures
 -------------------------------------------------------------------------------
@@ -41,16 +60,38 @@ Signatures
 
    pgr_betweennessCentrality(`Edges SQL`_, [``directed``])
 
-   | Returns set of ```(seq, vid, centrality)``` 
-   | OR EMPTY SET
+   | Returns set of ``(vid, centrality)``
 
-.. TODO: Fix this when docqueries are made 
-
-:Example: For a directed subgraph with edges :math:`\{1, 2, 3, 4\}`.
+:Example: For a directed graph with edges :math:`\{1, 2, 3, 4\}`.
 
 .. literalinclude:: betweennessCentrality.queries
    :start-after: -- q1
-   :end-before: Implicit Cases (directed)
+   :end-before: -- q2
+
+.. rubric:: Explanation
+
+* The betweenness centrality are between parenthesis.
+* The leaf vertices have betweenness centrality :math:`0`.
+* Betweenness centrality of vertex :math:`6` is higher than of vertex :math:`10`.
+
+  * Removing vertex :math:`6` will create three graph components.
+  * Removing vertex :math:`10` will create two graph components.
+
+.. graphviz::
+
+    digraph G {
+        5, 7, 15 [shape=circle;style=filled;width=.5;color=deepskyblue;fontsize=8;fixedsize=true;];
+        6, 10 [shape=circle;style=filled;width=.5;color=green;fontsize=8;fixedsize=true;];
+        5 [pos="0,0!";label="5 (0)"];
+        6 [pos="0,1!"label="6 (0.5)"];
+        7 [pos="0,2!"label="7 (0)"];
+        10 [pos="1,1!"label="10 (0.25)"];
+        15 [pos="2,1!"label="15 (0)"];
+        5 -> 6 [dir=both;label="1  "];
+        6->7 [dir=both;label="4  "];
+        10->6 [label="3"];
+        15->10 [label="4"];
+    }
 
 Parameters
 -------------------------------------------------------------------------------
@@ -83,26 +124,23 @@ Result columns
 	:width: 81
 	:widths: auto
 	:header-rows: 1
-	
+
 	* - Column
 	  - Type
 	  - Description
-	* - ``seq``
-	  - ``INTEGER``
-	  - Sequential Value starting from ``1``
 	* - ``vid``
 	  - ``BIGINT``
 	  - Identifier of the vertex
 	* - ``centrality``
-	  - ``FLOAT``	
-	  - relative betweenness centrality score of the vertex (will be in range [0,1])
+	  - ``FLOAT``
+	  - Relative betweenness centrality score of the vertex (will be in range [0,1])
 
 See Also
 -------------------------------------------------------------------------------
 
-* Boost `centrality
+* Boost's `betweenness_centrality
   <https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html>`_
-* Queries uses the :doc:`sampledata` network.
+* Queries use the :doc:`sampledata` network.
 
 .. rubric:: Indices and tables
 
