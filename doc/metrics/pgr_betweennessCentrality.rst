@@ -35,7 +35,6 @@ Description
 The Brandes Algorithm takes advantage of the sparse graphs for evaluating the
 betweenness centrality score of all vertices.
 
-.. TODO: Paraphrase
 
 Betweenness centrality measures the extent to which a vertex lies on the
 shortest paths between all other pairs of vertices. Vertices with a high
