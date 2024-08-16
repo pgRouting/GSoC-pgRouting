@@ -66,7 +66,7 @@ Signatures
 
 .. literalinclude:: betweennessCentrality.queries
    :start-after: -- q1
-   :end-before: Implicit Cases (directed)
+   :end-before: -- q2
 
 .. rubric:: Explanation
 
