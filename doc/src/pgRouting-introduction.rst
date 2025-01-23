@@ -70,7 +70,7 @@ Individuals in this release v3.7.x (in alphabetical order)
 
 Regina Obe,
 Vicky Vergara
-FAN WU
+
 
 
 
@@ -152,6 +152,7 @@ Veenit Kumar,
 Vidhan Jain,
 Virginia Vergara,
 Yige Huang
+FAN WU
 
 Corporate Sponsors (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
