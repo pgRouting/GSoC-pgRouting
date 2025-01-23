@@ -152,7 +152,13 @@ Veenit Kumar,
 Vidhan Jain,
 Virginia Vergara,
 Yige Huang
-FAN WU
+Esteban Zimanyi,
+FAN WU,
+Florian Thurkow,
+Frederic Junod,
+Gerald Fenoy,
+Gudesa Venkata Sai Akhil,
+Hang Wu
 
 Corporate Sponsors (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
