@@ -149,7 +149,8 @@ Sylvain Pasche,
 Veenit Kumar,
 Vidhan Jain,
 Virginia Vergara,
-Yige Huang
+Yige Huang,
+Jayant Ghadge
 
 Corporate Sponsors (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
