@@ -60,7 +60,7 @@ file.
 Contributors
 -------------------------------------------------------------------------------
 
-Omkar Tipugae
+Omkar Tipugade
 
 
 This Release Contributors
