@@ -70,7 +70,7 @@ Individuals in this release v3.7.x (in alphabetical order)
 
 Regina Obe,
 Vicky Vergara
-
+Roaa Waleed
 
 And all the people that give us a little of their time making comments, finding
 issues, making pull requests etc. in any of our products: osm2pgrouting,
