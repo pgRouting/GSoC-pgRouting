@@ -153,7 +153,7 @@ Vidhan Jain,
 Virginia Vergara,
 Yige Huang
 Esteban Zimanyi,
-FAN WU,
+Fan Wu,
 Florian Thurkow,
 Frederic Junod,
 Gerald Fenoy,
