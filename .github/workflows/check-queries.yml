@@ -12,6 +12,7 @@ name: Check queries
 # - the latest postgis version
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - '.github/workflows/check-queries.yml'
@@ -113,7 +114,7 @@ jobs:
           TESTDIRS="version"
           for d in ${TESTDIRS}
           do
-            ./tools/testers/doc_queries_generator.pl -pgver "${PGVER}" -pguser runner -documentation -alg "${d}"
+            ./tools/testers/doc_queries_generator.pl -pgver "${PGVER}" -pguser runner -documentation -alg "docqueries/${d}"
           done
 
           ./tools/testers/doc_queries_generator.pl -pgver "${PGVER}"
