@@ -67,7 +67,7 @@ Individuals in this release v3.7.x (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 (Alphabetical order)
-
+Mayur Galhate 
 Regina Obe,
 Vicky Vergara
 
