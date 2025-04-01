@@ -72,6 +72,8 @@ Regina Obe,
 Vicky Vergara
 
 
+
+
 And all the people that give us a little of their time making comments, finding
 issues, making pull requests etc. in any of our products: osm2pgrouting,
 pgRouting, pgRoutingLayer, workshop.
@@ -150,6 +152,13 @@ Veenit Kumar,
 Vidhan Jain,
 Virginia Vergara,
 Yige Huang
+Esteban Zimanyi,
+Fan Wu,
+Florian Thurkow,
+Frederic Junod,
+Gerald Fenoy,
+Gudesa Venkata Sai Akhil,
+Hang Wu
 
 Corporate Sponsors (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
