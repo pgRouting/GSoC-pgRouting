@@ -7,30 +7,28 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Turn Restriction Shortest Path Family ; pgr_trspVia
+   single: Via Category ; pgr_trspVia
+   single: Restrictions Category ; pgr_trspVia
+   single: trspVia
 
+|
 
 ``pgr_trspVia`` - Proposed
 ===============================================================================
 
 ``pgr_trspVia`` Route that goes through a list of vertices with restrictions.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
-
 .. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
+   :start-after: warning-begin
+   :end-before: end-warning
 
 .. rubric:: Availability
 
 * Version 3.4.0
 
-  * New proposed function:
-
-    * ``pgr_trspVia`` (`One Via`_)
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------
@@ -49,12 +47,13 @@ The general algorithm is as follows:
   * Execute the **TRSP** algorithm with restrictions for the paths.
   * **NOTE** when this is done, ``U_turn_on_edge`` flag is ignored.
 
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
 
 .. index::
-    single: trspVia - Proposed on v3.4
+    single: trspVia ; One Via - Proposed on v3.4
 
 One Via
 ...............................................................................
@@ -68,7 +67,7 @@ One Via
    | Returns set of |via-result|
    | OR EMPTY SET
 
-:Example: Find the route that visits the vertices :math:`\{ 5, 1, 8\}` in that
+:Example: Find the route that visits the vertices :math:`\{5, 1, 8\}` in that
           order on an directed graph.
 
 .. literalinclude:: trspVia.queries
@@ -231,7 +230,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`via-category`
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

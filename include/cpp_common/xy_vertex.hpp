@@ -33,6 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 #include <vector>
+#include <cstdint>
 
 #include "cpp_common/bpoint.hpp"
 #include "cpp_common/edge_xy_t.hpp"
@@ -80,15 +81,6 @@ std::vector < XY_vertex >
 extract_vertices(
     const std::vector <Edge_xy_t > &data_edges);
 
-#if 0
-std::vector < XY_vertex > extract_vertices(
-    std::vector < XY_vertex > vertices,
-    const Edge_xy_t *data_edges, int64_t count);
-
-std::vector < XY_vertex > extract_vertices(
-    std::vector < XY_vertex > vertices,
-    const std::vector <Edge_xy_t > data_edges);
-#endif
 
 }  // namespace pgrouting
 

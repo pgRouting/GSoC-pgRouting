@@ -7,8 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Dijkstra Family ; pgr_dijkstraVia - Proposed
+   single: Via Category ; pgr_dijkstraVia - Proposed
+   single: dijkstraVia - Proposed
 
+|
 
 ``pgr_dijkstraVia`` - Proposed
 ===============================================================================
@@ -16,19 +20,14 @@
 ``pgr_dijkstraVia`` — Route that goes through a list of vertices.
 
 .. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
+   :start-after: warning-begin
+   :end-before: end-warning
 
 .. rubric:: Availability
 
 * Version 2.2.0
 
-  * New **proposed** function
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------
@@ -40,11 +39,13 @@ shortest path between :math:`vertex_i` and :math:`vertex_{i+1}` for all :math:`i
 :Route: is a sequence of paths.
 :Path: is a section of the route.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
 .. index::
-    single: dijkstraVia - Proposed on 2.2
+    single: dijkstraVia - Proposed ; One Via - Proposed on 2.2
 
 One Via
 ...............................................................................
@@ -59,7 +60,7 @@ One Via
    | OR EMPTY SET
 
 :Example: Find the route that visits the vertices :math:`\{5, 1, 8\}` in that
-          order on an **directed** graph.
+          order on an directed graph.
 
 .. literalinclude:: dijkstraVia.queries
     :start-after: -- q01
@@ -159,7 +160,9 @@ See Also
 
 * :doc:`via-category`.
 * :doc:`dijkstra-family`.
-* :doc:`sampledata` network.
+* :doc:`sampledata`
+* `Boost: Dijkstra shortest paths
+  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>`__
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
 .. rubric:: Indices and tables

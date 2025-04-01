@@ -19,6 +19,7 @@ name: Boost supported versions
 # - boost::geometry has not changed anything we use
 #
 # boost::graph
+# - 1.86 does not support C++11 (Aug 2024)
 # - 1.84 is failing its own tests (Jul 2022)
 # - 1.83 transitive closure & stoer wagner changed on 83 (Jul 2022)
 # - 1.80 changed on 1.80 (Aug 2022)
@@ -69,7 +70,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          boost_minor: [56, 68, 75, 76, 77, 78, 79, 80, 83, 84]
+          boost_minor: [56, 68, 75, 76, 77, 78, 79, 80, 83, 84, 86]
 
     steps:
       - uses: actions/checkout@v4
@@ -95,11 +96,6 @@ jobs:
           sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ \
             $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
-      - name: Install python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -111,8 +107,6 @@ jobs:
             postgresql-${PGVER}-postgis-${PGIS}-scripts \
             postgresql-server-dev-${PGVER}
 
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
           wget https://sourceforge.net/projects/boost/files/boost/1.${{ matrix.boost_minor }}.0/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           #wget https://dl.bintray.com/boostorg/release/1.${{ matrix.boost_minor }}.0/source/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo tar --bzip2 -xf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
@@ -124,7 +118,7 @@ jobs:
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
-          cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Debug -DWITH_DOC=OFF ..
+          cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Debug ..
 
       - name: Build
         run: |
@@ -137,5 +131,5 @@ jobs:
           sudo service postgresql start
           psql -c "CREATE DATABASE ___pgr___test___;"
           DIR=$(git rev-parse --show-toplevel)
-          bash "${DIR}/tools/testers/setup_db.sh" "${PGPORT}" ___pgr___test___ "${PG_RUNNER_USER}" "3.7.0"
+          bash "${DIR}/tools/testers/setup_db.sh" "${PGPORT}" ___pgr___test___ "${PG_RUNNER_USER}" "3.8.0"
           pg_prove  -Q -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap"

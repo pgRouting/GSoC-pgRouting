@@ -7,28 +7,26 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Planar Family ; pgr_isPlanar
+   single: isPlanar - Experimental on v3.2
 
+|
 
 ``pgr_isPlanar`` - Experimental
 ===============================================================================
 
 ``pgr_isPlanar`` — Returns a boolean depending upon the planarity of the graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/boyer_myrvold.html
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: warning-begin
+   :end-before: end-warning
 
 .. rubric:: Availability
 
 * Version 3.2.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description
@@ -49,13 +47,12 @@ The main characteristics are:
 * The algorithm does not considers traversal costs in the calculations.
 * Running time: :math:`O(|V|)`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary
-
-.. index::
-   single: isPlanar - Experimental on v3.2
 
 .. admonition:: \ \
    :class: signatures
@@ -123,7 +120,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
-* https://www.boost.org/libs/graph/doc/boyer_myrvold.html
+* `Boost: Boyer Myrvold
+  <https://www.boost.org/libs/graph/doc/boyer_myrvold.html>`__
 
 .. rubric:: Indices and tables
 

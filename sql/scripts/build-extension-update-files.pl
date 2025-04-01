@@ -64,6 +64,7 @@ my $version_3_4 = qr/(3.4.[\d+])/;
 my $version_3_5 = qr/(3.5.[\d+])/;
 my $version_3_6 = qr/(3.6.[\d+])/;
 my $version_3_7 = qr/(3.7.[\d+])/;
+my $version_3_8 = qr/(3.8.[\d+])/;
 # add minor here
 
 my $version_2 = qr/(2.[\d+].[\d+])/;
@@ -73,7 +74,7 @@ my $minor_format   = qr/([\d+].[\d+]).[\d+]/;
 my $mayor_format   = qr/([\d+]).[\d+].[\d+]/;
 
 
-my $current = $version_3_7;
+my $current = $version_3_8;
 
 
 sub Usage {
@@ -221,19 +222,19 @@ sub generate_upgrade_script {
         }
 
         # updating to 3.4+
-        if ($old_mayor == 2 or ($old_mayor == 3 and $old_minor < 4)) {
+        if ($old_minor < 3.4) {
             push @commands, drop_special_case_function("pgr_maxcardinalitymatch(text,boolean)");
         }
 
         # updating to 3.5+
-        if ($old_mayor == 2 or ($old_mayor == 3 && $old_minor < 5)) {
+        if ($old_minor < 3.5) {
             push @commands, drop_special_case_function("pgr_dijkstra(text,anyarray,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_dijkstra(text,bigint,anyarray,boolean)");
             push @commands, drop_special_case_function("pgr_dijkstra(text,bigint,bigint,boolean)");
         }
 
         # updating to 3.6+
-        if ($old_mayor == 2 or ($old_mayor == 3 && $old_minor < 6)) {
+        if ($old_minor < 3.6) {
             push @commands, drop_special_case_function("pgr_withpointsksp(text, text, bigint, bigint, integer, boolean, boolean, char, boolean)");
             push @commands, drop_special_case_function("pgr_astar(text,anyarray,bigint,boolean,integer,double precision,double precision)");
             push @commands, drop_special_case_function("pgr_astar(text,bigint,anyarray,boolean,integer,double precision,double precision)");
@@ -249,7 +250,7 @@ sub generate_upgrade_script {
         }
 
         # updating to 3.7+
-        if ($old_mayor == 2 or ($old_mayor == 3 && $old_minor < 7)) {
+        if ($old_mayor >= 3.0 && $old_minor < 3.7) {
             push @commands, drop_special_case_function("pgr_primbfs(text,anyarray,bigint)");
             push @commands, drop_special_case_function("pgr_primbfs(text,bigint,bigint)");
             push @commands, drop_special_case_function("pgr_primdfs(text,anyarray,bigint)");
@@ -268,6 +269,12 @@ sub generate_upgrade_script {
             push @commands, drop_special_case_function("pgr_kruskaldd(text,anyarray,double precision)");
         }
 
+        # updating to 3.7+
+        if ($old_minor >= 3.4 && $old_minor < 3.8) {
+            push @commands, drop_special_case_function("pgr_findcloseedges(text,geometry,double precision,integer,boolean,boolean)");
+            push @commands, drop_special_case_function("pgr_findcloseedges(text,geometry[],double precision,integer,boolean,boolean)");
+        }
+
     }
 
     #------------------------------------
@@ -277,14 +284,17 @@ sub generate_upgrade_script {
     if ($old_mayor == 2) {
         push @commands, update_from_version_2();
     }
+
+=pod
     if ("$old_version" eq "3.0.0") {
         push @commands, update_from_version_3_0_0();
     }
+=cut
 
     # UGH! someone change the definition of the TYPE or reused an existing
-    # TYPE name which is VERY BAD because other poeple might be dependent
+    # TYPE name which is VERY BAD because other people might be dependent
     # on the old TYPE so we can DROP TYPE <type> CASCADE; or we might drop
-    # a user's function. So juse DIE and maybe someone can resolve this
+    # a user's function. So just DIE and maybe someone can resolve this
     die "ERROR: pgrouting TYPE changed! Cannot continue!\n" if $err;
 
 

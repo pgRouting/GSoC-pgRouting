@@ -1,10 +1,96 @@
 # pgRouting 3
 
 
-## pgRouting 3.7
+## pgRouting 3.8
 
 
 .. current
+
+### pgRouting 3.8.0 Release Notes
+
+**Promotion to official function of pgRouting.**
+
+* pgr_extractVertices
+
+  * Error messages adjustment.
+  * Function promoted to official.
+
+* pgr_degree
+
+  * Error messages adjustment.
+  * New signature with only Edges SQL.
+  * Function promoted to official.
+
+* pgr_findCloseEdges
+
+  * Error messages adjustment.
+  * ``partial`` option is removed.
+  * Function promoted to official.
+
+**Official functions changes**
+
+* [#2786](https://github.com/pgRouting/pgrouting/issues/2786): pgr_contraction
+
+  * New signature:
+    * Previously compulsory parameter **Contraction order** is now optional with
+      name ``methods``.
+    * New name and order of optional parameters.
+  * Deprecated signature pgr_contraction(text,bigint[],integer,bigint[],boolean)
+
+**New proposed functions**
+
+* Contraction
+
+  * [#2790](https://github.com/pgRouting/pgrouting/issues/2790): pgr_contractionDeadEnd
+  * [#2791](https://github.com/pgRouting/pgrouting/issues/2791): pgr_contractionLinear
+
+## pgRouting 3.7
+
+### pgRouting 3.7.3 Release Notes
+
+To see all issues & pull requests closed by this release see the [Git closed
+milestone for 3.7.3
+](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.3%22)
+
+* [#2731](https://github.com/pgRouting/pgrouting/pull/2731) Build Failure on Ubuntu 22
+
+### pgRouting 3.7.2 Release Notes
+
+To see all issues & pull requests closed by this release see the [Git closed
+milestone for 3.7.2
+](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.2%22)
+
+**Build**
+
+* [#2713](https://github.com/pgRouting/pgrouting/pull/2713) cmake missing
+  some policies and min version
+
+  - Using OLD policies: CMP0148, CMP0144, CMP0167
+  - Minimum cmake version 3.12
+
+**Bug fixes**
+
+* [#2707](https://github.com/pgRouting/pgrouting/pull/2707) Build failure in
+  pgRouting 3.7.1 on Alpine
+* [#2706](https://github.com/pgRouting/pgrouting/pull/2706) winnie crashing
+  on pgr_betweennessCentrality
+
+### pgRouting 3.7.1 Release Notes
+
+To see all issues & pull requests closed by this release see the [Git closed
+milestone for 3.7.1
+](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.1%22)
+
+**Bug fixes**
+
+* [#2680](https://github.com/pgRouting/pgrouting/pull/2680) fails to compile
+  under mingw64 gcc 13.2
+* [#2689](https://github.com/pgRouting/pgrouting/pull/2689) When point is a
+  vertex, the withPoints family do not return results.
+
+**C/C++ code enhancemet**
+
+* TRSP family
 
 ### pgRouting 3.7.0 Release Notes
 
@@ -12,9 +98,23 @@ To see all issues & pull requests closed by this release see the [Git closed
 milestone for 3.7.0
 ](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.0%22)
 
+**Support**
+
+* [#2656](https://github.com/pgRouting/pgrouting/pull/2656) Stop support of
+  PostgreSQL12 on pgrouting v3.7
+
+  * Stopping support of PostgreSQL 12
+  * CI does not test for PostgreSQL 12
+
+**New experimental functions**
+
+* Metrics
+
+  * pgr_betweennessCentrality
+
 **Official functions changes**
 
-* [#2605](https://github.com/pgRouting/pgrouting/pull/2605) Standarize
+* [#2605](https://github.com/pgRouting/pgrouting/pull/2605) Standardize
   spanning tree functions output
 
   * Functions:
@@ -26,11 +126,8 @@ milestone for 3.7.0
     * ``pgr_primDFS``
     * ``pgr_primBFS``
 
-  
   * Standarizing output columns to ``(seq, depth, start_vid, pred, node, edge, cost, agg_cost)``
-  
     * Added ``pred`` result columns.
-  
 
 **Experimental promoted to proposed.**
 
@@ -39,10 +136,8 @@ milestone for 3.7.0
 
   * ``pgr_lineGraph``
 
-  
-    * Promoted to **proposed** signature.
+    * Function promoted to proposed.
     * Works for directed and undirected graphs.
-  
 
 **Code enhancement**
 
@@ -54,6 +149,44 @@ milestone for 3.7.0
   not work
 
 ## pgRouting 3.6
+
+
+### pgRouting 3.6.3 Release Notes
+
+To see all issues & pull requests closed by this release see the [Git closed
+milestone for 3.6.3
+](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.6.3%22)
+
+**Build**
+
+* Explicit minimum requirements:
+
+  * postgres 11.0.0
+  * postgis 3.0.0
+
+* g++ 13+ is supported
+
+**Code fixes**
+
+* Fix warnings from cpplint.
+* Fix warnings from clang 18.
+
+**CI tests**
+
+* Add a clang tidy test on changed files.
+* Update test not done on versions: 3.0.1, 3.0.2, 3.0.3, 3.0.4, 3.1.0, 3.1.1,
+  3.1.2
+
+**Documentation**
+
+* Results of documentation queries adujsted to  1.83.0 version:
+
+  * pgr_edgeDisjointPaths
+  * pgr_stoerWagner
+
+**pgtap tests**
+
+* bug fixes
 
 
 ### pgRouting 3.6.2 Release Notes
@@ -93,113 +226,83 @@ milestone for 3.6.0
 
 **Official functions changes**
 
-* [#2516](https://github.com/pgRouting/pgrouting/pull/2516) Standarize output
+* [#2516](https://github.com/pgRouting/pgrouting/pull/2516) Standardize output
   pgr_aStar
 
-  * Standarizing output columns to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+  * Standardize output columns to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
 
-    * ``pgr_aStar`` (`One to One`) added ``start_vid`` and ``end_vid`` columns.
-    * ``pgr_aStar`` (`One to Many`) added ``end_vid`` column.
-    * ``pgr_aStar`` (`Many to One`) added ``start_vid`` column.
+    * pgr_aStar(One to One) added ``start_vid`` and ``end_vid`` columns.
+    * pgr_aStar(One to Many) added ``end_vid`` column.
+    * pgr_aStar(Many to One) added ``start_vid`` column.
 
-* [#2523](https://github.com/pgRouting/pgrouting/pull/2523) Standarize output
+* [#2523](https://github.com/pgRouting/pgrouting/pull/2523) Standardize output
   pgr_bdAstar
 
-  * Standarizing output columns to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+  * Standardize output columns to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
 
-    * ``pgr_bdAstar`` (`One to One`) added ``start_vid`` and ``end_vid``
+    * pgr_bdAstar(One to One) added ``start_vid`` and ``end_vid``
       columns.
-    * ``pgr_bdAstar`` (`One to Many`) added ``end_vid`` column.
-    * ``pgr_bdAstar`` (`Many to One`) added ``start_vid`` column.
+    * pgr_bdAstar(One to Many) added ``end_vid`` column.
+    * pgr_bdAstar(Many to One) added ``start_vid`` column.
 
-* [#2547](https://github.com/pgRouting/pgrouting/pull/2547) Standarize output
+* [#2547](https://github.com/pgRouting/pgrouting/pull/2547) Standardize output
   and modifying signature pgr_KSP
 
-  
   * Result columns standarized to: ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
-  * ``pgr_ksp`` (One to One)
-  
+  * pgr_ksp(One to One)
     * Added ``start_vid`` and ``end_vid`` result columns.
-  
-  * New overload functions:
-  
-    * ``pgr_ksp`` (One to Many)
-    * ``pgr_ksp`` (Many to One)
-    * ``pgr_ksp`` (Many to Many)
-    * ``pgr_ksp`` (Combinations)
-  
+  * New proposed signatures:
+    * pgr_ksp(One to Many)
+    * pgr_ksp(Many to One)
+    * pgr_ksp(Many to Many)
+    * pgr_ksp(Combinations)
 
-* [#2548](https://github.com/pgRouting/pgrouting/pull/2548) Standarize output
-  pgr_drivingdistance
+* [#2548](https://github.com/pgRouting/pgrouting/pull/2548) Standardize output
+  pgr_drivingDistance
 
-  
   * Standarizing output columns to ``(seq, depth, start_vid, pred, node, edge, cost, agg_cost)``
-  
-    * ``pgr_drivingdistance`` (Single vertex)
-  
+    * pgr_drivingDistance(Single vertex)
       * Added ``depth`` and ``start_vid`` result columns.
-  
-    * ``pgr_drivingdistance`` (Multiple vertices)
-  
+    * pgr_drivingDistance(Multiple vertices)
       * Result column name change: ``from_v`` to ``start_vid``.
       * Added ``depth`` and ``pred`` result columns.
-  
 
 **Proposed functions changes**
 
-* [#2544](https://github.com/pgRouting/pgrouting/pull/2544) Standarize output
+* [#2544](https://github.com/pgRouting/pgrouting/pull/2544) Standardize output
   and modifying signature pgr_withPointsDD
 
-  
   * Signature change: ``driving_side`` parameter changed from named optional to
     unnamed compulsory **driving side**.
-  
-    * ``pgr_withPointsDD`` (`Single vertex`)
-    * ``pgr_withPointsDD`` (`Multiple vertices`)
-  
+    * pgr_withPointsDD(Single vertex)
+    * pgr_withPointsDD(Multiple vertices)
   * Standarizing output columns to ``(seq, depth, start_vid, pred, node, edge, cost, agg_cost)``
-  
-    * ``pgr_withPointsDD`` (`Single vertex`)
-  
+    * pgr_withPointsDD(Single vertex)
       * Added ``depth``, ``pred`` and ``start_vid`` column.
-  
-    * ``pgr_withPointsDD`` (`Multiple vertices`)
-  
+    * pgr_withPointsDD(Multiple vertices)
       * Added ``depth``, ``pred`` columns.
-  
   * When ``details`` is ``false``:
-  
     * Only points that are visited are removed, that is, points reached within the
       distance are included
-  
   * Deprecated signatures
-  
-    * ``pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)``
-    * ``pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)``
-  
+    * pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)``
+    * pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)``
 
-* [#2546](https://github.com/pgRouting/pgrouting/pull/2546) Standarize output
+* [#2546](https://github.com/pgRouting/pgrouting/pull/2546) Standardize output
   and modifying signature pgr_withPointsKSP
 
-  
   * Standarizing output columns to ``(seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
-  * ``pgr_withPointsKSP`` (One to One)
-  
+  * pgr_withPointsKSP(One to One)
     * Signature change: ``driving_side`` parameter changed from named optional to
       unnamed compulsory **driving side**.
     * Added ``start_vid`` and ``end_vid`` result columns.
-  
-  * New overload functions
-  
-    * ``pgr_withPointsKSP`` (One to Many)
-    * ``pgr_withPointsKSP`` (Many to One)
-    * ``pgr_withPointsKSP`` (Many to Many)
-    * ``pgr_withPointsKSP`` (Combinations)
-  
+  * New proposed signatures:
+    * pgr_withPointsKSP(One to Many)
+    * pgr_withPointsKSP(Many to One)
+    * pgr_withPointsKSP(Many to Many)
+    * pgr_withPointsKSP(Combinations)
   * Deprecated signature
-  
-    * ``pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,char,boolean)``
-  
+    * pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,char,boolean)``
 
 **C/C++ code enhancements**
 
@@ -223,9 +326,9 @@ milestone for 3.6.0
 * [#2490](https://github.com/pgRouting/pgrouting/pull/2490) Automatic page
   history links.
 
-* ..rubric:: SQL standarization
+* ..rubric:: Standardize SQL
 
-* [#2555](https://github.com/pgRouting/pgrouting/pull/2555) standarize
+* [#2555](https://github.com/pgRouting/pgrouting/pull/2555) Standardize
   deprecated messages
 * On new internal function: do not use named parameters and default parameters.
 
@@ -252,7 +355,7 @@ Changes on the documentation to the following:
 **Issue fixes**
 
 * [#2565](https://github.com/pgRouting/pgrouting/issues/2565)
-  pgr_pgr_lengauerTarjanDominatorTree triggers an assertion
+  pgr_lengauerTarjanDominatorTree triggers an assertion
 
 **SQL enhancements**
 
@@ -283,11 +386,11 @@ milestone for 3.5.0
 
 * Dijkstra
 
-  * Standarizing output columns to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+  * Standardize output columns to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
 
-    * ``pgr_dijkstra`` (`One to One`) added ``start_vid`` and ``end_vid`` columns.
-    * ``pgr_dijkstra`` (`One to Many`) added ``end_vid`` column.
-    * ``pgr_dijkstra`` (`Many to One`) added ``start_vid`` column.
+    * pgr_dijkstra(One to One) added ``start_vid`` and ``end_vid`` columns.
+    * pgr_dijkstra(One to Many) added ``end_vid`` column.
+    * pgr_dijkstra(Many to One) added ``start_vid`` column.
 
 ## pgRouting 3.4
 
@@ -329,70 +432,70 @@ milestone for 3.4.0
 * [#1891](https://github.com/pgRouting/pgrouting/issues/1891):
   pgr_ksp doesn't give all correct shortest path
 
-**New proposed functions**
+**New proposed functions.**
 
 * With points
 
-  * ``pgr_withPointsVia`` (One Via)
+  * pgr_withPointsVia(One Via)
 
 * Turn Restrictions
 
   * Via with turn restrictions
 
-    * ``pgr_trspVia`` (One Via)
-    * ``pgr_trspVia_withPoints`` (One Via)
+    * pgr_trspVia(One Via)
+    * pgr_trspVia_withPoints(One Via)
 
-  * ``pgr_trsp``
+  * pgr_trsp
 
-    * ``pgr_trsp`` (One to One)
-    * ``pgr_trsp`` (One to Many)
-    * ``pgr_trsp`` (Many to One)
-    * ``pgr_trsp`` (Many to Many)
-    * ``pgr_trsp`` (Combinations)
+    * pgr_trsp(One to One)
+    * pgr_trsp(One to Many)
+    * pgr_trsp(Many to One)
+    * pgr_trsp(Many to Many)
+    * pgr_trsp(Combinations)
 
   * ``pgr_trsp_withPoints``
 
-    * ``pgr_trsp_withPoints`` (One to One)
-    * ``pgr_trsp_withPoints`` (One to Many)
-    * ``pgr_trsp_withPoints`` (Many to One)
-    * ``pgr_trsp_withPoints`` (Many to Many)
-    * ``pgr_trsp_withPoints`` (Combinations)
+    * pgr_trsp_withPoints(One to One)
+    * pgr_trsp_withPoints(One to Many)
+    * pgr_trsp_withPoints(Many to One)
+    * pgr_trsp_withPoints(Many to Many)
+    * pgr_trsp_withPoints(Combinations)
 
 * Topology
 
-  * ``pgr_degree``
+  * pgr_degree
 
 * Utilities
 
-  * ``pgr_findCloseEdges`` (One point)
-  * ``pgr_findCloseEdges`` (Many points)
+  * pgr_findCloseEdges(One point)
+  * pgr_findCloseEdges(Many points)
 
 **New experimental functions**
 
 * Ordering
 
-  * ``pgr_cuthillMckeeOrdering``
+  * pgr_cuthillMckeeOrdering
 
 * Unclassified
 
-  * ``pgr_hawickCircuits``
+  * pgr_hawickCircuits
 
 **Official functions changes**
 
 * Flow functions
 
-  * ``pgr_maxCardinalityMatch(text)``
+  * pgr_maxCardinalityMatch(text)
 
-    * Deprecating ``pgr_maxCardinalityMatch(text,boolean)``
+    * Deprecating: pgr_maxCardinalityMatch(text,boolean)
 
 **Deprecated Functions**
 
 * Turn Restrictions
 
-  * ``pgr_trsp(text,integer,integer,boolean,boolean,text)``
-  * ``pgr_trsp(text,integer,float8,integer,float8,boolean,boolean,text)``
-  * ``pgr_trspViaVertices(text,anyarray,boolean,boolean,text)``
-  * ``pgr_trspViaEdges(text,integer[],float[],boolean,boolean,text)``
+  * pgr_trsp(text,integer,integer,boolean,boolean,text)
+  * pgr_trsp(text,integer,float8,integer,float8,boolean,boolean,text)
+  * pgr_trspViaVertices(text,anyarray,boolean,boolean,text)
+  * pgr_trspViaEdges(text,integer[],float[],boolean,boolean,text)
 
 ## pgRouting 3.3
 
@@ -428,7 +531,7 @@ milestone for 3.3.3
 
 * Flow functions
 
-  * ``pgr_maxCardinalityMatch(text,boolean)``
+  * pgr_maxCardinalityMatch(text,boolean)
 
     * Ignoring optional boolean parameter, as the algorithm works only for
       undirected graphs.
@@ -614,7 +717,7 @@ on Github.
 
 * pgr_sequentialVertexColoring
 
-**New proposed functions**
+**New proposed functions.**
 
 * Astar
 
@@ -725,7 +828,7 @@ milestone for 3.1.0
 ](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.1.0%22)
 on Github.
 
-**New proposed functions**
+**New proposed functions.**
 
 * pgr_dijkstra(combinations)
 * pgr_dijkstraCost(combinations)
@@ -856,7 +959,7 @@ on Github.
   * [#1006](https://github.com/pgRouting/pgrouting/issues/1006): No loss of
     information
 
-**New functions**
+**New Functions**
 
 * Kruskal family
 
@@ -877,66 +980,57 @@ on Github.
 
 * aStar Family
 
-  * pgr_aStar(one to many)
-  * pgr_aStar(many to one)
-  * pgr_aStar(many to many)
-  * pgr_aStarCost(one to one)
-  * pgr_aStarCost(one to many)
-  * pgr_aStarCost(many to one)
-  * pgr_aStarCost(many to many)
-  * pgr_aStarCostMatrix(one to one)
-  * pgr_aStarCostMatrix(one to many)
-  * pgr_aStarCostMatrix(many to one)
-  * pgr_aStarCostMatrix(many to many)
+  * pgr_aStar(One to Many)
+  * pgr_aStar(Many to One)
+  * pgr_aStar(Many to Many)
+  * pgr_aStarCost(One to One)
+  * pgr_aStarCost(One to Many)
+  * pgr_aStarCost(Many to One)
+  * pgr_aStarCost(Many to Many)
+  * pgr_aStarCostMatrix
 
 * bdAstar Family
 
-  * pgr_bdAstar(one to many)
-  * pgr_bdAstar(many to one)
-  * pgr_bdAstar(many to many)
-  * pgr_bdAstarCost(one to one)
-  * pgr_bdAstarCost(one to many)
-  * pgr_bdAstarCost(many to one)
-  * pgr_bdAstarCost(many to many)
-  * pgr_bdAstarCostMatrix(one to one)
-  * pgr_bdAstarCostMatrix(one to many)
-  * pgr_bdAstarCostMatrix(many to one)
-  * pgr_bdAstarCostMatrix(many to many)
+  * pgr_bdAstar(One to Many)
+  * pgr_bdAstar(Many to One)
+  * pgr_bdAstar(Many to Many)
+  * pgr_bdAstarCost(One to One)
+  * pgr_bdAstarCost(One to Many)
+  * pgr_bdAstarCost(Many to One)
+  * pgr_bdAstarCost(Many to Many)
+  * pgr_bdAstarCostMatrix
 
 * bdDijkstra Family
 
-  * pgr_bdDijkstra(one to many)
-  * pgr_bdDijkstra(many to one)
-  * pgr_bdDijkstra(many to many)
-  * pgr_bdDijkstraCost(one to one)
-  * pgr_bdDijkstraCost(one to many)
-  * pgr_bdDijkstraCost(many to one)
-  * pgr_bdDijkstraCost(many to many)
-  * pgr_bdDijkstraCostMatrix(one to one)
-  * pgr_bdDijkstraCostMatrix(one to many)
-  * pgr_bdDijkstraCostMatrix(many to one)
-  * pgr_bdDijkstraCostMatrix(many to many)
+  * pgr_bdDijkstra(One to Many)
+  * pgr_bdDijkstra(Many to One)
+  * pgr_bdDijkstra(Many to Many)
+  * pgr_bdDijkstraCost(One to One)
+  * pgr_bdDijkstraCost(One to Many)
+  * pgr_bdDijkstraCost(Many to One)
+  * pgr_bdDijkstraCost(Many to Many)
+  * pgr_bdDijkstraCostMatrix
 
 * Flow Family
 
-  * pgr_pushRelabel(one to one)
-  * pgr_pushRelabel(one to many)
-  * pgr_pushRelabel(many to one)
-  * pgr_pushRelabel(many to many)
-  * pgr_edmondsKarp(one to one)
-  * pgr_edmondsKarp(one to many)
-  * pgr_edmondsKarp(many to one)
-  * pgr_edmondsKarp(many to many)
-  * pgr_boykovKolmogorov (one to one)
-  * pgr_boykovKolmogorov (one to many)
-  * pgr_boykovKolmogorov (many to one)
-  * pgr_boykovKolmogorov (many to many)
+  * pgr_pushRelabel(One to One)
+  * pgr_pushRelabel(One to Many)
+  * pgr_pushRelabel(Many to One)
+  * pgr_pushRelabel(Many to Many)
+  * pgr_edmondsKarp(One to One)
+  * pgr_edmondsKarp(One to Many)
+  * pgr_edmondsKarp(Many to One)
+  * pgr_edmondsKarp(Many to Many)
+  * pgr_boykovKolmogorov (One to One)
+  * pgr_boykovKolmogorov (One to Many)
+  * pgr_boykovKolmogorov (Many to One)
+  * pgr_boykovKolmogorov (Many to Many)
   * pgr_maxCardinalityMatching
   * pgr_maxFlow
-  * pgr_edgeDisjointPaths(one to one)
-  * pgr_edgeDisjointPaths(one to many)
-  * pgr_edgeDisjointPaths(many to one)
-  * pgr_edgeDisjointPaths(many to many)
+  * pgr_edgeDisjointPaths(One to One)
+  * pgr_edgeDisjointPaths(One to Many)
+  * pgr_edgeDisjointPaths(Many to One)
+  * pgr_edgeDisjointPaths(Many to Many)
 
 * Components family
 
@@ -1051,7 +1145,7 @@ on Github.
 
   * pgr_floydWarshall
   * pgr_johnson
-  * pgr_astar
+  * pgr_aStar
   * pgr_bdAstar
   * pgr_bdDijstra
   * pgr_alphashape
@@ -1134,13 +1228,15 @@ on Github.
 
 ### pgRouting 2.5.4 Release Notes
 
-To see the issues closed by this release see the [Git closed milestone for 2.5.4](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%202.5.4%22%20) on Github.
+To see the issues closed by this release see the [Git closed milestone for 2.5.4
+](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%202.5.4%22%20)
+on Github.
 
 * Fixes server crash on several functions.
 
   * pgr_floydWarshall
   * pgr_johnson
-  * pgr_astar
+  * pgr_aStar
   * pgr_bdAstar
   * pgr_bdDijstra
   * pgr_alphashape
@@ -1221,29 +1317,29 @@ on Github.
 
   * Added path_id, cost and agg_cost columns on the result
   * Parameter names changed
-  * The many version results are the union of the one to one version
+  * The many version results are the union of the One to One version
 
 **New Signatures**
 
-* pgr_bdAstar(one to one)
+* pgr_bdAstar(One to One)
 
-**New Proposed functions**
+**New proposed functions.**
 
-* pgr_bdAstar(one to many)
-* pgr_bdAstar(many to one)
-* pgr_bdAstar(many to many)
-* pgr_bdAstarCost(one to one)
-* pgr_bdAstarCost(one to many)
-* pgr_bdAstarCost(many to one)
-* pgr_bdAstarCost(many to many)
+* pgr_bdAstar(One to Many)
+* pgr_bdAstar(Many to One)
+* pgr_bdAstar(Many to Many)
+* pgr_bdAstarCost(One to One)
+* pgr_bdAstarCost(One to Many)
+* pgr_bdAstarCost(Many to One)
+* pgr_bdAstarCost(Many to Many)
 * pgr_bdAstarCostMatrix
-* pgr_bdDijkstra(one to many)
-* pgr_bdDijkstra(many to one)
-* pgr_bdDijkstra(many to many)
-* pgr_bdDijkstraCost(one to one)
-* pgr_bdDijkstraCost(one to many)
-* pgr_bdDijkstraCost(many to one)
-* pgr_bdDijkstraCost(many to many)
+* pgr_bdDijkstra(One to Many)
+* pgr_bdDijkstra(Many to One)
+* pgr_bdDijkstra(Many to Many)
+* pgr_bdDijkstraCost(One to One)
+* pgr_bdDijkstraCost(One to Many)
+* pgr_bdDijkstraCost(Many to One)
+* pgr_bdDijkstraCost(Many to Many)
 * pgr_bdDijkstraCostMatrix
 * pgr_lineGraph
 * pgr_lineGraphFull
@@ -1308,24 +1404,24 @@ To see the issues closed by this release see the [Git closed issues for 2.4.0
 ](https://github.com/pgRouting/pgrouting/issues?q=milestone%3A%22Release+2.4.0%22+is%3Aclosed)
 on Github.
 
-**New Signatures**
+**New Functions**
 
 * pgr_bdDijkstra
 
 
-**New Proposed Signatures**
+**New proposed signatures:**
 
 * pgr_maxFlow
-* pgr_astar(one to many)
-* pgr_astar(many to one)
-* pgr_astar(many to many)
-* pgr_astarCost(one to one)
-* pgr_astarCost(one to many)
-* pgr_astarCost(many to one)
-* pgr_astarCost(many to many)
-* pgr_astarCostMatrix
+* pgr_aStar(One to Many)
+* pgr_aStar(Many to One)
+* pgr_aStar(Many to Many)
+* pgr_aStarCost(One to One)
+* pgr_aStarCost(One to Many)
+* pgr_aStarCost(Many to One)
+* pgr_aStarCost(Many to Many)
+* pgr_aStarCostMatrix
 
-**Deprecated signatures**
+**Deprecated signatures.**
 
 * pgr_bddijkstra - use pgr_bdDijkstra instead
 
@@ -1389,34 +1485,34 @@ on Github.
 * pgr_eucledianTSP
 
 
-**New Proposed functions**
+**New proposed functions.**
 
 * pgr_dijkstraCostMatrix
 * pgr_withPointsCostMatrix
-* pgr_maxFlowPushRelabel(one to one)
-* pgr_maxFlowPushRelabel(one to many)
-* pgr_maxFlowPushRelabel(many to one)
-* pgr_maxFlowPushRelabel(many to many)
-* pgr_maxFlowEdmondsKarp(one to one)
-* pgr_maxFlowEdmondsKarp(one to many)
-* pgr_maxFlowEdmondsKarp(many to one)
-* pgr_maxFlowEdmondsKarp(many to many)
-* pgr_maxFlowBoykovKolmogorov (one to one)
-* pgr_maxFlowBoykovKolmogorov (one to many)
-* pgr_maxFlowBoykovKolmogorov (many to one)
-* pgr_maxFlowBoykovKolmogorov (many to many)
+* pgr_maxFlowPushRelabel(One to One)
+* pgr_maxFlowPushRelabel(One to Many)
+* pgr_maxFlowPushRelabel(Many to One)
+* pgr_maxFlowPushRelabel(Many to Many)
+* pgr_maxFlowEdmondsKarp(One to One)
+* pgr_maxFlowEdmondsKarp(One to Many)
+* pgr_maxFlowEdmondsKarp(Many to One)
+* pgr_maxFlowEdmondsKarp(Many to Many)
+* pgr_maxFlowBoykovKolmogorov (One to One)
+* pgr_maxFlowBoykovKolmogorov (One to Many)
+* pgr_maxFlowBoykovKolmogorov (Many to One)
+* pgr_maxFlowBoykovKolmogorov (Many to Many)
 * pgr_maximumCardinalityMatching
-* pgr_edgeDisjointPaths(one to one)
-* pgr_edgeDisjointPaths(one to many)
-* pgr_edgeDisjointPaths(many to one)
-* pgr_edgeDisjointPaths(many to many)
+* pgr_edgeDisjointPaths(One to One)
+* pgr_edgeDisjointPaths(One to Many)
+* pgr_edgeDisjointPaths(Many to One)
+* pgr_edgeDisjointPaths(Many to Many)
 * pgr_contractGraph
 
 
 **Deprecated signatures**
 
 * pgr_tsp - use pgr_TSP or pgr_eucledianTSP instead
-* pgr_astar - use pgr_aStar instead
+* pgr_aStar - use pgr_aStar instead
 
 
 **Deprecated Functions**
@@ -1500,21 +1596,21 @@ on Github.
 
 - pgr_floydWarshall
 - pgr_Johnson
-- pgr_dijkstraCost(one to one)
-- pgr_dijkstraCost(one to many)
-- pgr_dijkstraCost(many to one)
-- pgr_dijkstraCost(many to many)
+- pgr_dijkstraCost(One to One)
+- pgr_dijkstraCost(One to Many)
+- pgr_dijkstraCost(Many to One)
+- pgr_dijkstraCost(Many to Many)
 
 **Proposed Functionality**
 
-- pgr_withPoints(one to one)
-- pgr_withPoints(one to many)
-- pgr_withPoints(many to one)
-- pgr_withPoints(many to many)
-- pgr_withPointsCost(one to one)
-- pgr_withPointsCost(one to many)
-- pgr_withPointsCost(many to one)
-- pgr_withPointsCost(many to many)
+- pgr_withPoints(One to One)
+- pgr_withPoints(One to Many)
+- pgr_withPoints(Many to One)
+- pgr_withPoints(Many to Many)
+- pgr_withPointsCost(One to One)
+- pgr_withPointsCost(One to Many)
+- pgr_withPointsCost(Many to One)
+- pgr_withPointsCost(Many to Many)
 - pgr_withPointsDD(single vertex)
 - pgr_withPointsDD(multiple vertices)
 - pgr_withPointsKSP
@@ -1543,14 +1639,14 @@ on Github.
 
 **New Signatures**
 
-- pgr_dijkstra(one to many)
-- pgr_dijkstra(many to one)
-- pgr_dijkstra(many to many)
+- pgr_dijkstra(One to Many)
+- pgr_dijkstra(Many to One)
+- pgr_dijkstra(Many to Many)
 - pgr_drivingDistance(multiple vertices)
 
 **Refactored**
 
-- pgr_dijkstra(one to one)
+- pgr_dijkstra(One to One)
 - pgr_ksp
 - pgr_drivingDistance(single vertex)
 

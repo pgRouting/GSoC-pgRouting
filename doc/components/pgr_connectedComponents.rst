@@ -7,19 +7,17 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: Components Family ; pgr_connectedComponents
+   single: connectedComponents
+
 |
 
-
-pgr_connectedComponents
+``pgr_connectedComponents``
 ===============================================================================
 
 ``pgr_connectedComponents`` — Connected components of an undirected graph using
 a DFS-based approach.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/connected_components.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
@@ -30,11 +28,11 @@ a DFS-based approach.
     * ``n_seq`` is removed
     * ``seq`` changed type to ``BIGINT``
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description
@@ -56,8 +54,7 @@ from each other.
 
 - Running time: :math:`O(V + E)`
 
-.. index::
-    single: connectedComponents
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -140,8 +137,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`components-family`
-* The queries use the :doc:`sampledata` network.
-* Boost: `Connected components
+* :doc:`sampledata`
+* `Boost: Connected components
   <https://www.boost.org/libs/graph/doc/connected_components.html>`__
 * wikipedia: `Connected component
   <https://en.wikipedia.org/wiki/Connected_component_(graph_theory)>`__

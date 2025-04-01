@@ -7,28 +7,31 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: Topology Family ; pgr_extractVertices
+   single: extractVertices
+
 |
 
-
-pgr_extractVertices -- Proposed
+``pgr_extractVertices``
 ===============================================================================
 
 ``pgr_extractVertices`` — Extracts the vertices information
 
-
-.. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
-
 .. rubric:: Availability
 
-* Version 3.3.0
+.. rubric:: Version 3.8.0
 
-  * Classified as **proposed** function
+* Error messages adjustment.
+* Function promoted to official.
 
-* Version 3.0.0
+.. rubric:: Version 3.3.0
 
-  * New **experimental** function
+* Function promoted to proposed.
+
+.. rubric:: Version 3.0.0
+
+* New experimental function.
 
 
 Description
@@ -41,11 +44,12 @@ of edges of a graph.
   edges
 
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
-.. index::
-    single: pgr_extractVertices - Proposed on v3.3
+.. rubric:: Summary
 
 .. admonition:: \ \
    :class: signatures

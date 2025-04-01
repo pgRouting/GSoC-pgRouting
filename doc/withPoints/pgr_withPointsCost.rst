@@ -7,43 +7,43 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: withPoints Family ; pgr_withPointsCost - Proposed
+   single: With Points Category ; pgr_withPointsCost - Proposed
+   single: Cost Category ; pgr_withPointsCost - Proposed
+   single: withPointsCost
 
+|
 
 ``pgr_withPointsCost`` - Proposed
 ===============================================================================
 
 ``pgr_withPointsCost`` - Calculates the shortest path and returns only the
-aggregate cost of the shortest path(s) found, for the combination of points
+aggregate cost of the shortest path found, for the combination of points
 given.
 
 .. include:: proposed.rst
-   :start-after: begin-warning
+   :start-after: warning-begin
    :end-before: end-warning
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
 * Version 3.2.0
 
-  * New **proposed** function:
+  * New proposed signature:
 
     * pgr_withPointsCost(Combinations)
 
 * Version 2.2.0
 
-  * New **proposed** function
+  * New proposed function.
 
 
 Description
 -------------------------------------------------------------------------------
 
 Modify the graph to include points defined by points_sql.
-Using Dijkstra algorithm, return only the aggregate cost of the shortest path(s)
+Using Dijkstra algorithm, return only the aggregate cost of the shortest path
 found.
 
 The main characteristics are:
@@ -87,6 +87,8 @@ The main characteristics are:
 
   - Running time: :math:`O(|start\_vids|\times(V \log V + E))`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
@@ -109,7 +111,7 @@ Signatures
    withPoints family of functions.
 
 .. index::
-    single: withPointsCost(One To One) - Proposed on v2.2
+    single: withPointsCost - Proposed ; One to One - Proposed on v2.2
 
 One to One
 ...............................................................................
@@ -130,7 +132,7 @@ One to One
    :end-before: -- q2
 
 .. index::
-    single: withPointsCost(One To Many) - Proposed on v2.2
+    single: withPointsCost - Proposed ; One to Many - Proposed on v2.2
 
 One to Many
 ...............................................................................
@@ -152,7 +154,7 @@ One to Many
    :end-before: -- q3
 
 .. index::
-    single: withPointsCost(Many To One) - Proposed on v2.2
+    single: withPointsCost - Proposed ; Many to One - Proposed on v2.2
 
 Many to One
 ...............................................................................
@@ -173,7 +175,7 @@ Many to One
    :end-before: -- q4
 
 .. index::
-    single: withPointsCost(Many To Many) - Proposed on v2.2
+    single: withPointsCost - Proposed ; Many to Many - Proposed on v2.2
 
 Many to Many
 ...............................................................................
@@ -195,7 +197,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: withPointsCost(Combinations) -- Proposed on v3.2
+    single: withPointsCost - Proposed ; Combinations -- Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -358,7 +360,7 @@ Traveling from point :math:`1` and vertex :math:`5` to points :math:`\{2, 3,
    :start-after: -- q8
    :end-before: -- q9
 
-The queries use the :doc:`sampledata` network.
+:doc:`sampledata`
 
 See Also
 -------------------------------------------------------------------------------

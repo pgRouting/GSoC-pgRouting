@@ -7,29 +7,26 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: Miscellaneous Algorithms ; pgr_hawickCircuits
+   single: Hawick Circuits - Experimental on v3.4
+
 |
 
-
-``pgr_hawickCircuits - Experimental``
+``pgr_hawickCircuits`` - Experimental
 ===============================================================================
 
-``pgr_hawickCircuits`` — Returns the list of cirucits using hawick circuits algorithm.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/hawick_circuits.html
+``pgr_hawickCircuits`` — Returns the list of ciruits using hawick circuits algorithm.
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: warning-begin
+   :end-before: end-warning
 
 .. rubric:: Availability
 
 * Version 3.4.0
 
-  * New **experimental** signature:
-
-    * ``pgr_hawickCircuits``
-
+  * New experimental function.
 
 Description
 -------------------------------------------------------------------------------
@@ -58,10 +55,10 @@ implemenent this variation.
   - :math:`|V|` is the number of vertices in the graph.
   - :math:`|c|` is the number of circuts in the graph.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
-
-.. rubric:: Summary
 
 .. admonition:: \ \
    :class: signatures
@@ -70,9 +67,6 @@ Signatures
 
    | Returns set of |generic-result|
    | OR EMPTY SET
-
-.. index::
-    single: Hawick Circuits - Experimental on v3.4
 
 :Example: Circuits present in the pgRouting :doc:`sampledata`
 

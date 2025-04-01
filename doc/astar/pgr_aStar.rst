@@ -7,18 +7,16 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: aStar Family ; pgr_aStar
+   single: aStar
 
+|
 
 ``pgr_aStar``
 ===============================================================================
 
 ``pgr_aStar`` — Shortest path using the A* algorithm.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/astar_search.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
@@ -26,37 +24,37 @@
 
   * Standarizing output columns to |short-generic-result|
 
-    * ``pgr_aStar`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns.
-    * ``pgr_aStar`` (`One to Many`_) added ``end_vid`` column.
-    * ``pgr_aStar`` (`Many to One`_) added ``start_vid`` column.
+    * pgr_aStar(One to One) added ``start_vid`` and ``end_vid`` columns.
+    * pgr_aStar(One to Many) added ``end_vid`` column.
+    * pgr_aStar(Many to One) added ``start_vid`` column.
 
 * Version 3.2.0
 
-  * New **proposed** signature:
+  * New proposed signature:
 
-    * ``pgr_aStar`` (`Combinations`_)
+    * pgr_aStar(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.4.0
 
-  * New **Proposed** signatures:
+  * New proposed signatures:
 
-    * ``pgr_aStar`` (`One to Many`_)
-    * ``pgr_aStar`` (`Many to One`_)
-    * ``pgr_aStar`` (`Many to Many`_)
+    * pgr_aStar(One to Many)
+    * pgr_aStar(Many to One)
+    * pgr_aStar(Many to Many)
 
 * Version 2.3.0
 
-  * Signature change on ``pgr_astar`` (`One to One`_)
+  * Signature change on pgr_aStar(One to One)
 
     * Old signature no longer supported
 
 * Version 2.0.0
 
-  * **Official** ``pgr_aStar`` (`One to One`_)
+  * New official function.
 
 Description
 -------------------------------------------------------------------------------
@@ -70,10 +68,12 @@ Description
 * The results are equivalent to the union of the results of the `pgr_aStar(`
   `One to One`_ `)` on the:
 
-  * ``pgr_aStar`` (`One to Many`_)
-  * ``pgr_aStar`` (`Many to One`_)
-  * ``pgr_aStar`` (`Many to Many`_)
-  * ``pgr_aStar`` (`Combinations`_)
+  * pgr_aStar(One to Many)
+  * pgr_aStar(Many to One)
+  * pgr_aStar(Many to Many)
+  * pgr_aStar(Combinations)
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ Signatures
 Optional parameters are `named parameters` and have a default value.
 
 .. index::
-    single: aStar(One to One)
+    single: aStar ; One to One
 
 One to One
 ...............................................................................
@@ -118,7 +118,7 @@ One to One
    :end-before: -- q3
 
 .. index::
-    single: astar(One to Many)
+    single: aStar ; One to Many
 
 One to Many
 ...............................................................................
@@ -140,7 +140,7 @@ One to Many
    :end-before: -- q4
 
 .. index::
-    single: aStar(Many to One)
+    single: aStar ; Many to One
 
 Many to One
 ...............................................................................
@@ -162,7 +162,7 @@ Many to One
    :end-before: -- q5
 
 .. index::
-    single: aStar(Many to Many)
+    single: aStar ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -184,7 +184,7 @@ Many to Many
    :end-before: -- q51
 
 .. index::
-    single: aStarCost(Combinations) - Proposed on v3.2
+    single: aStar ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -285,7 +285,7 @@ See Also
 * :doc:`aStar-family`
 * :doc:`bdAstar-family`
 * :doc:`sampledata`
-* https://www.boost.org/libs/graph/doc/astar_search.html
+* `Boost: A* search <https://www.boost.org/libs/graph/doc/astar_search.html>`__
 * https://en.wikipedia.org/wiki/A*_search_algorithm
 
 .. rubric:: Indices and tables

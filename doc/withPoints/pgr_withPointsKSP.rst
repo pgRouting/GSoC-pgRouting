@@ -7,48 +7,46 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: withPoints Family ; pgr_withPointsKSP
+   single: With Points Category ; pgr_withPointsKSP
+   single: K Shortest Paths Category ; pgr_withPointsKSP
+   single: withPointsKSP
+
 |
 
-
-pgr_withPointsKSP - Proposed
+``pgr_withPointsKSP`` - Proposed
 ===============================================================================
 
 ``pgr_withPointsKSP`` — Yen's algorithm for K shortest paths using Dijkstra.
 
 .. include:: proposed.rst
-   :start-after: begin-warning
+   :start-after: warning-begin
    :end-before: end-warning
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
-
-.. rubric:: Availability
 
 .. rubric:: Version 3.6.0
 
 * Standarizing output columns to |nksp-result|
-* ``pgr_withPointsKSP`` (One to One)
+* pgr_withPointsKSP(One to One)
 
   * Signature change: ``driving_side`` parameter changed from named optional to
     unnamed compulsory **driving side**.
   * Added ``start_vid`` and ``end_vid`` result columns.
 
-* New overload functions
+* New proposed signatures:
 
-  * ``pgr_withPointsKSP`` (One to Many)
-  * ``pgr_withPointsKSP`` (Many to One)
-  * ``pgr_withPointsKSP`` (Many to Many)
-  * ``pgr_withPointsKSP`` (Combinations)
+  * pgr_withPointsKSP(One to Many)
+  * pgr_withPointsKSP(Many to One)
+  * pgr_withPointsKSP(Many to Many)
+  * pgr_withPointsKSP(Combinations)
 
 * Deprecated signature
 
-  * ``pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,char,boolean)``
+  * pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,char,boolean)``
 
 .. rubric:: Version 2.2.0
 
-* New **proposed** function
+* New proposed function.
 
 
 Description
@@ -57,8 +55,7 @@ Description
 Modifies the graph to include the points defined in the `Points SQL`_ and
 using Yen algorithm, finds the :math:`K` shortest paths.
 
-.. index::
-    single: withPointsKSP - Proposed on v2.2
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -77,7 +74,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: withPointsKSP(One to One)
+    single: withPointsKSP ; One to One - Proposed on v2.2
 
 One to One
 ...............................................................................
@@ -103,7 +100,7 @@ One to One
    :end-before: --q2
 
 .. index::
-    single: withPointsKSP(One to Many)
+    single: withPointsKSP ; One to Many - Proposed on v3.6
 
 One to Many
 ...............................................................................
@@ -125,7 +122,7 @@ One to Many
    :end-before: --q3
 
 .. index::
-    single: withPointsKSP(Many to One)
+    single: withPointsKSP ; Many to One - Proposed on v3.6
 
 Many to One
 ...............................................................................
@@ -147,7 +144,7 @@ Many to One
    :end-before: --q4
 
 .. index::
-    single: withPointsKSP(Many to Many)
+    single: withPointsKSP ; Many to Many - Proposed on v3.6
 
 Many to Many
 ...............................................................................
@@ -169,7 +166,7 @@ Many to Many
    :end-before: --q5
 
 .. index::
-    single: withPointsKSP(Combinations)
+    single: withPointsKSP ; Combinations - Proposed on v3.6
 
 Combinations
 ...............................................................................
@@ -332,8 +329,6 @@ point :math:`2` with heap paths and details.
 .. literalinclude:: withPointsKSP.queries
    :start-after: --q8
    :end-before: --q9
-
-The queries use the :doc:`sampledata` network.
 
 See Also
 -------------------------------------------------------------------------------

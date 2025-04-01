@@ -1,0 +1,114 @@
+BEGIN;
+BEGIN
+SET client_min_messages TO NOTICE;
+SET
+/* -- q1 */
+SELECT * FROM pgr_contractionLinear(
+  'SELECT id, source, target, cost, reverse_cost FROM edges',
+  directed => false);
+ERROR:  function pgr_contractionlinear(unknown, directed => boolean) does not exist
+LINE 2: SELECT * FROM pgr_contractionLinear(
+                      ^
+HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+/* -- q2 */
+SELECT * FROM pgr_contractionLinear(
+$$SELECT * FROM (VALUES
+  (1, 1, 2, 1, -1),
+  (2, 2, 3, 3, 4))
+  AS edges(id,source,target,cost,reverse_cost)$$,
+  directed => true);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- q3 */
+SELECT * FROM pgr_contractionLinear(
+$$SELECT * FROM (VALUES
+  (1, 1, 2, 1, -1),
+  (2, 2, 3, 3, 4))
+  AS edges(id,source,target,cost,reverse_cost)$$,
+  directed => false);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- q4 */
+SELECT * FROM pgr_contractionLinear(
+$$SELECT * FROM (VALUES
+  (1, 1, 2, 1, 2),
+  (2, 2, 3, 3, 4))
+  AS edges(id,source,target,cost,reverse_cost)$$,
+  directed => true);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- q5 */
+SELECT * FROM pgr_contractionLinear(
+$$SELECT * FROM (VALUES
+  (1, 1, 2, 1, 2),
+  (2, 2, 3, 3, 4))
+  AS edges(id,source,target,cost,reverse_cost)$$,
+  directed => false);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- q6 */
+SELECT * FROM pgr_contractionLinear(
+$$SELECT * FROM (VALUES
+  (1, 1, 2, 1),
+  (2, 2, 3, 1),
+  (2, 3, 4, 1))
+  AS edges(id,source,target,cost)$$);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- q7 */
+/* -- cg1 */
+ALTER TABLE vertices ADD is_contracted BOOLEAN DEFAULT false;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ALTER TABLE edges ADD is_new BOOLEAN DEFAULT false;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ALTER TABLE edges ADD contracted_vertices BIGINT[];
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- cg2 */
+SELECT * INTO contraction_results
+FROM pgr_contractionLinear(
+  'SELECT id, source, target, cost, reverse_cost FROM edges',
+  directed => false);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- cg3 */
+UPDATE vertices
+SET is_contracted = true
+WHERE id IN (SELECT  unnest(contracted_vertices) FROM  contraction_results);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- cg4 */
+SELECT id, is_contracted
+FROM vertices WHERE is_contracted ORDER BY id;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- cg5 */
+INSERT INTO edges(source, target, cost, reverse_cost, contracted_vertices, is_new)
+SELECT source, target, cost, -1, contracted_vertices, true
+FROM contraction_results;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- cg6 */
+CREATE VIEW contracted_graph AS
+WITH
+vertices_in_graph AS (
+  SELECT id FROM vertices WHERE NOT is_contracted
+)
+SELECT id, source, target, cost, reverse_cost
+FROM edges
+WHERE source IN (SELECT * FROM vertices_in_graph)
+AND target IN (SELECT * FROM vertices_in_graph)
+ORDER BY id;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- cg7 */
+SELECT * FROM contracted_graph ORDER by id;
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- cg8 */
+SELECT *
+FROM pgr_dijkstra('SELECT * FROM contracted_graph', 7, 16);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- cg9 */
+SELECT * FROM pgr_dijkstra(
+  'WITH in_line AS (SELECT contracted_vertices FROM edges WHERE 17 = ANY(contracted_vertices))
+   SELECT id, source, target, cost, reverse_cost
+   FROM edges, in_line
+   WHERE source = ANY(in_line.contracted_vertices) OR target = ANY(in_line.contracted_vertices)
+
+  UNION
+
+  SELECT id, source, target, cost, reverse_cost FROM contracted_graph',
+  1, 17);
+ERROR:  current transaction is aborted, commands ignored until end of transaction block
+/* -- cg10 */
+ROLLBACK;
+ROLLBACK

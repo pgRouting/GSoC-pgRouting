@@ -7,8 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Flow Family ; pgr_edmondsKarp
+   single: edmondsKarp
 
+|
 
 ``pgr_edmondsKarp``
 ===============================================================================
@@ -16,31 +19,26 @@
 ``pgr_edmondsKarp`` — Calculates the flow on the graph edges that maximizes the
 flow from the sources to the targets using Edmonds Karp Algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html
-
-   Boost Graph Inside
-
 .. Rubric:: Availability
 
 * Version 3.2.0
 
-  * New **proposed** signature
+  * New proposed signature:
 
-    * ``pgr_edmondsKarp`` (`Combinations`_)
+    * pgr_edmondsKarp(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
   * Renamed from ``pgr_maxFlowEdmondsKarp``
-  * **Proposed** function
+  * Function promoted to proposed.
 
 * Version 2.3.0
 
-  * New **Experimental** function
+  * New experimental function.
 
 
 Description
@@ -51,6 +49,8 @@ Description
     :end-before: characteristics_end
 
 * Running time: :math:`O( V * E ^ 2)`
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: edmondsKarp(One to One)
+    single: edmondsKarp ; One to One
 
 One to One
 ...............................................................................
@@ -90,7 +90,7 @@ One to One
    :end-before: -- q2
 
 .. index::
-    single: edmondsKarp(One to Many)
+    single: edmondsKarp ; One to Many
 
 One to Many
 ...............................................................................
@@ -110,7 +110,7 @@ One to Many
    :end-before: -- q3
 
 .. index::
-    single: edmondsKarp(Many to One)
+    single: edmondsKarp ; Many to One
 
 Many to One
 ...............................................................................
@@ -130,7 +130,7 @@ Many to One
    :end-before: -- q4
 
 .. index::
-    single: edmondsKarp(Many to Many)
+    single: edmondsKarp ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -150,7 +150,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: edmondsKarp(Combinations) - Proposed on v3.2
+    single: edmondsKarp ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -226,7 +226,8 @@ See Also
   * :doc:`pgr_boykovKolmogorov`
   * :doc:`pgr_pushRelabel`
 
-* https://www.boost.org/libs/graph/doc/edmonds_karp_max_flow.html
+* `Boost: edmonds_karp_max_flow
+  <https://www.boost.org/libs/graph/doc/edmonds_karp_max_flow.html>`__
 * https://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm
 
 .. rubric:: Indices and tables

@@ -7,8 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
 
+.. index::
+   single: Reference ; pgr_version
+   single: version
+
+|
 
 ``pgr_version``
 ===============================================================================
@@ -24,16 +28,13 @@
 
 * Version 2.0.0
 
-  * **Official** function
+  * Official function.
 
 
 Description
 -------------------------------------------------------------------------------
 
 Returns pgRouting version information.
-
-.. index::
-    single: version
 
 Signature
 -------------------------------------------------------------------------------

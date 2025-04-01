@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <utility>
 #include <string>
 
-#include "vrp/pgr_pickDeliver.hpp"
+#include "vrp/pickDeliver.hpp"
 #include "vrp/dnode.hpp"
 
 namespace pgrouting {
@@ -63,9 +63,6 @@ void
 PD_Orders::build_orders(
         const std::vector<Orders_t> &pd_orders
         ) {
-#if 0
-    ENTERING();
-#endif
     for (const auto &order : pd_orders) {
         /*
          * SAMPLE CORRECT INFORMATION
@@ -92,10 +89,6 @@ PD_Orders::build_orders(
 
         add_order(order, pickup, delivery);
     }  //  for (creating orders)
-
-#if 0
-    EXITING();
-#endif
 }
 
 

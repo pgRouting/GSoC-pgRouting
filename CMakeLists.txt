@@ -1,9 +1,21 @@
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
 if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     message(FATAL_ERROR "In-source builds not allowed.
     Please make a new directory (called a build directory) and run CMake from there.
     You may need to remove CMakeCache.txt." )
+endif()
+
+if(POLICY CMP0144)
+    cmake_policy(SET CMP0144 OLD)
+endif()
+
+if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 OLD)
+endif()
+
+if(POLICY CMP0148)
+    cmake_policy(SET CMP0148 OLD)
 endif()
 
 #---------------------------------------------
@@ -18,9 +30,9 @@ include(pgr/BuildType)
 #---------------------------------------------
 #---------------------------------------------
 
-project(PGROUTING VERSION 3.7.0
+project(PGROUTING VERSION 3.8.0
     LANGUAGES C CXX )
-set(PROJECT_VERSION_DEV "-dev")
+set(PROJECT_VERSION_DEV "")
 string(TOLOWER "${PROJECT_NAME}" PROJECT_NAME_LOWER)
 
 include(pgr/GitInfo)
@@ -31,8 +43,13 @@ set(PROJECT_LIB_NAME "${PROJECT_NAME_LOWER}-${PROJECT_LIB_VERSION}")
 
 string(TIMESTAMP COMPILATION_DATE "%Y/%m/%d" UTC)
 
-set(MINORS 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.6)
+set(MINORS 3.8 3.7 3.6 3.5 3.4 3.3 3.2 3.1 3.0 2.6)
 set(OLD_SIGNATURES
+    3.7.3
+    3.7.2
+    3.7.1
+    3.7.0
+    3.6.3
     3.6.2
     3.6.1
     3.6.0
@@ -61,9 +78,9 @@ include(pgr/Configure)
 #---------------------------------------------
 set(DOXYGEN_MINIMUM_VERSION "1.7")
 set(SPHINX_MINIMUM_VERSION "4.0")
-set(POSTGRESQL_MINIMUM_VERSION "9.2.0")
+set(POSTGRESQL_MINIMUM_VERSION "13.0.0")
 set(BOOST_MINIMUM_VERSION "1.56.0")
-set(POSTGIS_MINIMUM_VERSION "2.0.0")
+set(POSTGIS_MINIMUM_VERSION "3.0.0")
 
 message(STATUS "DOXYGEN_MINIMUM_VERSION=${DOXYGEN_MINIMUM_VERSION}")
 message(STATUS "SPHINX_MINIMUM_VERSION=${SPHINX_MINIMUM_VERSION}")
@@ -87,7 +104,6 @@ find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
 if (NOT Boost_VERSION_MACRO)
     set(Boost_VERSION_MACRO ${Boost_VERSION})
 endif()
-add_definitions(-DBoost_VERSION_MACRO=${Boost_VERSION_MACRO})
 set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
 
 include(CheckCCompilerFlag)
@@ -172,25 +188,25 @@ endif()
 # PostgreSQL
 #---------------------------------------------
 #---------------------------------------------
-find_package(PostgreSQL)
-if(NOT POSTGRESQL_FOUND OR NOT POSTGRESQL_VERSION_STRING)
-    message(FATAL_ERROR "PostgreSQL not found - Please check your PostgreSQL installation.")
-endif()
+find_package(PostgreSQL "${POSTGRESQL_MINIMUM_VERSION}")
 
+# removing type of release on postgres version
 # for XbetaY XalphaY XrcY -> X.Y
 string(REGEX REPLACE "([0-9]+)[beta|alpha|rc|devel].*" "\\1.0" POSTGRESQL_VERSION_STRING ${POSTGRESQL_VERSION_STRING})
 message(STATUS "POSTGRESQL_VERSION_STRING=${POSTGRESQL_VERSION_STRING}")
 
+# calcualte mayor.micro
 STRING(REGEX MATCH "([0-9]+)\.([0-9]+)" POSTGRESQL_VERSION "${POSTGRESQL_VERSION_STRING}")
 message(STATUS "POSTGRESQL_VERSION=${POSTGRESQL_VERSION}")
 
-#for X.Y.Z -> XY  Y<10
-string(REGEX REPLACE "^([0-9]+)\\.([0-9]+).*" "\\1\\2" PGSQL_VERSION ${POSTGRESQL_VERSION})
-#message(STATUS "PGSQL_VERSION=${PGSQL_VERSION}")
+# split mayor minor
+string(REPLACE "." ";" VERSION_LIST ${POSTGRESQL_VERSION})
+list(GET VERSION_LIST 0 POSTGRESQL_VERSION_MAYOR)
+list(GET VERSION_LIST 1 POSTGRESQL_VERSION_MINOR)
 
-if("${POSTGRESQL_VERSION}" VERSION_LESS "${POSTGRESQL_MINIMUM_VERSION}")
-    message(FATAL_ERROR " PostgreSQL ${POSTGRESQL_MINIMUM_VERSION} or greater is required.")
-endif("${POSTGRESQL_VERSION}" VERSION_LESS "${POSTGRESQL_MINIMUM_VERSION}")
+# calculate math value of postgres version
+math(EXPR PGSQL_VERSION "${POSTGRESQL_VERSION_MAYOR} * 1000 + ${POSTGRESQL_VERSION_MINOR}")
+message(STATUS "PGSQL_VERSION=${PGSQL_VERSION}")
 
 #-------
 include_directories(SYSTEM ${POSTGRESQL_INCLUDE_DIR})

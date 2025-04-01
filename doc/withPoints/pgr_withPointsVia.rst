@@ -7,8 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: withPoints Family ; pgr_withPointsVia
+   single: With Points Category ; pgr_withPointsVia
+   single: Via Category ; pgr_withPointsVia
+   single: withPointsVia
 
+|
 
 ``pgr_withPointsVia`` - Proposed
 ===============================================================================
@@ -17,19 +22,14 @@
 points.
 
 .. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
+   :start-after: warning-begin
+   :end-before: end-warning
 
 .. rubric:: Availability
 
 * Version 3.4.0
 
-  * New **proposed** function ``pgr_withPointsVia`` (`One Via`_)
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------
@@ -51,11 +51,13 @@ The general algorithm is as follows:
 
 * Execute a :doc:`pgr_dijkstraVia`.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
 .. index::
-    single: withPointsVia - Proposed on v3.4
+    single: withPointsVia ; One Via - Proposed on v3.4
 
 One Via
 ...............................................................................
@@ -203,7 +205,7 @@ See Also
 
 * :doc:`withPoints-family`
 * :doc:`via-category`
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

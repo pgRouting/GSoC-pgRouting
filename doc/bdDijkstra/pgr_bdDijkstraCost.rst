@@ -7,35 +7,33 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Bidirectional Dijkstra Family ; pgr_bdDijkstraCost
+   single: bdDijkstraCost
 
+|
 
 ``pgr_bdDijkstraCost``
 ===============================================================================
 
-``pgr_bdDijkstraCost`` — Returns the shortest path(s)'s cost using Bidirectional
+``pgr_bdDijkstraCost`` — Returns the shortest path's cost using Bidirectional
 Dijkstra algorithm.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
 * Version 3.2.0
 
-  * New **proposed** signature:
+  * New proposed signature:
 
-    * ``pgr_bdDijkstraCost`` (`Combinations`_)
+    * pgr_bdDijkstraCost(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
-  * New **proposed** function
+  * New proposed function.
 
 
 Description
@@ -51,6 +49,8 @@ using the bidirectional Dijkstra Algorithm.
 .. include:: cost-category.rst
     :start-after: cost_traits_start
     :end-before: cost_traits_end
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: bdDijkstraCost(One to One)
+    single: bdDijkstraCost ; One to One
 
 One to One
 ...............................................................................
@@ -90,7 +90,7 @@ One to One
     :end-before: -- q3
 
 .. index::
-    single: bdDijkstraCost(One to Many)
+    single: bdDijkstraCost ; One to Many
 
 One to Many
 ...............................................................................
@@ -111,7 +111,7 @@ One to Many
     :end-before: -- q4
 
 .. index::
-    single: bdDijkstraCost(Many to One)
+    single: bdDijkstraCost ; Many to One
 
 Many to One
 ...............................................................................
@@ -132,7 +132,7 @@ Many to One
     :end-before: -- q5
 
 .. index::
-    single: bdDijkstraCost(Many to Many)
+    single: bdDijkstraCost ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -153,7 +153,7 @@ Many to Many
     :end-before: -- q51
 
 .. index::
-    single: bdDijkstraCost(Combinations) - Proposed on v3.2
+    single: bdDijkstraCost ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -244,7 +244,6 @@ See Also
 
 * :doc:`bdDijkstra-family`
 * :doc:`sampledata`
-* https://www.cs.princeton.edu/courses/archive/spr06/cos423/Handouts/EPP%20shortest%20path%20algorithms.pdf
 * https://en.wikipedia.org/wiki/Bidirectional_search
 
 .. rubric:: Indices and tables

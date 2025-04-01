@@ -7,8 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: withPoints Family ; pgr_withPoints
+   single: With Points Category ; pgr_withPoints
+   single: Shortest Path Category ; pgr_withPoints
+   single: withPoints
 
+|
 
 ``pgr_withPoints`` - Proposed
 ===============================================================================
@@ -17,31 +22,26 @@
 temporary vertices.
 
 .. include:: proposed.rst
-   :start-after: begin-warning
+   :start-after: warning-begin
    :end-before: end-warning
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
 * Version 3.2.0
 
-  * New **proposed** function:
+  * New proposed signature:
 
     * pgr_withPoints(Combinations)
 
 * Version 2.2.0
 
-  * New **proposed** function
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------
 
 Modify the graph to include points defined by points_sql.
-Using Dijkstra algorithm, find the shortest path(s)
+Using Dijkstra algorithm, find the shortest path
 
 **The main characteristics are:**
 
@@ -68,6 +68,8 @@ Using Dijkstra algorithm, find the shortest path(s)
 
 * Running time: :math:`O(|start\_vids|\times(V \log V + E))`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
@@ -87,7 +89,7 @@ Signatures
    | OR EMTPY SET
 
 .. index::
-    single: withPoints(One to One) - Proposed on v2.2
+    single: withPoints ; One to One - Proposed on v2.2
 
 One to One
 ...............................................................................
@@ -108,7 +110,7 @@ One to One
    :end-before: -- q2
 
 .. index::
-    single: withPoints(One to Many) - Proposed on v2.2
+    single: withPoints ; One to Many - Proposed on v2.2
 
 One to Many
 ...............................................................................
@@ -130,7 +132,7 @@ One to Many
    :end-before: -- q3
 
 .. index::
-    single: withPoints(Many to One) - Proposed on v2.2
+    single: withPoints ; Many to One - Proposed on v2.2
 
 Many to One
 ...............................................................................
@@ -151,7 +153,7 @@ Many to One
    :end-before: -- q4
 
 .. index::
-    single: withPoints(Many to Many) - Proposed on v2.2
+    single: withPoints ; Many to Many - Proposed on v2.2
 
 Many to Many
 ...............................................................................
@@ -173,7 +175,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: withPoints(Combinations) - Proposed on v3.2
+    single: withPoints ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................

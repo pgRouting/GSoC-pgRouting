@@ -7,18 +7,16 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Driving Distance Category ; pgr_drivingDistance
+   single: drivingDistance
 
+|
 
 ``pgr_drivingDistance``
 ===============================================================================
 
 ``pgr_drivingDistance`` - Returns the driving distance from a start node.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
@@ -26,23 +24,28 @@
 
 * Standarizing output columns to |result-spantree|
 
-  * ``pgr_drivingdistance`` (Single vertex)
+  * pgr_drivingDistance(Single vertex)
 
     * Added ``depth`` and ``start_vid`` result columns.
 
-  * ``pgr_drivingdistance`` (Multiple vertices)
+  * pgr_drivingDistance(Multiple vertices)
 
     * Result column name change: ``from_v`` to ``start_vid``.
     * Added ``depth`` and ``pred`` result columns.
 
 .. rubric:: Version 2.1.0
 
-* Signature change pgr_drivingDistance(single vertex)
-* New **Official** pgr_drivingDistance(multiple vertices)
+* Signature change:
+
+  * pgr_drivingDistance(single vertex)
+
+* New official signature:
+
+  * pgr_drivingDistance(multiple vertices)
 
 .. rubric:: Version 2.0.0
 
-* Official:: pgr_drivingDistance(single vertex)
+* Official function.
 
 
 Description
@@ -51,6 +54,8 @@ Description
 Using the Dijkstra algorithm, extracts all the nodes that have costs less than
 or equal to the value ``distance``.
 The edges extracted will conform to the corresponding spaning tree.
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -65,7 +70,7 @@ Signatures
    | Returns set of |result-spantree|
 
 .. index::
-   single: drivingDistance(Single vertex)
+   single: drivingDistance ; Single vertex
 
 Single Vertex
 ...............................................................................
@@ -84,7 +89,7 @@ Single Vertex
    :end-before: --q6
 
 .. index::
-   single: drivingDistance(Multiple vertices)
+   single: drivingDistance ; Multiple vertices
 
 Multiple Vertices
 ...............................................................................
@@ -173,7 +178,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`pgr_alphaShape` - Alpha shape computation
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

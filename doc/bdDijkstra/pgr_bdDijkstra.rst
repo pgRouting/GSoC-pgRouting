@@ -7,49 +7,47 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Bidirectional Dijkstra Family ; pgr_bdDijkstra
+   single: bdDijkstra
 
+|
 
 ``pgr_bdDijkstra``
 ===============================================================================
 
-``pgr_bdDijkstra`` — Returns the shortest path(s) using Bidirectional Dijkstra
+``pgr_bdDijkstra`` — Returns the shortest path using Bidirectional Dijkstra
 algorithm.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability:
 
 * Version 3.2.0
 
-  * New **proposed** signature:
+  * New proposed signature:
 
-    * pgr_bdDijkstra(`Combinations`_)
+    * pgr_bdDijkstra(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
-  * New **Proposed** functions:
+  * New proposed signatures:
 
-    * ``pgr_bdDijkstra`` (`One to Many`_)
-    * ``pgr_bdDijkstra`` (`Many to One`_)
-    * ``pgr_bdDijkstra`` (`Many to Many`_)
+    * pgr_bdDijkstra(One to Many)
+    * pgr_bdDijkstra(Many to One)
+    * pgr_bdDijkstra(Many to Many)
 
 * Version 2.4.0
 
-  * Signature change on ``pgr_bdDijsktra`` (`One to One`_)
+  * Signature change on pgr_bdDijsktra(One to One)
 
     * Old signature no longer supported
 
 * Version 2.0.0
 
-  * **Official** ``pgr_bdDijkstra`` (`One to One`_)
+  * New official function.
 
 
 Description
@@ -60,6 +58,8 @@ Description
 .. include:: bdDijkstra-family.rst
    :start-after: description start
    :end-before: description end
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -73,13 +73,13 @@ Signatures
    | pgr_bdDijkstra(`Edges SQL`_, **start vid**, **end vids**, [``directed``])
    | pgr_bdDijkstra(`Edges SQL`_, **start vids**, **end vid**, [``directed``])
    | pgr_bdDijkstra(`Edges SQL`_, **start vids**, **end vids**, [``directed``])
-   | pgr_bdDijkstra(`Edges SQL`_, `Combinations SQL`_ , [``directed``])
+   | pgr_bdDijkstra(`Edges SQL`_, `Combinations SQL`_, [``directed``])
 
    | Returns set of |old-generic-result|
    | OR EMPTY SET
 
 .. index::
-    single: bdDijkstra(One to One)
+    single: bdDijkstra ; One to One
 
 One to One
 ...............................................................................
@@ -99,7 +99,7 @@ One to One
     :end-before: -- q3
 
 .. index::
-    single: bdDijkstra(One to Many)
+    single: bdDijkstra ; One to Many
 
 One to Many
 ...............................................................................
@@ -120,7 +120,7 @@ One to Many
     :end-before: -- q4
 
 .. index::
-    single: bdDijkstra(Many to One)
+    single: bdDijkstra ; Many to One
 
 Many to One
 ...............................................................................
@@ -141,7 +141,7 @@ Many to One
     :end-before: -- q5
 
 .. index::
-    single: bdDijkstra(Many to Many)
+    single: bdDijkstra ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -162,7 +162,7 @@ Many to Many
     :end-before: -- q51
 
 .. index::
-    single: bdDijkstra(Combinations) - Proposed on v3.2
+    single: bdDijkstra ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -253,7 +253,6 @@ See Also
 
 * :doc:`bdDijkstra-family`
 * :doc:`sampledata`
-* https://www.cs.princeton.edu/courses/archive/spr06/cos423/Handouts/EPP%20shortest%20path%20algorithms.pdf
 * https://en.wikipedia.org/wiki/Bidirectional_search
 
 .. rubric:: Indices and tables

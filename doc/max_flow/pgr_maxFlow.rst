@@ -7,8 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Flow Family ; pgr_maxFlow
+   single: maxFlow
 
+|
 
 ``pgr_maxFlow``
 ===============================================================================
@@ -16,26 +19,21 @@
 ``pgr_maxFlow`` — Calculates the maximum flow in a directed graph from the
 source(s) to the targets(s) using the Push Relabel algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html
-
-   Boost Graph Inside
-
 .. Rubric:: Availability
 
 * Version 3.2.0
 
-  * New **proposed** signature
+  * New proposed signature:
 
-    * ``pgr_maxFlow`` (`Combinations`_)
+    * pgr_maxFlow(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  *  Function promoted to official.
 
 * Version 2.4.0
 
-  * New **Proposed** function
+  * New proposed function.
 
 
 Description
@@ -44,15 +42,17 @@ Description
 **The main characteristics are:**
 
 - The graph is **directed**.
-- Calculates the maximum flow from the `source(s)` to the `target(s)`.
+- Calculates the maximum flow from the sources to the targets.
 
   - When the maximum flow is **0** then there is no flow and **0** is returned.
-  - There is no flow when a **source** is the same as a **target**.
+  - There is no flow when source has the same vaule as target.
 
-- Any duplicated value in the source(s) or target(s) are ignored.
+- Any duplicated values in source or target are ignored.
 - Uses the :doc:`pgr_pushRelabel <pgr_pushRelabel>` algorithm.
 
 * Running time: :math:`O( V ^ 3)`
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -71,7 +71,7 @@ Signatures
    | RETURNS ``BIGINT``
 
 .. index::
-    single: maxFlow(One to One)
+    single: maxFlow ; One to One
 
 One to One
 ...............................................................................
@@ -90,7 +90,7 @@ One to One
    :end-before: -- q2
 
 .. index::
-    single: maxFlow(One to Many)
+    single: maxFlow ; One to Many
 
 One to Many
 ...............................................................................
@@ -109,7 +109,7 @@ One to Many
    :end-before: -- q3
 
 .. index::
-    single: maxFlow(Many to One)
+    single: maxFlow ; Many to One
 
 Many to One
 ...............................................................................
@@ -128,7 +128,7 @@ Many to One
    :end-before: -- q4
 
 .. index::
-    single: maxFlow(Many to Many)
+    single: maxFlow ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -147,7 +147,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: maxFlow(Combinations) - Proposed on v3.2
+    single: maxFlow ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -223,7 +223,8 @@ See Also
 
   * :doc:`pgr_pushRelabel`
 
-* https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html
+* `Boost: push relabel max flow
+  <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html>`__
 * https://en.wikipedia.org/wiki/Push%E2%80%93relabel_maximum_flow_algorithm
 
 .. rubric:: Indices and tables

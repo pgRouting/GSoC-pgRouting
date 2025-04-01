@@ -37,10 +37,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/connected_components.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/graph_utility.hpp>
+#include <boost/version.hpp>
 
 #include "cpp_common/identifiers.hpp"
-#include "cpp_common/pgr_messages.hpp"
-#include "cpp_common/pgr_assert.hpp"
+#include "cpp_common/messages.hpp"
+#include "cpp_common/assert.hpp"
 #include "cpp_common/interruption.hpp"
 
 #include "visitors/dijkstra_visitors.hpp"
@@ -229,7 +230,7 @@ TSP::tsp(
     auto u = get_boost_vertex(start_vid);
     auto v = get_boost_vertex(end_vid);
 
-    auto dummy_node = add_vertex(num_vertices(graph), graph);
+    auto dummy_node = add_vertex(static_cast<int>(num_vertices(graph)), graph);
     id_to_V.insert(std::make_pair(0, dummy_node));
     V_to_id.insert(std::make_pair(dummy_node, 0));
     boost::add_edge(u, dummy_node, 0, graph);
@@ -298,8 +299,8 @@ TSP::TSP(std::vector<IID_t_rt> &distances) {
         }
     }
 
-    size_t i {0};
-    for (const auto id : ids) {
+    int i {0};
+    for (const auto &id : ids) {
         auto v = add_vertex(i, graph);
         id_to_V.insert(std::make_pair(id, v));
         V_to_id.insert(std::make_pair(v, id));
@@ -383,7 +384,7 @@ TSP::TSP(const std::vector<Coordinate_t> &coordinates) {
     /*
      * Inserting vertices
      */
-    size_t i{0};
+    int i{0};
     for (const auto &id : ids) {
         auto v = add_vertex(i, graph);
         id_to_V.insert(std::make_pair(id, v));
@@ -503,20 +504,12 @@ TSP::get_edge_id(E e) const {
 
 
 
-#if Boost_VERSION_MACRO >= 106800
+#if BOOST_VERSION >= 106800
 std::ostream& operator<<(std::ostream &log, const TSP& data) {
     log << "Number of Vertices is:" << num_vertices(data.graph) << "\n";
     log << "Number of Edges is:" << num_edges(data.graph) << "\n";
     log << "\n the print_graph\n";
     boost::print_graph(data.graph, boost::get(boost::vertex_index, data.graph), log);
-#if 0
-    // to print with edge weights:
-    for (auto v : boost::make_iterator_range(boost::vertices(data.graph))) {
-        for (auto oe : boost::make_iterator_range(boost::out_edges(v, data.graph))) {
-            log << "Edge " << oe << " weight " << get(boost::edge_weight, data.graph)[oe] << "\n";
-        }
-    }
-#endif
     return log;
 }
 #endif

@@ -26,10 +26,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_TRSP_EDGEINFO_HPP_
 
 #include <vector>
+#include <cstdint>
 
 
 #include "cpp_common/edge_t.hpp"
-#include "cpp_common/pgr_assert.hpp"
+#include "cpp_common/assert.hpp"
 
 namespace pgrouting {
 namespace trsp {

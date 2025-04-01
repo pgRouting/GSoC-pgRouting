@@ -37,7 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_types/path_rt.h"
 #include "c_types/mst_rt.h"
-#include "cpp_common/pgr_assert.hpp"
+#include "cpp_common/assert.hpp"
 
 namespace pgrouting {
 
@@ -160,8 +160,6 @@ Path Path::getSubpath(unsigned int j) const {
     for (auto i = path.begin(); i != path.begin() + j; ++i) {
         result.push_back((*i));
     }
-    pgassert(result.tot_cost() != 0);
-    pgassert(this->tot_cost() != 0);
     return result;
 }
 
@@ -216,9 +214,6 @@ void Path::append(const Path &other) {
         *this = other;
         return;
     }
-#if 0
-    pgassert(path.back().cost == 0);
-#endif
     pgassert(path.back().edge == -1);
     m_end_id = other.m_end_id;
 
@@ -237,7 +232,6 @@ void Path::append(const Path &other) {
 void Path::generate_postgres_data(
         Path_rt **postgres_data,
         size_t &sequence) const {
-    int i = 1;
     for (const auto e : path) {
         auto agg_cost = std::fabs(
                 e.agg_cost - (std::numeric_limits<double>::max)()) < 1?
@@ -246,7 +240,6 @@ void Path::generate_postgres_data(
             std::numeric_limits<double>::infinity() : e.cost;
 
         (*postgres_data)[sequence] = {start_id(), end_id(), e.node, e.edge, cost, agg_cost};
-        ++i;
         ++sequence;
     }
 }

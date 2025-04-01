@@ -7,19 +7,17 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Components Family ; pgr_strongComponents
+   single: strongComponents
 
+|
 
 ``pgr_strongComponents``
 ===============================================================================
 
 ``pgr_strongComponents`` — Strongly connected components of a directed graph
 using Tarjan's algorithm based on DFS.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/strong_components.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
@@ -30,11 +28,11 @@ using Tarjan's algorithm based on DFS.
     * ``n_seq`` is removed
     * ``seq`` changed type to ``BIGINT``
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description
@@ -54,8 +52,7 @@ all reachable from each other.
 
 - Running time: :math:`O(V + E)`
 
-.. index::
-    single: strongComponents
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -106,8 +103,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`components-family`
-* The queries use the :doc:`sampledata` network.
-* Boost: `Strong components
+* :doc:`sampledata`
+* `Boost: Strong components
   <https://www.boost.org/libs/graph/doc/strong_components.html>`__
 * wikipedia: `Strongly connected component
   <https://en.wikipedia.org/wiki/Strongly_connected_component>`__

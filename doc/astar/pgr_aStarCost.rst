@@ -7,39 +7,38 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+
+.. index::
+   single: aStar Family ; pgr_aStarCost
+   single: aStarCost
+
 |
 
-
-pgr_aStarCost
+``pgr_aStarCost``
 ===============================================================================
 
-``pgr_aStarCost`` - Total cost of the shortest path(s) using the A* algorithm.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/astar_search.html
-
-   Boost Graph Inside
+``pgr_aStarCost`` - Total cost of the shortest path using the A* algorithm.
 
 .. rubric:: Availability
 
 * Version 3.2.0
 
-  * New **proposed** signature:
+  * New proposed signature:
 
-    * ``pgr_aStarCost`` (`Combinations`_)
+    * pgr_aStarCost(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.4.0
 
-  * New **proposed** function
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------
 
-The ``pgr_aStarCost`` function sumarizes of the cost of the shortest path(s)
+The ``pgr_aStarCost`` function sumarizes of the cost of the shortest path
 using the A* algorithm.
 
 **The main characteristics are:**
@@ -63,6 +62,8 @@ using the A* algorithm.
   - `start_vid` ascending
   - `end_vid` ascending
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
@@ -82,7 +83,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: aStarCost(One to One)
+    single: aStarCost ; One to One
 
 One to One
 ...............................................................................
@@ -104,7 +105,7 @@ One to One
     :end-before: -- q3
 
 .. index::
-    single: aStarCost(One to Many)
+    single: aStarCost ; One to Many
 
 One to Many
 ...............................................................................
@@ -126,7 +127,7 @@ One to Many
    :end-before: -- q4
 
 .. index::
-    single: aStarCost(Many to One)
+    single: aStarCost ; Many to One
 
 Many to One
 ...............................................................................
@@ -148,7 +149,7 @@ Many to One
     :end-before: -- q5
 
 .. index::
-    single: aStarCost(Many to Many)
+    single: aStarCost ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -170,7 +171,7 @@ Many to Many
     :end-before: -- q51
 
 .. index::
-    single: aStarCost(Combinations) - Proposed on v3.2
+    single: aStarCost ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -271,6 +272,7 @@ See Also
 * :doc:`aStar-family`
 * :doc:`cost-category`
 * :doc:`sampledata`
+* `Boost: A* search <https://www.boost.org/libs/graph/doc/astar_search.html>`__
 
 .. rubric:: Indices and tables
 

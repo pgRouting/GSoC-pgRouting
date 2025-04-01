@@ -7,8 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Flow Family ; pgr_boykovKolmogorov
+   single: boykovKolmogorov
 
+|
 
 ``pgr_boykovKolmogorov``
 ===============================================================================
@@ -16,31 +19,26 @@
 ``pgr_boykovKolmogorov`` — Calculates the flow on the graph edges that maximizes
 the flow from the sources to the targets using Boykov Kolmogorov algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html
-
-   Boost Graph Inside
-
 .. Rubric:: Availability
 
 * Version 3.2.0
 
-  * New **proposed** signature
+  * New proposed signature:
 
-    * ``pgr_boykovKolmogorov`` (`Combinations`_)
+    * pgr_boykovKolmogorov(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
   * Renamed from ``pgr_maxFlowBoykovKolmogorov``
-  * **Proposed** function
+  * Function promoted to proposed.
 
 * Version 2.3.0
 
-  * New **Experimental** function
+  * New experimental function.
 
 
 Description
@@ -51,6 +49,8 @@ Description
     :end-before: characteristics_end
 
 * Running time: Polynomial
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: boykovKolmogorov(One to One)
+    single: boykovKolmogorov ; One to One
 
 One to One
 ...............................................................................
@@ -90,7 +90,7 @@ One to One
    :end-before: -- q2
 
 .. index::
-    single: boykovKolmogorov(One to Many)
+    single: boykovKolmogorov ; One to Many
 
 One to Many
 ...............................................................................
@@ -110,7 +110,7 @@ One to Many
    :end-before: -- q3
 
 .. index::
-    single: boykovKolmogorov(Many to One)
+    single: boykovKolmogorov ; Many to One
 
 Many to One
 ...............................................................................
@@ -130,7 +130,7 @@ Many to One
    :end-before: -- q4
 
 .. index::
-    single: boykovKolmogorov(Many to Many)
+    single: boykovKolmogorov ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -150,7 +150,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: boykovKolmogorov(Combinations) - Proposed on v3.2
+    single: boykovKolmogorov ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -226,7 +226,8 @@ See Also
   * :doc:`pgr_edmondsKarp`
   * :doc:`pgr_pushRelabel`
 
-* https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html
+* `Boost: Boykov Kolmogorov max flow
+  <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html>`__
 
 .. rubric:: Indices and tables
 

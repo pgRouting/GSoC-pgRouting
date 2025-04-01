@@ -7,39 +7,36 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index:: Traversal Family
 
+|
 
 Traversal - Family of functions
 ===============================================================================
 
-.. rubric:: Proposed
-
 .. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
+   :start-after: warning-begin
+   :end-before: end-warning
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_depthFirstSearch` - Depth first search traversal of the graph.
 
-.. index to here
-
-.. rubric:: Experimental
+.. official-end
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: warning-begin
+   :end-before: end-warning
 
-.. index experimental from here
+.. experimental-start
 
 * :doc:`pgr_breadthFirstSearch` - Breath first search traversal of the graph.
 * :doc:`pgr_binaryBreadthFirstSearch` - Breath first search traversal of the
   graph.
 
-.. index experimental to here
+.. experimental-end
 
-Aditionaly there are 2 categories under this family
+Additionally there are 2 categories under this family
 
 * :doc:`BFS-category`
 * :doc:`DFS-category`

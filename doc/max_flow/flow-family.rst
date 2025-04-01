@@ -7,13 +7,14 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index:: Flow Family
 
+|
 
 Flow - Family of functions
 ===================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_maxFlow` - Only the Max flow calculation using Push and Relabel
   algorithm.
@@ -30,20 +31,18 @@ Flow - Family of functions
   * :doc:`pgr_maxCardinalityMatch` - Calculates a maximum cardinality matching
     in a graph.
 
-.. index to here
-
-.. rubric:: Experimental
+.. official-end
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: warning-begin
+   :end-before: end-warning
 
-.. index experimental from here
+.. experimental-start
 
 * :doc:`pgr_maxFlowMinCost` - Details of flow and cost on edges.
 * :doc:`pgr_maxFlowMinCost_Cost` - Only the Min Cost calculation.
 
-.. index experimental to here
+.. experimental-end
 
 .. toctree::
     :hidden:
@@ -70,15 +69,18 @@ Flow Functions General Information
 - When the maximum flow is 0 then there is no flow and **EMPTY SET** is
   returned.
 
-  - There is no flow when a **source** is the same as a **target**.
+  - There is no flow when source has the same value as target.
 
-- Any duplicated value in the source(s) or target(s) are ignored.
+- Any duplicated values in source or target are ignored.
 - Calculates the flow/residual capacity for each edge. In the output
 
   - Edges with zero flow are omitted.
 
-- Creates a **super source** and edges to all the source(s), and a **super
-  target** and the edges from all the targets(s).
+- Creates
+
+  - a **super source** and edges from it to all the sources,
+  - a **super target** and edges from it to all the targetss.
+
 - The maximum flow through the graph is guaranteed to be the value returned by
   :doc:`pgr_maxFlow <pgr_maxFlow>` when executed with the same parameters and
   can be calculated:

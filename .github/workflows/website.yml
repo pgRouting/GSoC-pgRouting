@@ -57,7 +57,7 @@ jobs:
             $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
       - name: Install python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
@@ -76,6 +76,7 @@ jobs:
           pip install Sphinx
           pip install sphinx-bootstrap-theme
           pip install sphinx-intl[transifex]
+          pip install sphinx-collapse
           pip list
 
       - name: Configure and build documentation
@@ -83,7 +84,8 @@ jobs:
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
-          cmake -DPOSTGRESQL_VERSION=${PGVER} -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=ON -DCMAKE_BUILD_TYPE=Release -DES=ON ..
+          cmake -DPOSTGRESQL_VERSION=${PGVER} -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=ON \
+            -DCMAKE_BUILD_TYPE=Release -DES=ON -DZH_HANS=ON ..
           make doc
 
       - name: Initialize mandatory git config

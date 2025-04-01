@@ -7,19 +7,17 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+
+.. index::
+   single: Components Family ; pgr_biconnectedComponents
+   single: biconnectedComponents
+
 |
-
-
 
 ``pgr_biconnectedComponents``
 ===============================================================================
 
 ``pgr_biconnectedComponents`` — Biconnected components of an undirected graph.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/biconnected_components.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
@@ -30,11 +28,11 @@
     * ``n_seq`` is removed
     * ``seq`` changed type to ``BIGINT``
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description
@@ -59,8 +57,7 @@ only be contained in a single biconnected component.
 
 - Running time: :math:`O(V + E)`
 
-.. index::
-    single: biconnectedComponents
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -128,8 +125,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`components-family`
-* The queries use the :doc:`sampledata` network.
-* Boost: `Biconnected components
+* :doc:`sampledata`
+* `Boost: Biconnected components & articulation points
   <https://www.boost.org/libs/graph/doc/biconnected_components.html>`__
 * wikipedia: `Biconnected component
   <https://en.wikipedia.org/wiki/Biconnected_component>`__

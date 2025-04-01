@@ -1,0 +1,75 @@
+
+/*PGR-GNU*****************************************************************
+
+Copyright (c) 2018  pgRouting developers
+Mail: project@pgrouting.org
+
+------
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ********************************************************************PGR-GNU*/
+BEGIN;
+
+SELECT CASE WHEN min_version('3.8.0') THEN plan(7) WHEN min_version('3.4.0') THEN plan(5) ELSE plan(1) END;
+
+CREATE OR REPLACE FUNCTION types_check() RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF NOT min_version('3.4.0') THEN
+    RETURN QUERY SELECT skip(1, 'Function added on 3.4.0');
+    RETURN;
+  END IF;
+
+  RETURN QUERY SELECT has_function('pgr_degree');
+  RETURN QUERY SELECT has_function('pgr_degree',    ARRAY['text', 'text', 'boolean']);
+  RETURN QUERY SELECT function_returns('pgr_degree', ARRAY['text', 'text', 'boolean'], 'setof record');
+
+  RETURN QUERY
+  SELECT CASE
+  WHEN min_version('3.8.0') THEN
+    collect_tap(
+
+      has_function('pgr_degree',    ARRAY['text', 'boolean']),
+
+      function_returns('pgr_degree', ARRAY['text', 'boolean'], 'setof record'),
+
+      set_eq($$SELECT  proargnames from pg_proc where proname = 'pgr_degree'$$,
+        $$VALUES
+        ('{"","dryrun","node","degree"}'::TEXT[]),
+        ('{"","","dryrun","node","degree"}'::TEXT[])
+        $$, 'proargnames'),
+
+      set_eq($$SELECT  proallargtypes from pg_proc where proname = 'pgr_degree'$$,
+        $$VALUES
+        ('{25,16,20,20}'::OID[]),
+        ('{25,25,16,20,20}'::OID[])
+        $$, 'proallargtypes')
+    )
+  ELSE
+    collect_tap(
+
+      set_eq($$SELECT  proargnames from pg_proc where proname = 'pgr_degree'$$,
+        $$VALUES ('{"","","dryrun","node","degree"}'::TEXT[]) $$, 'proargnames'),
+
+      set_eq($$SELECT  proallargtypes from pg_proc where proname = 'pgr_degree'$$,
+        $$VALUES ('{25,25,16,20,20}'::OID[])$$, 'proallargtypes')
+    )
+  END;
+
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT types_check();
+
+SELECT  finish();
+ROLLBACK;

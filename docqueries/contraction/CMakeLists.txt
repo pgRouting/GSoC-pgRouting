@@ -1,7 +1,8 @@
 # Do not use extensions
 SET(LOCAL_FILES
-    contraction-family
     contraction
+    contractionDeadEnd
+    contractionLinear
     )
 
 foreach (f ${LOCAL_FILES})

@@ -7,8 +7,6 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 
 *******************************************************************************
 Function Families
@@ -21,84 +19,93 @@ Function Families
 :doc:`allpairs-family`
 
 .. include:: allpairs-family.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`aStar-family`
 
 .. include:: aStar-family.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 
 :doc:`bdAstar-family`
 
 .. include:: bdAstar-family.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`bdDijkstra-family`
 
 .. include:: bdDijkstra-family.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`components-family`
 
 .. include:: components-family.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`contraction-family`
 
 .. include:: contraction-family.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`dijkstra-family`
 
 .. include:: dijkstra-family.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`flow-family`
 
 .. include:: flow-family.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`kruskal-family`
 
 .. include:: kruskal-family.rst
-      :start-after: index from here
-      :end-before: index to here
+      :start-after: official-start
+      :end-before: official-end
+
+:doc:`metrics-family`
+
+.. include:: metrics-family.rst
+      :start-after: official-start
+      :end-before: official-end
 
 :doc:`prim-family`
 
 .. include:: prim-family.rst
-      :start-after: index from here
-      :end-before: index to here
+      :start-after: official-start
+      :end-before: official-end
 
 :doc:`reference`
 
 .. include:: reference.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`topology-functions`
 
 .. include:: topology-functions.rst
-   :start-after: topology_index_start
-   :end-before: topology_index_end
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`TSP-family`
 
 .. include:: TSP-family.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`pgr_trsp` - Turn Restriction Shortest Path (TRSP)
 
+.. rubric:: Utilities family
+
+:doc:`pgr_findCloseEdges`
 
 Functions by categories
 ===============================================================================
@@ -106,45 +113,45 @@ Functions by categories
 :doc:`cost-category`
 
 .. include:: cost-category.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`costMatrix-category`
 
 .. include:: costMatrix-category.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 
 :doc:`drivingDistance-category`
 
 .. include:: drivingDistance-category.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`KSP-category`
 
 .. include:: KSP-category.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
-:doc:`spanningTree-family`
+:doc:`spanningTree-category`
 
-.. include:: spanningTree-family.rst
-   :start-after: index from here
-   :end-before: index to here
+.. include:: spanningTree-category.rst
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`BFS-category`
 
 .. include:: BFS-category.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 :doc:`DFS-category`
 
 .. include:: DFS-category.rst
-   :start-after: index from here
-   :end-before: index to here
+   :start-after: official-start
+   :end-before: official-end
 
 .. to-here
 
@@ -160,21 +167,26 @@ Functions by categories
     dijkstra-family
     flow-family
     kruskal-family
+    metrics-family
     prim-family
     reference
     topology-functions
     TSP-family
-    spanningTree-family
-    KSP-category
+    pgr_findCloseEdges
 
 .. toctree::
     :hidden:
 
+    BFS-category
     cost-category
     costMatrix-category
+    DFS-category
     drivingDistance-category
-    spanningTree-family
-    BFS-category
+    KSP-category
+    spanningTree-category
+    via-category
+    VRP-category
+    withPoints-category
 
 See Also
 -------------------------------------------------------------------------------

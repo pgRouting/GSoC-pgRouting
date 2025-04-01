@@ -7,9 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+
+.. index::
+   single: Components Family ; pgr_articulationPoints
+   single: articulationPoints
+
 |
-
-
 
 ``pgr_articulationPoints``
 ===============================================================================
@@ -17,21 +20,16 @@
 ``pgr_articulationPoints`` - Return the articulation points of an undirected
 graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/biconnected_components.html
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.0.0
 
   * Result columns change: ``seq`` is removed
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
-  * New **experimental** function
+  * New experimental function.
 
 Description
 -------------------------------------------------------------------------------
@@ -51,8 +49,7 @@ This implementation can only be used with an undirected graph.
 
 - Running time: :math:`O(V + E)`
 
-.. index::
-    single: articulationPoints
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -114,8 +111,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`components-family`
-* The queries use the :doc:`sampledata` network.
-* Boost: `Biconnected components & articulation points
+* :doc:`sampledata`
+* `Boost: Biconnected components & articulation points
   <https://www.boost.org/libs/graph/doc/biconnected_components.html>`__
 * wikipedia: `Biconnected component
   <https://en.wikipedia.org/wiki/Biconnected_component>`__

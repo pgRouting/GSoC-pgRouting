@@ -7,25 +7,23 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Spanning Tree Category ; Prim Family
+   single: Prim Family
 
+|
 
 Prim - Family of functions
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_prim`
 * :doc:`pgr_primBFS`
 * :doc:`pgr_primDD`
 * :doc:`pgr_primDFS`
 
-.. index to here
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
-
-   Boost Graph Inside
+.. official-end
 
 .. toctree::
     :hidden:
@@ -57,7 +55,7 @@ forest.
 
 .. prim-description-start
 
-.. include:: spanningTree-family.rst
+.. include:: spanningTree-category.rst
    :start-after: spanntree_traits_start
    :end-before: spanntree_traits_end
 
@@ -80,7 +78,7 @@ Inner Queries
 See Also
 -------------------------------------------------------------------------------
 
-* :doc:`spanningTree-family`
+* :doc:`spanningTree-category`
 * Boost: `Prim's algorithm
   <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html>`__
 * Wikipedia: `Prim's algorithm

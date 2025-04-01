@@ -7,8 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
 
+.. index::
+    single: alphaShape
+
+|
 
 ``pgr_alphaShape``
 ===============================================================================
@@ -33,7 +36,7 @@
 
 * Version 2.0.0
 
-  * **Official** function
+  * New official function.
   * Renamed from version 1.x
 
 .. rubric:: Support
@@ -57,12 +60,11 @@ Characteristics
 * When the total number of points is less than 3, returns an EMPTY geometry
 
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
-.. rubric:: Summary
 
-.. index::
-    single: alphaShape
 
 .. admonition:: \ \
    :class: signatures
@@ -103,7 +105,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`pgr_drivingDistance`
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 * `ST_ConcaveHull <https://postgis.net/docs/ST_ConcaveHull.html>`__
 
 .. rubric:: Indices and tables

@@ -7,27 +7,26 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: Miscellaneous Algorithms ; pgr_stoerWagner
+   single: stoerWagner - Experimental on v3.0
 
+|
 
-pgr_stoerWagner - Experimental
+``pgr_stoerWagner`` - Experimental
 ===============================================================================
 
 ``pgr_stoerWagner`` — The min-cut of graph using stoerWagner algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/stoer_wagner_min_cut.html
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: warning-begin
+   :end-before: end-warning
 
 .. rubric:: Availability
 
 * Version 3.0
 
-   * New **Experimental** function
+   * New experimental function.
 
 
 Description
@@ -66,11 +65,10 @@ weight on the cut determines whether it is a minimum cut.
 
 * Running time: :math:`O(V*E + V^2*log V)`.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
-
-.. index::
-    single: stoerWagner - Experimental on v3.0
 
 .. admonition:: \ \
    :class: signatures
@@ -136,6 +134,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
+* `Boost: Stoer Wagner min cut
+  <https://www.boost.org/libs/graph/doc/stoer_wagner_min_cut.html>`__
 * https://en.wikipedia.org/wiki/Stoer%E2%80%93Wagner_algorithm
 
 .. rubric:: Indices and tables

@@ -26,8 +26,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_ASTAR_PGR_ASTAR_HPP_
-#define INCLUDE_ASTAR_PGR_ASTAR_HPP_
+#ifndef INCLUDE_ASTAR_ASTAR_HPP_
+#define INCLUDE_ASTAR_ASTAR_HPP_
 #pragma once
 
 #include <deque>
@@ -35,12 +35,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <limits>
 #include <set>
 #include <map>
+#include <cstdint>
 
 #include <boost/graph/astar_search.hpp>
 
 #include "visitors/astar_visitors.hpp"
 #include "cpp_common/basePath_SSEC.hpp"
-#include "cpp_common/pgr_base_graph.hpp"
+#include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
 #include "c_types/ii_t_rt.h"
 
@@ -206,4 +207,4 @@ std::deque<Path> astar(
 }  // namespace algorithms
 }  // namespace pgrouting
 
-#endif  // INCLUDE_ASTAR_PGR_ASTAR_HPP_
+#endif  // INCLUDE_ASTAR_ASTAR_HPP_

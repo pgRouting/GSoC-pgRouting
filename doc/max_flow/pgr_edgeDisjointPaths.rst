@@ -7,8 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Flow Family ; pgr_edgeDisjointPaths
+   single: edgeDisjointPaths
 
+|
 
 ``pgr_edgeDisjointPaths``
 ===============================================================================
@@ -17,30 +20,25 @@
 vertices.
 
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html
-
-   Boost Graph Inside
-
 .. Rubric:: Availability
 
 * Version 3.2.0
 
-  * New **proposed** function:
+  * New proposed signature:
 
     * pgr_edgeDisjointPaths(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
-  * **Proposed** function
+  * Function promoted to proposed.
 
 * Version 2.3.0
 
-  * New **Experimental** function
+  * New experimental function.
 
 
 Description
@@ -54,6 +52,8 @@ The main characterics are:
   - Returns EMPTY SET when source and destination are the same, or cannot be reached.
   - The graph can be directed or undirected.
   - Uses :doc:`pgr_boykovKolmogorov` to calculate the paths.
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: edgeDisjointPaths(One to One)
+    single: edgeDisjointPaths ; One to One
 
 One to One
 ...............................................................................
@@ -93,7 +93,7 @@ One to One
    :end-before: -- q2
 
 .. index::
-    single: edgeDisjointPaths(One to Many)
+    single: edgeDisjointPaths ; One to Many
 
 One to Many
 ...............................................................................
@@ -114,7 +114,7 @@ One to Many
    :end-before: -- q3
 
 .. index::
-    single: edgeDisjointPaths(Many to One)
+    single: edgeDisjointPaths ; Many to One
 
 Many to One
 ...............................................................................
@@ -134,7 +134,7 @@ Many to One
    :end-before: -- q4
 
 .. index::
-    single: edgeDisjointPaths(Many to Many)
+    single: edgeDisjointPaths ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -154,7 +154,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: edgeDisjointPaths(Combinations) -- Proposed on v3.2
+    single: edgeDisjointPaths ; Combinations -- Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -234,6 +234,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`flow-family`
+* `Boost: Boykov Kolmogorov max flow
+  <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html>`__
 
 .. rubric:: Indices and tables
 

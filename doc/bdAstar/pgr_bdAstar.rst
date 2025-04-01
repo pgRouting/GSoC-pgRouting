@@ -7,18 +7,16 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Bidirectional A* Family ; pgr_bdAstar
+   single: bdAstar
 
+|
 
 ``pgr_bdAstar``
 ===============================================================================
 
 ``pgr_bdAstar`` — Shortest path using the bidirectional A* algorithm.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/astar_search.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
@@ -26,35 +24,35 @@
 
   * Standarizing output columns to |short-generic-result|
 
-    * ``pgr_bdAstar`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns.
-    * ``pgr_bdAstar`` (`One to Many`_) added ``end_vid`` column.
-    * ``pgr_bdAstar`` (`Many to One`_) added ``start_vid`` column.
+    * pgr_bdAstar(One to One) added ``start_vid`` and ``end_vid`` columns.
+    * pgr_bdAstar(One to Many) added ``end_vid`` column.
+    * pgr_bdAstar(Many to One) added ``start_vid`` column.
 
 * Version 3.2.0
 
-  * New **proposed** signature:
+  * New proposed signature:
 
-    * ``pgr_bdAstar`` (`Combinations`_)
+    * pgr_bdAstar(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
-  * New **Proposed** signatures:
+  * New proposed signatures:
 
-    * ``pgr_bdAstar`` (`One to Many`_)
-    * ``pgr_bdAstar`` (`Many to One`_)
-    * ``pgr_bdAstar`` (`Many to Many`_)
+    * pgr_bdAstar(One to Many)
+    * pgr_bdAstar(Many to One)
+    * pgr_bdAstar(Many to Many)
 
-  * Signature change on ``pgr_bdAstar`` (`One to One`_)
+  * Signature change on pgr_bdAstar(One to One)
 
     * Old signature no longer supported
 
 * Version 2.0.0
 
-  * **Official** ``pgr_bdAstar`` (`One to One`_)
+  * New official function.
 
 Description
 -------------------------------------------------------------------------------
@@ -65,13 +63,15 @@ Description
    :start-after: astar general info start
    :end-before: astar general info end
 
-* The results are equivalent to the union of the results of the `pgr_bdAStar(`
-  `One to One`_ `)` on the:
+* The results are equivalent to the union of the results of the
+  pgr_bdAStar(One to One) on the:
 
-  * ``pgr_bdAstar`` (`One to Many`_)
-  * ``pgr_bdAstar`` (`Many to One`_)
-  * ``pgr_bdAstar`` (`Many to Many`_)
-  * ``pgr_bdAstar`` (`Combinations`_)
+  * pgr_bdAstar(One to Many)
+  * pgr_bdAstar(Many to One)
+  * pgr_bdAstar(Many to Many)
+  * pgr_bdAstar(Combinations)
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ Signatures
 Optional parameters are `named parameters` and have a default value.
 
 .. index::
-    single: bdAstar(One to One)
+    single: bdAstar ; One to One
 
 One to One
 ...............................................................................
@@ -116,7 +116,7 @@ One to One
    :end-before: -- q3
 
 .. index::
-    single: bdAstar(One to Many)
+    single: bdAstar ; One to Many
 
 One to Many
 ...............................................................................
@@ -138,7 +138,7 @@ One to Many
    :end-before: -- q4
 
 .. index::
-    single: bdAstar(Many to One)
+    single: bdAstar ; Many to One
 
 Many to One
 ...............................................................................
@@ -160,7 +160,7 @@ Many to One
    :end-before: -- q5
 
 .. index::
-    single: bdAstar(Many to Many)
+    single: bdAstar ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -182,7 +182,7 @@ Many to Many
    :end-before: -- q51
 
 .. index::
-    single: bdAstar(Combinations) - Proposed on v3.2
+    single: bdAstar ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -283,7 +283,7 @@ See Also
 * :doc:`aStar-family`
 * :doc:`bdAstar-family`
 * :doc:`sampledata`
-* https://www.boost.org/libs/graph/doc/astar_search.html
+* `Boost: A* search <https://www.boost.org/libs/graph/doc/astar_search.html>`__
 * https://en.wikipedia.org/wiki/A*_search_algorithm
 
 .. rubric:: Indices and tables

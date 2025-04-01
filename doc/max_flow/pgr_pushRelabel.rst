@@ -7,8 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Flow Family ; pgr_pushRelabel
+   single: pushRelabel
 
+|
 
 ``pgr_pushRelabel``
 ===============================================================================
@@ -16,31 +19,26 @@
 ``pgr_pushRelabel`` — Calculates the flow on the graph edges that maximizes the
 flow from the sources to the targets using Push Relabel Algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html
-
-   Boost Graph Inside
-
 .. Rubric:: Availability
 
 * Version 3.2.0
 
-  * New **proposed** signature
+  * New proposed signature:
 
-    * ``pgr_pushRelabel`` (`Combinations`_)
+    * pgr_pushRelabel(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.5.0
 
   * Renamed from ``pgr_maxFlowPushRelabel``
-  * **Proposed** function
+  * Function promoted to proposed.
 
 * Version 2.3.0
 
-  * New **Experimental** function
+  * New experimental function.
 
 
 Description
@@ -51,6 +49,8 @@ Description
     :end-before: characteristics_end
 
 * Running time: :math:`O( V ^ 3)`
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: pushRelabel(One to One)
+    single: pushRelabel ; One to One
 
 One to One
 ...............................................................................
@@ -90,7 +90,7 @@ One to One
    :end-before: -- q2
 
 .. index::
-    single: pushRelabel(One to Many)
+    single: pushRelabel ; One to Many
 
 One to Many
 ...............................................................................
@@ -110,7 +110,7 @@ One to Many
    :end-before: -- q3
 
 .. index::
-    single: pushRelabel(Many to One)
+    single: pushRelabel ; Many to One
 
 Many to One
 ...............................................................................
@@ -130,7 +130,7 @@ Many to One
    :end-before: -- q4
 
 .. index::
-    single: pushRelabel(Many to Many)
+    single: pushRelabel ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -150,7 +150,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: pushRelabel(Combinations) - Proposed on v3.2
+    single: pushRelabel ; Combinations - Proposed on v3.2
 
 Combinations
 ...............................................................................
@@ -226,7 +226,8 @@ See Also
   * :doc:`pgr_boykovKolmogorov`
   * :doc:`pgr_edmondsKarp`
 
-* https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html
+* `Boost: push relabel max flow
+  <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html>`__
 * https://en.wikipedia.org/wiki/Push%E2%80%93relabel_maximum_flow_algorithm
 
 .. rubric:: Indices and tables

@@ -7,38 +7,37 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+
+.. index::
+   single: Dijkstra Family ; pgr_dijkstraCost
+   single: Cost Category ; pgr_dijkstraCost
+   single: dijkstraCost
+
 |
-
-
 
 ``pgr_dijkstraCost``
 ===============================================================================
 
-``pgr_dijkstraCost`` - Total cost of the shortest path(s) using Dijkstra
+``pgr_dijkstraCost`` - Total cost of the shortest path using Dijkstra
 algorithm.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
 * Version 3.1.0
 
-  * New **proposed** signature:
+  * New proposed signature:
 
-    * ``pgr_dijkstraCost`` (`Combinations`_)
+    * pgr_dijkstraCost(Combinations)
 
 * Version 2.2.0
 
-  * New **Official** function
+  * Official function.
 
 
 Description
 -------------------------------------------------------------------------------
 
-The ``pgr_dijkstraCost`` function sumarizes of the cost of the shortest path(s)
+The ``pgr_dijkstraCost`` function sumarizes of the cost of the shortest path
 using Dijkstra Algorithm.
 
 .. include:: dijkstra-family.rst
@@ -52,6 +51,8 @@ using Dijkstra Algorithm.
 .. include:: cost-category.rst
     :start-after: cost_traits_start
     :end-before: cost_traits_end
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -71,7 +72,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: dijkstraCost(One to One)
+    single: dijkstraCost ; One to One
 
 One to One
 ...............................................................................
@@ -91,7 +92,7 @@ One to One
     :end-before: -- q3
 
 .. index::
-    single: dijkstraCost(One to Many)
+    single: dijkstraCost ; One to Many
 
 One to Many
 ...............................................................................
@@ -112,7 +113,7 @@ One to Many
     :end-before: -- q4
 
 .. index::
-    single: dijkstraCost(Many to One)
+    single: dijkstraCost ; Many to One
 
 Many to One
 ...............................................................................
@@ -133,7 +134,7 @@ Many to One
     :end-before: -- q5
 
 .. index::
-    single: dijkstraCost(Many to Many)
+    single: dijkstraCost ; Many to Many
 
 Many to Many
 ...............................................................................
@@ -154,7 +155,7 @@ Many to Many
     :end-before: -- q51
 
 .. index::
-    single: dijkstraCost(Combinations) - Proposed on v3.1
+    single: dijkstraCost ; Combinations - Proposed on v3.1
 
 Combinations
 ...............................................................................
@@ -245,6 +246,8 @@ See Also
 
 * :doc:`dijkstra-family`
 * :doc:`sampledata`
+* `Boost: Dijkstra shortest paths
+  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>`__
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
 .. rubric:: Indices and tables

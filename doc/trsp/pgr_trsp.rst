@@ -7,52 +7,52 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: Turn Restriction Shortest Path Family ; pgr_trsp
+   single: Shortest Path Category ; pgr_trsp
+   single: Restrictions Category ; pgr_trsp
+   single: trsp
+
 |
 
-
-pgr_trsp - Proposed
+``pgr_trsp`` - Proposed
 ===============================================================================
 
 ``pgr_trsp`` - routing vertices with restrictions.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
-
-   Boost Graph Inside
-
 .. include:: proposed.rst
-   :start-after: begin-warning
+   :start-after: warning-begin
    :end-before: end-warning
 
 .. rubric:: Availability
 
 * Version 3.4.0
 
-  * New proposed signatures
+  * New proposed signatures:
 
-    * ``pgr_trsp`` (`One to One`_)
-    * ``pgr_trsp`` (`One to Many`_)
-    * ``pgr_trsp`` (`Many to One`_)
-    * ``pgr_trsp`` (`Many to Many`_)
-    * ``pgr_trsp`` (`Combinations`_)
+    * pgr_trsp(One to One)
+    * pgr_trsp(One to Many)
+    * pgr_trsp(Many to One)
+    * pgr_trsp(Many to Many)
+    * pgr_trsp(Combinations)
 
   * Deprecated signatures
 
-    * ``pgr_trsp(text,integer,integer,boolean,boolean,text)``
-    * ``pgr_trsp(text,integer,float,integer,float,boolean,boolean,text)``
-    * ``pgr_trspViaVertices(text,anyarray,boolean,boolean,text)``
-    * ``pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)``
+    * pgr_trsp(text,integer,integer,boolean,boolean,text)
+    * pgr_trsp(text,integer,float,integer,float,boolean,boolean,text)
+    * pgr_trspViaVertices(text,anyarray,boolean,boolean,text)
+    * pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)
 
 * Version 2.1.0
 
   * New prototypes
 
-    * ``pgr_trspViaVertices``
-    * ``pgr_trspViaEdges``
+    * pgr_trspViaVertices
+    * pgr_trspViaEdges
 
 * Version 2.0.0
 
-  * **Official** function
+  * Official function.
 
 Description
 -------------------------------------------------------------------------------
@@ -72,10 +72,12 @@ The general algorithm is as follows:
 
   * Execute the **TRSP** algorithm with restrictions.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
-.. rubric:: Proposed
+.. rubric:: Summary
 
 .. admonition:: \ \
    :class: signatures
@@ -90,7 +92,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: trsp(One to One) -- Proposed on v3.4
+    single: trsp ; One to One -- Proposed on v3.4
 
 One to One
 ...............................................................................
@@ -110,7 +112,7 @@ One to One
    :end-before: -- q3
 
 .. index::
-    single: trsp(One to Many) -- Proposed on v3.4
+    single: trsp ; One to Many -- Proposed on v3.4
 
 One to Many
 ...............................................................................
@@ -131,7 +133,7 @@ One to Many
    :end-before: -- q4
 
 .. index::
-    single: trsp(Many to One) -- Proposed on v3.4
+    single: trsp ; Many to One -- Proposed on v3.4
 
 Many to One
 ...............................................................................
@@ -152,7 +154,7 @@ Many to One
    :end-before: -- q5
 
 .. index::
-    single: trsp(Many to Many) -- Proposed on v3.4
+    single: trsp ; Many to Many -- Proposed on v3.4
 
 Many to Many
 ...............................................................................
@@ -174,7 +176,7 @@ Many to Many
    :end-before: -- q6
 
 .. index::
-    single: trsp(Combinations) - Proposed on v3.4
+    single: trsp ; Combinations - Proposed on v3.4
 
 Combinations
 ...............................................................................

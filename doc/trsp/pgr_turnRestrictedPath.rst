@@ -7,24 +7,29 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: Turn Restriction Shortest Path Family ; pgr_turnRestrictedPath
+   single: Shortest Path Category ; pgr_turnRestrictedPath
+   single: Restrictions Category ; pgr_turnRestrictedPath
+   single: turnRestrictedPath
+
 |
 
-
-pgr_turnRestrictedPath - Experimental
+``pgr_turnRestrictedPath`` - Experimental
 ===============================================================================
 
-``pgr_turnRestrictedPath`` Using Yen's algorithm Vertex -Vertex routing with
+``pgr_turnRestrictedPath`` Using Yen's algorithm Vertex - Vertex routing with
 restrictions
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: warning-begin
+   :end-before: end-warning
 
 .. rubric:: Availability
 
 * Version 3.0.0
 
-  * New experimental function
+  * New experimental function.
 
 Description
 -------------------------------------------------------------------------------
@@ -32,11 +37,10 @@ Description
 Using Yen's algorithm to obtain K shortest paths and analyze the paths to select
 the paths that do not use the restrictions
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
-
-.. index::
-   single: turnRestrictedPath - Experimental on v3.0
 
 .. admonition:: \ \
    :class: signatures

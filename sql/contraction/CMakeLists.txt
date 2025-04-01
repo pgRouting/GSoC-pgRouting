@@ -2,6 +2,8 @@
 SET(LOCAL_FILES
     _contraction.sql
     contraction.sql
+    deadEndContraction.sql
+    linearContraction.sql
     )
 
 foreach (f ${LOCAL_FILES})

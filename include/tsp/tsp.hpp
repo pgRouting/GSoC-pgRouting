@@ -34,14 +34,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <utility>
 #include <deque>
 #include <vector>
+#include <cstdint>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/version.hpp>
 
 #include "c_types/iid_t_rt.h"
 #include "cpp_common/coordinate_t.hpp"
-#include "cpp_common/pgr_messages.hpp"
-#include "cpp_common/pgr_assert.hpp"
+#include "cpp_common/messages.hpp"
+#include "cpp_common/assert.hpp"
 
 
 namespace pgrouting {
@@ -77,7 +79,7 @@ class TSP : public Pgr_messages {
     explicit TSP(const std::vector<Coordinate_t>&);
     TSP() = delete;
 
-#if Boost_VERSION_MACRO >= 106800
+#if BOOST_VERSION >= 106800
     friend std::ostream& operator<<(std::ostream &, const TSP&);
 #endif
     bool has_vertex(int64_t id) const;

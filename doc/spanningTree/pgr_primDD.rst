@@ -7,18 +7,18 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
+.. index::
+   single: Prim Family ; pgr_primDD
+   single: Spanning Tree Category ; pgr_primDD
+   single: Driving Distance Category ; pgr_primDD
+   single: primDD
 
+|
 
 ``pgr_primDD``
 ===============================================================================
 
 ``pgr_primDD`` — Catchament nodes using Prim's algorithm.
-
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
-
-   Boost Graph Inside
 
 .. rubric:: Availability
 
@@ -30,7 +30,7 @@
 
 .. rubric:: Version 3.0.0
 
-* New **Official** function
+* New official function.
 
 Description
 -------------------------------------------------------------------------------
@@ -52,6 +52,8 @@ calculated minimum spanning tree.
 - Returned tree nodes from a root vertex are on Depth First Search order.
 - Depth First Search running time: :math:`O(E + V)`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
@@ -64,7 +66,7 @@ Signatures
    | Returns set of |result-spantree|
 
 .. index::
-    single: primDD(Single vertex)
+    single: primDD ; Single vertex
 
 Single vertex
 ...............................................................................
@@ -84,7 +86,7 @@ Single vertex
    :end-before: -- q2
 
 .. index::
-    single: primDD(Multiple vertices)
+    single: primDD ; Multiple vertices
 
 Multiple vertices
 ...............................................................................
@@ -130,10 +132,10 @@ Result columns
 See Also
 -------------------------------------------------------------------------------
 
-* :doc:`spanningTree-family`
+* :doc:`spanningTree-category`
 * :doc:`prim-family`
 * :doc:`sampledata`
-* `Boost: Prim's algorithm documentation
+* `Boost: Prim's algorithm
   <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html>`__
 * `Wikipedia: Prim's algorithm
   <https://en.wikipedia.org/wiki/Prim%27s_algorithm>`__
