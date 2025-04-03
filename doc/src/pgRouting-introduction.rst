@@ -150,6 +150,7 @@ Veenit Kumar,
 Vidhan Jain,
 Virginia Vergara,
 Yige Huang
+Akbar Zaidi
 
 Corporate Sponsors (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
