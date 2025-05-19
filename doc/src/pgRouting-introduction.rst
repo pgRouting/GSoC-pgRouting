@@ -68,7 +68,7 @@ Individuals in this release v3.8.x (in alphabetical order)
 
 Aurélie Bousquet,
 Regina Obe,
-Vicky Vergara
+Virginia Vergara
 
 
 And all the people that give us a little of their time making comments, finding
