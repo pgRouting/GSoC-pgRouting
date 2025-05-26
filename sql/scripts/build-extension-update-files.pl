@@ -222,11 +222,6 @@ sub generate_upgrade_script {
             push @commands, "DROP FUNCTION IF EXISTS $old_function;\n\n";
         }
 
-        # updating to 3.4+
-        if ($old_minor < 3.4) {
-            push @commands, drop_special_case_function("pgr_maxcardinalitymatch(text,boolean)");
-        }
-
         # updating to 3.5+
         if ($old_minor < 3.5) {
             push @commands, drop_special_case_function("pgr_dijkstra(text,anyarray,bigint,boolean)");
@@ -236,12 +231,9 @@ sub generate_upgrade_script {
 
         # updating to 3.6+
         if ($old_minor < 3.6) {
-            push @commands, drop_special_case_function("pgr_withpointsksp(text, text, bigint, bigint, integer, boolean, boolean, char, boolean)");
             push @commands, drop_special_case_function("pgr_astar(text,anyarray,bigint,boolean,integer,double precision,double precision)");
             push @commands, drop_special_case_function("pgr_astar(text,bigint,anyarray,boolean,integer,double precision,double precision)");
             push @commands, drop_special_case_function("pgr_astar(text,bigint,bigint,boolean,integer,double precision,double precision)");
-            push @commands, drop_special_case_function("pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)");
-            push @commands, drop_special_case_function("pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)");
             push @commands, drop_special_case_function("pgr_ksp(text,bigint,bigint,integer,boolean,boolean)");
             push @commands, drop_special_case_function("pgr_bdastar(text,bigint,bigint,boolean,integer,numeric,numeric)");
             push @commands, drop_special_case_function("pgr_bdastar(text,bigint,anyarray,boolean,integer,numeric,numeric)");
@@ -269,13 +261,6 @@ sub generate_upgrade_script {
             push @commands, drop_special_case_function("pgr_kruskaldd(text,anyarray,numeric)");
             push @commands, drop_special_case_function("pgr_kruskaldd(text,anyarray,double precision)");
         }
-
-        # updating to 3.7+
-        if ($old_minor >= 3.4 && $old_minor < 3.8) {
-            push @commands, drop_special_case_function("pgr_findcloseedges(text,geometry,double precision,integer,boolean,boolean)");
-            push @commands, drop_special_case_function("pgr_findcloseedges(text,geometry[],double precision,integer,boolean,boolean)");
-        }
-
     }
 
     #------------------------------------

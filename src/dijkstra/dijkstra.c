@@ -46,6 +46,7 @@ PG_MODULE_MAGIC;
 PGDLLEXPORT Datum _pgr_dijkstra(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_dijkstra);
 
+/* TODO move to a process file*.
 static
 void
 process(

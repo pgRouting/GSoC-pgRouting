@@ -88,6 +88,28 @@ milestone for 4.0.0
   * pgr_trsp(text,integer,integer,boolean,boolean,text)
   * pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)
 
+* `#2888 <https://github.com/pgRouting/pgrouting/issues/2888>`__:
+  pgr_findCloseEdges
+
+  * pgr_findcloseedges(text,geometry,double precision,integer,boolean,boolean)
+  * pgr_findcloseedges(text,geometry[],double precision,integer,boolean,boolean)
+
+* `#2890 <https://github.com/pgRouting/pgrouting/issues/2890>`__:
+  pgr_withPointsDD
+
+  * pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)
+  * pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)
+
+* `#2895 <https://github.com/pgRouting/pgrouting/issues/2895>`__:
+  pgr_withPointsKSP
+
+  * pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,character,boolean)
+
+* `#2899 <https://github.com/pgRouting/pgrouting/issues/2899>`__:
+  pgr_maxCardinalityMatch
+
+  * pgr_maxcardinalitymatch(text,boolean)
+
 .. rubric:: Removal of SQL deprecated functions
 
 * `#2681 <https://github.com/pgRouting/pgrouting/issues/2681>`__:
@@ -104,8 +126,12 @@ milestone for 4.0.0
   pgr_analyzeOneWay
 * `#2827 <https://github.com/pgRouting/pgrouting/issues/2827>`__:
   pgr_createVerticesTable
+* `#2886 <https://github.com/pgRouting/pgrouting/issues/2886>`__:
+  pgr_nodeNetwork
 
 .. rubric:: Removal of SQL deprecated internal functions
+
+Related issues: `#2897 <https://github.com/pgRouting/pgrouting/issues/2897>`__
 
 * _pgr_dijkstranear(text,anyarray,anyarray,bigint,boolean)
 * _pgr_dijkstranear(text,anyarray,bigint,bigint,boolean)
@@ -113,7 +139,11 @@ milestone for 4.0.0
 * _pgr_dijkstra(text,anyarray,anyarray,boolean,boolean,boolean,bigint)
 * _pgr_dijkstra(text,text,boolean,boolean,boolean)
 * _pgr_drivingdistance(text,anyarray,double precision,boolean,boolean)
+* _pgr_ksp(text,anyarray,anyarray,integer,boolean,boolean,boolean)
+* _pgr_ksp(text,bigint,bigint,integer,boolean,boolean)
+* _pgr_ksp(text,text,integer,boolean,boolean)
 * _pgr_kruskal(text,anyarray,text,bigint,double precision)
+* _pgr_maxcardinalitymatch(text,boolean)
 * _pgr_prim(text,anyarray,text,bigint,double precision)
 * _pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)
 * _pgr_trsp(text,text,anyarray,anyarray,boolean)
@@ -121,6 +151,10 @@ milestone for 4.0.0
 * _pgr_trsp(text,text,bigint,anyarray,boolean)
 * _pgr_trsp(text,text,bigint,bigint,boolean)
 * _pgr_trspviavertices(text,integer[],boolean,boolean,text)
+* _pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)
+* _pgr_withpointsksp(text,text,anyarray,anyarray,integer,character,boolean,boolean,boolean,boolean)
+* _pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,character,boolean)
+* _pgr_withpointsksp(text,text,text,integer,character,boolean,boolean,boolean)
 * _pgr_withpointsvia(text,bigint[],double precision[],boolean)
 * _trsp(text,text,anyarray,anyarray,boolean)
 * _v4trsp(text,text,anyarray,anyarray,boolean)
@@ -161,6 +195,7 @@ milestone for 4.0.0
 * _trsp(text,text,anyarray,anyarray,boolean)
 * _v4trsp(text,text,anyarray,anyarray,boolean)
 * _v4trsp(text,text,text,boolean)
+* _pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)
 
 pgRouting 3
 *******************************************************************************
@@ -175,8 +210,6 @@ pgRouting 3.8
 .. contents:: Contents
    :local:
    :depth: 1
-
-.. current
 
 pgRouting 3.8.0 Release Notes
 -------------------------------------------------------------------------------

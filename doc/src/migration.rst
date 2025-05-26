@@ -27,8 +27,8 @@ Results can be different because of the changes.
 Migration of ``pgr_alphaShape``
 -------------------------------------------------------------------------------
 
-Deprecated in `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
-Removed from the repostory in `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -51,10 +51,24 @@ Other PostGIS options are
 * `ST_ConvexHull <https://postgis.net/docs/ST_ConvexHull.html>`__
 * `ST_ConcaveHull <https://postgis.net/docs/ST_ConcaveHull.html>`__
 
+Migration of ``pgr_nodeNetwork``
+-------------------------------------------------------------------------------
+
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
+
+**Before Deprecation:** A table with `<edges>_nodded` was created. with split
+edges.
+
+**Migration**
+
+Use :doc:`pgr_separateTouching` and/or use :doc:`pgr_separateCrossing`
+
 Migration of ``pgr_createTopology``
 -------------------------------------------------------------------------------
 
-Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -66,12 +80,11 @@ Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
    :start-after: createTopology_start
    :end-before: createTopology_end
 
-.. migrate_pgr_createVerticesTable_start
-
 Migration of ``pgr_createVerticesTable``
 -------------------------------------------------------------------------------
 
-Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -84,14 +97,11 @@ indexes, etc. They may use :doc:`pgr_extractVertices` for that purpose.
    :start-after: -- q1
    :end-before: -- q1-1
 
-.. migrate_pgr_createVerticesTable_end
-
-.. migrate_pgr_analyzeOneWay_start
-
 Migration of ``pgr_analyzeOneWay``
 -------------------------------------------------------------------------------
 
-Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -127,14 +137,11 @@ To determine if the bridges are or not one way.
    :start-after: --OneWay2
    :end-before: --OneWay3
 
-.. migrate_pgr_analyzeOneWay_end
-
-.. migrate_pgr_analyzeGraph_start
-
 Migration of ``pgr_analyzeGraph``
 -------------------------------------------------------------------------------
 
-Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -208,8 +215,6 @@ For example:
 .. literalinclude:: migration.queries
    :start-after: --analysis4
    :end-before: --analysis5
-
-.. migrate_pgr_analyzeGraph_end
 
 Migration of ``pgr_aStar``
 -------------------------------------------------------------------------------
@@ -645,10 +650,6 @@ Migration is needed, because:
 
 :Before migration:
 
-.. literalinclude:: migration.queries
-   :start-after: --maxcard1
-   :end-before: --maxcard2
-
 * Columns used are ``going`` and ``coming`` to represent the existence of an
   edge.
 * Flag ``directed`` was used to indicate if it was for a **directed** or
@@ -771,7 +772,7 @@ Signatures to be migrated:
 * ``pgr_withPointsDD`` (Single vertex)
 * ``pgr_withPointsDD`` (Multiple vertices)
 
-:Before Migration:
+.. rubric:: Before Migration
 
 * ``pgr_withPointsDD`` (Single vertex)
 
@@ -785,51 +786,18 @@ Signatures to be migrated:
   * Does not have ``depth`` and ``pred`` result columns.
   * ``driving_side`` parameter was named optional now it is compulsory unnamed.
 
-.. rubric:: Driving side was optional
+* Validity of driving_side:
 
-The default values on this query are:
+  * On directed graph ``b`` could be used as **driving side**
+  * On undirected graph ``r``, ``l`` could be used as **driving side**
 
-:directed: true
-:driving_side: 'b'
-:details: false
 
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd1
-   :end-before: --withpointsdd2
-
-.. rubric:: Driving side was named optional
-
-The default values on this query are:
-
-:directed: true
-:details: false
-
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd2
-   :end-before: --withpointsdd3
-
-.. rubric:: On directed graph ``b`` could be used as **driving side**
-
-The default values on this query are:
-
-:details: false
-
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd3
-   :end-before: --withpointsdd4
-
-.. rubric:: On undirected graph ``r`` could be used as **driving side**
-
-Also ``l`` could be used as **driving side**
-
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd4
-   :end-before: --withpointsdd5
-
-:After Migration:
+.. rubric:: After Migration
 
 * Be aware of the existence of the additional result Columns.
-* New output columns are |result-spantree|
+
+  * Output columns are |result-spantree|
+
 * **driving side** parameter is unnamed compulsory, and valid values differ for
   directed and undirected graphs.
 
@@ -845,13 +813,6 @@ Using
 `this <https://docs.pgrouting.org/3.5/en/pgr_withPointsDD.html#single-vertex>`__
 example.
 
-* |result-spantree|
-* ``start_vid`` contains the **start vid** parameter value.
-* ``depth`` contains the **depth** from the ``start_vid`` vertex to the
-  ``node``.
-* ``pred`` contains the predecessor of the ``node``.
-
-
 To migrate, use an unnamed valid value for **driving side** after the
 **distance** parameter:
 
@@ -861,9 +822,7 @@ To migrate, use an unnamed valid value for **driving side** after the
 
 To get results from previous versions:
 
-* filter out the additional columns, for example;
-* When ``details => false`` to remove the points use ``WHERE node >= 0 OR cost =
-  0``
+* Filter out the additional columns
 
 .. literalinclude:: migration.queries
    :start-after: --withpointsdd5
@@ -876,10 +835,8 @@ Using
 `this <https://docs.pgrouting.org/3.5/en/pgr_withPointsDD.html#multiple-vertices>`__
 example.
 
-* |result-spantree|
-* ``depth`` contains the **depth** from the ``start_vid`` vertex to the
-  ``node``.
-* ``pred`` contains the predecessor of the ``node``.
+To migrate, use an unnamed valid value for **driving side** after the
+**distance** parameter:
 
 .. literalinclude:: migration.queries
    :start-after: --withpointsdd6
@@ -888,8 +845,8 @@ example.
 To get results from previous versions:
 
 * Filter out the additional columns
-* When ``details => false`` to remove the points use ``WHERE node >= 0 OR cost =
-  0``
+* When ``details => false``, the default, remove the points by using
+  ``WHERE node >= 0 OR cost = 0``
 
 .. literalinclude:: migration.queries
    :start-after: --withpointsdd7
