@@ -119,6 +119,7 @@ David Techer,
 Denis Rykov,
 Ema Miyawaki,
 Esteban Zimanyi,
+Fan Wu
 Florian Thurkow,
 Frederic Junod,
 Gerald Fenoy,
