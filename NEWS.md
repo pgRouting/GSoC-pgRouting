@@ -13,14 +13,23 @@ To see all issues & pull requests closed by this release see the [Git closed
 milestone for 4.0.0
 ](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%204.0.0%22)
 
-**Functions promoted to official**
+Functions promoted to official
+...............................................................................
 
 * pgr_trsp
 * pgr_trspVia
 * pgr_trspVia_withPoints
 * pgr_trsp_withPoints
-* pgr_withPoints
-* pgr_withPointsCost
+* [#2905](https://github.com/pgRouting/pgrouting/issues/2905) pgr_withPoints
+
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+  * Function promoted to official.
+
+* [#2905](https://github.com/pgRouting/pgrouting/issues/2905) pgr_withPointsCost
+
+  * Output columns standardized to ``(start_vid, end_vid, agg_cost)``
+  * Function promoted to official.
+
 * pgr_withPointsCostMatrix
 * pgr_withPointsDD
 * pgr_withPointsKSP
@@ -42,11 +51,17 @@ milestone for 4.0.0
 * pgr_maxFlow(Combinations)
 * pgr_pushRelabel(Combinations)
 
-**code enhancements:**
+SQL signatures modification on functions
+...............................................................................
 
-* Removal of unused C/C++ code
+* [#2906](https://github.com/pgRouting/pgrouting/issues/2906) pgr_bdDijkstra
 
-**Removal of SQL deprecated signatures**
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+  * Combinations signature promoted to official.
+
+
+Removal of SQL deprecated signatures
+...............................................................................
 
 * [#2798](https://github.com/pgRouting/pgrouting/issues/2798):
   pgr_contraction
@@ -58,7 +73,35 @@ milestone for 4.0.0
   * pgr_trsp(text,integer,integer,boolean,boolean,text)
   * pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)
 
-**Removal of SQL deprecated functions**
+* [#2888](https://github.com/pgRouting/pgrouting/issues/2888):
+  pgr_findCloseEdges
+
+  * pgr_findcloseedges(text,geometry,double precision,integer,boolean,boolean)
+  * pgr_findcloseedges(text,geometry[],double precision,integer,boolean,boolean)
+
+* [#2890](https://github.com/pgRouting/pgrouting/issues/2890):
+  pgr_withPointsDD
+
+  * pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)
+  * pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)
+
+* [#2895](https://github.com/pgRouting/pgrouting/issues/2895):
+  pgr_withPointsKSP
+
+  * pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,character,boolean)
+
+* [#2899](https://github.com/pgRouting/pgrouting/issues/2899):
+  pgr_maxCardinalityMatch
+
+  * pgr_maxcardinalitymatch(text,boolean)
+
+* [#2901](https://github.com/pgRouting/pgrouting/issues/2901): TSP family
+
+  * pgr_tsp(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
+  * pgr_tspeuclidean(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
+
+Removal of SQL deprecated functions
+...............................................................................
 
 * [#2681](https://github.com/pgRouting/pgrouting/issues/2681):
   pgr_trspviaedges
@@ -74,8 +117,13 @@ milestone for 4.0.0
   pgr_analyzeOneWay
 * [#2827](https://github.com/pgRouting/pgrouting/issues/2827):
   pgr_createVerticesTable
+* [#2886](https://github.com/pgRouting/pgrouting/issues/2886):
+  pgr_nodeNetwork
 
-**Removal of SQL deprecated internal functions**
+rubric:: Removal of SQL deprecated internal functions
+...............................................................................
+
+Related issues: [#2897](https://github.com/pgRouting/pgrouting/issues/2897)
 
 * _pgr_dijkstranear(text,anyarray,anyarray,bigint,boolean)
 * _pgr_dijkstranear(text,anyarray,bigint,bigint,boolean)
@@ -83,7 +131,11 @@ milestone for 4.0.0
 * _pgr_dijkstra(text,anyarray,anyarray,boolean,boolean,boolean,bigint)
 * _pgr_dijkstra(text,text,boolean,boolean,boolean)
 * _pgr_drivingdistance(text,anyarray,double precision,boolean,boolean)
+* _pgr_ksp(text,anyarray,anyarray,integer,boolean,boolean,boolean)
+* _pgr_ksp(text,bigint,bigint,integer,boolean,boolean)
+* _pgr_ksp(text,text,integer,boolean,boolean)
 * _pgr_kruskal(text,anyarray,text,bigint,double precision)
+* _pgr_maxcardinalitymatch(text,boolean)
 * _pgr_prim(text,anyarray,text,bigint,double precision)
 * _pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)
 * _pgr_trsp(text,text,anyarray,anyarray,boolean)
@@ -91,10 +143,16 @@ milestone for 4.0.0
 * _pgr_trsp(text,text,bigint,anyarray,boolean)
 * _pgr_trsp(text,text,bigint,bigint,boolean)
 * _pgr_trspviavertices(text,integer[],boolean,boolean,text)
+* _pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)
+* _pgr_withpointsksp(text,text,anyarray,anyarray,integer,character,boolean,boolean,boolean,boolean)
+* _pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,character,boolean)
+* _pgr_withpointsksp(text,text,text,integer,character,boolean,boolean,boolean)
 * _pgr_withpointsvia(text,bigint[],double precision[],boolean)
 * _trsp(text,text,anyarray,anyarray,boolean)
 * _v4trsp(text,text,anyarray,anyarray,boolean)
 * _v4trsp(text,text,text,boolean)
+* _pgr_tspeuclidean(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
+* _pgr_tsp(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
 
 
 * [#2861](https://github.com/pgRouting/pgrouting/issues/2861):
@@ -119,6 +177,15 @@ milestone for 4.0.0
   - _pgr_startpoint(geometry)
   - _pgr_versionless(text,text)
 
+Code enhancements
+...............................................................................
+
+* Removal of unused C/C++ code
+* Refactor the Script to build the update PostgreSQL file.
+* One driver for:
+
+  * allpairs: johnson and Flowy-Warshall
+  * Shortest path: Dijkstra and withPoints using Dijkstra
 
 **Deprecation of internal C/C++ functions**
 
@@ -131,5 +198,6 @@ milestone for 4.0.0
 * _trsp(text,text,anyarray,anyarray,boolean)
 * _v4trsp(text,text,anyarray,anyarray,boolean)
 * _v4trsp(text,text,text,boolean)
+* _pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)
 
 </details>

@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- pgr_withPointsCostMatrix
 ---------------------------
 
---v2.6
+--v3.0
 CREATE FUNCTION pgr_withPointsCostMatrix(
     TEXT,     -- edges_sql (required)
     TEXT,     -- points_sql (required)
@@ -45,8 +45,9 @@ CREATE FUNCTION pgr_withPointsCostMatrix(
     OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.start_pid, a.end_pid, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), $3, $3, $4,  $5, TRUE, TRUE) AS a;
+    SELECT start_vid, end_vid, agg_cost
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], '{}'::BIGINT[],
+      $4, $5, true, true, true, 0, true);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
