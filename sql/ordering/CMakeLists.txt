@@ -1,6 +1,8 @@
 SET(LOCAL_FILES
     _cuthillMckeeOrdering.sql
     cuthillMckeeOrdering.sql
+    _sloanOrdering.sql
+    sloanOrdering.sql
     )
 
 # Do not modify below this line
