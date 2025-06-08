@@ -27,8 +27,8 @@ Results can be different because of the changes.
 Migration of ``pgr_alphaShape``
 -------------------------------------------------------------------------------
 
-Deprecated in `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
-Removed from the repostory in `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -48,13 +48,115 @@ If you have SFCGAL, which you can install using
 * For PostGIS 3.5+ use the old name ``ST_AlphaShape``
 
 Other PostGIS options are
+
 * `ST_ConvexHull <https://postgis.net/docs/ST_ConvexHull.html>`__
 * `ST_ConcaveHull <https://postgis.net/docs/ST_ConcaveHull.html>`__
+
+Migration of ``pgr_bdDijkstra``
+-------------------------------------------------------------------------------
+
+Starting from `v4.0.0 <https://docs.pgrouting.org/4.0/en/migration.html>`__
+:doc:`pgr_bdDijkstra` result columns are being standardized.
+
+:from: |old-generic-result|
+:to: |short-generic-result|
+
+Signatures to be migrated:
+
+* ``pgr_bdDijkstra`` (One to One)
+* ``pgr_bdDijkstra`` (One to Many)
+* ``pgr_bdDijkstra`` (Many to One)
+
+.. rubric:: Before Migration
+
+Output columns were |old-generic-result|
+
+.. rubric:: Migration
+
+Output columns are |short-generic-result|
+
+To get the old version column names, depending on the signature:
+
+* Filter out the columns: ``start_vid`` and/or ``end_vid``
+
+``pgr_bdDijkstra`` (`One to One`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_bdDijkstra.html#one-to-one>`__
+example.
+
+:from: |result-1-1|
+:to: |short-generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --bdDijkstra-1-to-1
+   :end-before: --bdDijkstra-1-to-1-filter
+
+Get the old signature columns by filtering out the extra columns.
+
+.. literalinclude:: migration.queries
+   :start-after: --bdDijkstra-1-to-1-filter
+   :end-before: --bdDijkstra-1-to-m
+
+``pgr_bdDijkstra`` (`One to Many`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_bdDijkstra.html#one-to-many>`__
+example.
+
+:from: |result-1-m|
+:to: |short-generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --bdDijkstra-1-to-m
+   :end-before: --bdDijkstra-1-to-m-filter
+
+Get the old signature columns by filtering out the extra columns.
+
+.. literalinclude:: migration.queries
+   :start-after: --bdDijkstra-1-to-m-filter
+   :end-before: --bdDijkstra-m-to-1
+
+``pgr_bdDijkstra`` (`Many to One`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_bdDijkstra.html#many-to-one>`__
+example.
+
+:from: |result-m-1|
+:to: |generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --bdDijkstra-m-to-1
+   :end-before: --bdDijkstra-m-to-1-filter
+
+Get the old signature columns by filtering out the extra columns.
+
+.. literalinclude:: migration.queries
+   :start-after: --bdDijkstra-m-to-1-filter
+   :end-before: --bdDijkstra-END
+
+Migration of ``pgr_nodeNetwork``
+-------------------------------------------------------------------------------
+
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
+
+**Before Deprecation:** A table with `<edges>_nodded` was created. with split
+edges.
+
+**Migration**
+
+Use :doc:`pgr_separateTouching` and/or use :doc:`pgr_separateCrossing`
 
 Migration of ``pgr_createTopology``
 -------------------------------------------------------------------------------
 
-Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -66,12 +168,11 @@ Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
    :start-after: createTopology_start
    :end-before: createTopology_end
 
-.. migrate_pgr_createVerticesTable_start
-
 Migration of ``pgr_createVerticesTable``
 -------------------------------------------------------------------------------
 
-Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -84,14 +185,11 @@ indexes, etc. They may use :doc:`pgr_extractVertices` for that purpose.
    :start-after: -- q1
    :end-before: -- q1-1
 
-.. migrate_pgr_createVerticesTable_end
-
-.. migrate_pgr_analyzeOneWay_start
-
 Migration of ``pgr_analyzeOneWay``
 -------------------------------------------------------------------------------
 
-Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -127,14 +225,11 @@ To determine if the bridges are or not one way.
    :start-after: --OneWay2
    :end-before: --OneWay3
 
-.. migrate_pgr_analyzeOneWay_end
-
-.. migrate_pgr_analyzeGraph_start
-
 Migration of ``pgr_analyzeGraph``
 -------------------------------------------------------------------------------
 
-Starting from `v3.8.0 <https://docs.pgrouting.org/3.8/en/migration.html>`__
+:Deprecated: `v3.8.0 <https://docs.pgrouting.org/3.8>`__
+:Removed: `v4.0.0 <https://docs.pgrouting.org/4.0>`__
 
 **Before Deprecation:** The following was calculated:
 
@@ -208,8 +303,6 @@ For example:
 .. literalinclude:: migration.queries
    :start-after: --analysis4
    :end-before: --analysis5
-
-.. migrate_pgr_analyzeGraph_end
 
 Migration of ``pgr_aStar``
 -------------------------------------------------------------------------------
@@ -579,7 +672,7 @@ Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__
 :doc:`pgr_KSP` result columns are being standardized.
 
 :from: |ksp-result|
-:from: |nksp-result|
+:to: |generic-result|
 
 Signatures to be migrated:
 
@@ -596,6 +689,8 @@ Signatures to be migrated:
 :Migration:
 
 * Be aware of the existence of the additional columns.
+* If needed filter out the added columns, for example, to return the original
+  columns.
 
 ``pgr_KSP`` (One to One)
 ...............................................................................
@@ -644,10 +739,6 @@ Migration is needed, because:
   * The optional flag ``directed`` is removed.
 
 :Before migration:
-
-.. literalinclude:: migration.queries
-   :start-after: --maxcard1
-   :end-before: --maxcard2
 
 * Columns used are ``going`` and ``coming`` to represent the existence of an
   edge.
@@ -754,6 +845,279 @@ columns
    :start-after: --primDD4
    :end-before: --primDD5
 
+Migration of ``pgr_withPoints``
+-------------------------------------------------------------------------------
+
+.. |old-pid-result| replace:: ``(seq, path_seq, [start_pid], [end_pid], node, edge, cost, agg_cost)``
+.. |pid-1-m| replace:: ``(seq, path_seq, end_pid, node, edge, cost, agg_cost)``
+.. |pid-m-1| replace:: ``(seq, path_seq, start_pid, node, edge, cost, agg_cost)``
+.. |pid-m-m| replace:: ``(seq, path_seq, start_pid, end_pid, node, edge, cost, agg_cost)``
+
+Starting from `v4.0.0 <https://docs.pgrouting.org/4.0/en/migration.html>`__
+:doc:`pgr_withPoints` result columns are being standardized.
+
+:from: |old-pid-result|
+:to: |short-generic-result|
+
+Signatures to be migrated:
+
+* ``pgr_withPoints`` (all signatures)
+
+.. rubric:: Before Migration
+
+Output columns were |old-pid-result|
+
+.. rubric:: Migration
+
+Output columns are |short-generic-result|
+
+To get the old version column names, depending on the signature:
+
+* Filter out the columns: ``start_vid`` and/or ``end_vid``
+* Rename the columns:
+
+  * ``start_vid`` to ``start_pid``
+  * ``end_vid`` to ``end_pid``
+
+``pgr_withPoints`` (`One to One`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#one-to-one>`__
+example.
+
+:from: |result-1-1|
+:to: |short-generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-1-to-1
+   :end-before: --withPoints-1-to-1-filter
+
+Get the old signature columns by filtering out the extra columns.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-1-to-1-filter
+   :end-before: --withPoints-1-to-m
+
+``pgr_withPoints`` (`One to Many`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#one-to-many>`__
+example.
+
+:from: |pid-1-m|
+:to: |short-generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-1-to-m
+   :end-before: --withPoints-1-to-m-filter
+
+Get the old signature columns by filtering out the extra column and renaming
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-1-to-m-filter
+   :end-before: --withPoints-m-to-1
+
+``pgr_withPoints`` (`Many to One`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#many-to-one>`__
+example.
+
+:from: |pid-m-1|
+:to: |generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-m-to-1
+   :end-before: --withPoints-m-to-1-filter
+
+Get the old signature columns by filtering out the extra column and renaming
+``start_vid`` to ``start_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-m-to-1-filter
+   :end-before: --withPoints-m-to-m
+
+``pgr_withPoints`` (`Many to Many`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#many-to-many>`__
+example.
+
+:from: |pid-m-m|
+:to: |short-generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-m-to-m
+   :end-before: --withPoints-m-to-m-filter
+
+Get the old signature columns by renaming ``start_vid`` to ``start_pid`` and
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-m-to-m-filter
+   :end-before: --withPoints-c
+
+``pgr_withPoints`` (`Combinations`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#combinations>`__
+example.
+
+:from: |pid-m-m|
+:to: |short-generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-c
+   :end-before: --withPoints-c-filter
+
+Get the old signature columns by renaming ``start_vid`` to ``start_pid`` and
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-c-filter
+   :end-before: --withPoints-END
+
+Migration of ``pgr_withPointsCost``
+-------------------------------------------------------------------------------
+
+.. |matrix-pid| replace:: ``(start_pid, end_pid, agg_cost)``
+
+Starting from `v4.0.0 <https://docs.pgrouting.org/4.0/en/migration.html>`__
+:doc:`pgr_withPointsCost` result columns are being standardized.
+
+:from: |matrix-pid|
+:to: |matrix-result|
+
+Signatures to be migrated:
+
+* ``pgr_withPointsCost`` (all signatures)
+
+.. rubric:: Before Migration
+
+Output columns were |matrix-pid|
+
+.. rubric:: Migration
+
+Output columns are |matrix-result|
+
+To get the old version column names:
+
+* Rename the columns:
+
+  * ``start_vid`` to ``start_pid``
+  * ``end_vid`` to ``end_pid``
+
+``pgr_withPointsCost`` (`One to One`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPointsCost.html#one-to-one>`__
+example.
+
+:from: |matrix-pid|
+:to: |matrix-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-1-to-1
+   :end-before: --withPointsCost-1-to-1-filter
+
+Get the old signature columns by renaming ``start_vid`` to ``start_pid`` and
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-1-to-1-filter
+   :end-before: --withPointsCost-1-to-m
+
+``pgr_withPointsCost`` (`One to Many`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPointsCost.html#one-to-many>`__
+example.
+
+:from: |matrix-pid|
+:to: |matrix-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-1-to-m
+   :end-before: --withPointsCost-1-to-m-filter
+
+Get the old signature columns by renaming ``start_vid`` to ``start_pid`` and
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-1-to-m-filter
+   :end-before: --withPointsCost-m-to-1
+
+``pgr_withPointsCost`` (`Many to One`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPointsCost.html#many-to-one>`__
+example.
+
+:from: |matrix-pid|
+:to: |matrix-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-m-to-1
+   :end-before: --withPointsCost-m-to-1-filter
+
+Get the old signature columns by renaming ``start_vid`` to ``start_pid`` and
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-m-to-1-filter
+   :end-before: --withPointsCost-m-to-m
+
+``pgr_withPointsCost`` (`Many to Many`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPointsCost.html#many-to-many>`__
+example.
+
+:from: |matrix-pid|
+:to: |matrix-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-m-to-m
+   :end-before: --withPointsCost-m-to-m-filter
+
+Get the old signature columns by renaming ``start_vid`` to ``start_pid`` and
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-m-to-m-filter
+   :end-before: --withPointsCost-c
+
+``pgr_withPointsCost`` (`Combinations`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPointsCost.html#combinations>`__
+example.
+
+:from: |matrix-pid|
+:to: |matrix-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-c
+   :end-before: --withPointsCost-c-filter
+
+Get the old signature columns by renaming ``start_vid`` to ``start_pid`` and
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPointsCost-c-filter
+   :end-before: --withPointsCost-END
+
 Migration of ``pgr_withPointsDD``
 -------------------------------------------------------------------------------
 
@@ -771,7 +1135,7 @@ Signatures to be migrated:
 * ``pgr_withPointsDD`` (Single vertex)
 * ``pgr_withPointsDD`` (Multiple vertices)
 
-:Before Migration:
+.. rubric:: Before Migration
 
 * ``pgr_withPointsDD`` (Single vertex)
 
@@ -785,51 +1149,18 @@ Signatures to be migrated:
   * Does not have ``depth`` and ``pred`` result columns.
   * ``driving_side`` parameter was named optional now it is compulsory unnamed.
 
-.. rubric:: Driving side was optional
+* Validity of driving_side:
 
-The default values on this query are:
+  * On directed graph ``b`` could be used as **driving side**
+  * On undirected graph ``r``, ``l`` could be used as **driving side**
 
-:directed: true
-:driving_side: 'b'
-:details: false
 
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd1
-   :end-before: --withpointsdd2
-
-.. rubric:: Driving side was named optional
-
-The default values on this query are:
-
-:directed: true
-:details: false
-
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd2
-   :end-before: --withpointsdd3
-
-.. rubric:: On directed graph ``b`` could be used as **driving side**
-
-The default values on this query are:
-
-:details: false
-
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd3
-   :end-before: --withpointsdd4
-
-.. rubric:: On undirected graph ``r`` could be used as **driving side**
-
-Also ``l`` could be used as **driving side**
-
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd4
-   :end-before: --withpointsdd5
-
-:After Migration:
+.. rubric:: After Migration
 
 * Be aware of the existence of the additional result Columns.
-* New output columns are |result-spantree|
+
+  * Output columns are |result-spantree|
+
 * **driving side** parameter is unnamed compulsory, and valid values differ for
   directed and undirected graphs.
 
@@ -845,13 +1176,6 @@ Using
 `this <https://docs.pgrouting.org/3.5/en/pgr_withPointsDD.html#single-vertex>`__
 example.
 
-* |result-spantree|
-* ``start_vid`` contains the **start vid** parameter value.
-* ``depth`` contains the **depth** from the ``start_vid`` vertex to the
-  ``node``.
-* ``pred`` contains the predecessor of the ``node``.
-
-
 To migrate, use an unnamed valid value for **driving side** after the
 **distance** parameter:
 
@@ -861,9 +1185,7 @@ To migrate, use an unnamed valid value for **driving side** after the
 
 To get results from previous versions:
 
-* filter out the additional columns, for example;
-* When ``details => false`` to remove the points use ``WHERE node >= 0 OR cost =
-  0``
+* Filter out the additional columns
 
 .. literalinclude:: migration.queries
    :start-after: --withpointsdd5
@@ -876,10 +1198,8 @@ Using
 `this <https://docs.pgrouting.org/3.5/en/pgr_withPointsDD.html#multiple-vertices>`__
 example.
 
-* |result-spantree|
-* ``depth`` contains the **depth** from the ``start_vid`` vertex to the
-  ``node``.
-* ``pred`` contains the predecessor of the ``node``.
+To migrate, use an unnamed valid value for **driving side** after the
+**distance** parameter:
 
 .. literalinclude:: migration.queries
    :start-after: --withpointsdd6
@@ -888,8 +1208,8 @@ example.
 To get results from previous versions:
 
 * Filter out the additional columns
-* When ``details => false`` to remove the points use ``WHERE node >= 0 OR cost =
-  0``
+* When ``details => false``, the default, remove the points by using
+  ``WHERE node >= 0 OR cost = 0``
 
 .. literalinclude:: migration.queries
    :start-after: --withpointsdd7
@@ -902,7 +1222,7 @@ Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__
 :doc:`pgr_withPointsKSP` result columns are being standardized.
 
 :from: |ksp-result|
-:from: |nksp-result|
+:to: |generic-result|
 
 And ``driving side`` parameter changed from named optional to unnamed compulsory
 **driving side** and its validity differ for directed and undirected graphs.
@@ -921,7 +1241,7 @@ Signatures to be migrated:
 :Migration:
 
 * Be aware of the existence of the additional result Columns.
-* New output columns are |nksp-result|
+* New output columns are |generic-result|
 * **driving side** parameter is unnamed compulsory, and valid values differ for
   directed and undirected graphs.
 

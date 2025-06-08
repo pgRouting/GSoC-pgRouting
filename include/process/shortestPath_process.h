@@ -1,13 +1,18 @@
 /*PGR-GNU*****************************************************************
-File: floydWarshall_driver.h
+File: shortestPath_driver.h
 
-Generated with Template by:
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Design of one process & driver file by
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
+
+Copying this file (or a derivative) within pgRouting code add the following:
+
+Generated with Template by:
+Copyright (c) 2025 pgRouting developers
+Mail: project@pgrouting.org
 
 ------
 
@@ -27,38 +32,48 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_ALLPAIRS_FLOYDWARSHALL_DRIVER_H_
-#define INCLUDE_DRIVERS_ALLPAIRS_FLOYDWARSHALL_DRIVER_H_
+#ifndef INCLUDE_PROCESS_SHORTESTPATH_PROCESS_H_
+#define INCLUDE_PROCESS_SHORTESTPATH_PROCESS_H_
 #pragma once
-
-/* for size-t */
-#ifdef __cplusplus
-#   include <cstddef>
-using IID_t_rt = struct IID_t_rt;
-#else
-#   include <stddef.h>
-#include <stdbool.h>
-typedef struct IID_t_rt IID_t_rt;
-#endif
-
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void
-pgr_do_floydWarshall(
-    const char*,
-    bool,
-
-    IID_t_rt**,
-    size_t*,
-    char**,
-    char**);
+#include <postgres.h>
+#include <utils/array.h>
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_ALLPAIRS_FLOYDWARSHALL_DRIVER_H_
+#include "cpp_common/undefPostgresDefine.hpp"
+
+#ifdef __cplusplus
+#   include <cstddef>
+#   include <cstdint>
+using Path_rt = struct Path_rt;
+#else
+#   include <stddef.h>
+#   include <stdint.h>
+typedef struct Path_rt Path_rt;
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void pgr_process_shortestPath(
+        const char*, const char*, const char*,
+        ArrayType*, ArrayType*,
+        bool, bool, bool,
+        int64_t, bool,
+        char*, bool,
+
+        int32_t, Path_rt**, size_t*);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // INCLUDE_PROCESS_SHORTESTPATH_PROCESS_H_
