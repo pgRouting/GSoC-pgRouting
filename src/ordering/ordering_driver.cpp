@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: minimumDegreeOrdering_driver.cpp
+File: ordering_driver.cpp
 Generated with Template by:
 Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ********************************************************************PGR-GNU*/
 
 #include "drivers/ordering/minimumDegreeOrdering_driver.h"
+#include "drivers/ordering/kingOrdering_driver.h"
 
 #include <sstream>
 #include <vector>
@@ -37,9 +38,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/ii_t_rt.h"
 
 #include "ordering/minimumDegreeOrdering.hpp"
+#include "ordering/kingOrdering.hpp"
 
-/** @file minimumDegreeOrdering_driver.cpp
- * @brief Handles actual calling of function in the `minimumDegreeOrdering.hpp` file.
+/** @file ordering_driver.cpp
+ * @brief Handles actual calling of function in the `minimumDegreeOrdering.hpp` and `kingOrdering.hpp` file.
  *
  */
 
@@ -47,6 +49,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *   pgr_minimumDegreeOrdering(edges_sql TEXT);
  *
+ *   pgr_kingOrdering(edges_sql TEXT);
+ * 
  ***********************************************************************/
 
 namespace {
@@ -66,10 +70,18 @@ minimumDegreeOrdering(G &graph) {
     return results;
 }
 
+template <class G>
+std::vector <II_t_rt>
+kingOrdering(G &graph) {
+    pgrouting::functions::KingOrdering <G> fn_kingOrdering;
+    auto results = fn_kingOrdering.kingOrdering(graph);
+    return results;
+}
+
 }  // namespace
 
 
-void pgr_do_minimumDegreeOrdering(
+void pgr_do_ordering(
     const char *edges_sql,
     int which,
 
@@ -112,9 +124,8 @@ void pgr_do_minimumDegreeOrdering(
             results = minimumDegreeOrdering(undigraph);
         }
         else if (which ==1){
-
-        }
-        
+            results = kingOrdering(undigraph);
+        } 
 
         auto count = results.size();
 
