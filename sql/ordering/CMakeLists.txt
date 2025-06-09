@@ -1,6 +1,10 @@
 SET(LOCAL_FILES
     _cuthillMckeeOrdering.sql
     cuthillMckeeOrdering.sql
+    _minimumDegreeOrdering.sql
+    minimumDegreeOrdering.sql
+    _kingOrdering.sql
+    kingOrdering.sql
     )
 
 # Do not modify below this line
