@@ -79,6 +79,7 @@ process(
 }
 #endif
 
+
 PGDLLEXPORT Datum
 _pgr_sloanordering(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
