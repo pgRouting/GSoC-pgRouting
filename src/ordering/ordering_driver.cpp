@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-#include "drivers/ordering/ordering_driver.hpp"
+#include "drivers/ordering_driver.hpp"
 
 #include <sstream>
 #include <vector>

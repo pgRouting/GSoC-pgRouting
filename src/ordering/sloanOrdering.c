@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 
 #include "c_types/ii_t_rt.h"
-#include "drivers/ordering/ordering_driver.hpp"
+#include "drivers/ordering_driver.hpp"
 
 PGDLLEXPORT Datum _pgr_sloanordering(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_sloanordering);
