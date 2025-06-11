@@ -5,7 +5,7 @@ Generated with Template by:
 Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
+Developer:
 Copyright (c) 2025 Bipasha Gayary
 Mail: bipashagayary@gmail.com
 ------
@@ -33,13 +33,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 
 #include "c_types/ii_t_rt.h"
+#include "drivers/ordering/ordering_driver.hpp"
 
-
-#include "drivers/ordering/sloanOrdering_driver.hpp"
-
-PGDLLEXPORT Datum _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum _pgr_sloanordering(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_sloanordering);
 
+#if 0
 static
 void
 process(
@@ -78,6 +77,7 @@ process(
 
     pgr_SPI_finish();
 }
+#endif
 
 PGDLLEXPORT Datum
 _pgr_sloanordering(PG_FUNCTION_ARGS) {
