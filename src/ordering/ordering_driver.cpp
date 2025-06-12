@@ -42,22 +42,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "ordering/sloanOrdering.hpp"
 #endif
 
-namespace {
-
-	template <class G>
-	std::vector <II_t_rt>
-	ordering(G &graph, int64_t start_vid, int64_t end_vid) {
-		pgrouting::functions::SloanOrdering <G> fn_sloanOrdering;
-		auto results = fn_sloanOrdering.sloanOrdering(graph, start_vid, end_vid);
-	return results;
-	}
-
-}
-
 
 void 
 pgr_do_ordering(
-    const char *edges_sql,
+    std::string edges_sql,
     int64_t start_vid,
     int64_t end_vid,
     II_t_rt **return_tuples,
