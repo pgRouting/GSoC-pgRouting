@@ -1,9 +1,10 @@
 /*PGR-GNU*****************************************************************
-File: sloanOrdering_driver.cpp
+File: ordering_driver.cpp
 Generated with Template by:
 Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
-Function's developer:
+
+Developer:
 Copyright (c) 2025 Bipasha Gayary
 Mail: bipashagayary at gmail.com
 ------
@@ -24,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-#include "drivers/ordering/sloanOrdering_driver.hpp"
+#include "drivers/ordering_driver.hpp"
 
 #include <sstream>
 #include <vector>
@@ -37,24 +38,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/assert.hpp"
 #include "c_types/ii_t_rt.h"
 
+#if 0
 #include "ordering/sloanOrdering.hpp"
-
-namespace {
-
-	template <class G>
-	std::vector <II_t_rt>
-	sloanOrdering(G &graph, int64_t start_vid, int64_t end_vid) {
-		pgrouting::functions::SloanOrdering <G> fn_sloanOrdering;
-		auto results = fn_sloanOrdering.sloanOrdering(graph, start_vid, end_vid);
-	return results;
-	}
-
-}
+#endif
 
 
 void 
-pgr_do_sloanOrdering(
-    const char *edges_sql,
+pgr_do_ordering(
+    std::string edges_sql,
     int64_t start_vid,
     int64_t end_vid,
     II_t_rt **return_tuples,
@@ -73,6 +64,7 @@ pgr_do_sloanOrdering(
     const char *hint = nullptr;
 
     try {
+#if 0
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
@@ -106,7 +98,7 @@ pgr_do_sloanOrdering(
 		return;
 	}
 
-        results = sloanOrdering(undigraph);
+        results = ordering(undigraph);
 
         auto count = results.size();
 
@@ -132,6 +124,8 @@ pgr_do_sloanOrdering(
         *notice_msg = notice.str().empty() ?
         *notice_msg :
         to_pg_msg(notice);
+
+#endif
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;

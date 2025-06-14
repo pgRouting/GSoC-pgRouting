@@ -1,13 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: sloanOrdering_driver.hpp
-
-Generated with Template by:
-Copyright (c) 2025 pgRouting developers
-Mail: project@pgrouting.org
+File: ordering_process.h
 
 Function's developer:
 Copyright (c) 2025 Bipasha Gayary
-Mail: bipashagayary@gmail.com
+Mail: bipashagayary at gmail.com
 
 ------
 
@@ -25,39 +21,33 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_ORDERING_SLOANORDERING_DRIVER_HPP_
-#define INCLUDE_DRIVERS_ORDERING_SLOANORDERING_DRIVER_HPP_
-
+#ifndef INCLUDE_PROCESS_ORDERING_PROCESS_H_
+#define INCLUDE_PROCESS_ORDERING_PROCESS_H_
+#pragma once
 
 #ifdef __cplusplus
-#   include <cstddef>
-#   include <cstdint>
+#include <cstddef>
+#include <cstdint>
+#include <stdbool.h>
 using Edge_t = struct Edge_t;
 using II_t_rt = struct II_t_rt;
 #else
-#   include <stddef.h>
-#   include <stdint.h>
+#include <stddef.h>
+#include <stdint.h>
 typedef struct Edge_t Edge_t;
 typedef struct II_t_rt II_t_rt;
 #endif
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void
-pgr_do_sloanOrdering(
-        const char*, int64_t, int64_t,
-
-        II_t_rt**,  size_t*,
-        char **, char **, char **);
-
+void pgr_process_ordering(const Edge_t*, size_t, int64_t, int64_t, II_t_rt **, size_t *);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_ORDERING_SLOANORDERING_DRIVER_HPP_
+#endif  // INCLUDE_PROCESS_ORDERING_PROCESS_H_
