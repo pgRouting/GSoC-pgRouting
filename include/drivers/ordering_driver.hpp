@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Developer:
 Copyright (c) 2025 Bipasha Gayary
-Mail: bipashagayary@gmail.com
+Mail: bipashagayary at gmail.com
 
 ------
 
