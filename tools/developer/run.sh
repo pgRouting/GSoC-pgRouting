@@ -30,7 +30,7 @@ VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' CMakeLists.txt)
 echo "pgRouting VERSION ${VERSION}"
 
 # set up your postgres version, port and compiler (if more than one)
-PGVERSION="17"
+PGVERSION="15"
 PGPORT="5432"
 PGBIN="/usr/lib/postgresql/${PGVERSION}/bin"
 # When more than one compiler is installed
