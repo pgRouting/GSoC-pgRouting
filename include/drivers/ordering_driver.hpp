@@ -32,7 +32,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include <cstddef>
-#include <cstddef>
 using Edge_t = struct Edge_t;
 using II_t_rt = struct II_t_rt;
 #include <string>
