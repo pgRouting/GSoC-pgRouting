@@ -1,18 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: sloanOrdering_process.cpp
+File: ordering_process.cpp
 
 Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
 
-Design of one process & driver file by
-Copyright (c) 2025 Bipasha Gayary
+Developer:
+Copyright (c) 2025 pgRouting developers
 Mail: bipashagayary at gmail.com
-
-Copying this file (or a derivative) within pgRouting code add the following:
-
-Generated with Template by:
-Copyright (c) 2025 pgRouting developers
-Mail: project@pgrouting.org
 
 ------
 
@@ -32,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "process/sloanOrdering_process.h"
+#include "process/ordering_process.h"
 
 #include <string>
 
@@ -44,14 +38,17 @@ extern "C" {
 
 #include "c_types/ii_t_rt.h"
 #include "cpp_common/assert.hpp"
-#include "drivers/ordering/sloanOrdering_driver.hpp"
+#include "drivers/ordering/ordering_driver.hpp"
 
 /**
  which = 0 -> sloan
+ which = 1 -> cuthillmckee
+ which = 2 -> mindegree
+ which = 3 -> king
 
- This is c++ code, linked as C code, because pgr_process_sloanOrdering is called from C code
+ This is c++ code, linked as C code, because pgr_process_foo is called from C code
  */
-void pgr_process_sloanOrdering(
+void pgr_process_ordering(
         const Edge_t* edges_sql,
         size_t total_edges,
         int64_t start_vid,
@@ -67,15 +64,27 @@ void pgr_process_sloanOrdering(
     char* err_msg = NULL;
 
     clock_t start_t = clock();
-    do_sloanOrdering(
+    do_ordering(
             edges_sql,
             total_edges,
 	    start_vid,
 	    end_vid,
             result_tuples, result_count,
             &log_msg, &err_msg);
+    if (which == 0) {
+	    
+	    time_msg(std::string(" processing pgr_sloanOrdering").c_str(), start_t, clock());
+    } else if ( which == 1) {
 
-    time_msg(std::string(" processing pgr_johnson").c_str(), start_t, clock());
+	    time_msg(std::string(" processing pgr_cuthillMckeeOrdering").c_str(), start_t, clock());
+    } else if ( which == 2) {
+
+	    time_msg(std::string(" processing pgr_minimumDegreeOrdering").c_str(), start_t, clock());
+    } else {
+	    
+	    time_msg(std::string(" processing pgr_kingOrdering").c_str(), start_t, clock());
+    }
+
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);

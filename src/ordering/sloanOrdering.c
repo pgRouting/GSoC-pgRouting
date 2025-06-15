@@ -5,7 +5,7 @@ Generated with Template by:
 Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
+Developer:
 Copyright (c) 2025 Bipasha Gayary
 Mail: bipashagayary@gmail.com
 ------
@@ -33,13 +33,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 
 #include "c_types/ii_t_rt.h"
+#include "process/ordering_process.h"
 
-
-#include "drivers/ordering/sloanOrdering_driver.hpp"
-
-PGDLLEXPORT Datum _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum _pgr_sloanordering(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_sloanordering);
 
+#if 0
 static
 void
 process(
@@ -78,6 +77,8 @@ process(
 
     pgr_SPI_finish();
 }
+#endif
+
 
 PGDLLEXPORT Datum
 _pgr_sloanordering(PG_FUNCTION_ARGS) {
@@ -86,14 +87,18 @@ _pgr_sloanordering(PG_FUNCTION_ARGS) {
 
     II_t_rt *result_tuples = NULL;
     size_t result_count = 0;
+    size_t total_edges = 0;
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+	
+	Edge_t *edges_sql = NULL;
 
-        process(
-                text_to_cstring(PG_GETARG_TEXT_P(0)),
+        pgr_process_ordering(
+                edges_sql,
+		total_edges,
 		PG_GETARG_INT64(1),
 		PG_GETARG_INT64(2),
                 &result_tuples,
