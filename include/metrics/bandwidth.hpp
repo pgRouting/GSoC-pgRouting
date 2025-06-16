@@ -4,6 +4,7 @@ File: bandwidth.hpp
 Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
 
+Developers:
 Copyright (c) 2025 Saloni Kumari
 Mail: chaudharysaloni2510 at gmail.com
 
@@ -51,10 +52,8 @@ int bandwidth(const G &graph) {
 
     int bw = std::numeric_limits<int>::max();
 
-    // We need a vertex index map for consistent ordering
     auto index_map = boost::get(boost::vertex_index, graph.graph);
 
-    // Loop over all edges to compute max absolute difference of vertex indices
     typename boost::graph_traits<GraphType>::edge_iterator ei, ei_end;
     for (boost::tie(ei, ei_end) = boost::edges(graph.graph); ei != ei_end; ++ei) {
         Vertex u = boost::source(*ei, graph.graph);
@@ -66,7 +65,6 @@ int bandwidth(const G &graph) {
         }
     }
 
-    // If graph has no edges, bandwidth is zero
     if (bw == std::numeric_limits<int>::max()) {
         bw = 0;
     }
