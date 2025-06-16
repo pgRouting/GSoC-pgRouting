@@ -72,10 +72,7 @@ void pgr_process_ordering(
 	    end_vid,
             result_tuples, result_count,
             &log_msg, &err_msg);
-    if (which == 0) {
-	    
-	    time_msg(std::string(" processing pgr_sloanOrdering").c_str(), start_t, clock());
-    } else if ( which == 1) {
+     if ( which == 1) {
 
 	    time_msg(std::string(" processing pgr_cuthillMckeeOrdering").c_str(), start_t, clock());
     } else if ( which == 2) {
