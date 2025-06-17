@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: minimumDegreeOrdering.c
+File: minDegreeOrdering.c
 
 Generated with Template by:
 Copyright (c) 2025 pgRouting developers
@@ -35,10 +35,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/ii_t_rt.h"
 
 
-#include "drivers/ordering/minimumDegreeOrdering_driver.h"
+#include "drivers/ordering/minDegreeOrdering_driver.h"
 
-PGDLLEXPORT Datum _pgr_minimumdegreeordering(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_minimumdegreeordering);
+PGDLLEXPORT Datum _pgr_mindegreeordering(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_mindegreeordering);
 
 static
 void
@@ -56,7 +56,7 @@ process(
     (*result_count) = 0;
 
     clock_t start_t = clock();
-    pgr_do_minimumDegreeOrdering(
+    pgr_do_minDegreeOrdering(
             edges_sql,
 
             result_tuples,
@@ -64,7 +64,7 @@ process(
             &log_msg,
             &notice_msg,
             &err_msg);
-    time_msg("processing minimumdegreeordering", start_t, clock());
+    time_msg("processing mindegreeordering", start_t, clock());
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
@@ -78,7 +78,7 @@ process(
 }
 
 PGDLLEXPORT Datum
-_pgr_minimumdegreeordering(PG_FUNCTION_ARGS) {
+_pgr_mindegreeordering(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
