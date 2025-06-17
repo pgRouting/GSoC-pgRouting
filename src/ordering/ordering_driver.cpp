@@ -36,17 +36,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/assert.hpp"
 #include "c_types/ii_t_rt.h"
 
-#include "ordering/minimumDegreeOrdering.hpp"
+#include "ordering/minDegreeOrdering.hpp"
 #include "ordering/kingOrdering.hpp"
 
 /** @file ordering_driver.cpp
- * @brief Handles actual calling of function in the `minimumDegreeOrdering.hpp` and `kingOrdering.hpp` file.
+ * @brief Handles actual calling of function in the `minDegreeOrdering.hpp` and `kingOrdering.hpp` file.
  *
  */
 
 /***********************************************************************
  *
- *   pgr_minimumDegreeOrdering(edges_sql TEXT);
+ *   pgr_minDegreeOrdering(edges_sql TEXT);
  *
  *   pgr_kingOrdering(edges_sql TEXT);
  * 
@@ -63,9 +63,9 @@ namespace {
 
 template <class G>
 std::vector <II_t_rt>
-minimumDegreeOrdering(G &graph) {
-    pgrouting::functions::MinimumDegreeOrdering <G> fn_minimumDegreeOrdering;
-    auto results = fn_minimumDegreeOrdering.minimumDegreeOrdering(graph);
+mindegreeOrdering(G &graph) {
+    pgrouting::functions::MinDegreeOrdering <G> fn_minDegreeOrdering;
+    auto results = fn_minDegreeOrdering.minDegreeOrdering(graph);
     return results;
 }
 
@@ -120,7 +120,7 @@ void pgr_do_ordering(
         undigraph.insert_edges(edges);
         
         if (which == 0){
-            results = minimumDegreeOrdering(undigraph);
+            results = minDegreeOrdering(undigraph);
         }
         else if (which ==1){
             results = kingOrdering(undigraph);

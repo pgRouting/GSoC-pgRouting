@@ -49,11 +49,9 @@ extern "C" {
  This is c++ code, linked as C code, because pgr_process_foo is called from C code
  */
 void pgr_process_ordering(
-        const Edge_t* edges_sql,
-        int16_t which,
+        const char* edges_sql,
+        int which,
         size_t total_edges,
-        int64_t start_vid,
-	int64_t end_vid,
         II_t_rt **result_tuples,
         size_t *result_count) {
     pgassert(edges_sql);
@@ -77,7 +75,7 @@ void pgr_process_ordering(
 	    time_msg(std::string(" processing pgr_cuthillMckeeOrdering").c_str(), start_t, clock());
     } else if ( which == 2) {
 
-	    time_msg(std::string(" processing pgr_minimumDegreeOrdering").c_str(), start_t, clock());
+	    time_msg(std::string(" processing pgr_minDegreeOrdering").c_str(), start_t, clock());
     } else {
 	    
 	    time_msg(std::string(" processing pgr_kingOrdering").c_str(), start_t, clock());
