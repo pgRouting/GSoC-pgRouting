@@ -60,7 +60,7 @@ process_metrics(std::string edges_sql, bool directed, int max_nodes) {
     graph.insert_edges(edges);
 }
 
-
+#if 0
     auto graph_map = pgrouting::graph::get_graph();
 
     for (const auto& node_pair : graph_map) {
@@ -69,6 +69,8 @@ process_metrics(std::string edges_sql, bool directed, int max_nodes) {
         record.metric_value = static_cast<double>(node_pair.second.size());  
         result.push_back(record);
     }
+
+#endif
 
     return result;
 }
