@@ -1,7 +1,8 @@
 ADD_LIBRARY(ordering OBJECT
     cuthillMckeeOrdering.c
     cuthillMckeeOrdering_driver.cpp
-    # minimumDegreeOrdering.c
+    minDegreeOrdering.c
     # kingOrdering.c
-    # ordering_driver.cpp
+    ordering_driver.cpp
+    ordering_process.cpp
     )
