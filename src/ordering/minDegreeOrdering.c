@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/ii_t_rt.h"
 
 
-#include "drivers/ordering/minDegreeOrdering_driver.h"
+#include "process/ordering_process.h"
 
 PGDLLEXPORT Datum _pgr_mindegreeordering(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_mindegreeordering);
@@ -90,8 +90,9 @@ _pgr_mindegreeordering(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        process(
+        pgr_process_ordering(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
+                2,
                 &result_tuples,
                 &result_count);
 

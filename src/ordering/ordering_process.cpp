@@ -51,7 +51,6 @@ extern "C" {
 void pgr_process_ordering(
         const char* edges_sql,
         int which,
-        size_t total_edges,
         II_t_rt **result_tuples,
         size_t *result_count) {
     pgassert(edges_sql);
@@ -65,9 +64,7 @@ void pgr_process_ordering(
     clock_t start_t = clock();
     do_ordering(
             edges_sql,
-            total_edges,
-	    start_vid,
-	    end_vid,
+            which,
             result_tuples, result_count,
             &log_msg, &err_msg);
      if ( which == 1) {
