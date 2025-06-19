@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _minimumDegreeOrdering.sql
+File: _minDegreeOrdering.sql
 
 Generated with Template by:
 Copyright (c) 2025 pgRouting developers
@@ -28,11 +28,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 ----------------------------
--- _pgr_minimumDegreeOrdering
+-- _pgr_minDegreeOrdering
 ----------------------------
 
 --v3.4.0
-CREATE FUNCTION _pgr_minimumDegreeOrdering(
+CREATE FUNCTION _pgr_minDegreeOrdering(
     TEXT,
     OUT seq BIGINT,
     OUT node BIGINT
@@ -44,6 +44,6 @@ LANGUAGE C IMMUTABLE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_minimumDegreeOrdering(TEXT)
+COMMENT ON FUNCTION _pgr_minDegreeOrdering(TEXT)
 IS 'pgRouting internal function';
 

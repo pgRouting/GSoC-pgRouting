@@ -24,8 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-#include "drivers/ordering/minimumDegreeOrdering_driver.h"
-#include "drivers/ordering/kingOrdering_driver.h"
+#include "drivers/ordering_driver.hpp"
 
 #include <sstream>
 #include <vector>
@@ -36,25 +35,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 #include "c_types/ii_t_rt.h"
-
-#include "ordering/minimumDegreeOrdering.hpp"
+#if 0
+#include "ordering/minDegreeOrdering.hpp"
+#endif
+#if 0
 #include "ordering/kingOrdering.hpp"
+#endif
 
 /** @file ordering_driver.cpp
- * @brief Handles actual calling of function in the `minimumDegreeOrdering.hpp` and `kingOrdering.hpp` file.
+ * @brief Handles actual calling of function in the `minDegreeOrdering.hpp` and `kingOrdering.hpp` file.
  *
  */
 
 /***********************************************************************
  *
- *   pgr_minimumDegreeOrdering(edges_sql TEXT);
+ *   pgr_minDegreeOrdering(edges_sql TEXT);
  *
  *   pgr_kingOrdering(edges_sql TEXT);
  * 
  ***********************************************************************/
 
 namespace {
-
+#if 0
 /** @brief Calls the main function defined in the C++ Header file.
  *
  * @param graph      the graph containing the edges
@@ -64,9 +66,9 @@ namespace {
 
 template <class G>
 std::vector <II_t_rt>
-minimumDegreeOrdering(G &graph) {
-    pgrouting::functions::MinimumDegreeOrdering <G> fn_minimumDegreeOrdering;
-    auto results = fn_minimumDegreeOrdering.minimumDegreeOrdering(graph);
+mindegreeOrdering(G &graph) {
+    pgrouting::functions::MinDegreeOrdering <G> fn_minDegreeOrdering;
+    auto results = fn_minDegreeOrdering.minDegreeOrdering(graph);
     return results;
 }
 
@@ -77,13 +79,13 @@ kingOrdering(G &graph) {
     auto results = fn_kingOrdering.kingOrdering(graph);
     return results;
 }
-
+#endif
 }  // namespace
 
 
-void pgr_do_ordering(
+void do_ordering(
     const char *edges_sql,
-    int which,
+    int64_t which,
 
     II_t_rt **return_tuples,
     size_t *return_count,
@@ -91,6 +93,7 @@ void pgr_do_ordering(
     char **log_msg,
     char **notice_msg,
     char **err_msg) {
+    #if 0
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
@@ -121,7 +124,7 @@ void pgr_do_ordering(
         undigraph.insert_edges(edges);
         
         if (which == 0){
-            results = minimumDegreeOrdering(undigraph);
+            results = minDegreeOrdering(undigraph);
         }
         else if (which ==1){
             results = kingOrdering(undigraph);
@@ -171,4 +174,5 @@ void pgr_do_ordering(
         *err_msg = to_pg_msg(err);
         *log_msg = to_pg_msg(log);
     }
+    #endif
 }

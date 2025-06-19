@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: minimumDegreeOrdering.sql
+File: minDegreeOrdering.sql
 
 Generated with Template by:
 Copyright (c) 2025 pgRouting developers
@@ -28,28 +28,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 ----------------------------
--- pgr_minimumDegreeOrdering
+-- pgr_minDegreeOrdering
 ----------------------------
 
 --v3.4.0
-CREATE FUNCTION pgr_minimumDegreeOrdering(
+CREATE FUNCTION pgr_minDegreeOrdering(
     TEXT, -- edges_sql (required)
     OUT seq BIGINT,
     OUT node BIGINT)
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, node
-    FROM _pgr_minimumDegreeOrdering(_pgr_get_statement($1));
+    FROM _pgr_minDegreeOrdering(_pgr_get_statement($1));
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_minimumDegreeOrdering(TEXT)
-IS 'pgr_minimumDegreeOrdering
+COMMENT ON FUNCTION pgr_minDegreeOrdering(TEXT)
+IS 'pgr_minDegreeOrdering
 - EXPERIMENTAL
 - Parameters:
     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
 - Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_minimumDegreeOrdering.html
+    - ${PROJECT_DOC_LINK}/pgr_minDegreeOrdering.html
 ';

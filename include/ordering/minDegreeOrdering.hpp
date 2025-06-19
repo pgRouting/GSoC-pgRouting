@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: minimumDegreeOrdering.hpp
+File: minDegreeOrdering.hpp
 
 Generated with Template by:
 Copyright (c) 2025 pgRouting developers
@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_ORDERING_MINIMUMDEGREEORDERING_HPP_
-#define INCLUDE_ORDERING_MINIMUMDEGREEORDERING_HPP_
+#ifndef INCLUDE_ORDERING_MINDEGREEORDERING_HPP_
+#define INCLUDE_ORDERING_MINDEGREEORDERING_HPP_
 #pragma once
 
 #include <algorithm>
@@ -49,7 +49,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_types/ii_t_rt.h"
 
-/** @file minimumDegreeOrdering.hpp
+/** @file minDegreeOrdering.hpp
  * @brief The main file which calls the respective boost function.
  *
  * Contains actual implementation of the function and the calling
@@ -61,7 +61,7 @@ namespace pgrouting {
 namespace functions {
 
 template <class G>
-class MinimumDegreeOrdering : public Pgr_messages {
+class MinDegreeOrdering : public Pgr_messages {
  public:
     typedef typename G::V V;
     typedef typename G::E E;
@@ -69,12 +69,12 @@ class MinimumDegreeOrdering : public Pgr_messages {
     typedef boost::graph_traits<Graph>::vertices_size_type size_type;
     typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
-    /** @name MinimumDegreeOrdering
+    /** @name MinDegreeOrdering
       * @{
       *
       */
 
-     /** @brief minimumDegreeOrdering function
+     /** @brief minDegreeOrdering function
       *
       * It does all the processing and returns the results.
       *
@@ -87,7 +87,7 @@ class MinimumDegreeOrdering : public Pgr_messages {
       */
 
         std::vector<II_t_rt>
-        minimumDegreeOrdering(G &graph) {
+        minDegreeOrdering(G &graph) {
         std::vector<II_t_rt>results;
 
         // map which store the indices with their nodes.
@@ -156,4 +156,4 @@ class MinimumDegreeOrdering : public Pgr_messages {
 }  // namespace functions
 }  // namespace pgrouting
 
-#endif  // INCLUDE_ORDERING_MINIMUMDEGREEORDERING_HPP_
+#endif  // INCLUDE_ORDERING_MINDEGREEORDERING_HPP_
