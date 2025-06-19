@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2025 Bipasha Gayary
-Mail: bipashagayary@gmail.com
+Mail: bipashagayary at gmail.com
 
 ------
 
@@ -34,14 +34,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --v4.0.0
 CREATE FUNCTION pgr_sloanOrdering(
     TEXT, -- edges_sql (required)
-    BIGINT, --start_vid (optional)
-    BIGINT, --end_vid (optional)
     OUT seq BIGINT,
     OUT node BIGINT)
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, node
-    FROM _pgr_sloanOrdering(_pgr_get_statement($1), $2, $3);
+    FROM _pgr_sloanOrdering(_pgr_get_statement($1));
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
@@ -52,8 +50,6 @@ IS 'pgr_sloanOrdering
 - EXPERIMENTAL
 - Parameters:
     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - start_vid: Starting vertex id for sloan ordering
-    - end_vid: End/goal vertex id 
 
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_sloanOrdering.html

@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2025 Bipasha Gayary
-Mail: bipashagayary@gmail.com
+Mail: bipashagayary at gmail.com
 
 ------
 
@@ -33,9 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0.0
 CREATE FUNCTION _pgr_sloanOrdering(
-    edges_sql TEXT,
-    start_vid BIGINT DEFAULT 0,
-    end_vid BIGINT DEFAULT 0,
+    TEXT,
     OUT seq BIGINT,
     OUT node BIGINT
     )
@@ -46,6 +44,6 @@ LANGUAGE C IMMUTABLE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_sloanOrdering(TEXT, BIGINT, BIGINT)
+COMMENT ON FUNCTION _pgr_sloanOrdering(TEXT)
 IS 'pgRouting internal function';
 

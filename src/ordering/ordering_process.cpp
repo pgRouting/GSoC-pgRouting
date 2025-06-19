@@ -43,16 +43,12 @@ extern "C" {
 /**
  which = 0 -> sloan
  which = 1 -> cuthillmckee
- which = 2 -> mindegree
- which = 3 -> king
 
  This is c++ code, linked as C code, because pgr_process_foo is called from C code
  */
 void pgr_process_ordering(
-        const Edge_t* edges_sql,
-        size_t total_edges,
-        int64_t start_vid,
-	int64_t end_vid,
+        const char* edges_sql,
+        int which,
         II_t_rt **result_tuples,
         size_t *result_count) {
     pgassert(edges_sql);
@@ -66,24 +62,18 @@ void pgr_process_ordering(
     clock_t start_t = clock();
     do_ordering(
             edges_sql,
-            total_edges,
-	    start_vid,
-	    end_vid,
+	    which,
             result_tuples, result_count,
-            &log_msg, &err_msg);
+            &log_msg , &notice_msg, &err_msg);
     if (which == 0) {
 	    
 	    time_msg(std::string(" processing pgr_sloanOrdering").c_str(), start_t, clock());
-    } else if ( which == 1) {
+
+    } else  {
 
 	    time_msg(std::string(" processing pgr_cuthillMckeeOrdering").c_str(), start_t, clock());
-    } else if ( which == 2) {
 
-	    time_msg(std::string(" processing pgr_minimumDegreeOrdering").c_str(), start_t, clock());
-    } else {
-	    
-	    time_msg(std::string(" processing pgr_kingOrdering").c_str(), start_t, clock());
-    }
+    } 
 
 
     if (err_msg && (*result_tuples)) {
