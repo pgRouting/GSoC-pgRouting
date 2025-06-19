@@ -35,9 +35,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 #include "c_types/ii_t_rt.h"
-
+#if 0
 #include "ordering/minDegreeOrdering.hpp"
+#endif
+#if 0
 #include "ordering/kingOrdering.hpp"
+#endif
 
 /** @file ordering_driver.cpp
  * @brief Handles actual calling of function in the `minDegreeOrdering.hpp` and `kingOrdering.hpp` file.
@@ -53,7 +56,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ***********************************************************************/
 
 namespace {
-
+#if 0
 /** @brief Calls the main function defined in the C++ Header file.
  *
  * @param graph      the graph containing the edges
@@ -76,13 +79,13 @@ kingOrdering(G &graph) {
     auto results = fn_kingOrdering.kingOrdering(graph);
     return results;
 }
-
+#endif
 }  // namespace
 
 
-void pgr_do_ordering(
+void do_ordering(
     const char *edges_sql,
-    int which,
+    int64_t which,
 
     II_t_rt **return_tuples,
     size_t *return_count,
@@ -90,6 +93,7 @@ void pgr_do_ordering(
     char **log_msg,
     char **notice_msg,
     char **err_msg) {
+    #if 0
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
@@ -170,4 +174,5 @@ void pgr_do_ordering(
         *err_msg = to_pg_msg(err);
         *log_msg = to_pg_msg(log);
     }
+    #endif
 }

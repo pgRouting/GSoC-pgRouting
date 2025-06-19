@@ -50,7 +50,7 @@ extern "C" {
  */
 void pgr_process_ordering(
         const char* edges_sql,
-        int which,
+        int64_t which,
         II_t_rt **result_tuples,
         size_t *result_count) {
     pgassert(edges_sql);
@@ -66,7 +66,7 @@ void pgr_process_ordering(
             edges_sql,
             which,
             result_tuples, result_count,
-            &log_msg, &err_msg);
+            &log_msg, &notice_msg, &err_msg);
      if ( which == 1) {
 
 	    time_msg(std::string(" processing pgr_cuthillMckeeOrdering").c_str(), start_t, clock());
