@@ -39,12 +39,10 @@ using II_t_rt = struct II_t_rt;
 
 void
 do_ordering(
-        const Edge_t*, size_t, 
-        
-        int64_t, int64_t,
-
+        const char*, 
+        int64_t, 
         II_t_rt**,  size_t*,
-        char **, char **);
+        char **, char **, char **);
 
 
 #endif  // INCLUDE_DRIVERS_ORDERING_DRIVER_HPP_
