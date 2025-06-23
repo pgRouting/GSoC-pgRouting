@@ -44,7 +44,7 @@ typedef struct II_t_rt II_t_rt;
 extern "C" {
 #endif
 
-void pgr_process_ordering(const Edge_t*, size_t, int64_t, int64_t, II_t_rt **, size_t *);
+void pgr_process_ordering(const char*, int16_t, II_t_rt **, size_t *);
 
 #ifdef __cplusplus
 }

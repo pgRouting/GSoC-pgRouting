@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Developer:
 Copyright (c) 2025 Bipasha Gayary
-Mail: bipashagayary@gmail.com
+Mail: bipashagayary at gmail.com
 ------
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -87,20 +87,16 @@ _pgr_sloanordering(PG_FUNCTION_ARGS) {
 
     II_t_rt *result_tuples = NULL;
     size_t result_count = 0;
-    size_t total_edges = 0;
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
-	
-	Edge_t *edges_sql = NULL;
+
 
         pgr_process_ordering(
-                edges_sql,
-		total_edges,
-		PG_GETARG_INT64(1),
-		PG_GETARG_INT64(2),
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+		0, /* Sloan */
                 &result_tuples,
                 &result_count);
 
