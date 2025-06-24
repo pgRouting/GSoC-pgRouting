@@ -79,6 +79,14 @@ types.
      - `Migration of spanning tree functions`_
    * - .. versionchanged:: 4.0.0 :doc:`pgr_bdDijkstra` [1]_
      - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_bellmanFord` [3]_
+     - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_binaryBreadthFirstSearch` [3]_
+     - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_dagShortestPath` [3]_
+     - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_edwardMoore` [3]_
+     - `Migration of single path functions`_
    * - .. versionchanged:: 4.0.0 :doc:`pgr_withPoints` [2]_
      - `Migration of single path functions`_
    * - .. versionchanged:: 4.0.0 :doc:`pgr_withPointsCost` [2]_
@@ -86,17 +94,9 @@ types.
    * - .. versionchanged:: 4.0.0 :doc:`pgr_withPointsCostMatrix` [2]_
      - `Migration of cost functions`_
 
-
-..
-   * - .. versionchanged:: 4.0.0 :doc:`pgr_bellmanFord`
-     - `Migration of single path functions`_
-   * - .. versionchanged:: 4.0.0 :doc:`pgr_binaryBreadthFirstSearch`
-     - `Migration of single path functions`_
-   * - .. versionchanged:: 4.0.0 :doc:`pgr_edwardMoore` [1]_
-     - `Migration of single path functions`_
-
 .. [1] Official function before v4.0.0
 .. [2] Official function in v4.0.0
+.. [3] Experimental or proposed in v4.0.0
 
 .. contents:: Contents
    :local:
@@ -305,29 +305,27 @@ application.
    * - Function
      - Version
      - From
-   * - ``pgr_aStar``
-     - v < 3.6
-     - |old-generic-result|
    * - ``pgr_dijkstra``
      - v < 3.5
      - |old-generic-result|
+   * - ``pgr_aStar``
+     - v < 3.6
+     - |old-generic-result|
    * - ``pgr_bdDijkstra``
+     - v < 4.0
+     - |old-generic-result|
+   * - ``pgr_bellmanFord``
+     - v < 4.0
+     - |old-generic-result|
+   * - ``pgr_dagShortestPath``
+     - v < 4.0
+     - |result-1-1|
+   * - ``pgr_edwardMoore``
      - v < 4.0
      - |old-generic-result|
    * - ``pgr_withPoints``
      - v < 4.0
      - |old-pid-result|
-
-..
-   * - ``pgr_bellmanFord``
-     - v < 4.0
-     - |old-generic-result|
-   * - ``pgr_BinaryBreadthFirstSearch``
-     - v < 4.0
-     - |old-generic-result|
-   * - ``pgr_edwardMoore``
-     - v < 4.0
-     - |old-generic-result|
 
 :to: |short-generic-result|
 
@@ -418,6 +416,24 @@ Before updating pgRouting enumerate the columns: |result-1-1|
 .. literalinclude:: migration.queries
    :start-after: --bdDijkstra-1-to-1-filter
    :end-before: --bdDijkstra-1-to-m
+
+.. rubric:: Using ``pgr_DAGshortestPath``
+
+Migrating `this v3.8
+<https://docs.pgrouting.org/3.8/en/pgr_dagShortestPath.html#one-to-one>`__
+example.
+
+.. literalinclude:: migration.queries
+   :start-after: --DAGshortestPath-1-to-1
+   :end-before: --DAGshortestPath-1-to-1-filter
+
+Before updating pgRouting enumerate the columns: |result-1-1|
+
+.. literalinclude:: migration.queries
+   :start-after: --DAGshortestPath-1-to-1-filter
+   :end-before: --DAGshortestPath-END
+
+.. note:: This applies to all signatures of ``pgr_DAGshortestPath``
 
 Examples for One to Many with one route result
 ...............................................................................
