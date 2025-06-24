@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "drivers/ordering_driver.hpp"
 
 #include <sstream>
+#include <deque>
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -46,14 +47,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 void 
 pgr_do_ordering(
     std::string edges_sql,
-    int64_t start_vid,
-    int64_t end_vid,
+    int which,
+
     II_t_rt **return_tuples,
     size_t *return_count,
 
     char **log_msg,
     char **notice_msg,
-    char **err_msg) {
+    char **err_msg){
+
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
@@ -61,7 +63,7 @@ pgr_do_ordering(
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
-    const char *hint = nullptr;
+    std::string hint;
 
     try {
 #if 0
@@ -71,14 +73,17 @@ pgr_do_ordering(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
+	using pgrouting::sloan;
+	using pgrouting::cuthillMckee;
+
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, false);
+        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, true);
         if (edges.empty()) {
-            *notice_msg = to_pg_msg("No edges found");
-            *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
-            return;
+            throw std::string("No edges found");
         }
-        hint = nullptr;
+        hint = "";
+	
+	log << "Processing Undirected graph\n";
 
         std::vector<II_t_rt> results;
         pgrouting::UndirectedGraph undigraph;
@@ -98,34 +103,39 @@ pgr_do_ordering(
 		return;
 	}
 
-        results = ordering(undigraph);
+	std::vector<II_t_rt> results;
+
+	if (which == 0) {
+		results = sloan(undigraph);
+	}
+	else {
+		results = cuthillMckee(undigraph);
+	}
+
 
         auto count = results.size();
 
-        if (count == 0) {
-            (*return_tuples) = NULL;
-            (*return_count) = 0;
-            notice << "No results found";
-            *log_msg = to_pg_msg(log);
-	    *notice_msg = to_pg_msg(notice);
-	    return;
-        }
+	if (count == 0) {
+		err << "No result generated \n";
+		*err_msg = to_pg_msg(err);
+		*return_tuples = NULL;
+		*return_count = 0;
+		return;
+	}
 
-        (*return_tuples) = pgr_alloc(count, (*return_tuples));
-        for (size_t i = 0; i < count; i++) {
-            *((*return_tuples) + i) = results[i];
-        }
-        (*return_count) = count;
+	(*return_tuples) = pgr_alloc(count, (*return_tuples));
 
-        pgassert(*err_msg == NULL);
-        *log_msg = log.str().empty() ?
-        *log_msg :
-        to_pg_msg(log);
-        *notice_msg = notice.str().empty() ?
-        *notice_msg :
-        to_pg_msg(notice);
+	for (size_t i = 0; i < count; ++1) {
+		(*return_tuples)[i] = results[i];
+	}
 
+	(*return_count) = count;
+
+	pgassert(*err_msg == NULL);
+	*log_msg = to_pg_msg(log);
+	*notice_msg = to_pg_msg(notice);
 #endif
+
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
