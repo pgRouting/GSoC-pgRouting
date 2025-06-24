@@ -1,7 +1,6 @@
-
 /*PGR-GNU*****************************************************************
 
-Copyright (c) 2018  pgRouting developers
+Copyright (c) 2025  pgRouting developers
 Mail: project@pgrouting.org
 
 ------
@@ -17,11 +16,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
+
 BEGIN;
 
-SELECT CASE WHEN min_version('4.0.0') THEN plan(13) ELSE PLAN(2) END;
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN min_version('4.0.0') THEN plan(22) ELSE plan(1) END;
 
-SELECT single_path_types_check('pgr_bellmanford', standard_v => '4.0.0');
+PREPARE edges_sql AS
+SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id;
+
+PREPARE points_sql AS
+SELECT pid, edge_id, side, fraction FROM pointsOfInterest;
+
+SELECT test_drivingSide('pgr_withPointsCost');
 
 SELECT finish();
 ROLLBACK;
