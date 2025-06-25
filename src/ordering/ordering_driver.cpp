@@ -63,7 +63,7 @@ pgr_do_ordering(
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
-    std::string hint;
+    const char *hint = nullptr;
 
     try {
 #if 0
@@ -81,7 +81,7 @@ pgr_do_ordering(
         if (edges.empty()) {
             throw std::string("No edges found");
         }
-        hint = "";
+        hint = nullptr;
 	
 	log << "Processing Undirected graph\n";
 
