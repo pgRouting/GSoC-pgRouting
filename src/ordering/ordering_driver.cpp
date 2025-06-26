@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/ii_t_rt.h"
 
 #if 0
-#include "ordering/sloanOrdering.hpp"
+#include "ordering/ordering.hpp"
 #endif
 
 
