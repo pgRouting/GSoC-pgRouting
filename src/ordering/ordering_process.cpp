@@ -42,7 +42,7 @@ extern "C" {
 
 /**
  which = 0 -> sloan
- which = 1 -> cuthillmckee
+ 
 
  This is c++ code, linked as C code, because pgr_process_foo is called from C code
  */
@@ -68,10 +68,6 @@ void pgr_process_ordering(
     if (which == 0) {
 	    
 	    time_msg(std::string(" processing pgr_sloanOrdering").c_str(), start_t, clock());
-
-    } else  {
-
-	    time_msg(std::string(" processing pgr_cuthillMckeeOrdering").c_str(), start_t, clock());
 
     } 
 
