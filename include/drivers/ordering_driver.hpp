@@ -40,7 +40,7 @@ using II_t_rt = struct II_t_rt;
 
 void
 do_ordering(
-        std::string, int64_t, int64_t,
+        std::string, int,
 
         II_t_rt**,  size_t*,
         char **, char **, char **);
