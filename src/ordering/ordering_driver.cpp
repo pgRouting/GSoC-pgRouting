@@ -45,7 +45,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 void 
-pgr_do_ordering(
+do_ordering(
     std::string edges_sql,
     int which,
 
@@ -63,18 +63,21 @@ pgr_do_ordering(
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
-    const char *hint = nullptr;
+    std::string hint = "";
 
     try {
-#if 0
+
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
+#if 0
 	using pgrouting::sloan;
-	using pgrouting::cuthillMckee;
+#endif
+
+#if 0
 
         hint = edges_sql;
         auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, true);
@@ -108,9 +111,7 @@ pgr_do_ordering(
 	if (which == 0) {
 		results = sloan(undigraph);
 	}
-	else {
-		results = cuthillMckee(undigraph);
-	}
+	
 
 
         auto count = results.size();
@@ -144,7 +145,7 @@ pgr_do_ordering(
         *log_msg = to_pg_msg(log);
     } catch (const std::string &ex) {
         *err_msg = to_pg_msg(ex);
-        *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+        *log_msg = hint.empty()? to_pg_msg(hint) : to_pg_msg(log);
     } catch (std::exception &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
@@ -154,8 +155,7 @@ pgr_do_ordering(
     } catch (...) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
-        err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
+        *err_msg = to_pg_msg("Caught unknown exception");
         *log_msg = to_pg_msg(log);
     }
 }
