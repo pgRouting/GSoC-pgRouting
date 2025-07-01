@@ -38,7 +38,7 @@ extern "C" {
 
 #include "c_types/ii_t_rt.h"
 #include "cpp_common/assert.hpp"
-#include "drivers/ordering/ordering_driver.hpp"
+#include "drivers/ordering_driver.hpp"
 
 /**
  which = 0 -> sloan
