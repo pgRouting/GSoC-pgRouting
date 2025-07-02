@@ -27,8 +27,7 @@ $BODY$
 BEGIN
 
   IF NOT min_version('4.0.0') THEN
-    RETURN QUERY
-    SELECT skip(1, 'Function is new on 4.0.0');
+    RETURN QUERY SELECT skip(1, 'Function is new on 4.0.0');
     RETURN;
   END IF;
 
@@ -41,8 +40,7 @@ BEGIN
     $$SELECT  '{"", seq, node}'::TEXT[] $$
   );
 
-  RETURN QUERY
-  SELECT function_types_eq('pgr_sloanordering',
+  RETURN QUERY SELECT function_types_eq('pgr_sloanordering',
     $$VALUES
     ('{text,int8,int8}'::TEXT[])
     $$
