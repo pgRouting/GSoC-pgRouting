@@ -48,13 +48,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  */
 
-/***********************************************************************
- *
- *   pgr_minDegreeOrdering(edges_sql TEXT);
- *
- *   pgr_kingOrdering(edges_sql TEXT);
- * 
- ***********************************************************************/
 
 namespace {
 #if 0
