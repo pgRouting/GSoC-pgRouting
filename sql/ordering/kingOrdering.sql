@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- pgr_kingOrdering
 ----------------------------
 
---v4.0.0
+--v4.0
 CREATE FUNCTION pgr_kingOrdering(
     TEXT, -- edges_sql (required)
     OUT seq BIGINT,
