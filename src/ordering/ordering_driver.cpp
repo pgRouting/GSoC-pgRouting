@@ -35,12 +35,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 #include "c_types/ii_t_rt.h"
+
 #if 0
 #include "ordering/minDegreeOrdering.hpp"
 #endif
-#if 0
+
 #include "ordering/kingOrdering.hpp"
-#endif
+
 
 /** @file ordering_driver.cpp
  * @brief Handles actual calling of function in the `minDegreeOrdering.hpp` and `kingOrdering.hpp` file.
