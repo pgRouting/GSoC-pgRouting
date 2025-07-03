@@ -43,7 +43,7 @@ void do_ordering(
     const char *edges_sql,
     int64_t which,
 
-    II_t_rt **return_tuples,
+    int64_t **return_tuples,
     size_t *return_count,
 
     char **log_msg,
@@ -76,7 +76,7 @@ void do_ordering(
         }
         hint = nullptr;
 
-        std::vector<II_t_rt>results;
+        std::vector<int64_t>results;
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
         
@@ -88,7 +88,7 @@ void do_ordering(
             results = kingOrdering(undigraph);
         } 
         #endif
-        
+
         auto count = results.size();
 
         if (count == 0) {

@@ -31,18 +31,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <cstddef>
 #include <cstdint>
 #include <stdbool.h>
-using II_t_rt = struct II_t_rt;
+
 #else
 #include <stddef.h>
 #include <stdint.h>
-typedef struct II_t_rt II_t_rt;
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void pgr_process_ordering(const char*, int64_t, II_t_rt **, size_t *);
+void pgr_process_ordering(const char*, int64_t, int64_t **, size_t *);
 
 #ifdef __cplusplus
 }
