@@ -33,6 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 
 #include "c_types/ii_t_rt.h"
+
 #include "process/ordering_process.h"
 
 PGDLLEXPORT Datum _pgr_sloanordering(PG_FUNCTION_ARGS);
@@ -55,7 +56,7 @@ _pgr_sloanordering(PG_FUNCTION_ARGS) {
 
         pgr_process_ordering(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
-		0, /* Sloan */
+                0, /* Sloan */
                 &result_tuples,
                 &result_count);
 
