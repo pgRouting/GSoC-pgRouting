@@ -36,7 +36,6 @@ extern "C" {
 #include "c_common/time_msg.h"
 }
 
-#include "c_types/ii_t_rt.h"
 #include "cpp_common/assert.hpp"
 #include "drivers/ordering_driver.hpp"
 

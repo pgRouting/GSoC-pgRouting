@@ -32,9 +32,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
-#include "c_types/ii_t_rt.h"
-
-
 #include "process/ordering_process.h"
 
 PGDLLEXPORT Datum _pgr_kingordering(PG_FUNCTION_ARGS);
