@@ -36,11 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/assert.hpp"
 #include "c_types/ii_t_rt.h"
 
-#if 0
-#include "ordering/minDegreeOrdering.hpp"
-#endif
-
-#include "ordering/kingOrdering.hpp"
+#include "ordering/ordering.hpp"
 
 
 void do_ordering(
@@ -53,7 +49,7 @@ void do_ordering(
     char **log_msg,
     char **notice_msg,
     char **err_msg) {
-    #if 0
+    
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
@@ -62,7 +58,8 @@ void do_ordering(
     std::ostringstream err;
     std::ostringstream notice;
     const char *hint = nullptr;
-
+    
+    
     try {
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
@@ -83,13 +80,15 @@ void do_ordering(
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
         
+        #if 0
         if (which == 0){
             results = minDegreeOrdering(undigraph);
         }
         else if (which ==1){
             results = kingOrdering(undigraph);
         } 
-
+        #endif
+        
         auto count = results.size();
 
         if (count == 0) {
@@ -134,5 +133,5 @@ void do_ordering(
         *err_msg = to_pg_msg(err);
         *log_msg = to_pg_msg(log);
     }
-    #endif
+
 }
