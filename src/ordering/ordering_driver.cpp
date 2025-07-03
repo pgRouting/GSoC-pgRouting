@@ -52,6 +52,8 @@ void do_ordering(
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
+    using pgrouting::pgget::get_edges;
+    using pgrouting::UndirectedGraph;
 
     std::ostringstream log;
     std::ostringstream err;
@@ -67,7 +69,7 @@ void do_ordering(
         pgassert(*return_count == 0);
 
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, false);
+        auto edges = get_edges(std::string(edges_sql), true, false);
         if (edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
             *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
@@ -76,7 +78,7 @@ void do_ordering(
         hint = nullptr;
 
         std::vector<int64_t>results;
-        pgrouting::UndirectedGraph undigraph;
+        UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
         
         #if 0
@@ -91,10 +93,10 @@ void do_ordering(
         auto count = results.size();
 
         if (count == 0) {
-            (*return_tuples) = NULL;
-            (*return_count) = 0;
-            notice << "No results found";
-            *log_msg = to_pg_msg(log);
+            *err_msg = to_pg_msg("No results found \n");
+            *return_tuples = NULL;
+            *return_count = 0;
+            return;
         }
 
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
@@ -128,8 +130,7 @@ void do_ordering(
     } catch (...) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
-        err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
+        *err_msg = to_pg_msg("Caught unknown exception!\n");
         *log_msg = to_pg_msg(log);
     }
 
