@@ -43,13 +43,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "ordering/kingOrdering.hpp"
 
 
-/** @file ordering_driver.cpp
- * @brief Handles actual calling of function in the `minDegreeOrdering.hpp` and `kingOrdering.hpp` file.
- *
- */
-
-
-
 void do_ordering(
     const char *edges_sql,
     int64_t which,
