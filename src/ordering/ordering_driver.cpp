@@ -49,33 +49,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 
-namespace {
-#if 0
-/** @brief Calls the main function defined in the C++ Header file.
- *
- * @param graph      the graph containing the edges
- *
- * @returns results, when results are found
- */
-
-template <class G>
-std::vector <II_t_rt>
-mindegreeOrdering(G &graph) {
-    pgrouting::functions::MinDegreeOrdering <G> fn_minDegreeOrdering;
-    auto results = fn_minDegreeOrdering.minDegreeOrdering(graph);
-    return results;
-}
-
-template <class G>
-std::vector <II_t_rt>
-kingOrdering(G &graph) {
-    pgrouting::functions::KingOrdering <G> fn_kingOrdering;
-    auto results = fn_kingOrdering.kingOrdering(graph);
-    return results;
-}
-#endif
-}  // namespace
-
 
 void do_ordering(
     const char *edges_sql,
