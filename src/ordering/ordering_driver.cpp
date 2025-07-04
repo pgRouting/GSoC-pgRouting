@@ -48,7 +48,6 @@ void do_ordering(
     char **log_msg,
     char **notice_msg,
     char **err_msg) {
-    
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
@@ -59,8 +58,6 @@ void do_ordering(
     std::ostringstream err;
     std::ostringstream notice;
     const char *hint = nullptr;
-    
-    
     try {
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
@@ -80,16 +77,13 @@ void do_ordering(
         std::vector<int64_t>results;
         UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
-        
         #if 0
-        if (which == 0){
+        if (which == 0) {
             results = minDegreeOrdering(undigraph);
-        }
-        else if (which ==1){
+        } else if (which ==1) {
             results = kingOrdering(undigraph);
-        } 
+        }
         #endif
-
         auto count = results.size();
 
         if (count == 0) {
@@ -133,5 +127,4 @@ void do_ordering(
         *err_msg = to_pg_msg("Caught unknown exception!\n");
         *log_msg = to_pg_msg(log);
     }
-
 }

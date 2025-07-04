@@ -51,18 +51,14 @@ namespace pgrouting  {
 template <class G>
 std::vector<std::vector<int64_t>>
 kingOrdering(G &graph) {
-    
     CHECK_FOR_INTERRUPTS();
-
-} 
+}
 
 template <class G>
 std::vector<std::vector<int64_t>>
 minDegreeOrdering(G &graph) {
-    
     CHECK_FOR_INTERRUPTS();
-
-} 
+}
 
 }  // namespace pgrouting
 

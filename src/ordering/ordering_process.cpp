@@ -66,17 +66,13 @@ void pgr_process_ordering(
             which,
             result_tuples, result_count,
             &log_msg, &notice_msg, &err_msg);
-    if ( which == 1) {
-
-	    time_msg(std::string(" processing pgr_cuthillMckeeOrdering").c_str(), start_t, clock());
-    } else if ( which == 2) {
-
-	    time_msg(std::string(" processing pgr_minDegreeOrdering").c_str(), start_t, clock());
-    } else if ( which == 3) {
-	    
-	    time_msg(std::string(" processing pgr_kingOrdering").c_str(), start_t, clock());
+    if (which == 1) {
+        time_msg(std::string("processing pgr_cuthillMckeeOrdering").c_str(), start_t, clock());
+    } else if (which == 2) {
+        time_msg(std::string("processing pgr_minDegreeOrdering").c_str(), start_t, clock());
+    } else if (which == 3) {
+        time_msg(std::string("processing pgr_kingOrdering").c_str(), start_t, clock());
     }
-
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
