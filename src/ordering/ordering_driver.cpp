@@ -43,7 +43,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #endif
 
 
-void 
+void
 do_ordering(
     std::string edges_sql,
     int which,
@@ -53,7 +53,7 @@ do_ordering(
 
     char **log_msg,
     char **notice_msg,
-    char **err_msg){
+    char **err_msg) {
 
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
@@ -65,7 +65,6 @@ do_ordering(
     std::string hint = "";
 
     try {
-
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
@@ -84,48 +83,48 @@ do_ordering(
             throw std::string("No edges found");
         }
         hint = "";
-	
-	log << "Processing Undirected graph\n";
+
+        log << "Processing Undirected graph\n";
 
         std::vector<int64_t> results;
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
-        if (start_vid != 0 && !undigraph.has_vertex(start_vid)){
-		err << "Start vertex" << start_vid << "not found in graph";
-		*err_msg = to_pg_msg(err);
-		*log_msg = to_pg_msg(log);
-		return;
+        if (start_vid != 0 && !undigraph.has_vertex(start_vid) ) {
+                err << "Start vertex" << start_vid << "not found in graph";
+                *err_msg = to_pg_msg(err);
+                *log_msg = to_pg_msg(log);
+                return;
+        }
+
+        if (end_vid != 0 && !undigraph.has_vertex(end_vid)) {
+                err << "End vertex" << end_vid << "not found in graph";
+                *err_msg = to_pg_msg(err);
+                *log_msg = to_pg_msg(log);
+                return;
+        }
+
+        std::vector<II_t_rt> results;
+
+        if (which == 0) {
+                results = sloan(undigraph);
 	}
 
-	if (end_vid != 0 && !undigraph.has_vertex(end_vid)) {
-		err << "End vertex" << end_vid << "not found in graph";
-		*err_msg = to_pg_msg(err);
-		*log_msg = to_pg_msg(log);
-		return;
-	}
-
-	std::vector<II_t_rt> results;
-
-	if (which == 0) {
-		results = sloan(undigraph);
-	}
-	
 
 
         auto count = results.size();
 
-	if (count == 0) {
-		err << "No result generated \n";
-		*err_msg = to_pg_msg(err);
-		*return_tuples = NULL;
-		*return_count = 0;
-		return;
-	}
+        if (count == 0) {
+                err << "No result generated \n";
+                *err_msg = to_pg_msg(err);
+                *return_tuples = NULL;
+                *return_count = 0;
+                return;
+        }
 
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
 
-	for (size_t i = 0; i < count; ++1) {
+        for (size_t i = 0; i < count; ++1) {
               (*return_tuples)[i] = results[i];
         }
 
@@ -135,7 +134,6 @@ do_ordering(
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);
 #endif
-
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;

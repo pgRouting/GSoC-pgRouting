@@ -61,14 +61,12 @@ void pgr_process_ordering(
     clock_t start_t = clock();
     do_ordering(
             edges_sql,
-	    which,
+            which,
             result_tuples, result_count,
             &log_msg , &notice_msg, &err_msg);
     if (which == 0) {
-	    
-	    time_msg(std::string(" processing pgr_sloanOrdering").c_str(), start_t, clock());
-
-    } 
+            time_msg(std::string(" processing pgr_sloanOrdering").c_str(), start_t, clock());
+    }
 
 
     if (err_msg && (*result_tuples)) {
