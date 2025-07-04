@@ -36,7 +36,6 @@ extern "C" {
 #include "c_common/time_msg.h"
 }
 
-#include "c_types/ii_t_rt.h"
 #include "cpp_common/assert.hpp"
 #include "drivers/ordering_driver.hpp"
 
@@ -49,7 +48,7 @@ extern "C" {
 void pgr_process_ordering(
         const char* edges_sql,
         int which,
-        II_t_rt **result_tuples,
+        int64_t **result_tuples,
         size_t *result_count) {
     pgassert(edges_sql);
     pgassert(!(*result_tuples));

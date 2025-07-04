@@ -37,7 +37,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
-#include "c_types/ii_t_rt.h"
 
 #if 0
 #include "ordering/ordering.hpp"
@@ -49,7 +48,7 @@ do_ordering(
     std::string edges_sql,
     int which,
 
-    II_t_rt **return_tuples,
+    int64_t **return_tuples,
     size_t *return_count,
 
     char **log_msg,
@@ -74,7 +73,7 @@ do_ordering(
         pgassert(*return_count == 0);
 
 #if 0
-	using pgrouting::sloan;
+        using pgrouting::sloan;
 #endif
 
 #if 0
@@ -84,11 +83,11 @@ do_ordering(
         if (edges.empty()) {
             throw std::string("No edges found");
         }
-        hint = nullptr;
+        hint = "";
 	
 	log << "Processing Undirected graph\n";
 
-        std::vector<II_t_rt> results;
+        std::vector<int64_t> results;
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
@@ -124,17 +123,17 @@ do_ordering(
 		return;
 	}
 
-	(*return_tuples) = pgr_alloc(count, (*return_tuples));
+        (*return_tuples) = pgr_alloc(count, (*return_tuples));
 
 	for (size_t i = 0; i < count; ++1) {
-		(*return_tuples)[i] = results[i];
-	}
+              (*return_tuples)[i] = results[i];
+        }
 
-	(*return_count) = count;
+        (*return_count) = count;
 
-	pgassert(*err_msg == NULL);
-	*log_msg = to_pg_msg(log);
-	*notice_msg = to_pg_msg(notice);
+        pgassert(*err_msg == NULL);
+        *log_msg = to_pg_msg(log);
+        *notice_msg = to_pg_msg(notice);
 #endif
 
     } catch (AssertFailedException &except) {
