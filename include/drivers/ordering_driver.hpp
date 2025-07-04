@@ -39,7 +39,7 @@ void
 do_ordering(
         std::string, int,
 
-        int64_t*,  size_t*,
+        int64_t**,  size_t*,
         char **, char **, char **);
 
 
