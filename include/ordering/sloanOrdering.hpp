@@ -65,8 +65,7 @@ std::vector<std::vector<int64_t>>
 sloan(G &graph) {
     CHECK_FOR_INTERRUPTS();
 
-    std::pair<typename G::V, typename G::V> starting_nodes = 
-            boost::sloan_starting_nodes(graph.graph);
+    std::pair<typename G::V, typename G::V> starting_nodes = boost::sloan_starting_nodes(graph.graph);
 
     std::vector<typename G::V> inv_perm(graph.num_vertices());
 
