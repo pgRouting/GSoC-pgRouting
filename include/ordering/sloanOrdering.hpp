@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <limits>
 #include <iterator>
-
+#include <utility>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -63,11 +63,10 @@ struct inf_plus {
 template <class G>
 std::vector<std::vector<int64_t>>
 sloan(G &graph) {
-    
     CHECK_FOR_INTERRUPTS();
 
     std::pair<typename G::V, typename G::V> starting_nodes = 
-	    boost::sloan_starting_nodes(graph.graph);
+            boost::sloan_starting_nodes(graph.graph);
 
     std::vector<typename G::V> inv_perm(graph.num_vertices());
 
@@ -75,10 +74,9 @@ sloan(G &graph) {
             graph.graph,
             inv_perm.begin(),
             boost::get(boost::vertex_color_t(), graph.graph),
-	    boost::make_degree_map(graph.graph),
+            boost::make_degree_map(graph.graph),
             starting_nodes.first,
-	    starting_nodes.second
-	    );
+            starting_nodes.second);
 
     CHECK_FOR_INTERRUPTS();
 
@@ -86,7 +84,7 @@ sloan(G &graph) {
     result.reserve(inv_perm.size());
 
     for (const auto& vertex_desc : inv_perm) {
-	    result.push_back(graph[vertex_desc].id);
+            result.push_back(graph[vertex_desc].id);
     }
 
     return result;
