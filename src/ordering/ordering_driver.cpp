@@ -90,7 +90,7 @@ do_ordering(
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
-        if (start_vid != 0 && !undigraph.has_vertex(start_vid) ) {
+        if (start_vid != 0 && !undigraph.has_vertex(start_vid)) {
                 err << "Start vertex" << start_vid << "not found in graph";
                 *err_msg = to_pg_msg(err);
                 *log_msg = to_pg_msg(log);
@@ -108,7 +108,7 @@ do_ordering(
 
         if (which == 0) {
                 results = sloan(undigraph);
-	}
+        }
 
 
 
