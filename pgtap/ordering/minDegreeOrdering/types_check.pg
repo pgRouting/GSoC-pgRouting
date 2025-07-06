@@ -27,8 +27,7 @@ $BODY$
 BEGIN
 
   IF NOT min_version('4.0.0') THEN
-    RETURN QUERY
-    SELECT skip(1, 'pgr_minDegreeOrdering: Function is new on 4.0.0');
+    RETURN QUERY SELECT skip(1, 'pgr_minDegreeOrdering: Function is new on 4.0.0');
     RETURN;
   END IF;
 
@@ -38,7 +37,7 @@ BEGIN
 
   RETURN QUERY
   SELECT function_args_eq('pgr_mindegreeordering',
-    $$SELECT  '{"","seq","node"}'::TEXT[] $$
+    $$SELECT  '{"", seq, node}'::TEXT[] $$
   );
 
   RETURN QUERY

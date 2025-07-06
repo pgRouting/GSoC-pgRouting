@@ -32,9 +32,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
-#include "c_types/ii_t_rt.h"
-
-
 #include "process/ordering_process.h"
 
 PGDLLEXPORT Datum _pgr_mindegreeordering(PG_FUNCTION_ARGS);
@@ -46,7 +43,7 @@ _pgr_mindegreeordering(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
-    II_t_rt *result_tuples = NULL;
+    int64_t *result_tuples = NULL;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
@@ -76,7 +73,7 @@ _pgr_mindegreeordering(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (II_t_rt*) funcctx->user_fctx;
+    result_tuples = (int64_t*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;
@@ -84,7 +81,7 @@ _pgr_mindegreeordering(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool*        nulls;
 
-        size_t num  = 3;
+        size_t num  = 2;
         values = palloc(num * sizeof(Datum));
         nulls = palloc(num * sizeof(bool));
 
@@ -95,7 +92,7 @@ _pgr_mindegreeordering(PG_FUNCTION_ARGS) {
         }
 
         values[0] = Int64GetDatum((int64_t)funcctx->call_cntr + 1);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2.value);
+        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr]);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

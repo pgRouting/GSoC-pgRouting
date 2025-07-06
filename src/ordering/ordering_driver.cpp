@@ -34,75 +34,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
-#include "c_types/ii_t_rt.h"
-#if 0
-#include "ordering/minDegreeOrdering.hpp"
-#endif
-#if 0
-#include "ordering/kingOrdering.hpp"
-#endif
 
-/** @file ordering_driver.cpp
- * @brief Handles actual calling of function in the `minDegreeOrdering.hpp` and `kingOrdering.hpp` file.
- *
- */
-
-/***********************************************************************
- *
- *   pgr_minDegreeOrdering(edges_sql TEXT);
- *
- *   pgr_kingOrdering(edges_sql TEXT);
- * 
- ***********************************************************************/
-
-namespace {
-#if 0
-/** @brief Calls the main function defined in the C++ Header file.
- *
- * @param graph      the graph containing the edges
- *
- * @returns results, when results are found
- */
-
-template <class G>
-std::vector <II_t_rt>
-mindegreeOrdering(G &graph) {
-    pgrouting::functions::MinDegreeOrdering <G> fn_minDegreeOrdering;
-    auto results = fn_minDegreeOrdering.minDegreeOrdering(graph);
-    return results;
-}
-
-template <class G>
-std::vector <II_t_rt>
-kingOrdering(G &graph) {
-    pgrouting::functions::KingOrdering <G> fn_kingOrdering;
-    auto results = fn_kingOrdering.kingOrdering(graph);
-    return results;
-}
-#endif
-}  // namespace
+#include "ordering/ordering.hpp"
 
 
 void do_ordering(
     const char *edges_sql,
     int64_t which,
 
-    II_t_rt **return_tuples,
+    int64_t **return_tuples,
     size_t *return_count,
 
     char **log_msg,
     char **notice_msg,
     char **err_msg) {
-    #if 0
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
+    using pgrouting::pgget::get_edges;
+    using pgrouting::UndirectedGraph;
 
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
     const char *hint = nullptr;
-
     try {
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
@@ -111,7 +66,7 @@ void do_ordering(
         pgassert(*return_count == 0);
 
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, false);
+        auto edges = get_edges(std::string(edges_sql), true, false);
         if (edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
             *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
@@ -119,24 +74,23 @@ void do_ordering(
         }
         hint = nullptr;
 
-        std::vector<II_t_rt>results;
-        pgrouting::UndirectedGraph undigraph;
+        std::vector<int64_t>results;
+        UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
-        
-        if (which == 0){
+        #if 0
+        if (which == 0) {
             results = minDegreeOrdering(undigraph);
-        }
-        else if (which ==1){
+        } else if (which ==1) {
             results = kingOrdering(undigraph);
-        } 
-
+        }
+        #endif
         auto count = results.size();
 
         if (count == 0) {
-            (*return_tuples) = NULL;
-            (*return_count) = 0;
-            notice << "No results found";
-            *log_msg = to_pg_msg(log);
+            *err_msg = to_pg_msg("No results found \n");
+            *return_tuples = NULL;
+            *return_count = 0;
+            return;
         }
 
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
@@ -170,9 +124,7 @@ void do_ordering(
     } catch (...) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
-        err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
+        *err_msg = to_pg_msg("Caught unknown exception!\n");
         *log_msg = to_pg_msg(log);
     }
-    #endif
 }

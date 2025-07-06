@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
-File: kingOrdering.sql
+File: ordering.hpp
 
 Generated with Template by:
-Copyright (c) 2025 pgRouting developers
+Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
+Developer:
 Copyright (c) 2025 Fan Wu
 Mail: wifiblack0131 at gmail.com
 
@@ -27,29 +27,39 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-----------------------------
--- pgr_kingOrdering
-----------------------------
+#ifndef INCLUDE_ORDERING_ORDERING_HPP_
+#define INCLUDE_ORDERING_ORDERING_HPP_
+#pragma once
 
---v4.0
-CREATE FUNCTION pgr_kingOrdering(
-    TEXT, -- edges_sql (required)
-    OUT seq BIGINT,
-    OUT node BIGINT)
-RETURNS SETOF RECORD AS
-$BODY$
-    SELECT seq, node
-    FROM _pgr_kingOrdering(_pgr_get_statement($1));
-$BODY$
-LANGUAGE SQL VOLATILE STRICT;
+#include <vector>
+#include <limits>
+#include <iterator>
 
--- COMMENTS
 
-COMMENT ON FUNCTION pgr_kingOrdering(TEXT)
-IS 'pgr_kingOrdering
-- EXPERIMENTAL
-- Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-- Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_kingOrdering.html
-';
+#include <boost/config.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/property_map/property_map.hpp>
+#include <boost/graph/king_ordering.hpp>
+#include <boost/graph/minimum_degree_ordering.hpp>
+
+#include "cpp_common/base_graph.hpp"
+#include "cpp_common/interruption.hpp"
+
+
+namespace pgrouting  {
+
+template <class G>
+std::vector<std::vector<int64_t>>
+kingOrdering(G &graph) {
+    CHECK_FOR_INTERRUPTS();
+}
+
+template <class G>
+std::vector<std::vector<int64_t>>
+minDegreeOrdering(G &graph) {
+    CHECK_FOR_INTERRUPTS();
+}
+
+}  // namespace pgrouting
+
+#endif  // INCLUDE_ORDERING_ORDERING_HPP_
