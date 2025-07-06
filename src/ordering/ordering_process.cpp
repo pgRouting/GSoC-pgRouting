@@ -36,20 +36,19 @@ extern "C" {
 #include "c_common/time_msg.h"
 }
 
-#include "c_types/ii_t_rt.h"
 #include "cpp_common/assert.hpp"
-#include "drivers/ordering/ordering_driver.hpp"
+#include "drivers/ordering_driver.hpp"
 
 /**
  which = 0 -> sloan
- which = 1 -> cuthillmckee
+ 
 
  This is c++ code, linked as C code, because pgr_process_foo is called from C code
  */
 void pgr_process_ordering(
         const char* edges_sql,
         int which,
-        II_t_rt **result_tuples,
+        int64_t **result_tuples,
         size_t *result_count) {
     pgassert(edges_sql);
     pgassert(!(*result_tuples));
@@ -62,18 +61,12 @@ void pgr_process_ordering(
     clock_t start_t = clock();
     do_ordering(
             edges_sql,
-	    which,
+            which,
             result_tuples, result_count,
             &log_msg , &notice_msg, &err_msg);
     if (which == 0) {
-	    
-	    time_msg(std::string(" processing pgr_sloanOrdering").c_str(), start_t, clock());
-
-    } else  {
-
-	    time_msg(std::string(" processing pgr_cuthillMckeeOrdering").c_str(), start_t, clock());
-
-    } 
+            time_msg(std::string(" processing pgr_sloanOrdering").c_str(), start_t, clock());
+    }
 
 
     if (err_msg && (*result_tuples)) {

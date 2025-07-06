@@ -28,23 +28,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #ifdef __cplusplus
+#include <stdbool.h>
 #include <cstddef>
 #include <cstdint>
-#include <stdbool.h>
-using Edge_t = struct Edge_t;
-using II_t_rt = struct II_t_rt;
+#include <string>
+
 #else
 #include <stddef.h>
 #include <stdint.h>
-typedef struct Edge_t Edge_t;
-typedef struct II_t_rt II_t_rt;
 #endif
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void pgr_process_ordering(const char*, int16_t, II_t_rt **, size_t *);
+void pgr_process_ordering(const char*, int, int64_t**, size_t*);
 
 #ifdef __cplusplus
 }

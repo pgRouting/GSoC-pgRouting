@@ -32,17 +32,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include <cstddef>
-#include <cstddef>
-using Edge_t = struct Edge_t;
-using II_t_rt = struct II_t_rt;
 #include <string>
 
 
 void
 do_ordering(
-        std::string, int64_t, int64_t,
+        std::string, int,
 
-        II_t_rt**,  size_t*,
+        int64_t**,  size_t*,
         char **, char **, char **);
 
 

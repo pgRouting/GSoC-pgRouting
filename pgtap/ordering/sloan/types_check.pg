@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 BEGIN;
 
-SELECT CASE WHEN min_version('4.0.0') THEN plan(1) ELSE plan(5) END;
+SELECT CASE WHEN min_version('4.0.0') THEN plan(5) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION types_check()
 RETURNS SETOF TEXT AS
@@ -27,8 +27,7 @@ $BODY$
 BEGIN
 
   IF NOT min_version('4.0.0') THEN
-    RETURN QUERY
-    SELECT skip(1, 'Function is new on 4.0.0');
+    RETURN QUERY SELECT skip(1, 'Function is new on 4.0.0');
     RETURN;
   END IF;
 
@@ -38,11 +37,10 @@ BEGIN
 
   RETURN QUERY
   SELECT function_args_eq('pgr_sloanordering',
-    $$SELECT  '{"","seq","node"}'::TEXT[] $$
+    $$SELECT  '{"", seq, node}'::TEXT[] $$
   );
 
-  RETURN QUERY
-  SELECT function_types_eq('pgr_sloanordering',
+  RETURN QUERY SELECT function_types_eq('pgr_sloanordering',
     $$VALUES
     ('{text,int8,int8}'::TEXT[])
     $$

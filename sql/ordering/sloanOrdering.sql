@@ -45,7 +45,7 @@ LANGUAGE SQL VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_sloanOrdering(TEXT, BIGINT, BIGINT)
+COMMENT ON FUNCTION pgr_sloanOrdering(TEXT)
 IS 'pgr_sloanOrdering
 - EXPERIMENTAL
 - Parameters:

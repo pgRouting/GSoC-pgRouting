@@ -3,4 +3,5 @@ ADD_LIBRARY(ordering OBJECT
     cuthillMckeeOrdering_driver.cpp
     sloanOrdering.c
     ordering_driver.cpp
+    ordering_process.cpp
     )
