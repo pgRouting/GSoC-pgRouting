@@ -49,9 +49,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting  {
 
 template <class G>
-std::vector<std::vector<int64_t>>
+std::vector<int64_t>
 kingOrdering(G &graph) {
+    using namespace boost;
+    typedef adjacency_list< vecS, vecS, undirectedS,
+        property< vertex_color_t, default_color_type,
+            property< vertex_degree_t, int > > >
+        Graph;
+    typedef graph_traits< Graph >::vertex_descriptor Vertex;
+
+    std::vector <int64_t>results;
+
+    auto index_map = get(boost::vertex_index, graph.graph);
+    auto color_map = get(boost::vertex_color, graph.graph);
+    auto degree_map = make_degree_map(graph.graph);
+
+    std::vector< Vertex > inv_perm(num_vertices(graph.graph));
+    
     CHECK_FOR_INTERRUPTS();
+
+    boost::king_ordering(graph.graph, inv_perm.rbegin(), color_map, degree_map, index_map);
+    for (std::vector<Vertex>::const_iterator i = inv_perm.begin(); i != inv_perm.end(); ++i) {
+        auto seq = graph[*i].id;
+        results.push_back({{seq}, {static_cast<int64_t>(graph.graph[*i].id)}});
+        seq++;
+    }
+    return results;
 }
 
 template <class G>
