@@ -51,7 +51,7 @@ namespace pgrouting  {
 template <class G>
 std::vector<int64_t>
 kingOrdering(G &graph) {
-    using namespace boost;
+    using boost;
     typedef adjacency_list< vecS, vecS, undirectedS,
         property< vertex_color_t, default_color_type,
             property< vertex_degree_t, int > > >
@@ -65,7 +65,6 @@ kingOrdering(G &graph) {
     auto degree_map = make_degree_map(graph.graph);
 
     std::vector< Vertex > inv_perm(num_vertices(graph.graph));
-    
     CHECK_FOR_INTERRUPTS();
 
     boost::king_ordering(graph.graph, inv_perm.rbegin(), color_map, degree_map, index_map);
