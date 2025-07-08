@@ -38,9 +38,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
-#if 0
-#include "ordering/ordering.hpp"
-#endif
+#include "ordering/sloanOrdering.hpp"
+
 
 
 void
