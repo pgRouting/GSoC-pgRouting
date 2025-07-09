@@ -88,7 +88,7 @@ do_ordering(
         std::vector<int64_t> results;
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
-
+#if 0
         if (start_vid != 0 && !undigraph.has_vertex(start_vid)) {
                 err << "Start vertex" << start_vid << "not found in graph";
                 *err_msg = to_pg_msg(err);
@@ -102,7 +102,7 @@ do_ordering(
                 *log_msg = to_pg_msg(log);
                 return;
         }
-
+#endif
         std::vector<II_t_rt> results;
 
         if (which == 0) {
