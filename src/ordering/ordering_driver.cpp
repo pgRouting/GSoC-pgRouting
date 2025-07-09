@@ -3,7 +3,8 @@ File: ordering_driver.cpp
 Generated with Template by:
 Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
-Function's developer:
+
+Developer:
 Copyright (c) 2025 Fan Wu
 Mail: wifiblack0131 at gmail.com
 ------
@@ -27,9 +28,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "drivers/ordering_driver.hpp"
 
 #include <sstream>
+#include <deque>
 #include <vector>
 #include <algorithm>
 #include <string>
+
 
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
@@ -38,9 +41,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "ordering/ordering.hpp"
 
 
-void do_ordering(
-    const char *edges_sql,
-    int64_t which,
+
+void
+do_ordering(
+    std::string edges_sql,
+    int which,
 
     int64_t **return_tuples,
     size_t *return_count,
@@ -48,16 +53,20 @@ void do_ordering(
     char **log_msg,
     char **notice_msg,
     char **err_msg) {
+
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
+    using pgrouting::kingOrdering;
+    using pgrouting::minDegreeOrdering;
     using pgrouting::pgget::get_edges;
     using pgrouting::UndirectedGraph;
 
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
-    const char *hint = nullptr;
+    std::string hint = "";
+
     try {
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
@@ -68,11 +77,9 @@ void do_ordering(
         hint = edges_sql;
         auto edges = get_edges(std::string(edges_sql), true, false);
         if (edges.empty()) {
-            *notice_msg = to_pg_msg("No edges found");
-            *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
-            return;
+            throw std::string("No edges found");
         }
-        hint = nullptr;
+        hint = "";
 
         std::vector<int64_t>results;
         UndirectedGraph undigraph;
@@ -86,26 +93,25 @@ void do_ordering(
         #endif
         auto count = results.size();
 
+#if 0
         if (count == 0) {
             *err_msg = to_pg_msg("No results found \n");
             *return_tuples = NULL;
             *return_count = 0;
             return;
         }
+#endif
 
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
         for (size_t i = 0; i < count; i++) {
             *((*return_tuples) + i) = results[i];
         }
+
         (*return_count) = count;
 
         pgassert(*err_msg == NULL);
-        *log_msg = log.str().empty() ?
-        *log_msg :
-        to_pg_msg(log);
-        *notice_msg = notice.str().empty() ?
-        *notice_msg :
-        to_pg_msg(notice);
+        *log_msg = to_pg_msg(log);
+        *notice_msg = to_pg_msg(notice);
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
@@ -114,7 +120,7 @@ void do_ordering(
         *log_msg = to_pg_msg(log);
     } catch (const std::string &ex) {
         *err_msg = to_pg_msg(ex);
-        *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+        *log_msg = hint.empty()? to_pg_msg(hint) : to_pg_msg(log);
     } catch (std::exception &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
@@ -124,7 +130,7 @@ void do_ordering(
     } catch (...) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
-        *err_msg = to_pg_msg("Caught unknown exception!\n");
+        *err_msg = to_pg_msg("Caught unknown exception");
         *log_msg = to_pg_msg(log);
     }
 }

@@ -51,6 +51,7 @@ _pgr_kingordering(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
+
         pgr_process_ordering(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 3, /*King Ordering*/

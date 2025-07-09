@@ -34,16 +34,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <limits>
 #include <iterator>
-
+#include <utility>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/property_map/property_map.hpp>
-#include <boost/graph/king_ordering.hpp>
-#include <boost/graph/minimum_degree_ordering.hpp>
+
 
 #include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
+#include <boost/graph/king_ordering.hpp>
+#include <boost/graph/minimum_degree_ordering.hpp>
 
 
 namespace pgrouting  {
