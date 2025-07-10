@@ -6,7 +6,7 @@ Copyright (c) 2022 pgRouting developers
 Mail: project@pgrouting.org
 
 Developer:
-Copyright (c) 2025 Shobhit Chaurasia
+Copyright (c) 2025 Bipasha Gayary
 Mail: bipashagayary at gmail.com
 
 ------
@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <map>
 #include <cstdint>
+#include <iterator>
 
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -47,8 +48,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/interruption.hpp"
 #include "cpp_common/messages.hpp"
 
-#include "c_types/ii_t_rt.h"
-
 namespace pgrouting {
 namespace functions {
 
@@ -57,34 +56,31 @@ class sloanOrdering : public Pgr_messages {
  public:
     typedef typename G::V V;
     typedef typename G::E E;
-    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
     typedef boost::graph_traits<Graph>::vertices_size_type size_type;
     typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
-        std::vector<II_t_rt>
+        template <class G>
+        std::vector<int64_t>
         sloanOrdering(G &graph) {
-        std::vector<II_t_rt>results;
+                std::vector<int64_t>results;
 
-        // map which store the indices with their nodes.
         auto i_map = boost::get(boost::vertex_index, graph.graph);
 
-        // vector which will store the order of the indices.
         std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
 
-        // vector which will store the color of all the vertices in the graph
         std::vector <boost::default_color_type> colors(boost::num_vertices(graph.graph));
 
-        // An iterator property map which records the color of each vertex
-        auto color_map = boost::make_iterator_property_map(&colors[0], i_map, colors[0]);
+        auto color_map = boost::make_iterator_property_map(colors.begin(), i_map);
 
-        // map which store the degree of each vertex.
-        auto out_deg = boost::make_out_degree_map(graph.graph);
+        auto degree_map = boost::make_out_degree_map(graph.graph);
 
-         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
+        std::vector<int> priorities(boost::num_vertices(graph.graph));
+        auto priority_map = boost::make_iterator_property_map(priorities.begin(), i_map);
+
          CHECK_FOR_INTERRUPTS();
 
          try {
-             boost::sloan_ordering(graph.graph, inv_perm.rbegin(), color_map, out_deg);
+             boost::sloan_ordering(graph.graph, inv_perm.begin(), color_map, degree_map, priority_map);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -95,29 +91,10 @@ class sloanOrdering : public Pgr_messages {
              throw;
          }
 
-         results = get_results(inv_perm, graph);
+         // results = get_results(inv_perm, graph);
 
          return results;
      }
-
-      //@}
-
- private:
-     std::vector <II_t_rt> get_results(
-            std::vector <size_type> & inv_perm,
-            const G &graph) {
-            std::vector <II_t_rt> results;
-
-        for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
-             i != inv_perm.end(); ++i) {
-            log << inv_perm[*i] << " ";
-            auto seq = graph[*i].id;
-            results.push_back({{seq}, {static_cast<int64_t>(graph.graph[*i].id)}});
-            seq++;
-            }
-
-            return results;
-        }
 };
 }  // namespace functions
 }  // namespace pgrouting
