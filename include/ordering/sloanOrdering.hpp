@@ -53,13 +53,13 @@ namespace pgrouting {
 template <class G>
 std::vector<int64_t>
         sloanOrdering(G &graph) {
-		typedef boost::adjacency_list<
-			boost::vecS, 
-			boost::vecS, 
-			boost::undirectedS, 
-			boost::property<boost::vertex_color_t, boost::default_color_type, 
-			boost::property<boost::vertex_degree_t, int,
-		       	boost::property<boost::vertex_priority_t, int>>>> GraphType;
+             typedef boost::adjacency_list<
+boost::vecS,
+boost::vecS,
+boost::undirectedS,
+boost::property<boost::vertex_color_t, boost::default_color_type,
+boost::property<boost::vertex_degree_t, int,
+boost::property<boost::vertex_priority_t, int>>>> GraphType;
                 typedef typename boost::graph_traits<typename G::graph_t>::vertex_descriptor Vertex;
                 std::vector<int64_t>results;
 
@@ -67,7 +67,7 @@ std::vector<int64_t>
         auto color_map = boost::get(boost::vertex_color, graph.graph);
         auto degree_map = boost::make_degree_map(graph.graph);
         auto priority_map = boost::get(boost::vertex_priority, graph.graph);
-	
+
         std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
 
         CHECK_FOR_INTERRUPTS();
