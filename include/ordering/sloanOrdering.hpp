@@ -56,42 +56,31 @@ class sloanOrdering : public Pgr_messages {
  public:
     typedef typename G::V V;
     typedef typename G::E E;
-    typedef boost::graph_traits<Graph>::vertices_size_type size_type;
-    typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
-        template <class G>
         std::vector<int64_t>
         sloanOrdering(G &graph) {
+		using namespace boost;
+		typedef adjacency_list< vecS, vecS, undirectedS, property< vertex_color_t, default_color_type, property< vertex_degree_t, int, property< vertex_priority_t, int > > > > Graph;
+                typedef graph_traits< Graph >::vertex_descriptor Vertex;
                 std::vector<int64_t>results;
 
         auto i_map = boost::get(boost::vertex_index, graph.graph);
 
-        std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
+        auto color_map = get(boost::vertex_color, graph.graph);
 
-        std::vector <boost::default_color_type> colors(boost::num_vertices(graph.graph));
+        auto degree_map = make_degree_map(graph.graph);
 
-        auto color_map = boost::make_iterator_property_map(colors.begin(), i_map);
+        auto priority_map = get(boost::vertex_priority, graph.graph);
+	
+        std::vector<Vertex> inv_perm(num_vertices(graph.graph));
 
-        auto degree_map = boost::make_out_degree_map(graph.graph);
+        CHECK_FOR_INTERRUPTS();
 
-        std::vector<int> priorities(boost::num_vertices(graph.graph));
-        auto priority_map = boost::make_iterator_property_map(priorities.begin(), i_map);
-
-         CHECK_FOR_INTERRUPTS();
-
-         try {
-             boost::sloan_ordering(graph.graph, inv_perm.begin(), color_map, degree_map, priority_map);
-         } catch (boost::exception const& ex) {
-             (void)ex;
-             throw;
-         } catch (std::exception &e) {
-             (void)e;
-             throw;
-         } catch (...) {
-             throw;
-         }
-
-         // results = get_results(inv_perm, graph);
+             boost::sloan_ordering(graph.graph, inv_perm.rbegin(), color_map, degree_map, priority_map);
+         for (std::vector<Vertex>::const_iterator i = inv_perm.begin(); i != inv_perm.end(); ++i) {
+                auto seq = graph[*i].id;
+                results.push_back(static_cast<int64_t>(graph[*i].id));
+                seq++;}
 
          return results;
      }
