@@ -49,43 +49,39 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/messages.hpp"
 
 namespace pgrouting {
-namespace functions {
 
 template <class G>
-class sloanOrdering : public Pgr_messages {
- public:
-    typedef typename G::V V;
-    typedef typename G::E E;
-
-        std::vector<int64_t>
+std::vector<int64_t>
         sloanOrdering(G &graph) {
-		using namespace boost;
-		typedef adjacency_list< vecS, vecS, undirectedS, property< vertex_color_t, default_color_type, property< vertex_degree_t, int, property< vertex_priority_t, int > > > > Graph;
-                typedef graph_traits< Graph >::vertex_descriptor Vertex;
+		typedef boost::adjacency_list<
+			boost::vecS, 
+			boost::vecS, 
+			boost::undirectedS, 
+			boost::property<boost::vertex_color_t, boost::default_color_type, 
+			boost::property<boost::vertex_degree_t, int,
+		       	boost::property<boost::vertex_priority_t, int>>>> GraphType;
+                typedef typename boost::graph_traits<typename G::graph_t>::vertex_descriptor Vertex;
                 std::vector<int64_t>results;
 
         auto i_map = boost::get(boost::vertex_index, graph.graph);
-
-        auto color_map = get(boost::vertex_color, graph.graph);
-
-        auto degree_map = make_degree_map(graph.graph);
-
-        auto priority_map = get(boost::vertex_priority, graph.graph);
+        auto color_map = boost::get(boost::vertex_color, graph.graph);
+        auto degree_map = boost::make_degree_map(graph.graph);
+        auto priority_map = boost::get(boost::vertex_priority, graph.graph);
 	
-        std::vector<Vertex> inv_perm(num_vertices(graph.graph));
+        std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
 
         CHECK_FOR_INTERRUPTS();
 
-             boost::sloan_ordering(graph.graph, inv_perm.rbegin(), color_map, degree_map, priority_map);
-         for (std::vector<Vertex>::const_iterator i = inv_perm.begin(); i != inv_perm.end(); ++i) {
+             boost::sloan_ordering(graph.graph, inv_perm.rbegin(), color_map, degree_map, priority_map, i_map);
+
+         for (typename std::vector<Vertex>::const_iterator i = inv_perm.begin(); i != inv_perm.end(); ++i) {
                 auto seq = graph[*i].id;
                 results.push_back(static_cast<int64_t>(graph[*i].id));
                 seq++;}
 
          return results;
      }
-};
-}  // namespace functions
+
 }  // namespace pgrouting
 
 #endif  // INCLUDE_ORDERING_SLOANORDERING_HPP_
