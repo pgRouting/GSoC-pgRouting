@@ -2,6 +2,6 @@
 -- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
 /* -- q1 */
 SELECT * FROM pgr_sloanOrdering(
-  'SELECT id, source, target, cost, reverse_cost FROM edges'
+  'SELECT id, source, target, cost, reverse_cost FROM edges WHERE id < 2'
   );
 /* -- q2 */
