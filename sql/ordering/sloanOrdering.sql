@@ -27,10 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-----------------------------
--- pgr_sloanOrdering
-----------------------------
-
 --v4.0.0
 CREATE FUNCTION pgr_sloanOrdering(
     TEXT, -- edges_sql (required)

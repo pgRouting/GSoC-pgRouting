@@ -1,0 +1,16 @@
+BEGIN;
+BEGIN
+SET client_min_messages TO NOTICE;
+SET
+/* -- q1 */
+SELECT * FROM pgr_sloanOrdering(
+  'SELECT id, source, target, cost, reverse_cost FROM edges WHERE id < 2'
+  );
+ seq | node
+-----+------
+   1 |    1
+(1 row)
+
+/* -- q2 */
+ROLLBACK;
+ROLLBACK

@@ -38,9 +38,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
-#if 0
-#include "ordering/ordering.hpp"
-#endif
+#include "ordering/sloanOrdering.hpp"
+
 
 
 void
@@ -90,26 +89,11 @@ do_ordering(
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
-        if (start_vid != 0 && !undigraph.has_vertex(start_vid)) {
-                err << "Start vertex" << start_vid << "not found in graph";
-                *err_msg = to_pg_msg(err);
-                *log_msg = to_pg_msg(log);
-                return;
-        }
-
-        if (end_vid != 0 && !undigraph.has_vertex(end_vid)) {
-                err << "End vertex" << end_vid << "not found in graph";
-                *err_msg = to_pg_msg(err);
-                *log_msg = to_pg_msg(log);
-                return;
-        }
-
         std::vector<II_t_rt> results;
 
         if (which == 0) {
                 results = sloan(undigraph);
         }
-
 
 
         auto count = results.size();

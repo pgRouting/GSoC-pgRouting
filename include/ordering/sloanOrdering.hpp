@@ -1,8 +1,8 @@
 /*PGR-GNU*****************************************************************
-File: ordering.hpp
+File: sloanOrdering.hpp
 
 Generated with Template by:
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2022 pgRouting developers
 Mail: project@pgrouting.org
 
 Developer:
@@ -25,70 +25,63 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
- ********************************************************************PGR-GNU*/
+********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_ORDERING_ORDERING_HPP_
-#define INCLUDE_ORDERING_ORDERING_HPP_
+#ifndef INCLUDE_ORDERING_SLOANORDERING_HPP_
+#define INCLUDE_ORDERING_SLOANORDERING_HPP_
 #pragma once
 
+#include <algorithm>
 #include <vector>
-#include <limits>
+#include <map>
+#include <cstdint>
 #include <iterator>
-#include <utility>
 
-#include <boost/config.hpp>
-#include <boost/graph/adjacency_list.hpp>
 #include <boost/property_map/property_map.hpp>
+#include <boost/graph/graph_traits.hpp>
+#include <boost/property_map/vector_property_map.hpp>
+#include <boost/type_traits.hpp>
+#include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/sloan_ordering.hpp>
 
 #include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
+#include "cpp_common/messages.hpp"
 
-
-namespace pgrouting  {
-namespace detail {
-
-template <typename T>
-struct inf_plus {
-    T operator()(const T& a, const T& b) const {
-        T inf = (std::numeric_limits<T>::max)();
-        if (a == inf || b == inf) return inf;
-        return a + b;
-    }
-};
-
-}  // namespace detail
-
+namespace pgrouting {
 
 template <class G>
-std::vector<std::vector<int64_t>>
-sloan(G &graph) {
-    CHECK_FOR_INTERRUPTS();
+std::vector<int64_t>
+        sloanOrdering(G &graph) {
+             typedef boost::adjacency_list<
+boost::vecS,
+boost::vecS,
+boost::undirectedS,
+boost::property<boost::vertex_color_t, boost::default_color_type,
+boost::property<boost::vertex_degree_t, int,
+boost::property<boost::vertex_priority_t, int>>>> GraphType;
+                typedef typename boost::graph_traits<typename G::graph_t>::vertex_descriptor Vertex;
+                std::vector<int64_t>results;
 
-    std::pair<typename G::V, typename G::V> starting_nodes = boost::sloan_starting_nodes(graph.graph);
+        auto i_map = boost::get(boost::vertex_index, graph.graph);
+        auto color_map = boost::get(boost::vertex_color, graph.graph);
+        auto degree_map = boost::make_degree_map(graph.graph);
+        auto priority_map = boost::get(boost::vertex_priority, graph.graph);
 
-    std::vector<typename G::V> inv_perm(graph.num_vertices());
+        std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
 
-    boost::sloan_ordering(
-            graph.graph,
-            inv_perm.begin(),
-            boost::get(boost::vertex_color_t(), graph.graph),
-            boost::make_degree_map(graph.graph),
-            starting_nodes.first,
-            starting_nodes.second);
+        CHECK_FOR_INTERRUPTS();
 
-    CHECK_FOR_INTERRUPTS();
+             boost::sloan_ordering(graph.graph, inv_perm.rbegin(), color_map, degree_map, priority_map, i_map);
 
-    std::vector<int64_t> result;
-    result.reserve(inv_perm.size());
+         for (typename std::vector<Vertex>::const_iterator i = inv_perm.begin(); i != inv_perm.end(); ++i) {
+                auto seq = graph[*i].id;
+                results.push_back(static_cast<int64_t>(graph[*i].id));
+                seq++;}
 
-    for (const auto& vertex_desc : inv_perm) {
-            result.push_back(graph[vertex_desc].id);
-    }
-
-    return result;
-}  // namespace ordering
+         return results;
+     }
 
 }  // namespace pgrouting
 
-#endif  // INCLUDE_ORDERING_ORDERING_HPP_
+#endif  // INCLUDE_ORDERING_SLOANORDERING_HPP_
