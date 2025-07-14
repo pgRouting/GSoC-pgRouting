@@ -28,7 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #ifdef __cplusplus
-#include <stdbool.h>
 #include <cstddef>
 #include <cstdint>
 
@@ -41,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 extern "C" {
 #endif
 
-void pgr_process_ordering(const char*, int64_t, int64_t **, size_t *);
+void pgr_process_ordering(const char*, int, int64_t**, size_t*);
 
 #ifdef __cplusplus
 }

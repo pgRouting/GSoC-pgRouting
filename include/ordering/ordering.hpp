@@ -34,24 +34,46 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <limits>
 #include <iterator>
-
+#include <utility>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/property_map/property_map.hpp>
-#include <boost/graph/king_ordering.hpp>
-#include <boost/graph/minimum_degree_ordering.hpp>
+
 
 #include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
+#include <boost/graph/king_ordering.hpp>
+#include <boost/graph/minimum_degree_ordering.hpp>
 
 
 namespace pgrouting  {
 
 template <class G>
-std::vector<std::vector<int64_t>>
+std::vector<int64_t>
 kingOrdering(G &graph) {
+    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
+        boost::property<boost::vertex_color_t, boost::default_color_type,
+            boost::property<boost::vertex_degree_t, int>>>
+        Graph;
+    typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+
+    std::vector<int64_t> results;
+
+    auto index_map = boost::get(boost::vertex_index, graph.graph);
+    auto color_map = boost::get(boost::vertex_color, graph.graph);
+    auto degree_map = boost::make_degree_map(graph.graph);
+
+    std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
     CHECK_FOR_INTERRUPTS();
+
+    boost::king_ordering(graph.graph, inv_perm.rbegin(), color_map, degree_map, index_map);
+    for (std::vector<Vertex>::const_iterator i = inv_perm.begin(); i != inv_perm.end(); ++i) {
+        auto seq = graph[*i].id;
+        results.push_back({{seq}, {static_cast<int64_t>(graph.graph[*i].id)}});
+        seq++;
+    }
+    return results;
 }
 
 template <class G>

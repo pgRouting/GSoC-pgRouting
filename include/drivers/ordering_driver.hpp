@@ -37,8 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 void
 do_ordering(
-        const char*,
-        int64_t,
+        std::string, int,
         int64_t**,  size_t*,
         char **, char **, char **);
 
