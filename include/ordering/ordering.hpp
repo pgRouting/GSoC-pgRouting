@@ -53,32 +53,20 @@ template <class G>
 std::vector<int64_t>
 kingOrdering(G &graph) {
     using V = typename G::V;
-    
-    std::vector<int64_t> results;
-    auto degree_map = boost::make_degree_map(graph.graph);
-    CHECK_FOR_INTERRUPTS();
-#if 0
-    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
-        boost::property<boost::vertex_color_t, boost::default_color_type,
-            boost::property<boost::vertex_degree_t, int>>>
-        Graph;
-    typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+    using B_G= typename G::B_G;
+    using vertices_size_type = typename boost::graph_traits<B_G>::vertices_size_type;
 
+    std::vector<int64_t> results;
 
     auto index_map = boost::get(boost::vertex_index, graph.graph);
-    auto color_map = boost::get(boost::vertex_color, graph.graph);
+    std::vector<vertices_size_type> colors(boost::num_vertices(graph.graph));
+    auto color_map = boost::make_iterator_property_map(colors.begin(), index_map);
     auto degree_map = boost::make_degree_map(graph.graph);
+    std::vector<V> inv_perm(boost::num_vertices(graph.graph));
 
-    std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
     CHECK_FOR_INTERRUPTS();
-
-    boost::king_ordering(graph.graph, inv_perm.rbegin(), color_map, degree_map, index_map);
-    for (std::vector<Vertex>::const_iterator i = inv_perm.begin(); i != inv_perm.end(); ++i) {
-        auto seq = graph[*i].id;
-        results.push_back({{seq}, {static_cast<int64_t>(graph.graph[*i].id)}});
-        seq++;
-    }
-#endif
+    boost::king_ordering(graph.graph, inv_perm. rbegin(), color_map, degree_map, index_map);
+    
     return results;
 }
 
