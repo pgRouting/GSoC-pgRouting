@@ -42,6 +42,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 
+/**
+ * @brief Executes a vertex ordering algorithm on a graph built from SQL edge data.
+ *
+ * Retrieves edges using the provided SQL query, constructs an undirected graph, and applies a vertex ordering algorithm (currently disabled). Returns the ordered vertex IDs, along with log, notice, and error messages as output parameters. Handles memory allocation and robust error reporting.
+ *
+ * @param edges_sql SQL query string to retrieve graph edges.
+ * @param which Selector for the ordering algorithm (currently unused).
+ * @param return_tuples Output pointer to an array of ordered vertex IDs.
+ * @param return_count Output pointer to the number of vertices in the ordering.
+ * @param log_msg Output pointer to a log message string.
+ * @param notice_msg Output pointer to a notice message string.
+ * @param err_msg Output pointer to an error message string.
+ */
 void
 do_ordering(
     std::string edges_sql,

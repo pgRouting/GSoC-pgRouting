@@ -38,6 +38,13 @@ PGDLLEXPORT Datum _pgr_mindegreeordering(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_mindegreeordering);
 
 
+/**
+ * Returns the minimum degree ordering of vertices for a given graph as a set of records.
+ *
+ * Each record in the result contains the ordering position (1-based) and the corresponding vertex ID, representing the sequence determined by the minimum degree ordering algorithm.
+ *
+ * @returns Set of records, each with two fields: the ordering position and the vertex ID.
+ */
 PGDLLEXPORT Datum
 _pgr_mindegreeordering(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;

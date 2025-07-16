@@ -50,6 +50,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting  {
 
 template <class G>
+/**
+ * @brief Computes a King ordering of the vertices in the input graph.
+ *
+ * Applies the Boost King ordering algorithm to the given graph and returns a vector of vertex IDs in the computed order.
+ *
+ * @return Vector of vertex IDs ordered according to the King ordering algorithm.
+ */
 std::vector<int64_t>
 kingOrdering(G &graph) {
     typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,

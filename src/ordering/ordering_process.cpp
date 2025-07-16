@@ -40,12 +40,14 @@ extern "C" {
 #include "drivers/ordering_driver.hpp"
 
 /**
- which = 0 -> sloan
- which = 1 -> cuthillmckee
- which = 2 -> mindegree
- which = 3 -> king
-
- This is c++ code, linked as C code, because pgr_process_foo is called from C code
+ * @brief Executes a graph ordering algorithm and returns the computed ordering.
+ *
+ * Selects and runs one of four graph ordering algorithms (Sloan, Cuthill-McKee, Minimum Degree, or King) on a graph defined by the provided SQL query. The result is an array of ordered node IDs and the count of results.
+ *
+ * @param edges_sql SQL query string that defines the graph edges.
+ * @param which Integer selecting the algorithm: 0 = Sloan, 1 = Cuthill-McKee, 2 = Minimum Degree, 3 = King.
+ * @param result_tuples Pointer to an array that will be allocated and filled with the resulting node order.
+ * @param result_count Pointer to a variable that will be set to the number of results.
  */
 void pgr_process_ordering(
         const char* edges_sql,

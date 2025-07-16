@@ -38,6 +38,13 @@ PGDLLEXPORT Datum _pgr_kingordering(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_kingordering);
 
 
+/**
+ * Returns the King Ordering of a graph as a set of records, each containing a sequential index and the corresponding ordering value.
+ *
+ * This PostgreSQL set-returning function takes a single text argument representing a graph and applies the King Ordering algorithm. Each result row contains two int64 fields: the row index (starting from 1) and the King Ordering value for that position.
+ *
+ * @returns Set of records with two int64 fields: (index, ordering_value).
+ */
 PGDLLEXPORT Datum
 _pgr_kingordering(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
