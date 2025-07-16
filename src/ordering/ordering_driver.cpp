@@ -40,7 +40,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "ordering/sloanOrdering.hpp"
 
-
+template <class G>
+std::vector <int64_t>
+sloanOrdering(G &graph) {
+	pgrouting::functions::SloanOrdering <G> fn_sloanOrdering;
+	auto results = fn_sloanOrdering.sloanOrdering(graph);
+	return results;
+}
 
 void
 do_ordering(
@@ -69,8 +75,6 @@ do_ordering(
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
-
-        using pgrouting::sloanOrdering;
 
         hint = edges_sql;
         auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, true);
