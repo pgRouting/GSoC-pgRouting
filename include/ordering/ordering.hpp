@@ -56,7 +56,7 @@ kingOrdering(G &graph) {
     using B_G= typename G::B_G;
     using vertices_size_type = typename boost::graph_traits<B_G>::vertices_size_type;
 
-    std::vector<int64_t> results;
+    std::vector<int64_t> results(graph.num_vertices());
 
     auto index_map = boost::get(boost::vertex_index, graph.graph);
     std::vector<vertices_size_type> colors(boost::num_vertices(graph.graph));
@@ -67,6 +67,10 @@ kingOrdering(G &graph) {
     CHECK_FOR_INTERRUPTS();
     boost::king_ordering(graph.graph, inv_perm. rbegin(), color_map, degree_map, index_map);
     
+    size_t j = 0;
+    for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
+        results[j] = index_map[*i];
+    }
     return results;
 }
 
