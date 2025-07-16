@@ -70,11 +70,7 @@ do_ordering(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-#if 0
-        using pgrouting::sloan;
-#endif
-
-#if 0
+        using pgrouting::sloanOrdering;
 
         hint = edges_sql;
         auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, true);
@@ -86,13 +82,12 @@ do_ordering(
         log << "Processing Undirected graph\n";
 
         std::vector<int64_t> results;
+
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
-        std::vector<II_t_rt> results;
-
         if (which == 0) {
-                results = sloan(undigraph);
+                results = sloanOrdering(undigraph);
         }
 
 
@@ -108,7 +103,7 @@ do_ordering(
 
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
 
-        for (size_t i = 0; i < count; ++1) {
+        for (size_t i = 0; i < count; ++i) {
               (*return_tuples)[i] = results[i];
         }
 
@@ -117,7 +112,6 @@ do_ordering(
         pgassert(*err_msg == NULL);
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);
-#endif
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
