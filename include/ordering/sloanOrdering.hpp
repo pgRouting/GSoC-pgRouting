@@ -54,13 +54,15 @@ template <class G>
 std::vector<int64_t>
         sloanOrdering(G &graph) {
              typedef boost::adjacency_list<
-boost::vecS,
-boost::vecS,
-boost::undirectedS,
-boost::property<boost::vertex_color_t, boost::default_color_type,
-boost::property<boost::vertex_degree_t, int,
-boost::property<boost::vertex_priority_t, int>>>> GraphType;
-                typedef typename boost::graph_traits<typename G::graph_t>::vertex_descriptor Vertex;
+                     boost::vecS,boost::vecS,
+                     boost::undirectedS,
+                     boost::property<boost::vertex_color_t,
+                     boost::default_color_type,
+                     boost::property<boost::vertex_degree_t,
+                     int,
+                     boost::property<boost::vertex_priority_t,
+                     int>>>> GraphType;
+             typedef typename boost::graph_traits<typename G::graph_t>::vertex_descriptor Vertex;
                 std::vector<int64_t>results;
 
         auto i_map = boost::get(boost::vertex_index, graph.graph);
