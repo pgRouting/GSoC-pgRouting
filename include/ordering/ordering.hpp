@@ -54,7 +54,7 @@ template <class G>
 std::vector<int64_t>
 kingOrdering(G &graph) {
     using V = typename G::V;
-    using B_G= typename G::B_G;
+    using B_G = typename G::B_G;
     using vertices_size_type = typename boost::graph_traits<B_G>::vertices_size_type;
 
     size_t n = boost::num_vertices(graph.graph);
@@ -68,7 +68,6 @@ kingOrdering(G &graph) {
 
     CHECK_FOR_INTERRUPTS();
     boost::king_ordering(graph.graph, inv_perm. rbegin(), color_map, degree_map, index_map);
-    
     size_t j = 0;
     for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
         results[j] = static_cast<int64_t>(index_map[*i]);

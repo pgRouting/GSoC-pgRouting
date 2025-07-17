@@ -84,7 +84,6 @@ do_ordering(
         std::vector<int64_t> results;
         UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
-    
         if (which == 0) {
             results = minDegreeOrdering(undigraph);
         } else if (which ==1) {
