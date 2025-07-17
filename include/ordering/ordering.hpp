@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <limits>
 #include <iterator>
 #include <utility>
+#include <string>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -71,6 +72,8 @@ kingOrdering(G &graph) {
     for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
         results[j] = index_map[*i];
     }
+
+    throw(std::to_string(results.size()));
     return results;
 }
 
