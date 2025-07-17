@@ -57,7 +57,7 @@ kingOrdering(G &graph) {
     using B_G= typename G::B_G;
     using vertices_size_type = typename boost::graph_traits<B_G>::vertices_size_type;
 
-    n = boost::num_vertices(graph.graph);
+    size_t n = boost::num_vertices(graph.graph);
     std::vector<int64_t> results(n);
 
     auto index_map = boost::get(boost::vertex_index, graph.graph);
