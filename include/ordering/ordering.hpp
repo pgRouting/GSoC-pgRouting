@@ -57,20 +57,21 @@ kingOrdering(G &graph) {
     using B_G= typename G::B_G;
     using vertices_size_type = typename boost::graph_traits<B_G>::vertices_size_type;
 
-    std::vector<int64_t> results(graph.num_vertices());
+    n = boost::num_vertices(graph.graph);
+    std::vector<int64_t> results(n);
 
     auto index_map = boost::get(boost::vertex_index, graph.graph);
-    std::vector<vertices_size_type> colors(boost::num_vertices(graph.graph));
+    std::vector<vertices_size_type> colors(n);
     auto color_map = boost::make_iterator_property_map(colors.begin(), index_map);
     auto degree_map = boost::make_degree_map(graph.graph);
-    std::vector<V> inv_perm(boost::num_vertices(graph.graph));
+    std::vector<V> inv_perm(n);
 
     CHECK_FOR_INTERRUPTS();
     boost::king_ordering(graph.graph, inv_perm. rbegin(), color_map, degree_map, index_map);
     
     size_t j = 0;
     for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
-        results[j] = index_map[*i];
+        results[j] = static_cast<int64_t>(index_map[*i]);
     }
 
     throw(std::to_string(results.size()));
@@ -80,8 +81,38 @@ kingOrdering(G &graph) {
 template <class G>
 std::vector<int64_t>
 minDegreeOrdering(G &graph) {
-    std::vector<int64_t> results;
+    using B_G = typename G::B_G;
+    using vertices_size_type = typename boost::graph_traits<B_G>::vertices_size_type;
+
+    size_t n = boost::num_vertices(graph.graph);
+    std::vector<int64_t> results(n);
+
+    auto index_map = boost::get(boost::vertex_index, graph.graph);
+
+    std::vector<vertices_size_type> degree(n, 0);
+    auto degree_map = boost::make_iterator_property_map(degree.begin(), index_map);
+
+    std::vector<vertices_size_type> supernode_sizes(n, 1);
+    auto supernode_map = boost::make_iterator_property_map(supernode_sizes.begin(), index_map);
+
+    std::vector<vertices_size_type> perm(n);
+    std::vector<vertices_size_type> inv_perm(n);
+
     CHECK_FOR_INTERRUPTS();
+
+    boost::minimum_degree_ordering(
+        graph.graph,
+        degree_map,
+        inv_perm.data(),
+        perm.data(),
+        supernode_map,
+        0,
+        index_map);
+
+    for (size_t i = 0; i < n; ++i) {
+        results[i] = static_cast<int64_t>(inv_perm[i]);
+    }
+
     return results;
 }
 
