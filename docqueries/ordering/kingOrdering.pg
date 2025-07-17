@@ -5,3 +5,26 @@ SELECT * FROM pgr_kingOrdering(
   'SELECT id, source, target, cost, reverse_cost FROM edges'
   );
 /* -- q2 */
+
+CREATER TABLE kot AS ( 
+id SERIAL,
+source BIGINT,
+target BIGINT,
+cost BIGINT defult 1)
+;
+
+INSERT INTO kot (source, target) VALUES
+(0, 3),
+(0, 5),
+(1, 2),
+(1, 4),
+(1, 6),
+(1, 9),
+(2, 3),
+(2, 4),
+(3, 5),
+(3, 8),
+(4, 6),
+(5, 6),
+(5, 7),
+(6, 7);
