@@ -69,7 +69,7 @@ class SloanOrdering : public Pgr_messages {
            auto color_map = boost::make_iterator_property_map(&colors[0], i_map, colors[0]);
            auto out_deg = boost::make_out_degree_map(graph.graph);
            std::vector<int> priorities(boost::num_vertices(graph.graph));
-           auto priority_map = boost::make_iterator_property_map(&priorities[0], i_map, priorities[0]);    
+           auto priority_map = boost::make_iterator_property_map(&priorities[0], i_map, priorities[0]);
 
             CHECK_FOR_INTERRUPTS();
 
