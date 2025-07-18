@@ -8,8 +8,9 @@ SELECT * FROM pgr_sloanOrdering(
   );
  seq | node
 -----+------
-   1 |    1
-(1 row)
+   1 |    5
+   2 |    6
+(2 rows)
 
 /* -- q2 */
 ROLLBACK;
