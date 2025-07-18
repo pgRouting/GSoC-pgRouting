@@ -58,12 +58,6 @@ _pgr_sloanordering(PG_FUNCTION_ARGS) {
                 &result_tuples,
                 &result_count);
 
-        if (result_count == 0) {
-                result_tuples = (int64_t*)palloc(sizeof(int64_t));
-                result_tuples[0] = 1;
-                result_count = 1;
-        }
-
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
         if (get_call_result_type(fcinfo, NULL, &tuple_desc)
