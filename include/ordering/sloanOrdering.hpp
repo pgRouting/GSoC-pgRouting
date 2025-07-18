@@ -54,56 +54,55 @@ template <class G>
 class SloanOrdering : public Pgr_messages {
  public:
          typedef typename G::V V;
-	 typedef typename G::E E;
-	 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
-	 typedef boost::graph_traits<Graph>::vertices_size_type size_type;
-	 typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+         typedef typename G::E E;
+         typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
+         typedef boost::graph_traits<Graph>::vertices_size_type size_type;
+         typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
 
-	   std::vector<int64_t>
+           std::vector<int64_t>
            sloanOrdering(G &graph) {
-	   std::vector<int64_t>results;
+           std::vector<int64_t>results;
 
-	   auto i_map = boost::get(boost::vertex_index, graph.graph);
-	   std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
-	   std::vector <boost::default_color_type> colors(boost::num_vertices(graph.graph));
-	   auto color_map = boost::make_iterator_property_map(&colors[0], i_map, colors[0]);
-	   auto out_deg = boost::make_out_degree_map(graph.graph);
-	   std::vector<int> priorities(boost::num_vertices(graph.graph));
-	   auto priority_map = boost::make_iterator_property_map(&priorities[0], i_map, priorities[0]);    
-	   
-	    CHECK_FOR_INTERRUPTS();
-	    
-	    try {
+           auto i_map = boost::get(boost::vertex_index, graph.graph);
+           std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
+           std::vector <boost::default_color_type> colors(boost::num_vertices(graph.graph));
+           auto color_map = boost::make_iterator_property_map(&colors[0], i_map, colors[0]);
+           auto out_deg = boost::make_out_degree_map(graph.graph);
+           std::vector<int> priorities(boost::num_vertices(graph.graph));
+           auto priority_map = boost::make_iterator_property_map(&priorities[0], i_map, priorities[0]);    
+
+            CHECK_FOR_INTERRUPTS();
+
+            try {
                 boost::sloan_ordering(graph.graph, inv_perm.begin(), color_map, out_deg, priority_map);
-	    } catch (boost::exception const& ex) {
-		(void)ex;
-		throw;
-	    } catch (std::exception &e) {
-		(void)e;
-		throw;
-	    } catch (...) {
-		throw;
-	    }
+            } catch (boost::exception const& ex) {
+                (void)ex;
+                throw;
+            } catch (std::exception &e) {
+                (void)e;
+                throw;
+            } catch (...) {
+                throw;
+            }
 
-	    results = get_results(inv_perm, graph);
+            results = get_results(inv_perm, graph);
 
-	    return results;
+            return results;
         }
 
  private:
         std::vector <int64_t> get_results(
                 std::vector <size_type> & inv_perm,
-		const G &graph) {
-		std::vector <int64_t> results;
+                const G &graph) {
+                std::vector <int64_t> results;
            for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
-		i != inv_perm.end(); ++i) {
-		log << inv_perm[*i] << " ";
-		results.push_back(static_cast<int64_t>(graph.graph[*i].id));
-	   }
+                i != inv_perm.end(); ++i) {
+                log << inv_perm[*i] << " ";
+                results.push_back(static_cast<int64_t>(graph.graph[*i].id));
+           }
 
-	   return results;
+           return results;
 }
-
 };
 }  // namespace functions
 }  // namespace pgrouting
