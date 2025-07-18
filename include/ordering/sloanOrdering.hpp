@@ -90,6 +90,19 @@ class SloanOrdering : public Pgr_messages {
 	    return results;
         }
 
+ private:
+        std::vector <int64_t> get_results(
+                std::vector <size_type> & inv_perm,
+		const G &graph) {
+		std::vector <int64_t> results;
+           for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
+		i != inv_perm.end(); ++i) {
+		log << inv_perm[*i] << " ";
+		results.push_back(static_cast<int64_t>(graph.graph[*i].id));
+	   }
+
+	   return results;
+}
 
 };
 }  // namespace functions
