@@ -40,12 +40,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "ordering/sloanOrdering.hpp"
 
+namespace {
 template <class G>
 std::vector <int64_t>
 sloanOrdering(G &graph) {
-	pgrouting::functions::SloanOrdering <G> fn_sloanOrdering;
-	auto results = fn_sloanOrdering.sloanOrdering(graph);
-	return results;
+        pgrouting::functions::SloanOrdering <G> fn_sloanOrdering;
+        auto results = fn_sloanOrdering.sloanOrdering(graph);
+        return results;
+}
 }
 
 void
