@@ -81,26 +81,22 @@ do_ordering(
         }
         hint = "";
 
-        std::vector<int64_t>results;
+        std::vector<int64_t> results;
         UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
-        #if 0
         if (which == 0) {
             results = minDegreeOrdering(undigraph);
         } else if (which ==1) {
             results = kingOrdering(undigraph);
         }
-        #endif
         auto count = results.size();
 
-#if 0
         if (count == 0) {
             *err_msg = to_pg_msg("No results found \n");
             *return_tuples = NULL;
             *return_count = 0;
             return;
         }
-#endif
 
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
         for (size_t i = 0; i < count; i++) {

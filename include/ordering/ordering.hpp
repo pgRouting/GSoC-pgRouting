@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <limits>
 #include <iterator>
 #include <utility>
+#include <string>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -52,34 +53,66 @@ namespace pgrouting  {
 template <class G>
 std::vector<int64_t>
 kingOrdering(G &graph) {
-    typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
-        boost::property<boost::vertex_color_t, boost::default_color_type,
-            boost::property<boost::vertex_degree_t, int>>>
-        Graph;
-    typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+    using V = typename G::V;
+    using B_G = typename G::B_G;
+    using vertices_size_type = typename boost::graph_traits<B_G>::vertices_size_type;
 
-    std::vector<int64_t> results;
+    size_t n = boost::num_vertices(graph.graph);
+    std::vector<int64_t> results(n);
 
     auto index_map = boost::get(boost::vertex_index, graph.graph);
-    auto color_map = boost::get(boost::vertex_color, graph.graph);
+    std::vector<vertices_size_type> colors(n);
+    auto color_map = boost::make_iterator_property_map(colors.begin(), index_map);
     auto degree_map = boost::make_degree_map(graph.graph);
+    std::vector<V> inv_perm(n);
 
-    std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
     CHECK_FOR_INTERRUPTS();
-
-    boost::king_ordering(graph.graph, inv_perm.rbegin(), color_map, degree_map, index_map);
-    for (std::vector<Vertex>::const_iterator i = inv_perm.begin(); i != inv_perm.end(); ++i) {
-        auto seq = graph[*i].id;
-        results.push_back({{seq}, {static_cast<int64_t>(graph.graph[*i].id)}});
-        seq++;
+    boost::king_ordering(graph.graph, inv_perm. rbegin(), color_map, degree_map, index_map);
+    size_t j = 0;
+    for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
+        results[j] = static_cast<int64_t>(index_map[*i]);
     }
+
+    throw(std::to_string(results.size()));
     return results;
 }
 
 template <class G>
-std::vector<std::vector<int64_t>>
+std::vector<int64_t>
 minDegreeOrdering(G &graph) {
+    using B_G = typename G::B_G;
+    using vertices_size_type = typename boost::graph_traits<B_G>::vertices_size_type;
+
+    size_t n = boost::num_vertices(graph.graph);
+    std::vector<int64_t> results(n);
+
+    auto index_map = boost::get(boost::vertex_index, graph.graph);
+
+    std::vector<vertices_size_type> degree(n, 0);
+    auto degree_map = boost::make_iterator_property_map(degree.begin(), index_map);
+
+    std::vector<vertices_size_type> supernode_sizes(n, 1);
+    auto supernode_map = boost::make_iterator_property_map(supernode_sizes.begin(), index_map);
+
+    std::vector<vertices_size_type> perm(n);
+    std::vector<vertices_size_type> inv_perm(n);
+
     CHECK_FOR_INTERRUPTS();
+
+    boost::minimum_degree_ordering(
+        graph.graph,
+        degree_map,
+        inv_perm.data(),
+        perm.data(),
+        supernode_map,
+        0,
+        index_map);
+
+    for (size_t i = 0; i < n; ++i) {
+        results[i] = static_cast<int64_t>(inv_perm[i]);
+    }
+
+    return results;
 }
 
 }  // namespace pgrouting
