@@ -28,4 +28,5 @@ SELECT * FROM pgr_sloanOrdering(
 (17 rows)
 
 /* -- q2 */
-
+ROLLBACK;
+ROLLBACK
