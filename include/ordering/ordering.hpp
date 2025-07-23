@@ -73,7 +73,6 @@ kingOrdering(G &graph) {
         results[j] = static_cast<int64_t>(index_map[*i]);
     }
 
-    throw(std::to_string(results.size()));
     return results;
 }
 
