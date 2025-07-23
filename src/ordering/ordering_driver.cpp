@@ -84,9 +84,9 @@ do_ordering(
         std::vector<int64_t> results;
         UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
-        if (which == 0) {
+        if (which == 2) {
             results = minDegreeOrdering(undigraph);
-        } else if (which ==1) {
+        } else if (which ==3) {
             results = kingOrdering(undigraph);
         }
         auto count = results.size();
