@@ -6,9 +6,27 @@ SET
 SELECT * FROM pgr_minDegreeOrdering(
   'SELECT id, source, target, cost, reverse_cost FROM edges'
   );
-ERROR:  No results found
+ seq | node
+-----+------
+   1 |    6
+   2 |    7
+   3 |    0
+   4 |   10
+   5 |   14
+   6 |    0
+   7 |   15
+   8 |    0
+   9 |    9
+  10 |    4
+  11 |    6
+  12 |   12
+  13 |    1
+  14 |    9
+  15 |    0
+  16 |    8
+  17 |    3
+(17 rows)
 
-CONTEXT:  SQL function "pgr_mindegreeordering" statement 1
 /* -- q2 */
 ROLLBACK;
 ROLLBACK

@@ -6,9 +6,27 @@ SET
 SELECT * FROM pgr_kingOrdering(
   'SELECT id, source, target, cost, reverse_cost FROM edges'
   );
-ERROR:  No results found
+ seq | node
+-----+------
+   1 |   11
+   2 |   12
+   3 |    8
+   4 |    9
+   5 |    0
+   6 |   10
+   7 |    1
+   8 |    6
+   9 |   16
+  10 |    2
+  11 |    7
+  12 |    3
+  13 |    5
+  14 |   13
+  15 |    4
+  16 |   14
+  17 |   15
+(17 rows)
 
-CONTEXT:  SQL function "pgr_kingordering" statement 1
 /* -- q2 */
 ROLLBACK;
 ROLLBACK
