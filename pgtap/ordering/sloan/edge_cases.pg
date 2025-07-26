@@ -38,14 +38,13 @@ END IF;
 
 PREPARE q1 AS
 SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id > 18;
+FROM edges WHERE id > 18;
 
 PREPARE r2 AS
 SELECT * FROM pgr_sloanOrdering('q1');
 
 RETURN QUERY
-SELECT is_empty('r2', 'Graph with 0 edge and 0 vertex -> Empty row is returned');
+SELECT throws_ok('r2', iXX000:'Graph with 0 edge and 0 vertex -> Should throw');
 
 -- 1 vertex test
 
