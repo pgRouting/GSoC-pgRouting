@@ -44,14 +44,13 @@ PREPARE r2 AS
 SELECT * FROM pgr_sloanOrdering('q1');
 
 RETURN QUERY
-SELECT throws_ok('r2', iXX000:'Graph with 0 edge and 0 vertex -> Should throw');
+SELECT throws_ok('r2', XX000:'Graph with 0 edge and 0 vertex -> Should throw');
 
--- 1 vertex test
+-- 6 -> 6 (1 vertex test)
 
 PREPARE q3 AS
-SELECT id, source, 6 AS target, cost, reverse_cost
-FROM edges
-WHERE id = 2;
+SELECT id, source, source AS target, cost, reverse_cost
+FROM edges WHERE id = 2;
 
 RETURN QUERY
 SELECT set_eq('q3', $$VALUES (2, 6, 6, -1, 1)$$, 'q3: Graph with one vertex');
