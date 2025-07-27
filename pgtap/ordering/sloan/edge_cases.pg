@@ -40,7 +40,7 @@ PREPARE q1 AS
 SELECT * FROM pgr_sloanOrdering('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id > 18');
 
 RETURN QUERY
-SELECT throws_ok('q1', XX000:'Graph with 0 edge and 0 vertex -> Should throw');
+SELECT throws_ok('q1', 'XX000', 'No edges found', 'Graph with 0 edge and 0 vertex -> Should throw');
 
 -- 6 -> 6 (1 vertex test)
 
