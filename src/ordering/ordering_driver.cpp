@@ -77,7 +77,10 @@ do_ordering(
         hint = edges_sql;
         auto edges = get_edges(std::string(edges_sql), true, false);
         if (edges.empty()) {
-            throw std::string("No edges found");
+            *notice_msg = to_pg_msg("No edges found");
+            *return_tuples = NULL;
+            *return_count = 0;
+            return;
         }
         hint = "";
 
@@ -92,7 +95,7 @@ do_ordering(
         auto count = results.size();
 
         if (count == 0) {
-            *err_msg = to_pg_msg("No results found \n");
+            *notice_msg = to_pg_msg("No results found \n");
             *return_tuples = NULL;
             *return_count = 0;
             return;
