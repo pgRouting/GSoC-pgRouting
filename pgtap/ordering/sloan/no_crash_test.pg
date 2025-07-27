@@ -49,7 +49,7 @@ BEGIN
   params = ARRAY['$$SELECT id, source, target, cost, reverse_cost FROM edges$$']::TEXT[];
   subs = ARRAY[ 'NULL' ]::TEXT[];
 
-    RETURN query SELECT * FROM no_crash_test('pgr_cuthillMckeeOrdering', params, subs);
+    RETURN query SELECT * FROM no_crash_test('pgr_sloanOrdering', params, subs);
 
 END
 $BODY$
