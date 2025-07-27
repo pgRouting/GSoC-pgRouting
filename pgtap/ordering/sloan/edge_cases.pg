@@ -37,8 +37,7 @@ END IF;
 -- 0 edge, 0 vertex test
 
 PREPARE q1 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges WHERE id > 18;
+SELECT * FROM pgr_sloanOrdering('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id > 18');
 
 PREPARE r2 AS
 SELECT * FROM pgr_sloanOrdering('q1');
