@@ -1,0 +1,65 @@
+
+/*PGR-GNU*****************************************************************
+
+Copyright (c) 2018  pgRouting developers
+Mail: project@pgrouting.org
+
+------
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ ********************************************************************PGR-GNU*/
+BEGIN;
+
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN NOT min_version('4.0.0') THEN plan(1) ELSE plan(2) END;
+
+
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF NOT min_version('4.0.0') THEN
+  RETURN QUERY
+  SELECT skip(1, 'Function is new on 4.0.0');
+  RETURN;
+END IF;
+
+-- 0 edge, 0 vertex test
+
+PREPARE q1 AS
+SELECT * FROM pgr_kingOrdering(
+'SELECT id, source, target, cost, reverse_cost FROM edges WHERE id > 18'
+);
+
+RETURN QUERY
+SELECT is_empty('q1', 'Graph with 0 edge and 0 vertex -> Empty row is returned');
+
+-- 1 vertex test: 6 -- 6
+
+PREPARE q2 AS
+SELECT *
+FROM pgr_kingOrdering('SELECT id, source, source AS target, cost, reverse_cost FROM edges WHERE id = 2');
+
+RETURN QUERY
+SELECT set_eq('q2', $$VALUES (1, 6)$$, '6 -- 6: Same node returned');
+
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
+
+
+SELECT * FROM finish();
+ROLLBACK;
