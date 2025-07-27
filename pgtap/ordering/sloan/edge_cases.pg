@@ -48,7 +48,7 @@ PREPARE q2 AS
 SELECT * FROM pgr_sloanOrdering('SELECT id, source, source AS target, cost, reverse_cost FROM edges WHERE id = 2');
 
 RETURN QUERY 
-SELECT set_eq('r4', $$VALUES (1, 6)$$, '4: Same node returned');
+SELECT set_eq('q2', $$VALUES (1, 6)$$, '4: Same node returned');
 
 -- 3 -- 7 -- 3; 2 vertices test (connected)
 
@@ -75,7 +75,7 @@ PERFORM todo_start('Graph is disconnected, check if algo works for disconnected 
 -- 3 -- 3; 7 -- 7; 2 vertices test (isolated)
 
 PREPARE q5 AS 
-SELECT * FROM pgr_sloanOrdering('SELECT id, source, source AS target, cost, reverse_cost FROM edges WHERE id = 7;
+SELECT * FROM pgr_sloanOrdering('SELECT id, source, source AS target, cost, reverse_cost FROM edges WHERE id = 7 
 UNION 
 SELECT id, target AS source, target, cost, reverse_cost FROM edges WHERE id = 7');
 
