@@ -70,10 +70,9 @@ kingOrdering(G &graph) {
     boost::king_ordering(graph.graph, inv_perm. rbegin(), color_map, degree_map, index_map);
     size_t j = 0;
     for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
-        results[j] = static_cast<int64_t>(index_map[*i]);
+        results[j] = static_cast<int64_t>(graph.graph[index_map[*i]].id);
     }
 
-    throw(std::to_string(results.size()));
     return results;
 }
 
@@ -109,7 +108,7 @@ minDegreeOrdering(G &graph) {
         index_map);
 
     for (size_t i = 0; i < n; ++i) {
-        results[i] = static_cast<int64_t>(inv_perm[i]);
+        results[i] = static_cast<int64_t>(graph.graph[inv_perm[i]].id);
     }
 
     return results;

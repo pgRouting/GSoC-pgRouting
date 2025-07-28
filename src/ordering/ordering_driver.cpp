@@ -77,22 +77,25 @@ do_ordering(
         hint = edges_sql;
         auto edges = get_edges(std::string(edges_sql), true, false);
         if (edges.empty()) {
-            throw std::string("No edges found");
+            *notice_msg = to_pg_msg("No edges found");
+            *return_tuples = NULL;
+            *return_count = 0;
+            return;
         }
         hint = "";
 
         std::vector<int64_t> results;
         UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
-        if (which == 0) {
+        if (which == 2) {
             results = minDegreeOrdering(undigraph);
-        } else if (which ==1) {
+        } else if (which ==3) {
             results = kingOrdering(undigraph);
         }
         auto count = results.size();
 
         if (count == 0) {
-            *err_msg = to_pg_msg("No results found \n");
+            *notice_msg = to_pg_msg("No results found \n");
             *return_tuples = NULL;
             *return_count = 0;
             return;

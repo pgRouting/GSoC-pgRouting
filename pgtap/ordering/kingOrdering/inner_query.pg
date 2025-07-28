@@ -20,48 +20,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('3.4.0') THEN plan(1) ELSE plan(4) END;
+SELECT CASE WHEN NOT min_version('4.0.0') THEN plan(1) ELSE plan(54) END;
 
-PREPARE edges AS
-SELECT id, source, target, cost, reverse_cost  FROM edges;
-
-PREPARE null_ret AS
-SELECT id FROM vertices  WHERE id IN (-1);
-
-PREPARE null_ret_arr AS
-SELECT array_agg(id) FROM vertices  WHERE id IN (-1);
-
-
-
-CREATE OR REPLACE FUNCTION no_crash()
+CREATE OR REPLACE FUNCTION inner_query()
 RETURNS SETOF TEXT AS
 $BODY$
-DECLARE
-params TEXT[];
-subs TEXT[];
 BEGIN
-  IF NOT min_version('3.4.0') THEN
-    RETURN QUERY
-    SELECT skip(1, 'Function is new on 3.4.0');
-    RETURN;
-  END IF;
 
-  -- pgr_cuthillMckeeOrdering
-  params = ARRAY[
-  '$$SELECT id, source, target, cost, reverse_cost  FROM edges$$'
-  ]::TEXT[];
-  subs = ARRAY[
-  'NULL'
-  ]::TEXT[];
+IF NOT min_version('4.0.0') THEN
+  RETURN QUERY
+  SELECT skip(1, 'pgr_kingOrdering is new on 4.0.0');
+  RETURN;
+END IF;
 
-  RETURN query SELECT * FROM no_crash_test('pgr_cuthillMckeeOrdering', params, subs);
+RETURN QUERY
+SELECT style_dijkstra('pgr_kingOrdering(', ')');
 
-END
+END;
 $BODY$
-LANGUAGE plpgsql VOLATILE;
+LANGUAGE plpgsql;
 
-
-SELECT * FROM no_crash();
+SELECT inner_query();
 
 SELECT finish();
 ROLLBACK;
