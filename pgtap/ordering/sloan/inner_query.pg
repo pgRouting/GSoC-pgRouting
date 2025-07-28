@@ -19,37 +19,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 BEGIN;
 
-SELECT CASE WHEN min_version('4.0.0') THEN plan(5) ELSE plan(1) END;
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN NOT min_version('4.0.0') THEN plan(1) ELSE plan(54) END;
 
-CREATE OR REPLACE FUNCTION types_check()
+CREATE OR REPLACE FUNCTION inner_query()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
 
-  IF NOT min_version('4.0.0') THEN
-    RETURN QUERY SELECT skip(1, 'Function is new on 4.0.0');
-    RETURN;
-  END IF;
-
-  RETURN QUERY SELECT has_function('pgr_sloanordering');
-  RETURN QUERY SELECT has_function('pgr_sloanordering', ARRAY['text']);
-  RETURN QUERY SELECT function_returns('pgr_sloanordering', ARRAY['text'],  'setof record');
-
+IF NOT min_version('4.0.0') THEN
   RETURN QUERY
-  SELECT function_args_eq('pgr_sloanordering',
-    $$SELECT  '{"", seq, node}'::TEXT[] $$
-  );
+  SELECT skip(1, 'pgr_sloanOrdering is new on 4.0.0');
+  RETURN;
+END IF;
 
-  RETURN QUERY SELECT function_types_eq('pgr_sloanordering',
-    $$VALUES
-    ('{text,int8,int8}'::TEXT[])
-    $$
-  );
+RETURN QUERY
+SELECT style_dijkstra('pgr_sloanOrdering(', ')');
+
 END;
 $BODY$
 LANGUAGE plpgsql;
 
-SELECT types_check();
+SELECT inner_query();
 
-SELECT * FROM finish();
+SELECT finish();
 ROLLBACK;

@@ -19,37 +19,44 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 BEGIN;
 
-SELECT CASE WHEN min_version('4.0.0') THEN plan(5) ELSE plan(1) END;
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN NOT min_version('4.0.0') THEN plan(1) ELSE plan(4) END;
 
-CREATE OR REPLACE FUNCTION types_check()
+PREPARE edges AS
+SELECT id, source, target, cost, reverse_cost  FROM edges;
+
+PREPARE null_ret AS
+SELECT id FROM vertices  WHERE id IN (-1);
+
+PREPARE null_ret_arr AS
+SELECT array_agg(id) FROM vertices  WHERE id IN (-1);
+
+
+
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
+DECLARE
+params TEXT[];
+subs TEXT[];
 BEGIN
-
   IF NOT min_version('4.0.0') THEN
-    RETURN QUERY SELECT skip(1, 'Function is new on 4.0.0');
+    RETURN QUERY
+    SELECT skip(1, 'pgr_sloanOrdering is new on 4.0.0');
     RETURN;
   END IF;
 
-  RETURN QUERY SELECT has_function('pgr_sloanordering');
-  RETURN QUERY SELECT has_function('pgr_sloanordering', ARRAY['text']);
-  RETURN QUERY SELECT function_returns('pgr_sloanordering', ARRAY['text'],  'setof record');
+  params = ARRAY['$$SELECT id, source, target, cost, reverse_cost FROM edges$$']::TEXT[];
+  subs = ARRAY[ 'NULL' ]::TEXT[];
 
-  RETURN QUERY
-  SELECT function_args_eq('pgr_sloanordering',
-    $$SELECT  '{"", seq, node}'::TEXT[] $$
-  );
+    RETURN query SELECT * FROM no_crash_test('pgr_sloanOrdering', params, subs);
 
-  RETURN QUERY SELECT function_types_eq('pgr_sloanordering',
-    $$VALUES
-    ('{text,int8,int8}'::TEXT[])
-    $$
-  );
-END;
+END
 $BODY$
-LANGUAGE plpgsql;
+LANGUAGE plpgsql VOLATILE;
 
-SELECT types_check();
 
-SELECT * FROM finish();
+SELECT no_crash();
+
+SELECT finish();
 ROLLBACK;
