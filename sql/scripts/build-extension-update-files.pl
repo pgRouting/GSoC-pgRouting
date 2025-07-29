@@ -275,13 +275,25 @@ sub generate_upgrade_script {
 
             if ($old_minor >= "3.2") {
                 # Out parameters changed names on v4.0.0
-                # Experimental functions
                 push @commands, drop_special_case_function("pgr_dagshortestpath(text,text)");
+                push @commands, drop_special_case_function("pgr_sequentialvertexcoloring(text)");
+                push @commands, drop_special_case_function("pgr_bipartite(text)");
+
+                push @commands, drop_special_case_function("_pgr_depthfirstsearch(text,anyarray,boolean,bigint)");
+                push @commands, drop_special_case_function("pgr_depthfirstsearch(text,anyarray,boolean,bigint)");
+                push @commands, drop_special_case_function("pgr_depthfirstsearch(text,bigint,boolean,bigint)");
             }
+
+            if ($old_minor >= "3.3") {
+                push @commands, drop_special_case_function("pgr_edgecoloring(text)");
+            }
+
+            push @commands, drop_special_case_function("_pgr_breadthfirstsearch(text,anyarray,bigint,boolean)");
 
             # Row type defined by OUT parameters is different.
             # Out parameters changed names on v4.0.0
-            # Experimental functions
+
+            push @commands, drop_special_case_function("pgr_turnrestrictedpath(text,text,bigint,bigint,integer,boolean,boolean,boolean,boolean)");
 
             push @commands, drop_special_case_function("pgr_bellmanford(text,bigint,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_bellmanford(text,anyarray,bigint,boolean)");
@@ -291,10 +303,17 @@ sub generate_upgrade_script {
             push @commands, drop_special_case_function("pgr_binarybreadthfirstsearch(text,anyarray,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_binarybreadthfirstsearch(text,bigint,anyarray,boolean)");
 
+            push @commands, drop_special_case_function("pgr_topologicalsort(text)");
+            push @commands, drop_special_case_function("pgr_transitiveclosure(text)");
+
             push @commands, drop_special_case_function("pgr_dagshortestpath(text,bigint,bigint)");
             push @commands, drop_special_case_function("pgr_dagshortestpath(text,bigint,anyarray)");
             push @commands, drop_special_case_function("pgr_dagshortestpath(text,anyarray,bigint)");
             push @commands, drop_special_case_function("pgr_dagshortestpath(text,anyarray,anyarray)");
+
+            push @commands, drop_special_case_function("pgr_edgedisjointpaths(text,bigint,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_edgedisjointpaths(text,anyarray,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_edgedisjointpaths(text,bigint,anyarray,boolean)");
 
             push @commands, drop_special_case_function("pgr_edwardmoore(text,bigint,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_edwardmoore(text,anyarray,bigint,boolean)");
