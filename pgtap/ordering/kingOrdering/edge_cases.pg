@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('4.0.0') THEN plan(1) ELSE plan(6) END;
+SELECT CASE WHEN NOT min_version('4.0.0') THEN plan(1) ELSE plan(7) END;
 
 
 CREATE OR REPLACE FUNCTION edge_cases()
@@ -108,6 +108,40 @@ FROM pgr_kingOrdering('SELECT id, source, target, cost, reverse_cost FROM edges 
 
 RETURN QUERY
 SELECT set_eq('q6', $$VALUES (1, 5), (2, 6), (3, 10)$$, 'Three connected vertices are ordered as expected');
+
+-- pgRouting sample data
+
+CREATE TABLE expected_result (
+seq BIGINT,
+node BIGINT);
+
+INSERT INTO expected_result (seq, node) VALUES
+(1, 13),
+(2, 14),
+(3, 2),
+(4, 4),
+(5, 1),
+(6, 9),
+(7, 3),
+(8, 8),
+(9, 5),
+(10, 7),
+(11, 12),
+(12, 6),
+(13, 11),
+(14, 17),
+(15, 10),
+(16, 16),
+(17, 15); 
+
+PREPARE q7 AS
+SELECT * FROM pgr_kingOrdering('SELECT id, source, target, cost, reverse_cost FROM edges'
+);
+
+PREPARE r7 AS
+SELECT * FROM expected_result;
+
+RETURN QUERY SELECT set_eq('q7','r7','King ordering result matches expected sequence for pgRouting sample data');
 
 END;
 $BODY$
