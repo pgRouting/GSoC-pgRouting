@@ -99,6 +99,8 @@ FROM pgr_kingOrdering('SELECT id, source, target, cost, reverse_cost FROM isolat
 RETURN QUERY
 SELECT set_eq('q5', $$VALUES (1, 1), (2, 2)$$, 'Both isolated vertices are returned for a disconnected graph');
 
+DROP TABLE IF EXISTS isolated_vertices_table;
+
 -- 3 vertices test
 
 PREPARE q6 AS
