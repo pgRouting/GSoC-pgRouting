@@ -3,6 +3,7 @@ SET(LOCAL_FILES
     pgr_cuthillMckeeOrdering.rst
     pgr_topologicalSort.rst
     pgr_kingOrdering.rst
+    pgr_minDegreeOrdering.rst
     )
 
 foreach (f ${LOCAL_FILES})
