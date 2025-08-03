@@ -2,6 +2,8 @@
 SET(LOCAL_FILES
     cuthillMckeeOrdering
     topologicalSort
+    kingOrdering
+    minDegreeOrdering
     )
 
 foreach (f ${LOCAL_FILES})
