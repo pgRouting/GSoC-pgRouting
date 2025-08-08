@@ -1,11 +1,3 @@
-..
-   ****************************************************************************
-    pgRouting Manual
-    Copyright(c) pgRouting Contributors
-
-    This documentation is licensed under a Creative Commons Attribution-Share
-    Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
-   ****************************************************************************
 
 .. index::
    single: Ordering Family ; pgr_sloanOrdering
@@ -33,10 +25,17 @@ graph
 Description
 -------------------------------------------------------------------------------
 
-TBD
+The Sloan ordering algorithm reorders the vertices of a graph to reduce bandwidth, profile, and wavefront properties, which is particularly useful for sparse matrix computations and finite element analysis.
+  *Finds a pseudoperipheral vertex pair to determine good starting points
+  *Uses a priority-based algorithm that balances vertex degree and distance from the start vertex.
+  *Aims to mininimize bandwidth (maximum difference between connected vertex indices.
+  *The implementation is for undirected graphs
+  *Typically produces better orderings than simple breadth-first approaches.
+|Boost| Boost Graph inside
 
 Signatures
 ------------------------------------------------------------------------------
+..rubric::Summary
 
 .. index::
     single: sloanOrdering - Experimental on v4.0
