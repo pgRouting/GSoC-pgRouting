@@ -87,31 +87,13 @@ Column           Type        Description
 
 Additional Examples
 
-:Example: Sloan ordering Original graph from Boost example (vertices 0-9).
+:Example: Sloan ordering of Original graph from Boost example (vertices 0-9).
 
 ..graphviz::
 
 graph G{
 node[shape=circle, style=filled, fillcolor=lightblue, color=black, fontcolor=black, fontsize=12];
 edge[color=black, penwidth=1.5];
-
-subgraph {
-    rank=same;
-    8 [label="8(1)"];
-    0 [label="0(2)"];
-    3 [label="3(3)"];
-    7 [label="7(4)"];
-    5 [label="5(5)"];
-}
-
-subgraph {
-    rank=same;
-    2 [label="2(6)"];
-    4 [label="4(7)"];
-    6 [label="6(8)"];
-    1 [label="1(9)"];
-    9 [label="9(10)"];
-}
 
 0 -- 3;
 0 -- 5;
@@ -128,8 +110,16 @@ subgraph {
 5 -- 7;
 6 -- 7;
 
+{rank=same; 0; 8;}
+{rank=same; 3; 5; 7;}
+{rank=same; 2; 4; 6;}
+{rank=same; 1; 9;}
+
 }
 
+..literalinclude::sloanOrdering.queries
+  :start-after: --q3
+  :end-before: --q4
 
 
 See Also
