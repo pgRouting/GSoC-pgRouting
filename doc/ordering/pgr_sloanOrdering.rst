@@ -48,7 +48,7 @@ Signatures
    | Returns set of |result_node_order|
    | OR EMPTY SET
 
-:Example: Graph ordering of pgRouting :doc:`sampledata`
+:Example : Sloan ordering without specifying start vertex
 
 .. literalinclude:: sloanOrdering.queries
    :start-after: -- q1
@@ -82,8 +82,55 @@ Returns set of ``(seq, node)``
 Column           Type        Description
 ===============  =========== ======================================
 ``seq``           ``BIGINT``  Sequence of the order starting from 1.
-``node``          ``BIGINT``  New ordering in reverse order.
+``node``          ``BIGINT``  New sloan ordering order.
 ===============  =========== ======================================
+
+Additional Examples
+
+:Example: Sloan ordering Original graph from Boost example (vertices 0-9).
+
+..graphviz::
+
+graph G{
+node[shape=circle, style=filled, fillcolor=lightblue, color=black, fontcolor=black, fontsize=12];
+edge[color=black, penwidth=1.5];
+
+subgraph {
+    rank=same;
+    8 [label="8(1)"];
+    0 [label="0(2)"];
+    3 [label="3(3)"];
+    7 [label="7(4)"];
+    5 [label="5(5)"];
+}
+
+subgraph {
+    rank=same;
+    2 [label="2(6)"];
+    4 [label="4(7)"];
+    6 [label="6(8)"];
+    1 [label="1(9)"];
+    9 [label="9(10)"];
+}
+
+0 -- 3;
+0 -- 5;
+1 -- 2;
+1 -- 4;
+1 -- 6;
+1 -- 9;
+2 -- 3;
+2 -- 4;
+3 -- 5;
+3 -- 8;
+4 -- 6;
+5 -- 6;
+5 -- 7;
+6 -- 7;
+
+}
+
+
 
 See Also
 -------------------------------------------------------------------------------
