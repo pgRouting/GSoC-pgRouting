@@ -32,7 +32,24 @@
 Description
 -------------------------------------------------------------------------------
 
-TBD
+In numerical linear algebra and graph theory, the King ordering algorithm
+is a heuristic designed to reorder the vertices of a graph so as to reduce
+its bandwidth. 
+
+The method follows a breadth-first search (BFS) traversal,but with a refinement:
+at each step, the unvisited neighbors of the current vertex are inserted into
+the queue in ascending order of their pseudo-degree, where the pseudo-degree of
+a vertex is the number of edges connecting it to yet-unvisited vertices. This
+prioritization often yields a smaller bandwidth compared to simpler BFS orderings.
+
+**The main characteristics are:**
+
+- The implementation targets undirected graphs.
+- Bandwidth minimization is an NP-complete problem; King ordering provides a practical local minimization approach.
+- The time complexity is: :math:`O(m^2 \log(m)|E|)`
+
+   - where :math:`|E|` is the number of edges,
+   - :math:`m` is the maximum degree among all vertices.
 
 Signatures
 ------------------------------------------------------------------------------
