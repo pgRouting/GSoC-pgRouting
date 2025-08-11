@@ -32,7 +32,27 @@
 Description
 -------------------------------------------------------------------------------
 
-TBD
+In numerical linear algebra, the MinDegree ordering is a heuristic used to
+reduce the amount of fill-in during sparse matrix factorization, such as
+Cholesky decomposition for symmetric matrices.
+
+When eliminating variables in a sparse system, new nonzero entries—called
+fill-ins—can appear in positions that were originally zero, increasing storage
+and computation costs. The minimum degree approach attempts to reorder the
+vertices (or equivalently, the rows and columns of the matrix) so that,
+at each elimination step, the vertex with the smallest degree is removed first,
+thereby reducing potential fill-in.
+
+The main characteristics are:
+
+- The implementation works on undirected graphs.
+- The algorithm is a heuristic; finding the true optimal ordering is NP-complete.
+- The time complexity is: :math:`O(|V| \log |V| + |E|)`
+   
+   - where :math:`|V|` is the number of vertices,
+   - :math:`|E|` is the number of edges.
+
+|Boost| Boost Graph Inside
 
 Signatures
 ------------------------------------------------------------------------------
