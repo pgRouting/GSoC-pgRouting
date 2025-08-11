@@ -97,6 +97,37 @@ Result columns
    :start-after: node_ordering_start
    :end-before: node_ordering_end
 
+Additional Examples
+-------------------------------------------------------------------------------
+
+.. graphviz::
+
+   graph G {
+    node [shape=circle, style=filled, fillcolor=white, color=black, fontcolor=black, fontsize=10];
+    edge [color=black, penwidth=1];
+
+    4 -- 7;
+    7 -- 9;
+    7 -- 0;
+    0 -- 2;
+    2 -- 5;
+    5 -- 9;
+    9 -- 8;
+    9 -- 1;
+    5 -- 1;
+    9 -- 6;
+    6 -- 3;
+    1 -- 3;
+
+    {rank=same; 4; 8; 6;}
+    {rank=same; 7; 9; 3;}
+    {rank=same; 0; 2; 5; 1;}
+  }
+
+.. literalinclude:: kingOrdering.queries
+   :start-after: -- q2
+   :end-before: -- q3
+
 See Also
 -------------------------------------------------------------------------------
 
