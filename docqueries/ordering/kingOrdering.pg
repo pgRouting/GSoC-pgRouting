@@ -43,3 +43,5 @@ INSERT INTO additional_sample_1 (source, target, cost, reverse_cost) VALUES
 SELECT * FROM pgr_kingOrdering(
     'SELECT id, source, target, cost, reverse_cost FROM additional_sample_1'
 );
+
+/* -- q3 */
