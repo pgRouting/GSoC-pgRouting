@@ -51,6 +51,8 @@ prioritization often yields a smaller bandwidth compared to simpler BFS ordering
    - where :math:`|E|` is the number of edges,
    - :math:`m` is the maximum degree among all vertices.
 
+|Boost| Boost Graph Inside
+
 Signatures
 ------------------------------------------------------------------------------
 
