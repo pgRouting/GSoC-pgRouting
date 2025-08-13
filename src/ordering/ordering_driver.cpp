@@ -86,7 +86,8 @@ do_ordering(
         hint = "";
 
         std::vector<int64_t> results;
-        UndirectedGraph undigraph;
+        auto vertices(pgrouting::extract_vertices(edges));
+        UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
         if (which == 2) {
             results = minDegreeOrdering(undigraph);
