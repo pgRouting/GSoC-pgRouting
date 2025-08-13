@@ -1,10 +1,11 @@
 ..
    ****************************************************************************
-    pgRouting Manual
-    Copyright(c) pgRouting Contributors
+   pgRouting Manual
+   Copyright(c) pgRouting Contributors
 
-    This documentation is licensed under a Creative Commons Attribution-Share
-    Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
+   This documentation is licensed under a Creative Commons Attribution-Share
+
+   Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
 .. index::
@@ -33,10 +34,17 @@ graph
 Description
 -------------------------------------------------------------------------------
 
-TBD
+The Sloan ordering algorithm reorders the vertices of a graph to reduce bandwidth, profile, and wavefront properties, which is particularly useful for sparse matrix computations and finite element analysis.
+  *Finds a pseudoperipheral vertex pair to determine good starting points
+  *Uses a priority-based algorithm that balances vertex degree and distance from the start vertex.
+  *Aims to mininimize bandwidth (maximum difference between connected vertex indices.
+  *The implementation is for undirected graphs
+  *Typically produces better orderings than simple breadth-first approaches.
+|Boost| Boost Graph inside
 
 Signatures
 ------------------------------------------------------------------------------
+..rubric::Summary
 
 .. index::
     single: sloanOrdering - Experimental on v4.0
@@ -49,7 +57,7 @@ Signatures
    | Returns set of |result_node_order|
    | OR EMPTY SET
 
-:Example: Graph ordering of pgRouting :doc:`sampledata`
+:Example : Sloan ordering without specifying start vertex
 
 .. literalinclude:: sloanOrdering.queries
    :start-after: -- q1
@@ -83,8 +91,45 @@ Returns set of ``(seq, node)``
 Column           Type        Description
 ===============  =========== ======================================
 ``seq``           ``BIGINT``  Sequence of the order starting from 1.
-``node``          ``BIGINT``  New ordering in reverse order.
+``node``          ``BIGINT``  New sloan ordering order.
 ===============  =========== ======================================
+
+Additional Examples
+
+:Example: Sloan ordering of Original graph from Boost example (vertices 0-9).
+
+..graphviz::
+
+graph G{
+node[shape=circle, style=filled, fillcolor=lightblue, color=black, fontcolor=black, fontsize=12];
+edge[color=black, penwidth=1.5];
+
+0 -- 3;
+0 -- 5;
+1 -- 2;
+1 -- 4;
+1 -- 6;
+1 -- 9;
+2 -- 3;
+2 -- 4;
+3 -- 5;
+3 -- 8;
+4 -- 6;
+5 -- 6;
+5 -- 7;
+6 -- 7;
+
+{rank=same; 0; 8;}
+{rank=same; 3; 5; 7;}
+{rank=same; 2; 4; 6;}
+{rank=same; 1; 9;}
+
+}
+
+..literalinclude::sloanOrdering.queries
+  :start-after: --q3
+  :end-before: --q4
+
 
 See Also
 -------------------------------------------------------------------------------
