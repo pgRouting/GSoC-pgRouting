@@ -40,6 +40,7 @@ The Sloan ordering algorithm reorders the vertices of a graph to reduce bandwidt
   *Aims to mininimize bandwidth (maximum difference between connected vertex indices.
   *The implementation is for undirected graphs
   *Typically produces better orderings than simple breadth-first approaches.
+  *Run time is 0.115846 seconds.
 |Boost| Boost Graph inside
 
 Signatures
