@@ -89,9 +89,15 @@ do_ordering(
 
         std::vector<int64_t> results;
 
+#if 0
         pgrouting::UndirectedGraph undigraph;
+#else
+        auto vertices(pgrouting::extract_vertices(edges));
+        pgrouting::UndirectedGraph undigraph(vertices);
+#endif
         undigraph.insert_edges(edges);
 
+        // log << undigraph;
         if (which == 0) {
                 results = sloanOrdering(undigraph);
         }
