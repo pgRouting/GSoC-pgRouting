@@ -66,8 +66,8 @@ minDegreeOrdering(G &graph) {
     std::vector<V> supernode_sizes(n, 1);
     auto supernode_map = boost::make_iterator_property_map(supernode_sizes.begin(), index_map);
 
-    std::vector<V> perm(n);
-    std::vector<V> inv_perm(n);
+    std::vector<V> permutation(n);
+    std::vector<V> inv_permutation(n);
 
     auto [vi, vi_end] = boost::vertices(graph.graph);
     for (; vi != vi_end; ++vi) {
@@ -79,14 +79,14 @@ minDegreeOrdering(G &graph) {
     boost::minimum_degree_ordering(
         graph.graph,
         degree_map,
-        inv_perm.begin(),
-        perm.begin(),
+        inv_permutation.begin(),
+        permutation.begin(),
         supernode_map,
         0,
         index_map);
 
     size_t j = 0;
-    for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
+    for (auto i = inv_permutation.begin(); i != inv_permutation.end(); ++i, ++j) {
         results[j] = static_cast<int64_t>(graph.graph[index_map[*i]].id);
     }
 

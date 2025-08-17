@@ -63,18 +63,18 @@ kingOrdering(G &graph) {
     std::vector<V> colors(n);
     auto color_map = boost::make_iterator_property_map(colors.begin(), index_map);
     auto degree_map = boost::make_degree_map(graph.graph);
-    std::vector<V> inv_perm(n);
+    std::vector<V> inv_permutation(n);
 
     CHECK_FOR_INTERRUPTS();
     boost::king_ordering(
         graph.graph,
-        inv_perm.rbegin(),
+        inv_permutation.rbegin(),
         color_map,
         degree_map,
         index_map);
 
     size_t j = 0;
-    for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
+    for (auto i = inv_permutation.begin(); i != inv_permutation.end(); ++i, ++j) {
         results[j] = static_cast<int64_t>(graph.graph[index_map[*i]].id);
     }
 
