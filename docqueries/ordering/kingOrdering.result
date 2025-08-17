@@ -63,9 +63,9 @@ INSERT INTO additional_sample_1 (source, target, cost, reverse_cost) VALUES
 (3, 1, 1, 1);
 INSERT 0 24
 SELECT * FROM pgr_kingOrdering(
-  'SELECT id, source, target, cost, reverse_cost FROM additional_sample_1'
-  );
- seq | node 
+    'SELECT id, source, target, cost, reverse_cost FROM additional_sample_1'
+);
+ seq | node
 -----+------
    1 |    0
    2 |    4
