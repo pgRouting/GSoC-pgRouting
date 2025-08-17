@@ -69,9 +69,8 @@ minDegreeOrdering(G &graph) {
     std::vector<V> permutation(n);
     std::vector<V> inv_permutation(n);
 
-    auto [vi, vi_end] = boost::vertices(graph.graph);
-    for (; vi != vi_end; ++vi) {
-    degree_map[*vi] = boost::degree(*vi, graph.graph);
+    for (V v = 0; v < n; ++v) {
+        degree_map[v] = boost::degree(v, graph.graph);
     }
 
     CHECK_FOR_INTERRUPTS();
