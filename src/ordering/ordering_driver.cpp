@@ -86,7 +86,6 @@ do_ordering(
         hint = "";
 
         std::vector<int64_t> results;
-        
         auto vertices(pgrouting::extract_vertices(edges));
         UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
