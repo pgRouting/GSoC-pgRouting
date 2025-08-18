@@ -52,7 +52,6 @@ namespace pgrouting  {
 template <class G>
 std::vector<int64_t>
 minDegreeOrdering(G &graph) {
-    using B_G = typename G::B_G;
     using V = typename G::V;
 
     size_t n = boost::num_vertices(graph.graph);
