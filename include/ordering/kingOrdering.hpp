@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: ordering.hpp
+File: kingOrdering.hpp
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_ORDERING_ORDERING_HPP_
-#define INCLUDE_ORDERING_ORDERING_HPP_
+#ifndef INCLUDE_ORDERING_KINGORDERING_HPP_
+#define INCLUDE_ORDERING_KINGORDERING_HPP_
 #pragma once
 
 #include <vector>
@@ -45,7 +45,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
 #include <boost/graph/king_ordering.hpp>
-#include <boost/graph/minimum_degree_ordering.hpp>
 
 
 namespace pgrouting  {
@@ -53,7 +52,6 @@ namespace pgrouting  {
 template <class G>
 std::vector<int64_t>
 kingOrdering(G &graph) {
-    using B_G = typename G::B_G;
     using V = typename G::V;
 
     size_t n = boost::num_vertices(graph.graph);
@@ -64,62 +62,18 @@ kingOrdering(G &graph) {
     std::vector<V> colors(n);
     auto color_map = boost::make_iterator_property_map(colors.begin(), index_map);
     auto degree_map = boost::make_degree_map(graph.graph);
-    std::vector<V> inv_perm(n);
+    std::vector<V> inv_permutation(n);
 
     CHECK_FOR_INTERRUPTS();
     boost::king_ordering(
         graph.graph,
-        inv_perm.rbegin(),
+        inv_permutation.rbegin(),
         color_map,
         degree_map,
         index_map);
 
     size_t j = 0;
-    for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
-        results[j] = static_cast<int64_t>(graph.graph[index_map[*i]].id);
-    }
-
-    return results;
-}
-
-template <class G>
-std::vector<int64_t>
-minDegreeOrdering(G &graph) {
-    using B_G = typename G::B_G;
-    using V = typename G::V;
-
-    size_t n = boost::num_vertices(graph.graph);
-    std::vector<int64_t> results(n);
-
-    auto index_map = boost::get(boost::vertex_index, graph.graph);
-
-    std::vector<V> degrees(n);
-    auto degree_map = boost::make_iterator_property_map(degrees.begin(), index_map);
-
-    std::vector<V> supernode_sizes(n, 1);
-    auto supernode_map = boost::make_iterator_property_map(supernode_sizes.begin(), index_map);
-
-    std::vector<V> perm(n);
-    std::vector<V> inv_perm(n);
-
-    auto [vi, vi_end] = boost::vertices(graph.graph);
-    for (; vi != vi_end; ++vi) {
-    degree_map[*vi] = boost::degree(*vi, graph.graph);
-    }
-
-    CHECK_FOR_INTERRUPTS();
-
-    boost::minimum_degree_ordering(
-        graph.graph,
-        degree_map,
-        inv_perm.begin(),
-        perm.begin(),
-        supernode_map,
-        0,
-        index_map);
-
-    size_t j = 0;
-    for (auto i = inv_perm.begin(); i != inv_perm.end(); ++i, ++j) {
+    for (auto i = inv_permutation.begin(); i != inv_permutation.end(); ++i, ++j) {
         results[j] = static_cast<int64_t>(graph.graph[index_map[*i]].id);
     }
 

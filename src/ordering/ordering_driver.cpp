@@ -38,7 +38,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
-#include "ordering/ordering.hpp"
+#include "ordering/kingOrdering.hpp"
+#include "ordering/minDegreeOrdering.hpp"
 
 
 
@@ -85,8 +86,10 @@ do_ordering(
         hint = "";
 
         std::vector<int64_t> results;
-        UndirectedGraph undigraph;
+        auto vertices(pgrouting::extract_vertices(edges));
+        UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
+
         if (which == 2) {
             results = minDegreeOrdering(undigraph);
         } else if (which ==3) {
