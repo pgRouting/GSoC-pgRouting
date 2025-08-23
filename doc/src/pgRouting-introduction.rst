@@ -67,6 +67,7 @@ Individuals in this release v3.8.x (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Aurélie Bousquet,
+Fan Wu,
 Regina Obe,
 Vicky Vergara
 
