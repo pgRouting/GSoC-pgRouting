@@ -34,7 +34,7 @@ jobs:
           os: [ubuntu-latest, ubuntu-22.04, ubuntu-20.04]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: get postgres version
         run: |
