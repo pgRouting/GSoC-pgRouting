@@ -111,6 +111,7 @@ Contributors Past & Present:
 Individuals (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Aadi Pandey,
 Aasheesh Tiwari,
 Abhinav Jain,
 Aditya Pratap Singh,
