@@ -6910,7 +6910,7 @@ msgstr ""
 msgid "Upgrading the database"
 msgstr ""
 
-msgid "To upgrade pgRouting in the database to version 4.1.0 use the following command:"
+msgid "To upgrade pgRouting in the database to version 4.1.0-dev use the following command:"
 msgstr ""
 
 msgid "More information can be found in https://www.postgresql.org/docs/current/sql-createextension.html"
