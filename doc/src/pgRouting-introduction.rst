@@ -62,6 +62,7 @@ Individuals in this release |release| (in alphabetical order)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Mohit Rawat,
+Ranjodh Singh,
 Regina Obe,
 Vicky Vergara
 
@@ -151,6 +152,7 @@ Mohit Rawat,
 Mukul Priya,
 Nitish Chauhan,
 Rajat Shinde,
+Ranjodh Singh,
 Razequl Islam,
 Regina Obe,
 Rohith Reddy,
