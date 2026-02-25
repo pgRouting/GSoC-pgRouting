@@ -68,6 +68,7 @@ Individuals in this release v4.0.0 (in alphabetical order)
 
 Bipasha Gayary,
 Fan Wu,
+Md Sakir Ahmed,
 Regina Obe,
 Saloni kumari,
 Vicky Vergara
