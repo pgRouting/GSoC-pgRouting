@@ -6,9 +6,10 @@ Checks: >
     cppcoreguidelines-avoid-capturing-lambda-coroutines,
     cppcoreguidelines-avoid-goto,
     cppcoreguidelines-avoid-non-const-global-variables,
-    cppcoreguidelines-avoid-reference-coroutine-parameters
+    cppcoreguidelines-avoid-reference-coroutine-parameters,
+    cppcoreguidelines-avoid-c-arrays,
 
-WarningsAsErrors: ''
-HeaderFilterRegex: './include'
-FormatStyle:     none
+WarningsAsErrors: ""
+HeaderFilterRegex: "./include"
+FormatStyle: none
 InheritParentConfig: true
