@@ -23,7 +23,7 @@ Checks: >
     -cppcoreguidelines-pro-type-union-access,
     -cppcoreguidelines-pro-type-vararg,
     -cppcoreguidelines-slicing,
-    cppcoreguidelines-avoid-goto,
+    cppcoreguidelines-init-variables
     
     
 CheckOptions:
