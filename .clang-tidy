@@ -23,7 +23,8 @@ Checks: >
     -cppcoreguidelines-pro-type-union-access,
     -cppcoreguidelines-pro-type-vararg,
     -cppcoreguidelines-slicing,
-    cppcoreguidelines-init-variables
+    cppcoreguidelines-pro-type-cstyle-cast
+
     
     
 CheckOptions:
