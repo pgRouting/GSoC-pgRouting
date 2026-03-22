@@ -1,0 +1,1491 @@
+pgRouting VERSION 4.1.0
+------------------------------------
+------------------------------------
+Compiling with G++-
+------------------------------------
+-- Setting build type to 'Release' as none was specified.
+-- CMAKE_BUILD_TYPE Release
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Git: /usr/bin/git (found version "2.43.0") 
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found suitable version "1.83.0", minimum required is "1.56.0")  
+-- pgRouting: Require C++17
+-- Found Perl: /usr/bin/perl (found version "5.38.2") 
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Performing Test C_COMPILER_SUPPORTS_FPIC
+-- Performing Test C_COMPILER_SUPPORTS_FPIC - Success
+-- Performing Test CXX_COMPILER_SUPPORTS_FPIC
+-- Performing Test CXX_COMPILER_SUPPORTS_FPIC - Success
+-- Performing Test C_COMPILER_SUPPORTS_ROUNDING_MATH
+-- Performing Test C_COMPILER_SUPPORTS_ROUNDING_MATH - Success
+-- Performing Test CXX_COMPILER_SUPPORTS_ROUNDING_MATH
+-- Performing Test CXX_COMPILER_SUPPORTS_ROUNDING_MATH - Success
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (39.5s)
+-- Generating done (11.3s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BUILD_HTML
+    DOC_USE_BOOTSTRAP
+    EN
+    ES
+    SPHINX_FLAGS
+    SV
+    ZH_HANS
+
+
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+-- CMAKE_BUILD_TYPE Debug
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- pgRouting: Require C++17
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (12.8s)
+-- Generating done (14.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    SV
+
+
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+-- CMAKE_BUILD_TYPE Debug
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- pgRouting: Require C++17
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (14.7s)
+-- Generating done (16.2s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BUILD_HTML
+
+
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+-- CMAKE_BUILD_TYPE Debug
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- pgRouting: Require C++17
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (18.3s)
+-- Generating done (13.0s)
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+[  0%] Building C object src/bdAstar/CMakeFiles/bdAstar.dir/bdAstar.c.o
+[  1%] Building C object src/legacy/CMakeFiles/legacy.dir/legacy.c.o
+[  1%] Building C object src/bdDijkstra/CMakeFiles/bdDijkstra.dir/bdDijkstra.c.o
+[  2%] Building C object src/astar/CMakeFiles/astar.dir/astar.c.o
+[  3%] Building C object src/allpairs/CMakeFiles/allpairs.dir/floydWarshall.c.o
+[  3%] Building C object src/driving_distance/CMakeFiles/driving_distance.dir/driving_distance.c.o
+[  3%] Building C object src/metrics/CMakeFiles/metrics.dir/betweennessCentrality.c.o
+[  4%] Building C object src/tsp/CMakeFiles/tsp.dir/euclideanTSP.c.o
+[  4%] Building C object src/dijkstra/CMakeFiles/dijkstra.dir/dijkstra.c.o
+[  4%] Building C object src/contraction/CMakeFiles/contraction.dir/contractGraph.c.o
+[  5%] Building C object src/withPoints/CMakeFiles/withPoints.dir/withPoints.c.o
+[  5%] Building C object src/ksp/CMakeFiles/ksp.dir/ksp.c.o
+[  6%] Building CXX object src/trsp/CMakeFiles/trsp.dir/edgeInfo.cpp.o
+[  8%] Building C object src/common/CMakeFiles/common.dir/postgres_connection.c.o
+[  8%] Building C object src/max_flow/CMakeFiles/max_flow.dir/max_flow.c.o
+[  9%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pd_orders.cpp.o
+[  9%] Built target legacy
+[ 10%] Building C object src/tsp/CMakeFiles/tsp.dir/TSP.c.o
+[ 10%] Building C object src/allpairs/CMakeFiles/allpairs.dir/johnson.c.o
+[ 10%] Building CXX object src/astar/CMakeFiles/astar.dir/astar_driver.cpp.o
+[ 10%] Building C object src/driving_distance/CMakeFiles/driving_distance.dir/driving_distance_withPoints.c.o
+[ 10%] Building CXX object src/withPoints/CMakeFiles/withPoints.dir/get_new_queries.cpp.o
+[ 10%] Built target bdDijkstra
+[ 10%] Built target bdAstar
+[ 11%] Building CXX object src/ksp/CMakeFiles/ksp.dir/ksp_driver.cpp.o
+[ 11%] Building CXX object src/metrics/CMakeFiles/metrics.dir/betweennessCentrality_driver.cpp.o
+[ 11%] Building CXX object src/tsp/CMakeFiles/tsp.dir/tsp.cpp.o
+[ 12%] Building C object src/dijkstra/CMakeFiles/dijkstra.dir/dijkstraVia.c.o
+[ 13%] Building CXX object src/contraction/CMakeFiles/contraction.dir/contractGraph_driver.cpp.o
+[ 13%] Building CXX object src/contraction/CMakeFiles/contraction.dir/contract.cpp.o
+[ 13%] Building C object src/common/CMakeFiles/common.dir/e_report.c.o
+[ 13%] Building C object src/max_flow/CMakeFiles/max_flow.dir/minCostMaxFlow.c.o
+[ 15%] Building CXX object src/astar/CMakeFiles/astar.dir/astar_process.cpp.o
+[ 15%] Building C object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraphFull.c.o
+[ 17%] Building CXX object src/driving_distance/CMakeFiles/driving_distance.dir/driving_distance_withPoints_driver.cpp.o
+[ 17%] Building CXX object src/allpairs/CMakeFiles/allpairs.dir/allpairs_process.cpp.o
+[ 17%] Building CXX object src/dijkstra/CMakeFiles/dijkstra.dir/shortestPath_driver.cpp.o
+[ 18%] Building CXX object src/common/CMakeFiles/common.dir/path.cpp.o
+[ 19%] Building C object src/max_flow/CMakeFiles/max_flow.dir/maximum_cardinality_matching.c.o
+[ 19%] Building CXX object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraphFull_driver.cpp.o
+[ 19%] Building C object src/max_flow/CMakeFiles/max_flow.dir/edge_disjoint_paths.c.o
+[ 19%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trspHandler.cpp.o
+[ 20%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maxFlow_driver.cpp.o
+[ 21%] Building CXX object src/withPoints/CMakeFiles/withPoints.dir/withPoints.cpp.o
+[ 22%] Building C object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraph.c.o
+[ 22%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/fleet.cpp.o
+[ 23%] Building CXX object src/dijkstra/CMakeFiles/dijkstra.dir/shortestPath_process.cpp.o
+[ 23%] Building CXX object src/allpairs/CMakeFiles/allpairs.dir/allpairs_driver.cpp.o
+[ 24%] Building CXX object src/tsp/CMakeFiles/tsp.dir/TSP_driver.cpp.o
+[ 25%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliver.cpp.o
+[ 25%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/dnode.cpp.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/src/contraction/contractGraph_driver.cpp:101:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  101 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/src/contraction/contractGraph_driver.cpp:124:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  124 |             const_cast<char*>("e"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 26%] Building C object src/components/CMakeFiles/components.dir/connectedComponents.c.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 26%] Building C object src/components/CMakeFiles/components.dir/strongComponents.c.o
+[ 27%] Building C object src/components/CMakeFiles/components.dir/biconnectedComponents.c.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 27%] Building C object src/components/CMakeFiles/components.dir/articulationPoints.c.o
+[ 28%] Building C object src/components/CMakeFiles/components.dir/bridges.c.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 28%] Building C object src/components/CMakeFiles/components.dir/makeConnected.c.o
+[ 28%] Building CXX object src/components/CMakeFiles/components.dir/makeConnected_driver.cpp.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 29%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/vehicle_pickDeliver.cpp.o
+[ 29%] Building CXX object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraph_driver.cpp.o
+[ 29%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/solution.cpp.o
+[ 29%] Building C object src/metrics/CMakeFiles/metrics.dir/bandwidth.c.o
+[ 30%] Building CXX object src/metrics/CMakeFiles/metrics.dir/metrics_driver.cpp.o
+[ 31%] Building C object src/contraction/CMakeFiles/contraction.dir/contractionHierarchies.c.o
+[ 31%] Building CXX object src/tsp/CMakeFiles/tsp.dir/euclideanTSP_driver.cpp.o
+[ 31%] Building CXX object src/contraction/CMakeFiles/contraction.dir/contractionHierarchies_driver.cpp.o
+[ 31%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maxFlow_process.cpp.o
+[ 31%] Building C object src/withPoints/CMakeFiles/withPoints.dir/withPointsVia.c.o
+[ 32%] Building CXX object src/withPoints/CMakeFiles/withPoints.dir/withPointsVia_driver.cpp.o
+[ 32%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maximum_cardinality_matching_driver.cpp.o
+[ 32%] Built target driving_distance
+[ 32%] Building CXX object src/metrics/CMakeFiles/metrics.dir/metrics_process.cpp.o
+[ 33%] Building C object src/ksp/CMakeFiles/ksp.dir/withPoints_ksp.c.o
+[ 33%] Built target allpairs
+[ 33%] Building CXX object src/ksp/CMakeFiles/ksp.dir/withPoints_ksp_driver.cpp.o
+[ 34%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/minCostMaxFlow_driver.cpp.o
+[ 34%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maximumcardinalitymatching.cpp.o
+[ 34%] Built target astar
+[ 35%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maxflow.cpp.o
+[ 35%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/optimize.cpp.o
+[ 37%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/tw_node.cpp.o
+[ 37%] Building C object src/trsp/CMakeFiles/trsp.dir/trsp.c.o
+[ 37%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trsp_driver.cpp.o
+[ 37%] Building C object src/common/CMakeFiles/common.dir/check_parameters.c.o
+[ 37%] Building CXX object src/dijkstra/CMakeFiles/dijkstra.dir/dijkstraVia_driver.cpp.o
+[ 37%] Building C object src/common/CMakeFiles/common.dir/time_msg.c.o
+[ 38%] Building CXX object src/common/CMakeFiles/common.dir/assert.cpp.o
+[ 38%] Built target tsp
+[ 38%] Building CXX object src/common/CMakeFiles/common.dir/identifier.cpp.o
+[ 38%] Building C object src/bellman_ford/CMakeFiles/bellman_ford.dir/bellman_ford.c.o
+[ 39%] Building C object src/bellman_ford/CMakeFiles/bellman_ford.dir/edwardMoore.c.o
+[ 39%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/vehicle_node.cpp.o
+[ 39%] Built target bellman_ford
+[ 39%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/flowgraph.cpp.o
+[ 40%] Building CXX object src/common/CMakeFiles/common.dir/basic_vertex.cpp.o
+[ 40%] Building CXX object src/common/CMakeFiles/common.dir/xy_vertex.cpp.o
+[ 41%] Building CXX object src/common/CMakeFiles/common.dir/ch_vertex.cpp.o
+[ 42%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/minCostMaxFlow.cpp.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 42%] Built target metrics
+[ 43%] Building CXX object src/components/CMakeFiles/components.dir/componentsResult.cpp.o
+[ 43%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/Dmatrix.cpp.o
+[ 43%] Built target lineGraph
+[ 43%] Building C object src/ksp/CMakeFiles/ksp.dir/turnRestrictedPath.c.o
+[ 43%] Building C object src/dagShortestPath/CMakeFiles/dagShortestPath.dir/dagShortestPath.c.o
+[ 43%] Building CXX object src/components/CMakeFiles/components.dir/components.cpp.o
+[ 43%] Built target dagShortestPath
+[ 43%] Building CXX object src/common/CMakeFiles/common.dir/ch_edge.cpp.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 44%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/order.cpp.o
+[ 44%] Building C object src/chinese/CMakeFiles/chinese.dir/chinesePostman.c.o
+[ 45%] Building CXX object src/chinese/CMakeFiles/chinese.dir/chinesePostman_driver.cpp.o
+[ 46%] Building CXX object src/ksp/CMakeFiles/ksp.dir/turnRestrictedPath_driver.cpp.o
+[ 46%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/initial_solution.cpp.o
+[ 46%] Built target withPoints
+[ 47%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/vehicle.cpp.o
+[ 48%] Building CXX object src/components/CMakeFiles/components.dir/connectedComponents_driver.cpp.o
+[ 48%] Built target contraction
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 48%] Building C object src/spanningTree/CMakeFiles/spanningTree.dir/kruskal.c.o
+[ 49%] Building C object src/spanningTree/CMakeFiles/spanningTree.dir/prim.c.o
+[ 49%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/prim.cpp.o
+[ 50%] Building CXX object src/common/CMakeFiles/common.dir/basic_edge.cpp.o
+[ 50%] Building CXX object src/components/CMakeFiles/components.dir/strongComponents_driver.cpp.o
+[ 51%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/kruskal.cpp.o
+[ 52%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/compPaths.cpp.o
+[ 53%] Building C object src/trsp/CMakeFiles/trsp.dir/trsp_withPoints.c.o
+[ 53%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trsp_withPoints_driver.cpp.o
+[ 53%] Building CXX object src/common/CMakeFiles/common.dir/alloc.cpp.o
+[ 53%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/rule.cpp.o
+[ 53%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliverEuclidean_driver.cpp.o
+[ 53%] Built target dijkstra
+[ 53%] Built target max_flow
+[ 54%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/bpoint.cpp.o
+[ 55%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliver_driver.cpp.o
+[ 55%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/messages.cpp.o
+[ 56%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/combinations.cpp.o
+[ 56%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/report_messages.cpp.o
+[ 56%] Building C object src/trsp/CMakeFiles/trsp.dir/trspVia.c.o
+[ 57%] Building CXX object src/components/CMakeFiles/components.dir/biconnectedComponents_driver.cpp.o
+[ 57%] Building CXX object src/components/CMakeFiles/components.dir/articulationPoints_driver.cpp.o
+[ 58%] Building CXX object src/components/CMakeFiles/components.dir/bridges_driver.cpp.o
+[ 59%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/to_postgres.cpp.o
+[ 60%] Building C object src/mincut/CMakeFiles/mincut.dir/stoerWagner.c.o
+[ 60%] Building CXX object src/mincut/CMakeFiles/mincut.dir/stoerWagner_driver.cpp.o
+[ 60%] Building C object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliverEuclidean.c.o
+[ 61%] Building C object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliver.c.o
+[ 61%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pd_problem.cpp.o
+[ 61%] Building C object src/version/CMakeFiles/version.dir/version.c.o
+[ 61%] Built target common
+[ 61%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/get_check_data.cpp.o
+[ 61%] Built target version
+[ 61%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/spanningTree_process.cpp.o
+[ 61%] Built target chinese
+[ 61%] Building C object src/transitiveClosure/CMakeFiles/transitiveClosure.dir/transitiveClosure.c.o
+[ 62%] Building CXX object src/transitiveClosure/CMakeFiles/transitiveClosure.dir/transitiveClosure_driver.cpp.o
+[ 62%] Built target pickDeliver
+[ 63%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/spanningTree_driver.cpp.o
+[ 64%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trspVia_driver.cpp.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 64%] Building C object src/trsp/CMakeFiles/trsp.dir/trspVia_withPoints.c.o
+[ 65%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/pgdata_fetchers.cpp.o
+[ 66%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trspVia_withPoints_driver.cpp.o
+[ 66%] Built target ksp
+[ 66%] Building C object src/breadthFirstSearch/CMakeFiles/breadthFirstSearch.dir/breadthFirstSearch.c.o
+[ 67%] Building C object src/breadthFirstSearch/CMakeFiles/breadthFirstSearch.dir/binaryBreadthFirstSearch.c.o
+[ 67%] Building CXX object src/breadthFirstSearch/CMakeFiles/breadthFirstSearch.dir/binaryBreadthFirstSearch_driver.cpp.o
+[ 67%] Building C object src/traversal/CMakeFiles/traversal.dir/depthFirstSearch.c.o
+[ 67%] Built target traversal
+[ 67%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/pgdata_getters.cpp.o
+[ 67%] Building C object src/coloring/CMakeFiles/coloring.dir/sequentialVertexColoring.c.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 68%] Building CXX object src/coloring/CMakeFiles/coloring.dir/sequentialVertexColoring_driver.cpp.o
+[ 68%] Building C object src/coloring/CMakeFiles/coloring.dir/bipartite.c.o
+[ 69%] Building CXX object src/coloring/CMakeFiles/coloring.dir/bipartite_driver.cpp.o
+[ 69%] Building C object src/coloring/CMakeFiles/coloring.dir/edgeColoring.c.o
+[ 70%] Building CXX object src/coloring/CMakeFiles/coloring.dir/edgeColoring_driver.cpp.o
+[ 71%] Building C object src/planar/CMakeFiles/planar.dir/isPlanar.c.o
+[ 71%] Building CXX object src/coloring/CMakeFiles/coloring.dir/edgeColoring.cpp.o
+[ 71%] Building CXX object src/planar/CMakeFiles/planar.dir/isPlanar_driver.cpp.o
+[ 72%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/undirectedNoCostBG.cpp.o
+[ 72%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/undirectedHasCostBG.cpp.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 72%] Built target mincut
+[ 73%] Building C object src/dominator/CMakeFiles/dominator.dir/lengauerTarjanDominatorTree.c.o
+[ 73%] Building CXX object src/dominator/CMakeFiles/dominator.dir/lengauerTarjanDominatorTree_driver.cpp.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 74%] Building C object src/ordering/CMakeFiles/ordering.dir/kingOrdering.c.o
+[ 74%] Building C object src/ordering/CMakeFiles/ordering.dir/cuthillMckeeOrdering.c.o
+[ 74%] Building C object src/ordering/CMakeFiles/ordering.dir/sloanOrdering.c.o
+[ 74%] Building C object src/circuits/CMakeFiles/circuits.dir/hawickCircuits.c.o
+[ 75%] Building C object src/ordering/CMakeFiles/ordering.dir/topologicalSort.c.o
+[ 76%] Building CXX object src/circuits/CMakeFiles/circuits.dir/hawickCircuits_driver.cpp.o
+[ 76%] Building CXX object src/ordering/CMakeFiles/ordering.dir/ordering_driver.cpp.o
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[ 76%] Built target transitiveClosure
+[ 77%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/utilities.cpp.o
+[ 77%] Generating pgrouting--4.1.0.sql
+[ 77%] Built target components
+[ 78%] Building CXX object src/ordering/CMakeFiles/ordering.dir/ordering_process.cpp.o
+[ 78%] Building CXX object src/ordering/CMakeFiles/ordering.dir/cuthillMckeeOrdering.cpp.o
+[ 78%] Built target extension_file
+[ 78%] Generating pgrouting--4.0.1--4.1.0.sql
+[ 79%] Generating pgrouting--4.0.0--4.1.0.sql
+[ 79%] Generating pgrouting--3.8.0--4.1.0.sql
+[ 80%] Generating pgrouting--3.7.3--4.1.0.sql
+[ 80%] Generating pgrouting--3.7.2--4.1.0.sql
+[ 81%] Generating pgrouting--3.7.1--4.1.0.sql
+[ 82%] Building CXX object src/ordering/CMakeFiles/ordering.dir/kingOrdering.cpp.o
+[ 82%] Generating pgrouting--3.7.0--4.1.0.sql
+[ 82%] Generating pgrouting--3.6.3--4.1.0.sql
+[ 83%] Generating pgrouting--3.6.2--4.1.0.sql
+[ 83%] Generating pgrouting--3.6.1--4.1.0.sql
+[ 84%] Generating pgrouting--3.6.0--4.1.0.sql
+[ 84%] Generating pgrouting--3.5.1--4.1.0.sql
+[ 85%] Generating pgrouting--3.5.0--4.1.0.sql
+[ 85%] Building CXX object src/ordering/CMakeFiles/ordering.dir/sloanOrdering.cpp.o
+[ 85%] Generating pgrouting--3.4.2--4.1.0.sql
+[ 85%] Built target trsp
+[ 86%] Generating pgrouting--3.4.1--4.1.0.sql
+[ 87%] Generating pgrouting--3.4.0--4.1.0.sql
+[ 87%] Building CXX object src/ordering/CMakeFiles/ordering.dir/topologicalSort.cpp.o
+[ 88%] Generating pgrouting--3.3.5--4.1.0.sql
+[ 88%] Generating pgrouting--3.3.4--4.1.0.sql
+[ 88%] Built target spanningTree
+[ 89%] Generating pgrouting--3.3.3--4.1.0.sql
+[ 89%] Generating pgrouting--3.3.2--4.1.0.sql
+[ 90%] Generating pgrouting--3.3.1--4.1.0.sql
+[ 90%] Generating pgrouting--3.3.0--4.1.0.sql
+[ 90%] Generating pgrouting--3.2.2--4.1.0.sql
+[ 91%] Generating pgrouting--3.2.1--4.1.0.sql
+[ 91%] Generating pgrouting--3.2.0--4.1.0.sql
+[ 92%] Generating pgrouting--3.1.4--4.1.0.sql
+[ 92%] Generating pgrouting--3.1.3--4.1.0.sql
+[ 93%] Generating pgrouting--3.1.2--4.1.0.sql
+[ 93%] Generating pgrouting--3.1.1--4.1.0.sql
+[ 94%] Generating pgrouting--3.1.0--4.1.0.sql
+[ 94%] Generating pgrouting--3.0.6--4.1.0.sql
+[ 95%] Generating pgrouting--3.0.5--4.1.0.sql
+[ 95%] Generating pgrouting--3.0.4--4.1.0.sql
+[ 96%] Generating pgrouting--3.0.3--4.1.0.sql
+[ 96%] Generating pgrouting--3.0.2--4.1.0.sql
+[ 96%] Generating pgrouting--3.0.1--4.1.0.sql
+[ 97%] Generating pgrouting--3.0.0--4.1.0.sql
+[ 97%] Generating pgrouting--2.6.3--4.1.0.sql
+[ 97%] Built target breadthFirstSearch
+[ 98%] Generating pgrouting--2.6.2--4.1.0.sql
+[ 98%] Generating pgrouting--2.6.1--4.1.0.sql
+[ 99%] Generating pgrouting--2.6.0--4.1.0.sql
+[100%] Built target update_files
+[100%] Built target planar
+[100%] Built target coloring
+[100%] Built target cpp_common
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:225:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  225 |             const_cast<char*>("v"),
+      |             ^
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/include/cpp_common/to_postgres.hpp:248:13: warning: do not use const_cast to remove const qualifier [cppcoreguidelines-pro-type-const-cast]
+  248 |             const_cast<char*>("e"),
+      |             ^
+[100%] Built target dominator
+[100%] Built target circuits
+[100%] Built target ordering
+[100%] Linking CXX shared library lib/libpgrouting-4.1.so
+pgRouting VERSION 4.1.0
+------------------------------------
+------------------------------------
+Compiling with G++-
+------------------------------------
+-- Setting build type to 'Release' as none was specified.
+-- CMAKE_BUILD_TYPE Release
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Git: /usr/bin/git (found version "2.43.0") 
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found suitable version "1.83.0", minimum required is "1.56.0")  
+-- pgRouting: Require C++17
+-- Found Perl: /usr/bin/perl (found version "5.38.2") 
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Performing Test C_COMPILER_SUPPORTS_FPIC
+-- Performing Test C_COMPILER_SUPPORTS_FPIC - Success
+-- Performing Test CXX_COMPILER_SUPPORTS_FPIC
+-- Performing Test CXX_COMPILER_SUPPORTS_FPIC - Success
+-- Performing Test C_COMPILER_SUPPORTS_ROUNDING_MATH
+-- Performing Test C_COMPILER_SUPPORTS_ROUNDING_MATH - Success
+-- Performing Test CXX_COMPILER_SUPPORTS_ROUNDING_MATH
+-- Performing Test CXX_COMPILER_SUPPORTS_ROUNDING_MATH - Success
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (41.0s)
+-- Generating done (12.8s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BUILD_HTML
+    DOC_USE_BOOTSTRAP
+    EN
+    ES
+    SPHINX_FLAGS
+    SV
+    ZH_HANS
+
+
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+-- CMAKE_BUILD_TYPE Debug
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- pgRouting: Require C++17
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (9.8s)
+-- Generating done (12.7s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    SV
+
+
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+-- CMAKE_BUILD_TYPE Debug
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- pgRouting: Require C++17
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (10.5s)
+-- Generating done (9.9s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BUILD_HTML
+
+
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+-- CMAKE_BUILD_TYPE Debug
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- pgRouting: Require C++17
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (11.6s)
+-- Generating done (8.9s)
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+[  1%] Building C object src/bdAstar/CMakeFiles/bdAstar.dir/bdAstar.c.o
+[  1%] Building C object src/legacy/CMakeFiles/legacy.dir/legacy.c.o
+[  1%] Building C object src/bdDijkstra/CMakeFiles/bdDijkstra.dir/bdDijkstra.c.o
+[  3%] Building C object src/allpairs/CMakeFiles/allpairs.dir/floydWarshall.c.o
+[  3%] Building C object src/astar/CMakeFiles/astar.dir/astar.c.o
+[  3%] Building C object src/tsp/CMakeFiles/tsp.dir/euclideanTSP.c.o
+[  3%] Building C object src/driving_distance/CMakeFiles/driving_distance.dir/driving_distance.c.o
+[  4%] Building C object src/contraction/CMakeFiles/contraction.dir/contractGraph.c.o
+[  4%] Building C object src/withPoints/CMakeFiles/withPoints.dir/withPoints.c.o
+[  5%] Building C object src/dijkstra/CMakeFiles/dijkstra.dir/dijkstra.c.o
+[  5%] Building C object src/metrics/CMakeFiles/metrics.dir/betweennessCentrality.c.o
+[  5%] Building C object src/ksp/CMakeFiles/ksp.dir/ksp.c.o
+[  6%] Building CXX object src/trsp/CMakeFiles/trsp.dir/edgeInfo.cpp.o
+[  8%] Building C object src/max_flow/CMakeFiles/max_flow.dir/max_flow.c.o
+[  8%] Building C object src/common/CMakeFiles/common.dir/postgres_connection.c.o
+[  9%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pd_orders.cpp.o
+[  9%] Built target legacy
+[  9%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/fleet.cpp.o
+[ 10%] Building C object src/allpairs/CMakeFiles/allpairs.dir/johnson.c.o
+[ 10%] Building C object src/driving_distance/CMakeFiles/driving_distance.dir/driving_distance_withPoints.c.o
+[ 10%] Building CXX object src/withPoints/CMakeFiles/withPoints.dir/get_new_queries.cpp.o
+[ 10%] Building CXX object src/metrics/CMakeFiles/metrics.dir/betweennessCentrality_driver.cpp.o
+[ 10%] Built target bdAstar
+[ 11%] Built target bdDijkstra
+[ 11%] Building CXX object src/astar/CMakeFiles/astar.dir/astar_driver.cpp.o
+[ 11%] Building C object src/dijkstra/CMakeFiles/dijkstra.dir/dijkstraVia.c.o
+[ 11%] Building C object src/metrics/CMakeFiles/metrics.dir/bandwidth.c.o
+[ 13%] Building CXX object src/astar/CMakeFiles/astar.dir/astar_process.cpp.o
+[ 13%] Building CXX object src/contraction/CMakeFiles/contraction.dir/contractGraph_driver.cpp.o
+[ 14%] Building C object src/tsp/CMakeFiles/tsp.dir/TSP.c.o
+[ 14%] Building CXX object src/ksp/CMakeFiles/ksp.dir/ksp_driver.cpp.o
+[ 14%] Building C object src/common/CMakeFiles/common.dir/e_report.c.o
+[ 14%] Building C object src/max_flow/CMakeFiles/max_flow.dir/minCostMaxFlow.c.o
+[ 15%] Building C object src/ksp/CMakeFiles/ksp.dir/withPoints_ksp.c.o
+[ 16%] Building CXX object src/allpairs/CMakeFiles/allpairs.dir/allpairs_process.cpp.o
+[ 17%] Building CXX object src/driving_distance/CMakeFiles/driving_distance.dir/driving_distance_withPoints_driver.cpp.o
+[ 17%] Building CXX object src/dijkstra/CMakeFiles/dijkstra.dir/shortestPath_driver.cpp.o
+[ 17%] Building CXX object src/tsp/CMakeFiles/tsp.dir/tsp.cpp.o
+[ 18%] Building CXX object src/common/CMakeFiles/common.dir/path.cpp.o
+[ 18%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trspHandler.cpp.o
+[ 19%] Building C object src/max_flow/CMakeFiles/max_flow.dir/maximum_cardinality_matching.c.o
+[ 19%] Building C object src/common/CMakeFiles/common.dir/check_parameters.c.o
+[ 19%] Building C object src/max_flow/CMakeFiles/max_flow.dir/edge_disjoint_paths.c.o
+[ 19%] Building CXX object src/allpairs/CMakeFiles/allpairs.dir/allpairs_driver.cpp.o
+[ 20%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maxFlow_driver.cpp.o
+[ 21%] Building CXX object src/withPoints/CMakeFiles/withPoints.dir/withPoints.cpp.o
+[ 22%] Building CXX object src/tsp/CMakeFiles/tsp.dir/TSP_driver.cpp.o
+[ 23%] Building CXX object src/metrics/CMakeFiles/metrics.dir/metrics_driver.cpp.o
+[ 23%] Building CXX object src/metrics/CMakeFiles/metrics.dir/metrics_process.cpp.o
+[ 24%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliver.cpp.o
+[ 25%] Building CXX object src/dijkstra/CMakeFiles/dijkstra.dir/shortestPath_process.cpp.o
+[ 25%] Building CXX object src/tsp/CMakeFiles/tsp.dir/euclideanTSP_driver.cpp.o
+[ 25%] Building CXX object src/dijkstra/CMakeFiles/dijkstra.dir/dijkstraVia_driver.cpp.o
+[ 25%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/dnode.cpp.o
+[ 25%] Building CXX object src/contraction/CMakeFiles/contraction.dir/contract.cpp.o
+[ 26%] Building C object src/contraction/CMakeFiles/contraction.dir/contractionHierarchies.c.o
+[ 27%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/vehicle_pickDeliver.cpp.o
+[ 27%] Building CXX object src/contraction/CMakeFiles/contraction.dir/contractionHierarchies_driver.cpp.o
+[ 27%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/solution.cpp.o
+[ 27%] Built target metrics
+[ 28%] Building C object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraphFull.c.o
+[ 28%] Building CXX object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraphFull_driver.cpp.o
+[ 28%] Built target tsp
+[ 29%] Building C object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraph.c.o
+[ 29%] Building CXX object src/ksp/CMakeFiles/ksp.dir/withPoints_ksp_driver.cpp.o
+[ 29%] Building CXX object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraph_driver.cpp.o
+[ 29%] Built target driving_distance
+[ 29%] Building C object src/ksp/CMakeFiles/ksp.dir/turnRestrictedPath.c.o
+[ 29%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/optimize.cpp.o
+[ 29%] Building C object src/withPoints/CMakeFiles/withPoints.dir/withPointsVia.c.o
+[ 29%] Built target allpairs
+[ 30%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/tw_node.cpp.o
+[ 30%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maxFlow_process.cpp.o
+[ 31%] Building CXX object src/withPoints/CMakeFiles/withPoints.dir/withPointsVia_driver.cpp.o
+[ 31%] Built target astar
+[ 32%] Building C object src/components/CMakeFiles/components.dir/connectedComponents.c.o
+[ 32%] Building C object src/components/CMakeFiles/components.dir/strongComponents.c.o
+[ 33%] Building C object src/trsp/CMakeFiles/trsp.dir/trsp.c.o
+[ 33%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/vehicle_node.cpp.o
+[ 34%] Building C object src/components/CMakeFiles/components.dir/biconnectedComponents.c.o
+[ 34%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trsp_driver.cpp.o
+[ 34%] Building C object src/components/CMakeFiles/components.dir/articulationPoints.c.o
+[ 34%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maximum_cardinality_matching_driver.cpp.o
+[ 35%] Building C object src/components/CMakeFiles/components.dir/bridges.c.o
+[ 35%] Building C object src/components/CMakeFiles/components.dir/makeConnected.c.o
+[ 35%] Building C object src/bellman_ford/CMakeFiles/bellman_ford.dir/bellman_ford.c.o
+[ 35%] Building CXX object src/components/CMakeFiles/components.dir/makeConnected_driver.cpp.o
+[ 36%] Building C object src/bellman_ford/CMakeFiles/bellman_ford.dir/edwardMoore.c.o
+[ 37%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/order.cpp.o
+[ 37%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/Dmatrix.cpp.o
+[ 37%] Built target bellman_ford
+[ 38%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/compPaths.cpp.o
+[ 38%] Building C object src/common/CMakeFiles/common.dir/time_msg.c.o
+[ 39%] Building CXX object src/common/CMakeFiles/common.dir/assert.cpp.o
+[ 40%] Building CXX object src/components/CMakeFiles/components.dir/componentsResult.cpp.o
+[ 40%] Building CXX object src/components/CMakeFiles/components.dir/components.cpp.o
+[ 41%] Building CXX object src/components/CMakeFiles/components.dir/connectedComponents_driver.cpp.o
+[ 41%] Building CXX object src/common/CMakeFiles/common.dir/identifier.cpp.o
+[ 42%] Building CXX object src/common/CMakeFiles/common.dir/basic_vertex.cpp.o
+[ 43%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/minCostMaxFlow_driver.cpp.o
+[ 43%] Built target dijkstra
+[ 43%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/initial_solution.cpp.o
+[ 43%] Building CXX object src/common/CMakeFiles/common.dir/xy_vertex.cpp.o
+[ 44%] Building CXX object src/ksp/CMakeFiles/ksp.dir/turnRestrictedPath_driver.cpp.o
+[ 45%] Building C object src/trsp/CMakeFiles/trsp.dir/trsp_withPoints.c.o
+[ 45%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/rule.cpp.o
+[ 45%] Building CXX object src/components/CMakeFiles/components.dir/strongComponents_driver.cpp.o
+[ 45%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maximumcardinalitymatching.cpp.o
+[ 46%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/bpoint.cpp.o
+[ 46%] Built target lineGraph
+[ 46%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/messages.cpp.o
+[ 47%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/combinations.cpp.o
+[ 47%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trsp_withPoints_driver.cpp.o
+[ 47%] Built target contraction
+[ 47%] Building C object src/trsp/CMakeFiles/trsp.dir/trspVia.c.o
+[ 47%] Building C object src/dagShortestPath/CMakeFiles/dagShortestPath.dir/dagShortestPath.c.o
+[ 47%] Built target dagShortestPath
+[ 48%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trspVia_driver.cpp.o
+[ 48%] Building C object src/trsp/CMakeFiles/trsp.dir/trspVia_withPoints.c.o
+[ 49%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/vehicle.cpp.o
+[ 49%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliverEuclidean_driver.cpp.o
+[ 49%] Built target withPoints
+[ 50%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliver_driver.cpp.o
+[ 50%] Building C object src/chinese/CMakeFiles/chinese.dir/chinesePostman.c.o
+[ 50%] Building C object src/spanningTree/CMakeFiles/spanningTree.dir/kruskal.c.o
+[ 51%] Building CXX object src/chinese/CMakeFiles/chinese.dir/chinesePostman_driver.cpp.o
+[ 52%] Building C object src/spanningTree/CMakeFiles/spanningTree.dir/prim.c.o
+[ 52%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/prim.cpp.o
+[ 53%] Building C object src/mincut/CMakeFiles/mincut.dir/stoerWagner.c.o
+[ 53%] Building CXX object src/mincut/CMakeFiles/mincut.dir/stoerWagner_driver.cpp.o
+[ 54%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trspVia_withPoints_driver.cpp.o
+[ 55%] Building CXX object src/components/CMakeFiles/components.dir/biconnectedComponents_driver.cpp.o
+[ 55%] Building C object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliverEuclidean.c.o
+[ 56%] Building C object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliver.c.o
+[ 56%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pd_problem.cpp.o
+[ 56%] Building CXX object src/components/CMakeFiles/components.dir/articulationPoints_driver.cpp.o
+[ 57%] Building CXX object src/components/CMakeFiles/components.dir/bridges_driver.cpp.o
+[ 57%] Built target pickDeliver
+[ 57%] Building C object src/version/CMakeFiles/version.dir/version.c.o
+[ 57%] Built target version
+[ 57%] Building C object src/transitiveClosure/CMakeFiles/transitiveClosure.dir/transitiveClosure.c.o
+[ 58%] Building CXX object src/transitiveClosure/CMakeFiles/transitiveClosure.dir/transitiveClosure_driver.cpp.o
+[ 58%] Building C object src/breadthFirstSearch/CMakeFiles/breadthFirstSearch.dir/breadthFirstSearch.c.o
+[ 59%] Building C object src/breadthFirstSearch/CMakeFiles/breadthFirstSearch.dir/binaryBreadthFirstSearch.c.o
+[ 59%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/report_messages.cpp.o
+[ 59%] Building CXX object src/breadthFirstSearch/CMakeFiles/breadthFirstSearch.dir/binaryBreadthFirstSearch_driver.cpp.o
+[ 60%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maxflow.cpp.o
+[ 60%] Built target ksp
+[ 60%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/flowgraph.cpp.o
+[ 61%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/to_postgres.cpp.o
+[ 61%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/get_check_data.cpp.o
+[ 62%] Building CXX object src/common/CMakeFiles/common.dir/ch_vertex.cpp.o
+[ 63%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/pgdata_fetchers.cpp.o
+[ 63%] Building CXX object src/common/CMakeFiles/common.dir/ch_edge.cpp.o
+[ 63%] Built target mincut
+[ 64%] Building CXX object src/common/CMakeFiles/common.dir/basic_edge.cpp.o
+[ 64%] Building CXX object src/common/CMakeFiles/common.dir/alloc.cpp.o
+[ 65%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/minCostMaxFlow.cpp.o
+[ 65%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/pgdata_getters.cpp.o
+[ 65%] Built target common
+[ 65%] Built target chinese
+[ 66%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/undirectedNoCostBG.cpp.o
+[ 66%] Building C object src/traversal/CMakeFiles/traversal.dir/depthFirstSearch.c.o
+[ 66%] Building C object src/coloring/CMakeFiles/coloring.dir/sequentialVertexColoring.c.o
+[ 67%] Building C object src/planar/CMakeFiles/planar.dir/isPlanar.c.o
+[ 67%] Building CXX object src/planar/CMakeFiles/planar.dir/isPlanar_driver.cpp.o
+[ 67%] Built target traversal
+[ 68%] Building CXX object src/coloring/CMakeFiles/coloring.dir/sequentialVertexColoring_driver.cpp.o
+[ 69%] Building C object src/coloring/CMakeFiles/coloring.dir/bipartite.c.o
+[ 69%] Building C object src/dominator/CMakeFiles/dominator.dir/lengauerTarjanDominatorTree.c.o
+[ 70%] Building C object src/ordering/CMakeFiles/ordering.dir/kingOrdering.c.o
+[ 70%] Building CXX object src/dominator/CMakeFiles/dominator.dir/lengauerTarjanDominatorTree_driver.cpp.o
+[ 70%] Building C object src/ordering/CMakeFiles/ordering.dir/cuthillMckeeOrdering.c.o
+[ 70%] Building C object src/circuits/CMakeFiles/circuits.dir/hawickCircuits.c.o
+[ 71%] Building CXX object src/circuits/CMakeFiles/circuits.dir/hawickCircuits_driver.cpp.o
+[ 71%] Building C object src/ordering/CMakeFiles/ordering.dir/sloanOrdering.c.o
+[ 72%] Building C object src/ordering/CMakeFiles/ordering.dir/topologicalSort.c.o
+[ 72%] Built target trsp
+[ 72%] Building CXX object src/ordering/CMakeFiles/ordering.dir/ordering_driver.cpp.o
+[ 73%] Building CXX object src/ordering/CMakeFiles/ordering.dir/ordering_process.cpp.o
+[ 73%] Building CXX object src/ordering/CMakeFiles/ordering.dir/cuthillMckeeOrdering.cpp.o
+[ 73%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/undirectedHasCostBG.cpp.o
+[ 73%] Generating pgrouting--4.1.0.sql
+[ 73%] Built target extension_file
+[ 73%] Generating pgrouting--4.0.1--4.1.0.sql
+[ 74%] Generating pgrouting--4.0.0--4.1.0.sql
+[ 74%] Generating pgrouting--3.8.0--4.1.0.sql
+[ 75%] Generating pgrouting--3.7.3--4.1.0.sql
+[ 75%] Generating pgrouting--3.7.2--4.1.0.sql
+[ 76%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/utilities.cpp.o
+[ 77%] Generating pgrouting--3.7.1--4.1.0.sql
+[ 77%] Generating pgrouting--3.7.0--4.1.0.sql
+[ 77%] Generating pgrouting--3.6.3--4.1.0.sql
+[ 78%] Generating pgrouting--3.6.2--4.1.0.sql
+[ 78%] Built target transitiveClosure
+[ 78%] Generating pgrouting--3.6.1--4.1.0.sql
+[ 79%] Building CXX object src/ordering/CMakeFiles/ordering.dir/kingOrdering.cpp.o
+[ 80%] Generating pgrouting--3.6.0--4.1.0.sql
+[ 80%] Generating pgrouting--3.5.1--4.1.0.sql
+[ 80%] Built target components
+[ 81%] Generating pgrouting--3.5.0--4.1.0.sql
+[ 82%] Building CXX object src/coloring/CMakeFiles/coloring.dir/bipartite_driver.cpp.o
+[ 82%] Generating pgrouting--3.4.2--4.1.0.sql
+[ 83%] Generating pgrouting--3.4.1--4.1.0.sql
+[ 83%] Generating pgrouting--3.4.0--4.1.0.sql
+[ 84%] Generating pgrouting--3.3.5--4.1.0.sql
+[ 84%] Generating pgrouting--3.3.4--4.1.0.sql
+[ 85%] Generating pgrouting--3.3.3--4.1.0.sql
+[ 85%] Generating pgrouting--3.3.2--4.1.0.sql
+[ 86%] Generating pgrouting--3.3.1--4.1.0.sql
+[ 86%] Building CXX object src/ordering/CMakeFiles/ordering.dir/sloanOrdering.cpp.o
+[ 86%] Generating pgrouting--3.3.0--4.1.0.sql
+[ 86%] Generating pgrouting--3.2.2--4.1.0.sql
+[ 86%] Built target breadthFirstSearch
+[ 86%] Building C object src/coloring/CMakeFiles/coloring.dir/edgeColoring.c.o
+[ 87%] Generating pgrouting--3.2.1--4.1.0.sql
+[ 87%] Generating pgrouting--3.2.0--4.1.0.sql
+[ 88%] Building CXX object src/coloring/CMakeFiles/coloring.dir/edgeColoring_driver.cpp.o
+[ 89%] Generating pgrouting--3.1.4--4.1.0.sql
+[ 89%] Generating pgrouting--3.1.3--4.1.0.sql
+[ 90%] Generating pgrouting--3.1.2--4.1.0.sql
+[ 90%] Generating pgrouting--3.1.1--4.1.0.sql
+[ 91%] Generating pgrouting--3.1.0--4.1.0.sql
+[ 91%] Generating pgrouting--3.0.6--4.1.0.sql
+[ 92%] Generating pgrouting--3.0.5--4.1.0.sql
+[ 92%] Generating pgrouting--3.0.4--4.1.0.sql
+[ 93%] Generating pgrouting--3.0.3--4.1.0.sql
+[ 93%] Generating pgrouting--3.0.2--4.1.0.sql
+[ 93%] Generating pgrouting--3.0.1--4.1.0.sql
+[ 93%] Building CXX object src/coloring/CMakeFiles/coloring.dir/edgeColoring.cpp.o
+[ 94%] Generating pgrouting--3.0.0--4.1.0.sql
+[ 94%] Generating pgrouting--2.6.3--4.1.0.sql
+[ 95%] Generating pgrouting--2.6.2--4.1.0.sql
+[ 95%] Generating pgrouting--2.6.1--4.1.0.sql
+[ 96%] Generating pgrouting--2.6.0--4.1.0.sql
+[ 97%] Built target update_files
+[ 98%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/kruskal.cpp.o
+[ 99%] Building CXX object src/ordering/CMakeFiles/ordering.dir/topologicalSort.cpp.o
+[ 99%] Built target max_flow
+[ 99%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/spanningTree_process.cpp.o
+[100%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/spanningTree_driver.cpp.o
+[100%] Built target dominator
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/src/cpp_common/undirectedHasCostBG.cpp:169:29: warning: narrowing conversion from 'size_type' (aka 'unsigned long') to signed type 'int' is implementation-defined [cppcoreguidelines-narrowing-conversions]
+  169 |         auto v = add_vertex(m_id_to_V.size(), m_graph);
+      |                             ^
+[100%] Built target planar
+[100%] Built target circuits
+[100%] Built target cpp_common
+[100%] Built target ordering
+[100%] Built target coloring
+[100%] Built target spanningTree
+[100%] Linking CXX shared library lib/libpgrouting-4.1.so
+[100%] Built target pgrouting-4.1
+pgRouting VERSION 4.1.0
+------------------------------------
+------------------------------------
+Compiling with G++-
+------------------------------------
+-- Setting build type to 'Release' as none was specified.
+-- CMAKE_BUILD_TYPE Release
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Git: /usr/bin/git (found version "2.43.0") 
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found suitable version "1.83.0", minimum required is "1.56.0")  
+-- pgRouting: Require C++17
+-- Found Perl: /usr/bin/perl (found version "5.38.2") 
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Performing Test C_COMPILER_SUPPORTS_FPIC
+-- Performing Test C_COMPILER_SUPPORTS_FPIC - Success
+-- Performing Test CXX_COMPILER_SUPPORTS_FPIC
+-- Performing Test CXX_COMPILER_SUPPORTS_FPIC - Success
+-- Performing Test C_COMPILER_SUPPORTS_ROUNDING_MATH
+-- Performing Test C_COMPILER_SUPPORTS_ROUNDING_MATH - Success
+-- Performing Test CXX_COMPILER_SUPPORTS_ROUNDING_MATH
+-- Performing Test CXX_COMPILER_SUPPORTS_ROUNDING_MATH - Success
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (30.3s)
+-- Generating done (9.9s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BUILD_HTML
+    DOC_USE_BOOTSTRAP
+    EN
+    ES
+    SPHINX_FLAGS
+    SV
+    ZH_HANS
+
+
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+-- CMAKE_BUILD_TYPE Debug
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- pgRouting: Require C++17
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (10.4s)
+-- Generating done (11.3s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    SV
+
+
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+-- CMAKE_BUILD_TYPE Debug
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- pgRouting: Require C++17
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (9.6s)
+-- Generating done (13.4s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    BUILD_HTML
+
+
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+-- CMAKE_BUILD_TYPE Debug
+-- DOXYGEN_MINIMUM_VERSION=1.7
+-- SPHINX_MINIMUM_VERSION=4.0
+-- POSTGRESQL_MINIMUM_VERSION=13
+-- BOOST_MINIMUM_VERSION=1.56.0
+-- POSTGIS_MINIMUM_VERSION=3.0.0
+-- pgRouting: Require C++17
+-- POSTGRESQL_PG_CONFIG is /usr/bin/pg_config
+-- POSTGRESQL_EXECUTABLE is /usr/lib/postgresql/16/bin/postgres
+-- POSTGRESQL_VERSION_STRING in FindPostgreSQL.cmake is PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_INCLUDE_DIR: /usr/include/postgresql/16/server
+-- POSTGRESQL_LIBRARIES: /usr/lib/x86_64-linux-gnu
+-- POSTGRESQL_VERSION_STRING=PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)
+-- POSTGRESQL_VERSION=16.13
+-- PGSQL_VERSION=16013
+-- PGSQL_VERSION=16013
+-- LIBRARY_INSTALL_PATH /usr/lib/postgresql/16/lib
+-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE) (Required is at least version "1.7")
+CMake Warning at doc/CMakeLists.txt:26 (message):
+  Sphinx not found.
+
+    Building without user's documentation
+
+
+-- Configuring done (18.3s)
+-- Generating done (20.2s)
+-- Build files have been written to: /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/build
+[  0%] Building C object src/bdAstar/CMakeFiles/bdAstar.dir/bdAstar.c.o
+[  0%] Building C object src/legacy/CMakeFiles/legacy.dir/legacy.c.o
+[  1%] Building C object src/bdDijkstra/CMakeFiles/bdDijkstra.dir/bdDijkstra.c.o
+[  3%] Building C object src/astar/CMakeFiles/astar.dir/astar.c.o
+[  3%] Building C object src/driving_distance/CMakeFiles/driving_distance.dir/driving_distance.c.o
+[  4%] Building C object src/contraction/CMakeFiles/contraction.dir/contractGraph.c.o
+[  4%] Building C object src/tsp/CMakeFiles/tsp.dir/euclideanTSP.c.o
+[  4%] Building C object src/dijkstra/CMakeFiles/dijkstra.dir/dijkstra.c.o
+[  4%] Building C object src/allpairs/CMakeFiles/allpairs.dir/floydWarshall.c.o
+[  4%] Building C object src/metrics/CMakeFiles/metrics.dir/betweennessCentrality.c.o
+[  4%] Building C object src/withPoints/CMakeFiles/withPoints.dir/withPoints.c.o
+[  5%] Building C object src/ksp/CMakeFiles/ksp.dir/ksp.c.o
+[  6%] Building CXX object src/trsp/CMakeFiles/trsp.dir/edgeInfo.cpp.o
+[  7%] Building C object src/max_flow/CMakeFiles/max_flow.dir/max_flow.c.o
+[  8%] Building C object src/common/CMakeFiles/common.dir/postgres_connection.c.o
+[  9%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pd_orders.cpp.o
+[  9%] Built target legacy
+[  9%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/fleet.cpp.o
+[  9%] Building C object src/allpairs/CMakeFiles/allpairs.dir/johnson.c.o
+[ 10%] Building CXX object src/astar/CMakeFiles/astar.dir/astar_driver.cpp.o
+[ 10%] Building C object src/driving_distance/CMakeFiles/driving_distance.dir/driving_distance_withPoints.c.o
+[ 10%] Building CXX object src/metrics/CMakeFiles/metrics.dir/betweennessCentrality_driver.cpp.o
+[ 10%] Built target bdDijkstra
+[ 11%] Built target bdAstar
+[ 11%] Building CXX object src/withPoints/CMakeFiles/withPoints.dir/get_new_queries.cpp.o
+[ 11%] Building C object src/dijkstra/CMakeFiles/dijkstra.dir/dijkstraVia.c.o
+[ 11%] Building C object src/metrics/CMakeFiles/metrics.dir/bandwidth.c.o
+[ 11%] Building CXX object src/dijkstra/CMakeFiles/dijkstra.dir/shortestPath_driver.cpp.o
+[ 13%] Building CXX object src/contraction/CMakeFiles/contraction.dir/contractGraph_driver.cpp.o
+[ 13%] Building C object src/tsp/CMakeFiles/tsp.dir/TSP.c.o
+[ 13%] Building CXX object src/ksp/CMakeFiles/ksp.dir/ksp_driver.cpp.o
+[ 13%] Building C object src/common/CMakeFiles/common.dir/e_report.c.o
+[ 13%] Building C object src/max_flow/CMakeFiles/max_flow.dir/minCostMaxFlow.c.o
+[ 14%] Building CXX object src/allpairs/CMakeFiles/allpairs.dir/allpairs_process.cpp.o
+[ 15%] Building CXX object src/dijkstra/CMakeFiles/dijkstra.dir/shortestPath_process.cpp.o
+[ 16%] Building C object src/ksp/CMakeFiles/ksp.dir/withPoints_ksp.c.o
+[ 17%] Building CXX object src/driving_distance/CMakeFiles/driving_distance.dir/driving_distance_withPoints_driver.cpp.o
+[ 17%] Building CXX object src/tsp/CMakeFiles/tsp.dir/tsp.cpp.o
+[ 17%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trspHandler.cpp.o
+[ 18%] Building CXX object src/common/CMakeFiles/common.dir/path.cpp.o
+[ 19%] Building C object src/max_flow/CMakeFiles/max_flow.dir/maximum_cardinality_matching.c.o
+[ 20%] Building CXX object src/metrics/CMakeFiles/metrics.dir/metrics_driver.cpp.o
+[ 20%] Building C object src/max_flow/CMakeFiles/max_flow.dir/edge_disjoint_paths.c.o
+[ 21%] Building CXX object src/withPoints/CMakeFiles/withPoints.dir/withPoints.cpp.o
+[ 22%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maxFlow_driver.cpp.o
+[ 23%] Building CXX object src/astar/CMakeFiles/astar.dir/astar_process.cpp.o
+[ 23%] Building CXX object src/allpairs/CMakeFiles/allpairs.dir/allpairs_driver.cpp.o
+[ 24%] Building C object src/trsp/CMakeFiles/trsp.dir/trsp.c.o
+[ 25%] Building C object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraphFull.c.o
+[ 26%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliver.cpp.o
+[ 26%] Building CXX object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraphFull_driver.cpp.o
+[ 27%] Building C object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraph.c.o
+[ 27%] Building CXX object src/lineGraph/CMakeFiles/lineGraph.dir/lineGraph_driver.cpp.o
+[ 27%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/dnode.cpp.o
+[ 28%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/vehicle_pickDeliver.cpp.o
+[ 29%] Building C object src/components/CMakeFiles/components.dir/connectedComponents.c.o
+[ 29%] Building C object src/components/CMakeFiles/components.dir/strongComponents.c.o
+[ 30%] Building C object src/components/CMakeFiles/components.dir/biconnectedComponents.c.o
+[ 30%] Building C object src/components/CMakeFiles/components.dir/articulationPoints.c.o
+[ 31%] Building C object src/components/CMakeFiles/components.dir/bridges.c.o
+[ 31%] Building CXX object src/metrics/CMakeFiles/metrics.dir/metrics_process.cpp.o
+[ 31%] Building C object src/components/CMakeFiles/components.dir/makeConnected.c.o
+[ 31%] Building CXX object src/contraction/CMakeFiles/contraction.dir/contract.cpp.o
+[ 31%] Building CXX object src/components/CMakeFiles/components.dir/makeConnected_driver.cpp.o
+[ 32%] Building CXX object src/tsp/CMakeFiles/tsp.dir/TSP_driver.cpp.o
+[ 32%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maxFlow_process.cpp.o
+[ 32%] Building CXX object src/ksp/CMakeFiles/ksp.dir/withPoints_ksp_driver.cpp.o
+[ 32%] Built target metrics
+[ 32%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maximum_cardinality_matching_driver.cpp.o
+[ 32%] Built target driving_distance
+[ 32%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trsp_driver.cpp.o
+[ 33%] Building C object src/trsp/CMakeFiles/trsp.dir/trsp_withPoints.c.o
+[ 33%] Building C object src/withPoints/CMakeFiles/withPoints.dir/withPointsVia.c.o
+[ 34%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/minCostMaxFlow_driver.cpp.o
+[ 34%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maximumcardinalitymatching.cpp.o
+[ 34%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trsp_withPoints_driver.cpp.o
+[ 35%] Building CXX object src/withPoints/CMakeFiles/withPoints.dir/withPointsVia_driver.cpp.o
+[ 35%] Built target astar
+[ 35%] Building CXX object src/tsp/CMakeFiles/tsp.dir/euclideanTSP_driver.cpp.o
+[ 35%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/solution.cpp.o
+[ 35%] Built target allpairs
+[ 35%] Building CXX object src/dijkstra/CMakeFiles/dijkstra.dir/dijkstraVia_driver.cpp.o
+[ 35%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/optimize.cpp.o
+[ 35%] Building C object src/common/CMakeFiles/common.dir/check_parameters.c.o
+[ 35%] Built target lineGraph
+[ 35%] Building C object src/trsp/CMakeFiles/trsp.dir/trspVia.c.o
+[ 35%] Building C object src/common/CMakeFiles/common.dir/time_msg.c.o
+[ 36%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trspVia_driver.cpp.o
+[ 37%] Building CXX object src/common/CMakeFiles/common.dir/assert.cpp.o
+[ 37%] Building C object src/ksp/CMakeFiles/ksp.dir/turnRestrictedPath.c.o
+[ 37%] Building CXX object src/common/CMakeFiles/common.dir/identifier.cpp.o
+[ 38%] Building CXX object src/common/CMakeFiles/common.dir/basic_vertex.cpp.o
+[ 39%] Building CXX object src/ksp/CMakeFiles/ksp.dir/turnRestrictedPath_driver.cpp.o
+[ 40%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/tw_node.cpp.o
+[ 41%] Building C object src/contraction/CMakeFiles/contraction.dir/contractionHierarchies.c.o
+[ 41%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/vehicle_node.cpp.o
+[ 41%] Building CXX object src/contraction/CMakeFiles/contraction.dir/contractionHierarchies_driver.cpp.o
+[ 41%] Building C object src/bellman_ford/CMakeFiles/bellman_ford.dir/bellman_ford.c.o
+[ 42%] Building C object src/bellman_ford/CMakeFiles/bellman_ford.dir/edwardMoore.c.o
+[ 42%] Built target bellman_ford
+[ 42%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/Dmatrix.cpp.o
+[ 43%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/order.cpp.o
+[ 43%] Built target tsp
+[ 44%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/compPaths.cpp.o
+[ 45%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/maxflow.cpp.o
+[ 46%] Building CXX object src/components/CMakeFiles/components.dir/componentsResult.cpp.o
+[ 46%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/flowgraph.cpp.o
+[ 46%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/initial_solution.cpp.o
+[ 47%] Building CXX object src/max_flow/CMakeFiles/max_flow.dir/minCostMaxFlow.cpp.o
+[ 47%] Built target withPoints
+[ 48%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/vehicle.cpp.o
+[ 48%] Building C object src/trsp/CMakeFiles/trsp.dir/trspVia_withPoints.c.o
+[ 48%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliverEuclidean_driver.cpp.o
+[ 48%] Building CXX object src/components/CMakeFiles/components.dir/components.cpp.o
+[ 49%] Building CXX object src/components/CMakeFiles/components.dir/connectedComponents_driver.cpp.o
+[ 50%] Building CXX object src/trsp/CMakeFiles/trsp.dir/trspVia_withPoints_driver.cpp.o
+[ 51%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliver_driver.cpp.o
+[ 51%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/rule.cpp.o
+[ 51%] Building CXX object src/common/CMakeFiles/common.dir/xy_vertex.cpp.o
+[ 51%] Building CXX object src/components/CMakeFiles/components.dir/strongComponents_driver.cpp.o
+[ 51%] Built target dijkstra
+[ 52%] Building CXX object src/common/CMakeFiles/common.dir/ch_vertex.cpp.o
+[ 53%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/bpoint.cpp.o
+[ 53%] Building C object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliverEuclidean.c.o
+[ 53%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/messages.cpp.o
+[ 54%] Building C object src/pickDeliver/CMakeFiles/pickDeliver.dir/pickDeliver.c.o
+[ 54%] Building CXX object src/pickDeliver/CMakeFiles/pickDeliver.dir/pd_problem.cpp.o
+[ 54%] Building CXX object src/common/CMakeFiles/common.dir/ch_edge.cpp.o
+[ 55%] Building CXX object src/components/CMakeFiles/components.dir/biconnectedComponents_driver.cpp.o
+[ 55%] Built target ksp
+[ 55%] Building C object src/dagShortestPath/CMakeFiles/dagShortestPath.dir/dagShortestPath.c.o
+[ 55%] Built target dagShortestPath
+[ 56%] Building CXX object src/common/CMakeFiles/common.dir/basic_edge.cpp.o
+[ 57%] Building CXX object src/common/CMakeFiles/common.dir/alloc.cpp.o
+[ 57%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/combinations.cpp.o
+[ 57%] Built target contraction
+[ 57%] Building C object src/chinese/CMakeFiles/chinese.dir/chinesePostman.c.o
+[ 58%] Building CXX object src/chinese/CMakeFiles/chinese.dir/chinesePostman_driver.cpp.o
+[ 58%] Building CXX object src/components/CMakeFiles/components.dir/articulationPoints_driver.cpp.o
+[ 58%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/report_messages.cpp.o
+[ 59%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/to_postgres.cpp.o
+[ 59%] Building C object src/spanningTree/CMakeFiles/spanningTree.dir/kruskal.c.o
+[ 59%] Built target pickDeliver
+[ 60%] Building C object src/mincut/CMakeFiles/mincut.dir/stoerWagner.c.o
+[ 60%] Building CXX object src/mincut/CMakeFiles/mincut.dir/stoerWagner_driver.cpp.o
+[ 61%] Building C object src/spanningTree/CMakeFiles/spanningTree.dir/prim.c.o
+[ 61%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/prim.cpp.o
+[ 62%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/kruskal.cpp.o
+[ 62%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/get_check_data.cpp.o
+[ 62%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/spanningTree_process.cpp.o
+[ 63%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/pgdata_fetchers.cpp.o
+[ 63%] Built target max_flow
+[ 64%] Building CXX object src/spanningTree/CMakeFiles/spanningTree.dir/spanningTree_driver.cpp.o
+[ 64%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/pgdata_getters.cpp.o
+[ 65%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/undirectedNoCostBG.cpp.o
+[ 66%] Building CXX object src/components/CMakeFiles/components.dir/bridges_driver.cpp.o
+[ 66%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/undirectedHasCostBG.cpp.o
+[ 67%] Building CXX object src/cpp_common/CMakeFiles/cpp_common.dir/utilities.cpp.o
+[ 67%] Building C object src/version/CMakeFiles/version.dir/version.c.o
+[ 67%] Built target version
+[ 67%] Building C object src/transitiveClosure/CMakeFiles/transitiveClosure.dir/transitiveClosure.c.o
+[ 67%] Building C object src/breadthFirstSearch/CMakeFiles/breadthFirstSearch.dir/breadthFirstSearch.c.o
+[ 67%] Building C object src/traversal/CMakeFiles/traversal.dir/depthFirstSearch.c.o
+[ 67%] Building C object src/coloring/CMakeFiles/coloring.dir/sequentialVertexColoring.c.o
+[ 68%] Building CXX object src/transitiveClosure/CMakeFiles/transitiveClosure.dir/transitiveClosure_driver.cpp.o
+[ 69%] Building C object src/breadthFirstSearch/CMakeFiles/breadthFirstSearch.dir/binaryBreadthFirstSearch.c.o
+[ 69%] Built target traversal
+[ 69%] Building CXX object src/breadthFirstSearch/CMakeFiles/breadthFirstSearch.dir/binaryBreadthFirstSearch_driver.cpp.o
+[ 70%] Building CXX object src/coloring/CMakeFiles/coloring.dir/sequentialVertexColoring_driver.cpp.o
+[ 71%] Building C object src/planar/CMakeFiles/planar.dir/isPlanar.c.o
+[ 72%] Building C object src/dominator/CMakeFiles/dominator.dir/lengauerTarjanDominatorTree.c.o
+[ 72%] Building CXX object src/planar/CMakeFiles/planar.dir/isPlanar_driver.cpp.o
+[ 72%] Building CXX object src/dominator/CMakeFiles/dominator.dir/lengauerTarjanDominatorTree_driver.cpp.o
+[ 72%] Built target trsp
+[ 73%] Building C object src/ordering/CMakeFiles/ordering.dir/kingOrdering.c.o
+[ 73%] Building C object src/ordering/CMakeFiles/ordering.dir/cuthillMckeeOrdering.c.o
+[ 73%] Building C object src/ordering/CMakeFiles/ordering.dir/sloanOrdering.c.o
+[ 74%] Building C object src/ordering/CMakeFiles/ordering.dir/topologicalSort.c.o
+[ 74%] Building CXX object src/ordering/CMakeFiles/ordering.dir/ordering_driver.cpp.o
+[ 74%] Built target mincut
+[ 75%] Building CXX object src/ordering/CMakeFiles/ordering.dir/ordering_process.cpp.o
+[ 75%] Built target common
+[ 75%] Building CXX object src/ordering/CMakeFiles/ordering.dir/cuthillMckeeOrdering.cpp.o
+[ 75%] Built target chinese
+[ 76%] Building CXX object src/ordering/CMakeFiles/ordering.dir/kingOrdering.cpp.o
+[ 76%] Building C object src/coloring/CMakeFiles/coloring.dir/bipartite.c.o
+[ 77%] Building CXX object src/coloring/CMakeFiles/coloring.dir/bipartite_driver.cpp.o
+[ 77%] Building C object src/coloring/CMakeFiles/coloring.dir/edgeColoring.c.o
+[ 77%] Building C object src/circuits/CMakeFiles/circuits.dir/hawickCircuits.c.o
+[ 78%] Building CXX object src/circuits/CMakeFiles/circuits.dir/hawickCircuits_driver.cpp.o
+[ 78%] Generating pgrouting--4.1.0.sql
+[ 78%] Built target extension_file
+[ 79%] Building CXX object src/coloring/CMakeFiles/coloring.dir/edgeColoring_driver.cpp.o
+[ 79%] Generating pgrouting--4.0.1--4.1.0.sql
+[ 80%] Generating pgrouting--4.0.0--4.1.0.sql
+[ 80%] Generating pgrouting--3.8.0--4.1.0.sql
+[ 81%] Generating pgrouting--3.7.3--4.1.0.sql
+[ 81%] Generating pgrouting--3.7.2--4.1.0.sql
+[ 82%] Generating pgrouting--3.7.1--4.1.0.sql
+[ 82%] Generating pgrouting--3.7.0--4.1.0.sql
+[ 82%] Generating pgrouting--3.6.3--4.1.0.sql
+[ 83%] Generating pgrouting--3.6.2--4.1.0.sql
+[ 83%] Generating pgrouting--3.6.1--4.1.0.sql
+[ 84%] Generating pgrouting--3.6.0--4.1.0.sql
+[ 84%] Generating pgrouting--3.5.1--4.1.0.sql
+[ 84%] Built target cpp_common
+[ 85%] Generating pgrouting--3.5.0--4.1.0.sql
+[ 85%] Generating pgrouting--3.4.2--4.1.0.sql
+[ 85%] Built target dominator
+[ 86%] Generating pgrouting--3.4.1--4.1.0.sql
+[ 86%] Generating pgrouting--3.4.0--4.1.0.sql
+[ 86%] Building CXX object src/coloring/CMakeFiles/coloring.dir/edgeColoring.cpp.o
+[ 87%] Generating pgrouting--3.3.5--4.1.0.sql
+[ 87%] Generating pgrouting--3.3.4--4.1.0.sql
+[ 88%] Generating pgrouting--3.3.3--4.1.0.sql
+[ 88%] Generating pgrouting--3.3.2--4.1.0.sql
+[ 89%] Generating pgrouting--3.3.1--4.1.0.sql
+[ 89%] Generating pgrouting--3.3.0--4.1.0.sql
+[ 89%] Generating pgrouting--3.2.2--4.1.0.sql
+[ 90%] Generating pgrouting--3.2.1--4.1.0.sql
+[ 90%] Generating pgrouting--3.2.0--4.1.0.sql
+[ 90%] Building CXX object src/ordering/CMakeFiles/ordering.dir/sloanOrdering.cpp.o
+[ 91%] Generating pgrouting--3.1.4--4.1.0.sql
+[ 91%] Built target breadthFirstSearch
+[ 91%] Generating pgrouting--3.1.3--4.1.0.sql
+[ 92%] Generating pgrouting--3.1.2--4.1.0.sql
+[ 92%] Generating pgrouting--3.1.1--4.1.0.sql
+[ 93%] Generating pgrouting--3.1.0--4.1.0.sql
+[ 93%] Generating pgrouting--3.0.6--4.1.0.sql
+[ 93%] Built target planar
+[ 94%] Generating pgrouting--3.0.5--4.1.0.sql
+[ 94%] Generating pgrouting--3.0.4--4.1.0.sql
+[ 95%] Building CXX object src/ordering/CMakeFiles/ordering.dir/topologicalSort.cpp.o
+[ 96%] Generating pgrouting--3.0.3--4.1.0.sql
+[ 96%] Generating pgrouting--3.0.2--4.1.0.sql
+[ 96%] Generating pgrouting--3.0.1--4.1.0.sql
+[ 97%] Generating pgrouting--3.0.0--4.1.0.sql
+[ 97%] Generating pgrouting--2.6.3--4.1.0.sql
+[ 98%] Generating pgrouting--2.6.2--4.1.0.sql
+[ 99%] Generating pgrouting--2.6.1--4.1.0.sql
+[ 99%] Generating pgrouting--2.6.0--4.1.0.sql
+[100%] Built target update_files
+[100%] Built target components
+[100%] Built target transitiveClosure
+[100%] Built target spanningTree
+[100%] Built target circuits
+[100%] Built target ordering
+[100%] Built target coloring
+[100%] Linking CXX shared library lib/libpgrouting-4.1.so
+[100%] Built target pgrouting-4.1
+[  2%] Built target metrics
+[  8%] Built target common
+[ 10%] Built target dijkstra
+[ 10%] Built target legacy
+[ 11%] Built target allpairs
+[ 13%] Built target astar
+[ 15%] Built target driving_distance
+[ 18%] Built target ksp
+[ 20%] Built target tsp
+[ 20%] Built target bdAstar
+[ 21%] Built target bdDijkstra
+[ 26%] Built target trsp
+[ 32%] Built target max_flow
+[ 34%] Built target contraction
+[ 42%] Built target pickDeliver
+[ 45%] Built target withPoints
+[ 47%] Built target lineGraph
+[ 54%] Built target components
+[ 55%] Built target bellman_ford
+[ 62%] Built target cpp_common
+[ 62%] Built target dagShortestPath
+[ 63%] Built target chinese
+[ 66%] Built target spanningTree
+[ 67%] Built target mincut
+[ 67%] Built target version
+[ 68%] Built target transitiveClosure
+[ 69%] Built target breadthFirstSearch
+[ 69%] Built target traversal
+[ 72%] Built target coloring
+[ 73%] Built target planar
+[ 74%] Built target dominator
+[ 79%] Built target ordering
+[ 80%] Built target circuits
+[ 80%] Built target pgrouting-4.1
+[ 80%] Built target extension_file
+[100%] Built target update_files
+Install the project...
+-- Install configuration: "Debug"
+-- Installing: /usr/lib/postgresql/16/lib/libpgrouting-4.1.so
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--4.0.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--4.0.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.8.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.7.3--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.7.2--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.7.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.7.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.6.3--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.6.2--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.6.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.6.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.5.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.5.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.4.2--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.4.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.4.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.3.5--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.3.4--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.3.3--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.3.2--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.3.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.3.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.2.2--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.2.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.2.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.1.4--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.1.3--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.1.2--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.1.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.1.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.0.6--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.0.5--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.0.4--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.0.3--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.0.2--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.0.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--3.0.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--2.6.3--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--2.6.2--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--2.6.1--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--2.6.0--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting--4.1.0.sql
+-- Installing: /usr/share/postgresql/16/extension/pgrouting.control
+--------------------------------------------
+Execute documentation queries
+--------------------------------------------
+RUNNING: doc_queries_generator.pl -alg docqueries/dijkstra -pgport 5432
+Operative system found: linux
+DROP EXTENSION
+CREATE EXTENSION
+                                                                 version                                                                  
+------------------------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+(1 row)
+
+
+                                                                                                                                       postgis_full_version                                                                                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ POSTGIS="3.4.2 c19ce56" [EXTENSION] PGSQL="160" GEOS="3.12.1-CAPI-1.18.1" PROJ="9.4.0 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=/tmp/proj DATABASE_PATH=/usr/share/proj/proj.db" LIBXML="2.9.14" LIBJSON="0.17" LIBPROTOBUF="1.4.1" WAGYU="0.5.0 (Internal)"
+(1 row)
+
+
+                                                          pgr_full_version                                                          
+------------------------------------------------------------------------------------------------------------------------------------
+ (4.1.0-dev,Debug,2026/03/22,pgrouting-4.1.0,Linux,"PostgreSQL 16.13 (Ubuntu 16.13-0ubuntu0.24.04.1)",GNU-13.3.0,1.83.0,efafda452c)
+(1 row)
+
+
+Processing docqueries/dijkstra/dijkstra.pg	Run time: 0.294714	 PASS
+Processing docqueries/dijkstra/dijkstraVia.pg	Run time: 0.22463	 PASS
+Processing docqueries/dijkstra/dijkstraCost.pg	Run time: 0.235028	 PASS
+Processing docqueries/dijkstra/dijkstraCostMatrix.pg	Run time: 0.236266	 PASS
+Processing docqueries/dijkstra/dijkstraNear.pg	Run time: 0.213397	 PASS
+Processing docqueries/dijkstra/dijkstraNearCost.pg	Run time: 0.31843	 PASS
+$stats = {
+           'RunTimeTotal' => '1.522465',
+           'z_crash' => 0,
+           'z_fail' => 0,
+           'z_pass' => 6
+         };
+--------------------------------------------
+Execute tap_directories
+--------------------------------------------
+dir dijkstra
+pgflags -p 5432
+VERSION 4.1.0
+/mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting/tools/testers /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting /mnt/c/Users/RITESH RAMESH PRABHU/pg-routing-GSoc/GSoC-pgRouting
+--------------------------
+ Running with version 4.0.0
+ test dijkstra
+--------------------------
+dropdb: error: database removal failed: ERROR:  database "___pgr___test___" is being accessed by other users
+DETAIL:  There is 1 other session using the database.
+
+real	0m8.135s
+user	0m0.051s
+sys	0m0.010s
