@@ -6,7 +6,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2026 Mohit Rawat
-Mail: mohit25rawat@gmail.com
+Mail: mohit25rawat at gmail.com
 
 ------
 
