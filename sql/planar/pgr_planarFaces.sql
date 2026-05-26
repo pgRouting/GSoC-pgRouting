@@ -4,8 +4,8 @@ File: _makeBiconnectedPlanar.sql
 Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-base: sakirr-2026-face-extraction
-compare: week1-face-extraction-demo
+Copyright (c) 2026 Sakir Ahmed
+Mail: sakirahmed75531@gmail.com
 
 ------
 
