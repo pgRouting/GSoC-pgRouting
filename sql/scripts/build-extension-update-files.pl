@@ -1,6 +1,9 @@
 #!/usr/bin/perl -w
 =pod
-Copyright (c) 2015 pgRouting developers
+/*PGR-GNU*****************************************************************
+File: build-extension-update-files.pl
+
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------
@@ -18,6 +21,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+ ********************************************************************PGR-GNU*/
 =cut
 
 eval 'exec /usr/bin/perl -S $0 ${1+"$@"}'
@@ -68,6 +73,7 @@ my $version_3_6 = qr/(3.6.[\d+])/;
 my $version_3_7 = qr/(3.7.[\d+])/;
 my $version_3_8 = qr/(3.8.[\d+])/;
 my $version_4_0 = qr/(4.0.[\d+])/;
+my $version_4_1 = qr/(4.1.[\d+])/;
 # add minor here
 
 my $version_2 = qr/(2.[\d+].[\d+])/;
@@ -77,7 +83,7 @@ my $minor_format   = qr/([\d+].[\d+]).[\d+]/;
 my $mayor_format   = qr/([\d+]).[\d+].[\d+]/;
 
 
-my $current = $version_4_0;
+my $current = $version_4_1;
 
 
 sub Usage {

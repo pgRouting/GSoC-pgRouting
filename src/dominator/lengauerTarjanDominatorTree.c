@@ -2,7 +2,7 @@
 File: lengauerTarjanDominatorTree.c
 
 Generated with Template by:
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
@@ -127,8 +127,8 @@ _pgr_lengauertarjandominatortree(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
             values[0] = Int32GetDatum((int32_t)call_cntr + 1);
-            values[1] = Int64GetDatum(result_tuples[call_cntr].d1.id);
-            values[2] = Int64GetDatum(result_tuples[call_cntr].d2.value);
+            values[1] = Int64GetDatum(result_tuples[call_cntr].d1);
+            values[2] = Int64GetDatum(result_tuples[call_cntr].d2);
             tuple = heap_form_tuple(tuple_desc, values, nulls);
             result = HeapTupleGetDatum(tuple);
             SRF_RETURN_NEXT(funcctx, result);

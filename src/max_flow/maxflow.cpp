@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: maxflow.cpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2016 Andrea Nardelli
@@ -31,6 +31,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <utility>
 #include <vector>
 #include <set>
+#include <map>
+
+namespace {
+
+std::vector<Path_rt>
+single_execution(
+        std::vector<Edge_t> edges,
+        int64_t source,
+        int64_t target,
+        bool directed) {
+    std::set<int64_t> set_source_vertices;
+    std::set<int64_t> set_sink_vertices;
+    set_source_vertices.insert(source);
+    set_sink_vertices.insert(target);
+    pgrouting::graph::PgrFlowGraph G(
+            edges,
+            set_source_vertices,
+            set_sink_vertices, directed);
+
+    /*
+     * boykov_kolmogorov is only for directed graphs
+     */
+    return G.edge_disjoint_paths();
+}
+}  // namespace
 
 namespace pgrouting {
 namespace graph {
@@ -40,17 +65,25 @@ PgrFlowGraph::PgrFlowGraph(
         const std::vector<Edge_t> &edges,
         const std::set<int64_t> &source_vertices,
         const std::set<int64_t> &sink_vertices,
-        int algorithm) {
+        Which algorithm) {
     add_vertices(edges, source_vertices, sink_vertices);
 
     capacity = get(boost::edge_capacity, graph);
     rev = get(boost::edge_reverse, graph);
     residual_capacity = get(boost::edge_residual_capacity, graph);
 
-    if (algorithm == 1) {
-        insert_edges_push_relabel(edges);
-    } else {
-        insert_edges(edges);
+    switch (algorithm) {
+        case MAXFLOW:
+        case PUSHRELABEL:
+            insert_edges_push_relabel(edges);
+            break;
+        case BOYKOV:
+        case EDMONDSKARP:
+            insert_edges(edges);
+            break;
+        default:
+            {};
+            /* Maybe do a throw */
     }
 }
 
@@ -74,7 +107,7 @@ PgrFlowGraph::PgrFlowGraph(
  */
 void PgrFlowGraph::insert_edges_push_relabel(
         const std::vector<Edge_t> &edges) {
-    bool added;
+    bool added = false;
     for (const auto edge : edges) {
         V v1 = get_boost_vertex(edge.source);
         V v2 = get_boost_vertex(edge.target);
@@ -109,7 +142,7 @@ void PgrFlowGraph::insert_edges_push_relabel(
  */
 void PgrFlowGraph::insert_edges(
         const std::vector<Edge_t> &edges) {
-    bool added;
+    bool added = false;
     for (const auto edge : edges) {
         V v1 = get_boost_vertex(edge.source);
         V v2 = get_boost_vertex(edge.target);
@@ -133,7 +166,7 @@ void PgrFlowGraph::insert_edges(
 void PgrFlowGraph::insert_edges_edge_disjoint(
         const std::vector<Edge_t> &edges,
         bool directed) {
-    bool added;
+    bool added = false;
     for (const auto edge : edges) {
         V v1 = get_boost_vertex(edge.source);
         V v2 = get_boost_vertex(edge.target);
@@ -161,7 +194,7 @@ void PgrFlowGraph::insert_edges_edge_disjoint(
 
 void PgrFlowGraph::set_supersource(
         const std::set<int64_t> &source_vertices) {
-    bool added;
+    bool added = false;
     supersource = add_vertex(graph);
     for (int64_t source_id : source_vertices) {
         V source = get_boost_vertex(source_id);
@@ -181,7 +214,7 @@ void PgrFlowGraph::set_supersource(
 
 void PgrFlowGraph::set_supersink(
         const std::set<int64_t> &sink_vertices) {
-    bool added;
+    bool added = false;
     supersink = add_vertex(graph);
     for (int64_t sink_id : sink_vertices) {
         V sink = get_boost_vertex(sink_id);
@@ -278,8 +311,8 @@ PgrFlowGraph::get_edge_disjoint_paths(
     for (size_t i = 0; i < flow; i++) {
         size_t size = paths[i].size();
         E e;
-        bool exists;
-        size_t j;
+        bool exists = false;
+        size_t j = 0;
         for (j = 0; j < size - 1; j++) {
             Path_rt edge = {};
             edge.start_id = paths[i][0];
@@ -301,8 +334,30 @@ PgrFlowGraph::get_edge_disjoint_paths(
     return path_elements;
 }
 
-
-
 }  // namespace graph
-}  // namespace pgrouting
 
+namespace functions {
+
+std::vector<Path_rt>
+edgeDisjoint(
+        std::vector<Edge_t> edges,
+        const std::map<int64_t, std::set<int64_t>> & combinations,
+        bool directed) {
+    std::vector<Path_rt> results;
+    for (const auto &c : combinations) {
+        for (const auto &t : c.second) {
+            /*
+             * a source can not be a sink
+             * aka there is no path
+             */
+            if (c.first == t) continue;
+            auto result = single_execution(edges, c.first, t, directed);
+            results.insert(results.end(), result.begin(), result.end());
+        }
+    }
+
+    return results;
+}
+
+}  // namespace functions
+}  // namespace pgrouting

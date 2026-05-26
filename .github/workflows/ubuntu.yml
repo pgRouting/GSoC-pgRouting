@@ -1,4 +1,7 @@
 name: Build for Ubuntu
+# This file is part of the pgRouting project.
+# Copyright (c) 2020-2026 pgRouting developers
+# License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 
 # manually triggered workflow
 # - 5 * 2 * 2 = 20 jobs are triggered
@@ -40,7 +43,7 @@ jobs:
           os: [ubuntu-latest, ubuntu-22.04]
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: 'Raise Priority for apt.postgresql.org'
         run: |

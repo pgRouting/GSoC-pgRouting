@@ -1,9 +1,8 @@
 #!/bin/bash
+# This file is part of the pgRouting project.
+# Copyright (c) 2020-2026 pgRouting developers
+# License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 
-# ------------------------------------------------------------------------------
-# pgRouting Scripts
-# Copyright(c) pgRouting Contributors
-#
 # Pump up version
 # ------------------------------------------------------------------------------
 # shellcheck disable=SC2016
@@ -124,7 +123,7 @@ perl -pi -e 's/'"${OLD_VERSION}"'/'"${NEW_VERSION}"'/g' tools/testers/pg_prove_t
 perl -pi -e 's/'"${OLD_VERSION}${KIND}"'/'"${NEW_VERSION}${NEW_KIND}"'/' docqueries/version/*.result
 if [ "${WHAT_NEXT}" == "minor" ]
 then
-    perl -pi -e 's/^---------/-----------/' docqueries/version/doc-full_version.result
+    perl -pi -e 's/^---------/-----------/' docqueries/version/full_version.result
 fi
 perl -pi -e 's/'"${OLD_VERSION}"'/'"${NEW_VERSION}"'/' docqueries/version/*.result
 

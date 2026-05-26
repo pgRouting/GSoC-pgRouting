@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: trspHandler.hpp
 
-Copyright (c) 2017 pgRouting developers
+Copyright (c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------
@@ -67,7 +67,7 @@ class TrspHandler : public pgrouting::Pgr_messages {
      *
      * The "legal" values are indices to vectors
      */
-    enum Position {ILLEGAL = -1, RC_EDGE = 0, C_EDGE = 1};
+    enum Position {ILLEGAL = -1, RC_EDGE = 0, C_EDGE = 1};  // NOLINT(cppcoreguidelines-use-enum-class)
 
 
     class Predecessor {
@@ -91,8 +91,9 @@ class TrspHandler : public pgrouting::Pgr_messages {
 
     class CostHolder {
      public:
-         CostHolder() {
-             endCost =  startCost = (std::numeric_limits<double>::max)();
+         CostHolder() :
+             startCost((std::numeric_limits<double>::max)()),
+             endCost((std::numeric_limits<double>::max)()) {
          }
 
      public:

@@ -1,4 +1,7 @@
 name: Website
+# This file is part of the pgRouting project.
+# Copyright (c) 2021-2026 pgRouting developers
+# License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 
 on:
   workflow_dispatch:
@@ -28,7 +31,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 

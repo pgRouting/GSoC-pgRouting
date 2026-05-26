@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: info_t.hpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace pgrouting {
 
-enum expectType {
+enum class expectType {
     ANY_INTEGER,
     ANY_NUMERICAL,
     TEXT,

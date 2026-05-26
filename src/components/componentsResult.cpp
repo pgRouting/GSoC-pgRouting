@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: componentsResult.cpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2019-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2017 Maoguang Wang
@@ -49,7 +49,7 @@ componentsResult(
     for (const auto& component : components) {
         auto component_id = component[0];
         for (const auto edge_id : component) {
-            results.push_back({{edge_id}, {component_id}});
+            results.push_back({edge_id, component_id});
         }
     }
     return results;

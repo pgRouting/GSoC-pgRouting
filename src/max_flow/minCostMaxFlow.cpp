@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: minCostMaxFlow.cpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2018-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2018 Maoguang Wang
@@ -52,7 +52,7 @@ PgrCostFlowGraph::PgrCostFlowGraph(
 PgrCostFlowGraph::E PgrCostFlowGraph::AddEdge(
         PgrCostFlowGraph::V v,
         PgrCostFlowGraph::V w, double wei, double cap) {
-    bool b;
+    bool b = false;
     PgrCostFlowGraph::E e;
     boost::tie(e, b) = boost::add_edge(vertex(v, graph),
                                        vertex(w, graph), graph);
@@ -145,7 +145,7 @@ PgrCostFlowGraph::GetFlowEdges() const {
         if (((capacity[*e] - residual_capacity[*e]) > 0) &&
                 ((*e).m_source != supersource) &&
                 ((*e).m_target != supersink)) {
-            Flow_t edge;
+            Flow_t edge{};
             edge.edge = GetEdgeId(*e);
             edge.source = GetVertexId((*e).m_source);
             edge.target = GetVertexId((*e).m_target);

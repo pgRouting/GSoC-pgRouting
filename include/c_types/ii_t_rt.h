@@ -2,7 +2,7 @@
 File: ii_t_rt.h
 
 
-Copyright (c) 2021 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Type developer:
@@ -40,8 +40,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #endif
 
 struct II_t_rt {
-    union {int64_t id; int64_t source; int64_t start_vid;} d1;
-    union {int64_t value; int64_t target; int64_t end_vid;} d2;
+    int64_t d1;
+    int64_t d2;
 };
 
 

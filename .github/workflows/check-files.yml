@@ -1,5 +1,7 @@
 name: Check files
-
+# This file is part of the pgRouting project.
+# Copyright (c) 2020-2026 pgRouting developers
+# License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 
 # Makes a general check on the files
 # Verifies:
@@ -20,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Signatures are not removed
         run: |
           tools/scripts/test_signatures.sh
@@ -29,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: News file up to date
         run: |
           tools/release-scripts/notes2news.pl
@@ -40,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Install Requirements
         run: |
           sudo apt install -y licensecheck
@@ -51,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Install Requirements
         run: |
           sudo apt install -y shellcheck
@@ -62,9 +64,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Checkout cpplint
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: 'cpplint/cpplint'
           ref: "develop"

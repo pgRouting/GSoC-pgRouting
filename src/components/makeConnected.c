@@ -2,7 +2,7 @@
 File: makeConnected.c
 
 Generated with Template by:
-Copyright (c) 2019 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
@@ -26,7 +26,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
 
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
@@ -133,8 +133,8 @@ PGDLLEXPORT Datum _pgr_makeconnected(PG_FUNCTION_ARGS) {
         }
 
         values[0] = Int32GetDatum((int32_t)funcctx->call_cntr + 1);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d1.start_vid);
-        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2.end_vid);
+        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d1);
+        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

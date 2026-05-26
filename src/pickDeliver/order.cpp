@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: order.cpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2016-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------
@@ -53,7 +53,7 @@ Order::Order(
 std::ostream&
 operator<< (std::ostream &log, const Order &order) {
     log << "\n\nOrder "
-        << static_cast<Identifier>(order) << ": \n"
+        << static_cast<const Identifier&>(order) << ": \n"
         << "\tPickup: " << order.pickup() << "\n"
         << "\tDelivery: " << order.delivery() << "\n\n"
         << "\tTravel time: "

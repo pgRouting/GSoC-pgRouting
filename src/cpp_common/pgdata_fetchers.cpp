@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: pgdata_fetchers.cpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2023-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2024 Celia Virginia Vergara Castillo
@@ -69,8 +69,8 @@ II_t_rt fetch_combination(
         size_t*,
         bool) {
     II_t_rt combination;
-    combination.d1.source = getBigInt(tuple, tupdesc, info[0]);
-    combination.d2.target = getBigInt(tuple, tupdesc, info[1]);
+    combination.d1 = getBigInt(tuple, tupdesc, info[0]);
+    combination.d2 = getBigInt(tuple, tupdesc, info[1]);
     return combination;
 }
 

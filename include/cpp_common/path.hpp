@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: path.hpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 /*! @file */
 
-#ifndef INCLUDE_CPP_COMMON_BASEPATH_SSEC_HPP_
-#define INCLUDE_CPP_COMMON_BASEPATH_SSEC_HPP_
+#ifndef INCLUDE_CPP_COMMON_PATH_HPP_
+#define INCLUDE_CPP_COMMON_PATH_HPP_
 #pragma once
 
 #include <deque>
@@ -59,13 +59,13 @@ class Path {
     std::deque< Path_t > path;
     int64_t m_start_id;
     int64_t m_end_id;
-    double m_tot_cost;
+    double m_tot_cost{0};
 
  public:
-    Path(): m_start_id(0), m_end_id(0), m_tot_cost(0)
+    Path() : m_start_id(0), m_end_id(0)
     {}
     Path(int64_t s_id, int64_t e_id)
-        : m_start_id(s_id), m_end_id(e_id), m_tot_cost(0)
+        : m_start_id(s_id), m_end_id(e_id)
     {}
 
     int64_t start_id() const {return m_start_id;}
@@ -143,17 +143,6 @@ class Path {
             Path_rt **ret_path,
             size_t &sequence, int routeId) const;
 
-    void generate_postgres_data(
-            Path_rt **postgres_data,
-            size_t &sequence) const;
-
-    void generate_tuples(MST_rt**, size_t&) const;
-    friend size_t collapse_paths(MST_rt**, const std::deque<Path>&);
-
-    friend size_t collapse_paths(
-            Path_rt **ret_path,
-            const std::deque< Path > &paths);
-
 
     /** @brief discards common vertices with greater agg_cost */
     friend void equi_cost(std::deque< Path > &paths);
@@ -189,8 +178,7 @@ class Path {
             const Path &original,
             bool only_cost) :
         m_start_id(original.m_start_id),
-        m_end_id(original.m_end_id),
-        m_tot_cost(0) {
+        m_end_id(original.m_end_id) {
             if (original.path.empty()) return;
 
             typename G::EO_i ei, ei_end;
@@ -346,4 +334,4 @@ class Path {
 
 }  // namespace pgrouting
 
-#endif  // INCLUDE_CPP_COMMON_BASEPATH_SSEC_HPP_
+#endif  // INCLUDE_CPP_COMMON_PATH_HPP_

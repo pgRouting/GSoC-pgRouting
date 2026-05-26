@@ -1,11 +1,6 @@
-..
-   ****************************************************************************
-    pgRouting Manual
-    Copyright(c) pgRouting Contributors
-
-    This documentation is licensed under a Creative Commons Attribution-Share
-    Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
-   ****************************************************************************
+:file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2021-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0
 
 .. index::
    single: Coloring Family ; pgr_edgeColoring - Experimental
@@ -24,6 +19,10 @@ graphs
    :end-before: end-warning
 
 .. rubric:: Availability
+
+.. rubric:: Version 4.1.0
+
+* Fix the way it builds the graph
 
 .. rubric:: Version 4.0.0
 
