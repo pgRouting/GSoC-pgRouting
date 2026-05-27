@@ -1,4 +1,4 @@
-k/*PGR-GNU*****************************************************************
+/*PGR-GNU*****************************************************************
 File: maximumWeightedMatching.sql
 
 Copyright (c) 2007-2026 pgRouting developers
@@ -31,13 +31,17 @@ CREATE FUNCTION pgr_maximumWeightedMatching(
     TEXT,   -- edges_sql (required)
 
     OUT seq BIGINT,
-    OUT node_u BIGINT,
-    OUT node_v BIGINT,
-    OUT weight FLOAT
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT agg_cost FLOAT
 )
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT seq, node_u, node_v, weight
+    SELECT
+        seq,
+        start_vid,
+        end_vid,
+        agg_cost
     FROM _pgr_maximumWeightedMatching(
         _pgr_get_statement($1)
     );
@@ -48,7 +52,14 @@ COST ${COST_HIGH} ROWS ${ROWS_HIGH};
 COMMENT ON FUNCTION pgr_maximumWeightedMatching(TEXT)
 IS 'pgr_maximumWeightedMatching
 - EXPERIMENTAL
-- Undirected graph
 - Parameters:
-  - edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns:
+    id, source, target, cost
+- Restrictions:
+  - Undirected graph only
+  - Parallel edges are not allowed
+- Returns:
+  - seq, start_vid, end_vid, agg_cost
+- Documentation:
+  - ${PROJECT_DOC_LINK}/pgr_maximumWeightedMatching.html
 ';
