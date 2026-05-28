@@ -28,9 +28,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/planar/planarFaces_driver.h"
 
+#include <sstream>
 #include <string>
 
 #include "c_types/planar_face_rt.h"
+#include "cpp_common/alloc.hpp"
+#include "cpp_common/assert.hpp"
 
 void
 pgr_do_planarFaces(
@@ -40,12 +43,42 @@ pgr_do_planarFaces(
         char** log_msg,
         char** notice_msg,
         char** err_msg) {
-    *result_tuples = nullptr;
-    *result_count  = 0;
-    if (log_msg)    *log_msg    = nullptr;
-    if (notice_msg) *notice_msg = nullptr;
-    if (err_msg)    *err_msg    = nullptr;
+    using pgrouting::to_pg_msg;
 
-    /* TODO(week-2): implement planar face traversal algorithm here */
-    (void)edges_sql;
+    std::ostringstream log;
+    std::ostringstream err;
+    std::ostringstream notice;
+
+    try {
+        pgassert(!(*log_msg));
+        pgassert(!(*notice_msg));
+        pgassert(!(*err_msg));
+        pgassert(!(*result_tuples));
+        pgassert(*result_count == 0);
+
+        *result_tuples = nullptr;
+        *result_count = 0;
+
+        /* TODO(week-2): implement planar face traversal algorithm here */
+        (void)edges_sql;
+
+        pgassert(*err_msg == NULL);
+        *log_msg = to_pg_msg(log);
+        *notice_msg = to_pg_msg(notice);
+    } catch (AssertFailedException &except) {
+        err << except.what();
+        *err_msg = to_pg_msg(err);
+        *log_msg = to_pg_msg(log);
+    } catch (const std::string &ex) {
+        *err_msg = to_pg_msg(ex);
+        *log_msg = to_pg_msg(log);
+    } catch (std::exception &except) {
+        err << except.what();
+        *err_msg = to_pg_msg(err);
+        *log_msg = to_pg_msg(log);
+    } catch (...) {
+        err << "Caught unknown exception!";
+        *err_msg = to_pg_msg(err);
+        *log_msg = to_pg_msg(log);
+    }
 }
