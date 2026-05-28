@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _planarFaces.sql
+File: planarFaces_driver.hpp
 
 Copyright (c) 2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -22,17 +22,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
---v4.0.0
-CREATE FUNCTION _pgr_planarFaces(
-    TEXT,
-    OUT seq BIGINT,
-    OUT face_id BIGINT,
-    OUT edge BIGINT
-    )
+#ifndef INCLUDE_DRIVERS_PLANARFACES_DRIVER_HPP_
+#define INCLUDE_DRIVERS_PLANARFACES_DRIVER_HPP_
+#pragma once
 
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C VOLATILE STRICT;
+#include <cstddef>
+#include <cstdint>
+#include <string>
 
-COMMENT ON FUNCTION _pgr_planarFaces(TEXT)
-IS 'pgRouting internal function';
+using Planar_face_rt = struct Planar_face_rt;
+
+void
+do_planarFaces(
+        std::string,
+        Planar_face_rt**, size_t*,
+        char **, char **, char **);
+
+#endif  // INCLUDE_DRIVERS_PLANARFACES_DRIVER_HPP_

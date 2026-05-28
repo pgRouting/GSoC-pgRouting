@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _planarFaces.sql
+File: planar_face_rt.h
 
 Copyright (c) 2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -21,18 +21,22 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
+/*! @file */
 
---v4.0.0
-CREATE FUNCTION _pgr_planarFaces(
-    TEXT,
-    OUT seq BIGINT,
-    OUT face_id BIGINT,
-    OUT edge BIGINT
-    )
+#ifndef INCLUDE_C_TYPES_PLANAR_FACE_RT_H_
+#define INCLUDE_C_TYPES_PLANAR_FACE_RT_H_
+#pragma once
 
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C VOLATILE STRICT;
+#ifdef __cplusplus
+#   include <cstdint>
+#else
+#   include <stdint.h>
+#endif
 
-COMMENT ON FUNCTION _pgr_planarFaces(TEXT)
-IS 'pgRouting internal function';
+struct Planar_face_rt {
+    int64_t seq;
+    int64_t face_id;
+    int64_t edge;
+};
+
+#endif  // INCLUDE_C_TYPES_PLANAR_FACE_RT_H_
