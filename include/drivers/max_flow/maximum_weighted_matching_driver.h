@@ -1,4 +1,3 @@
-```cpp id="s8c1uh"
 /*PGR-GNU*****************************************************************
 File: maximum_weighted_matching_driver.h
 

@@ -1,4 +1,3 @@
-```cpp id="8ldg5z"
 /*PGR-GNU*****************************************************************
 File: maximumWeightedMatching.hpp
 

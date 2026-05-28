@@ -28,9 +28,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "max_flow/maximumWeightedMatching_process.hpp"
-
+#include <algorithm>
 #include <vector>
+
+#include "max_flow/maximumWeightedMatching_process.hpp"
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/maximum_weighted_matching.hpp>
@@ -50,7 +51,6 @@ typedef adjacency_list<
 std::vector<int64_t>
 maximumWeightedMatching_process(
         const std::vector<Basic_edge> &edges) {
-
     Graph graph;
 
     size_t max_vertex = 0;
@@ -67,7 +67,6 @@ maximumWeightedMatching_process(
     }
 
     for (const auto &edge : edges) {
-
         boost::add_edge(
                 edge.source,
                 edge.target,
@@ -86,14 +85,11 @@ maximumWeightedMatching_process(
     std::vector<int64_t> result;
 
     for (size_t i = 0; i < mate.size(); ++i) {
-
         if (mate[i]
                 != boost::graph_traits<Graph>::null_vertex()
                 && i < static_cast<size_t>(mate[i])) {
-
             result.push_back(
                     static_cast<int64_t>(i));
-
             result.push_back(
                     static_cast<int64_t>(mate[i]));
         }
