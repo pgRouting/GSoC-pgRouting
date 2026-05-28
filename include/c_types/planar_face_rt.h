@@ -24,23 +24,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
 /*! @file */
 
-#ifndef INCLUDE_C_TYPES_PLANAR_FACE_RT_H_
-#define INCLUDE_C_TYPES_PLANAR_FACE_RT_H_
 #pragma once
 
 #ifdef __cplusplus
-#   include <cstdint>
+# include <cstdint>
 #else
-#   include <stdint.h>
+# include <stdint.h>
 #endif
 
-struct Planar_face_rt {
+typedef struct Planar_face_rt {
     int64_t seq;
     int64_t face_id;
     int64_t edge;
-};
-
-#endif  // INCLUDE_C_TYPES_PLANAR_FACE_RT_H_
+} Planar_face_rt;

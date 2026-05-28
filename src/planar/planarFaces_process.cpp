@@ -24,49 +24,37 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
+
+/* postgres.h must be first when PostgreSQL headers are used */
+#include <postgres.h>
 
 #include "process/planarFaces_process.h"
-
-extern "C" {
-#include "c_common/postgres_connection.h"
-#include "c_common/e_report.h"
-#include "c_common/time_msg.h"
-}
-
-#include <string>
-
-#include "cpp_common/assert.hpp"
 #include "drivers/planarFaces_driver.hpp"
 
-void pgr_process_planarFaces(
-        const char *edges_sql,
-        Planar_face_rt **result_tuples,
-        size_t *result_count) {
-    pgassert(edges_sql);
-    pgassert(!(*result_tuples));
-    pgassert(*result_count == 0);
+void
+pgr_process_planarFaces(
+        const char* edges_sql,
+        Planar_face_rt** result_tuples,
+        size_t* result_count) {
+    char* log_msg    = nullptr;
+    char* notice_msg = nullptr;
+    char* err_msg    = nullptr;
 
-    pgr_SPI_connect();
-    char *log_msg = NULL;
-    char *notice_msg = NULL;
-    char *err_msg = NULL;
-
-    clock_t start_t = clock();
     do_planarFaces(
             std::string(edges_sql),
-            result_tuples, result_count,
-            &log_msg, &notice_msg, &err_msg);
+            result_tuples,
+            result_count,
+            &log_msg,
+            &notice_msg,
+            &err_msg);
 
-    time_msg(" processing pgr_planarFaces", start_t, clock());
-
-    if (err_msg && (*result_tuples)) {
-        pfree(*result_tuples);
-        (*result_tuples) = NULL;
-        (*result_count) = 0;
+    if (err_msg) {
+        ereport(ERROR,
+                (errcode(ERRCODE_INTERNAL_ERROR),
+                 errmsg("%s", err_msg)));
     }
 
-    pgr_global_report(&log_msg, &notice_msg, &err_msg);
-
-    pgr_SPI_finish();
+    if (log_msg)    pfree(log_msg);
+    if (notice_msg) pfree(notice_msg);
 }

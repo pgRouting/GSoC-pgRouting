@@ -24,32 +24,22 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
+/*! @file */
 
-#ifndef INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
-#define INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
 #pragma once
 
-#ifdef __cplusplus
-#include <cstddef>
-#include <cstdint>
-using Planar_face_rt = struct Planar_face_rt;
-#else
-#include <stddef.h>
-#include <stdint.h>
-typedef struct Planar_face_rt Planar_face_rt;
-#endif
+#include "c_types/planar_face_rt.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 void pgr_process_planarFaces(
-        const char*,
-        Planar_face_rt**, size_t*);
+        const char* edges_sql,
+        Planar_face_rt** result_tuples,
+        size_t* result_count);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif  // INCLUDE_PROCESS_PLANARFACES_PROCESS_H_

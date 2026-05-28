@@ -24,60 +24,29 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
 
 #include "drivers/planarFaces_driver.hpp"
 
-#include <sstream>
 #include <string>
+#include <vector>
 
-#include "cpp_common/alloc.hpp"
-#include "cpp_common/assert.hpp"
+#include "c_types/planar_face_rt.h"
 
 void
 do_planarFaces(
-        std::string edges_sql,
-        Planar_face_rt **return_tuples,
-        size_t *return_count,
-        char **log_msg,
-        char **notice_msg,
-        char **err_msg) {
-    using pgrouting::to_pg_msg;
+        const std::string& edges_sql,
+        Planar_face_rt** result_tuples,
+        size_t* result_count,
+        char** log_msg,
+        char** notice_msg,
+        char** err_msg) {
+    *result_tuples = nullptr;
+    *result_count  = 0;
+    *log_msg       = nullptr;
+    *notice_msg    = nullptr;
+    *err_msg       = nullptr;
 
-    std::ostringstream log;
-    std::ostringstream err;
-    std::ostringstream notice;
-    std::string hint;
-
-    try {
-        pgassert(!(*log_msg));
-        pgassert(!(*notice_msg));
-        pgassert(!(*err_msg));
-        pgassert(!(*return_tuples));
-        pgassert(*return_count == 0);
-
-        hint = edges_sql;
-
-        *return_tuples = nullptr;
-        *return_count = 0;
-
-        pgassert(*err_msg == NULL);
-        *log_msg = to_pg_msg(log);
-        *notice_msg = to_pg_msg(notice);
-    } catch (AssertFailedException &except) {
-        err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
-    } catch (const std::string &ex) {
-        *err_msg = to_pg_msg(ex);
-        *log_msg = hint.empty() ? to_pg_msg(log) : to_pg_msg(hint);
-    } catch (std::exception &except) {
-        err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
-    } catch (...) {
-        err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
-    }
+    /* TODO(week-2): implement planar face traversal algorithm here */
+    (void)edges_sql;
 }

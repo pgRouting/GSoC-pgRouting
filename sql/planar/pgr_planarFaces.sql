@@ -1,13 +1,14 @@
 /*PGR-GNU*****************************************************************
-File: _planarFaces.sql
+
+File: pgr_planarFaces.sql
 
 Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2026 Sakir Ahmed
-Mail: sakirahmed75531@gmail.com
+Mail: sakirahmed75531 at gmail.com
 
-----------------------------------------------------------------------
+------
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,46 +22,38 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
 
 -------------------------
--- _planarFaces
+-- pgr_planarFaces
 -------------------------
 
---v4.1
-
-CREATE FUNCTION pgr_planarFaces(
-    TEXT, -- edges_sql
-
-    directed BOOLEAN DEFAULT false,
+--v4.0.0
+CREATE OR REPLACE FUNCTION pgr_planarFaces(
+    TEXT,                                      -- edges_sql
+    directed         BOOLEAN DEFAULT false,
     include_outer_face BOOLEAN DEFAULT false,
 
-    OUT face_id BIGINT,
-    OUT seq INTEGER,
-    OUT edge_id BIGINT,
-    OUT node_id BIGINT,
-    OUT is_planar BOOLEAN
+    OUT seq      BIGINT,
+    OUT face_id  BIGINT,
+    OUT edge     BIGINT
 )
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT
-        NULL::BIGINT,
-        NULL::INTEGER,
-        NULL::BIGINT,
-        NULL::BIGINT,
-        NULL::BOOLEAN
-    WHERE false;
+    SELECT seq, face_id, edge
+    FROM _pgr_planarFaces(_pgr_get_statement($1));
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 COMMENT ON FUNCTION pgr_planarFaces(TEXT, BOOLEAN, BOOLEAN)
-IS
-'pgr_planarFaces
- - Experimental SQL skeleton for planar face traversal
- - Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - directed := false
-    - include_outer_face := false
+IS 'pgr_planarFaces
+- EXPERIMENTAL
+- Parameters:
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - directed := false
+  - include_outer_face := false
+- Documentation:
+  - ${PROJECT_DOC_LINK}/pgr_planarFaces.html
 ';

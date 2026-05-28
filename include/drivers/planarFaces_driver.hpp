@@ -24,22 +24,21 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
+/*! @file */
 
-#ifndef INCLUDE_DRIVERS_PLANARFACES_DRIVER_HPP_
-#define INCLUDE_DRIVERS_PLANARFACES_DRIVER_HPP_
 #pragma once
 
 #include <cstddef>
-#include <cstdint>
 #include <string>
 
-using Planar_face_rt = struct Planar_face_rt;
+struct Planar_face_rt;
 
 void
 do_planarFaces(
-        std::string,
-        Planar_face_rt**, size_t*,
-        char **, char **, char **);
-
-#endif  // INCLUDE_DRIVERS_PLANARFACES_DRIVER_HPP_
+        const std::string& edges_sql,
+        Planar_face_rt** result_tuples,
+        size_t* result_count,
+        char** log_msg,
+        char** notice_msg,
+        char** err_msg);

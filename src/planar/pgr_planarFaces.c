@@ -24,79 +24,83 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
 
-#include <stdbool.h>
-#include "c_common/postgres_connection.h"
+/* postgres.h MUST be first — PostgreSQL mandates this for all extensions */
+#include <postgres.h>
+#include <funcapi.h>
+#include <utils/array.h>
+#include <catalog/pg_type.h>
+#include <fmgr.h>
+#include <utils/lsyscache.h>
+#include <utils/builtins.h>
 
 #include "c_types/planar_face_rt.h"
-#include "c_common/debug_macro.h"
-#include "c_common/e_report.h"
-#include "c_common/time_msg.h"
-
 #include "process/planarFaces_process.h"
 
-PGDLLEXPORT Datum _pgr_planarfaces(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_planarfaces);
-
+PG_FUNCTION_INFO_V1(_pgr_planarFaces);
 
 PGDLLEXPORT Datum
-_pgr_planarfaces(PG_FUNCTION_ARGS) {
-    FuncCallContext     *funcctx;
-    TupleDesc           tuple_desc;
-
-    Planar_face_rt *result_tuples = NULL;
-    size_t result_count = 0;
+_pgr_planarFaces(PG_FUNCTION_ARGS) {
+    FuncCallContext  *funcctx;
+    uint32_t          call_cntr;
+    uint32_t          max_calls;
+    TupleDesc         tuple_desc;
 
     if (SRF_IS_FIRSTCALL()) {
-        MemoryContext   oldcontext;
+        MemoryContext    oldcontext;
+        Planar_face_rt  *result_tuples = NULL;
+        size_t           result_count  = 0;
+
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
         pgr_process_planarFaces(
-                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                text_to_cstring(PG_GETARG_TEXT_PP(0)),
                 &result_tuples,
                 &result_count);
 
-        funcctx->max_calls = result_count;
+        funcctx->max_calls = (uint32_t)result_count;
         funcctx->user_fctx = result_tuples;
+
         if (get_call_result_type(fcinfo, NULL, &tuple_desc)
                 != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "
-                         "that cannot accept type record")));
+                            "that cannot accept type record")));
         }
+        funcctx->tuple_desc = BlessTupleDesc(tuple_desc);
 
-        funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);
     }
 
-    funcctx = SRF_PERCALL_SETUP();
-    tuple_desc = funcctx->tuple_desc;
-    result_tuples = (Planar_face_rt*) funcctx->user_fctx;
+    funcctx   = SRF_PERCALL_SETUP();
+    call_cntr = funcctx->call_cntr;
+    max_calls = funcctx->max_calls;
 
-    if (funcctx->call_cntr < funcctx->max_calls) {
-        HeapTuple    tuple;
-        Datum        result;
-        Datum        *values;
-        bool*        nulls;
+    if (call_cntr < max_calls) {
+        Planar_face_rt *result_tuples =
+            (Planar_face_rt *) funcctx->user_fctx;
 
-        size_t num  = 3;
-        values = palloc(num * sizeof(Datum));
-        nulls = palloc(num * sizeof(bool));
+        HeapTuple  tuple;
+        Datum      result;
+        Datum      values[3];
+        bool       nulls[3] = {false, false, false};
 
-        size_t i;
-        for (i = 0; i < num; ++i) {
-            nulls[i] = false;
-        }
+        /*
+         * Column order MUST match OUT params in _pgr_planarFaces(TEXT):
+         *   0: seq      BIGINT
+         *   1: face_id  BIGINT
+         *   2: edge     BIGINT
+         */
+        values[0] = Int64GetDatum(result_tuples[call_cntr].seq);
+        values[1] = Int64GetDatum(result_tuples[call_cntr].face_id);
+        values[2] = Int64GetDatum(result_tuples[call_cntr].edge);
 
-        values[0] = Int64GetDatum(result_tuples[funcctx->call_cntr].seq);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].face_id);
-        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
-
-        tuple = heap_form_tuple(tuple_desc, values, nulls);
+        tuple  = heap_form_tuple(funcctx->tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
+
         SRF_RETURN_NEXT(funcctx, result);
     } else {
         SRF_RETURN_DONE(funcctx);
