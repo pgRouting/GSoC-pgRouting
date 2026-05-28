@@ -26,7 +26,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-/* postgres.h MUST be first — PostgreSQL mandates this for all extensions */
 #include <postgres.h>
 #include <funcapi.h>
 #include <utils/array.h>
@@ -36,7 +35,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <utils/builtins.h>
 
 #include "c_types/planar_face_rt.h"
-#include "process/planarFaces_process.h"
+#include "drivers/planar/planarFaces_driver.h"
 
 PG_FUNCTION_INFO_V1(_pgr_planarFaces);
 
@@ -55,10 +54,11 @@ _pgr_planarFaces(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        pgr_process_planarFaces(
+        pgr_do_planarFaces(
                 text_to_cstring(PG_GETARG_TEXT_PP(0)),
                 &result_tuples,
-                &result_count);
+                &result_count,
+                NULL, NULL, NULL);
 
         funcctx->max_calls = (uint32_t)result_count;
         funcctx->user_fctx = result_tuples;
@@ -88,12 +88,6 @@ _pgr_planarFaces(PG_FUNCTION_ARGS) {
         Datum      values[3];
         bool       nulls[3] = {false, false, false};
 
-        /*
-         * Column order MUST match OUT params in _pgr_planarFaces(TEXT):
-         *   0: seq      BIGINT
-         *   1: face_id  BIGINT
-         *   2: edge     BIGINT
-         */
         values[0] = Int64GetDatum(result_tuples[call_cntr].seq);
         values[1] = Int64GetDatum(result_tuples[call_cntr].face_id);
         values[2] = Int64GetDatum(result_tuples[call_cntr].edge);

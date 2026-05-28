@@ -1,6 +1,6 @@
 /*PGR-GNU*****************************************************************
 
-File: planarFaces_process.cpp
+File: planarFaces_driver.h
 
 Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -25,36 +25,31 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
+/*! @file */
 
-/* postgres.h must be first when PostgreSQL headers are used */
-#include <postgres.h>
+#ifndef INCLUDE_DRIVERS_PLANAR_PLANARFACES_DRIVER_H_
+#define INCLUDE_DRIVERS_PLANAR_PLANARFACES_DRIVER_H_
+#pragma once
 
-#include "process/planarFaces_process.h"
-#include "drivers/planarFaces_driver.hpp"
+#ifdef __cplusplus
+# include <cstddef>
+using Planar_face_rt = struct Planar_face_rt;
+#else
+# include <stddef.h>
+typedef struct Planar_face_rt Planar_face_rt;
+#endif
 
-void
-pgr_process_planarFaces(
-        const char* edges_sql,
-        Planar_face_rt** result_tuples,
-        size_t* result_count) {
-    char* log_msg    = nullptr;
-    char* notice_msg = nullptr;
-    char* err_msg    = nullptr;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    do_planarFaces(
-            std::string(edges_sql),
-            result_tuples,
-            result_count,
-            &log_msg,
-            &notice_msg,
-            &err_msg);
+void pgr_do_planarFaces(
+        const char*,
+        Planar_face_rt**, size_t*,
+        char**, char**, char**);
 
-    if (err_msg) {
-        ereport(ERROR,
-                (errcode(ERRCODE_INTERNAL_ERROR),
-                 errmsg("%s", err_msg)));
-    }
-
-    if (log_msg)    pfree(log_msg);
-    if (notice_msg) pfree(notice_msg);
+#ifdef __cplusplus
 }
+#endif
+
+#endif  // INCLUDE_DRIVERS_PLANAR_PLANARFACES_DRIVER_H_

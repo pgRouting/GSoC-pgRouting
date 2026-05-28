@@ -3,5 +3,4 @@ ADD_LIBRARY(planar OBJECT
     isPlanar_driver.cpp
     pgr_planarFaces.c
     planarFaces_driver.cpp
-    planarFaces_process.cpp
     )

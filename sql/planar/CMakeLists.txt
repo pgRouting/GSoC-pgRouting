@@ -4,7 +4,6 @@ set(LOCAL_FILES
     isPlanar.sql
     _planarFaces.sql
     planarFaces.sql
-    pgr_planarFaces.sql
     )
 
 foreach (f ${LOCAL_FILES})

@@ -26,16 +26,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/planarFaces_driver.hpp"
+#include "drivers/planar/planarFaces_driver.h"
 
 #include <string>
-#include <vector>
 
 #include "c_types/planar_face_rt.h"
 
 void
-do_planarFaces(
-        const std::string& edges_sql,
+pgr_do_planarFaces(
+        const char* edges_sql,
         Planar_face_rt** result_tuples,
         size_t* result_count,
         char** log_msg,
@@ -43,9 +42,9 @@ do_planarFaces(
         char** err_msg) {
     *result_tuples = nullptr;
     *result_count  = 0;
-    *log_msg       = nullptr;
-    *notice_msg    = nullptr;
-    *err_msg       = nullptr;
+    if (log_msg)    *log_msg    = nullptr;
+    if (notice_msg) *notice_msg = nullptr;
+    if (err_msg)    *err_msg    = nullptr;
 
     /* TODO(week-2): implement planar face traversal algorithm here */
     (void)edges_sql;
