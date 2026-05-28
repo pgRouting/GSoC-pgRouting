@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-20 20:20+0000\n"
+"POT-Creation-Date: 2026-05-28 21:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13329,6 +13329,45 @@ msgid "The best solution found for **lc101** is a travel time: 828.94"
 msgstr ""
 
 msgid "This implementation's travel time: 854.54"
+msgstr ""
+
+msgid "``pgr_planarFaces`` - Experimental"
+msgstr ""
+
+msgid "``pgr_planarFaces`` — Extracts faces from a planar graph."
+msgstr ""
+
+msgid "Extracts faces from a planar graph represented by an edges SQL query."
+msgstr ""
+
+msgid ""
+"Returns one row per edge in each face with ``seq``, ``face_id``, and "
+"``edge``."
+msgstr ""
+
+msgid "Applicable only for **undirected** planar graphs."
+msgstr ""
+
+msgid "Running time: to be determined."
+msgstr ""
+
+msgid "pgr_planarFaces(`Edges SQL`)"
+msgstr ""
+
+msgid "RETURNS ``(seq, face_id, edge)``"
+msgstr ""
+
+msgid "Sequential value starting from 1."
+msgstr ""
+
+#, fuzzy
+msgid "``face_id``"
+msgstr "``end_id``"
+
+msgid "Face identifier."
+msgstr ""
+
+msgid "Edge identifier."
 msgstr ""
 
 msgid "``pgr_prim``"
