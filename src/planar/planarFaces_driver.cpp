@@ -43,6 +43,12 @@ pgr_do_planarFaces(
         char** log_msg,
         char** notice_msg,
         char** err_msg) {
+    *result_tuples = nullptr;
+    *result_count  = 0;
+    *log_msg       = nullptr;
+    *notice_msg    = nullptr;
+    *err_msg       = nullptr;
+
     using pgrouting::to_pg_msg;
 
     std::ostringstream log;
