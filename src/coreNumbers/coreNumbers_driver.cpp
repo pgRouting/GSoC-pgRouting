@@ -73,6 +73,8 @@ do_coreNumbers(
         return_tuples = pgr_free(return_tuples);
         return_count = 0;
         err << except.what();
+    // Cleanup of *result_tuples is handled by coreNumbers_process.cpp
+    // (same pattern as boyerMyrvold_driver.cpp and withPointsVia_driver.cpp)
     } catch (const std::string &ex) {
         err << ex;
         log << hint;
