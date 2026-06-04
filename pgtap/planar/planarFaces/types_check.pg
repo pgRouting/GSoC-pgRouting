@@ -24,8 +24,9 @@ RETURN QUERY SELECT function_returns('pgr_planarfaces', ARRAY['text'], 'setof re
 
 RETURN QUERY
 SELECT function_args_eq('pgr_planarfaces',
-    $$SELECT  NULL::TEXT[] $$
-);
+  $$VALUES
+  ('{"","seq","face_id","edge_id","side"}'::TEXT[])
+  $$);
 
 END;
 $BODY$
