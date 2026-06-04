@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: planarFaces_process.h
+File: planarFaces_driver.h
 
 Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -25,17 +25,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
-#define INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
+#ifndef INCLUDE_DRIVERS_PLANAR_PLANARFACES_DRIVER_H_
+#define INCLUDE_DRIVERS_PLANAR_PLANARFACES_DRIVER_H_
 #pragma once
 
 #ifdef __cplusplus
-#include <cstddef>
-#include <cstdint>
+#   include <cstddef>
 using PlanarFace_rt = struct PlanarFace_rt;
 #else
-#include <stddef.h>
-#include <stdint.h>
+#   include <stddef.h>
 typedef struct PlanarFace_rt PlanarFace_rt;
 #endif
 
@@ -43,12 +41,13 @@ typedef struct PlanarFace_rt PlanarFace_rt;
 extern "C" {
 #endif
 
-void pgr_process_planarFaces(
-        const char*,
-        PlanarFace_rt**, size_t*);
+void pgr_do_planarFaces(
+            const char*,
+            PlanarFace_rt**, size_t*,
+            char**, char**, char**);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
+#endif  // INCLUDE_DRIVERS_PLANAR_PLANARFACES_DRIVER_H_
