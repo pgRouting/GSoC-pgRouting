@@ -60,8 +60,29 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
      }
 
  private:
+     /*
+      * Visitor that records new edges while adding them to the graph.
+      *
+      * Required for make_maximal_planar because the triangulation
+      * visitor checks adjacent_vertices(v, g) mid-run (Case B).
+      * Newly added edges must be visible in the graph for correct results.
+      */
+     struct planar_visitor {
+         std::vector<II_t_rt>& m_results;
+         G& m_graph;
+
+         planar_visitor(std::vector<II_t_rt>& results, G& graph)
+             : m_results(results), m_graph(graph) {}
+
+         template <typename Vertex, typename BGraph>
+         void visit_vertex_pair(Vertex u, Vertex v, BGraph& g) {
+             boost::add_edge(u, v, g);
+             m_results.push_back({m_graph[u].id, m_graph[v].id});
+         }
+     };
+
      std::vector<II_t_rt> generateMakeMaximalPlanar(G &graph) {
-         auto originalEdgeCount = boost::num_edges(graph.graph);
+         log << "Number of edges before: " << boost::num_edges(graph.graph) << "\n";
 
          E_i ei, ei_end;
          std::map<E, size_t> edge_id_map;
@@ -99,10 +120,14 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              return std::vector<II_t_rt>();
          }
 
+         /* Visitor collects new edges while mutating the graph */
+         std::vector<II_t_rt> results;
+         planar_visitor vis(results, graph);
+
          /* Step 1: Make biconnected planar first */
          CHECK_FOR_INTERRUPTS();
          try {
-             boost::make_biconnected_planar(graph.graph, &embedding[0], e_index);
+             boost::make_biconnected_planar(graph.graph, &embedding[0], e_index, vis);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -126,11 +151,11 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              boost::boyer_myrvold_params::graph = graph.graph,
              boost::boyer_myrvold_params::embedding = &embedding[0]);
 
-         /* Step 2: Make maximal planar */
+         /* Step 2: Make maximal planar (triangulation) */
          CHECK_FOR_INTERRUPTS();
          try {
              boost::make_maximal_planar(graph.graph, &embedding[0],
-                 boost::get(boost::vertex_index, graph.graph), e_index);
+                 boost::get(boost::vertex_index, graph.graph), e_index, vis);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -141,20 +166,9 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              throw;
          }
 
-         auto totalEdges = boost::num_edges(graph.graph);
-         auto newEdgeCount = totalEdges - originalEdgeCount;
-
-         std::vector<II_t_rt> results(newEdgeCount);
-         size_t newEdge = 0;
-         size_t i = 0;
-         for (boost::tie(ei, ei_end) = edges(graph.graph); ei != ei_end; ++ei) {
-             if (newEdge >= originalEdgeCount) {
-                 int64_t src = graph[graph.source(*ei)].id;
-                 int64_t tgt = graph[graph.target(*ei)].id;
-                 results[i] = {src, tgt};
-                 i++;
-             }
-             newEdge++;
+         log << "Number of edges after: " << boost::num_edges(graph.graph) << "\n";
+         for (const auto& r : results) {
+             log << "src:" << r.d1 << " tgt:" << r.d2 << "\n";
          }
 
          return results;

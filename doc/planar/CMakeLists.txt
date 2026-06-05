@@ -4,6 +4,7 @@
 
 set(LOCAL_FILES
     pgr_isPlanar.rst
+    pgr_makeMaximalPlanar.rst
     )
 
 foreach (f ${LOCAL_FILES})
