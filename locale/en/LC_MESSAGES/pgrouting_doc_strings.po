@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-20 20:20+0000\n"
+"POT-Creation-Date: 2026-06-05 13:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12890,6 +12890,41 @@ msgstr ""
 msgid ""
 "`Boost: make connected <https://www.boost.org/libs/graph/doc/make_connected."
 "html>`__"
+msgstr ""
+
+msgid "``pgr_makeMaximalPlanar`` - Experimental"
+msgstr ""
+
+msgid ""
+"``pgr_makeMaximalPlanar`` — Returns the set of edges needed to make a planar "
+"graph maximal planar (triangulated) while preserving planarity."
+msgstr ""
+
+msgid "pgr_makeMaximalPlanar(`Edges SQL`)"
+msgstr ""
+
+msgid "RETURNS SET OF |result-bicon|"
+msgstr ""
+
+msgid "Making a graph maximal planar"
+msgstr ""
+
+msgid "Sequential value starting from 1."
+msgstr ""
+
+msgid "Identifier of the source vertex of the edge to be added."
+msgstr ""
+
+msgid "Identifier of the target vertex of the edge to be added."
+msgstr ""
+
+#, fuzzy
+msgid ":doc:`pgr_makeBiconnectedPlanar`"
+msgstr "pgr_makeConnected"
+
+msgid ""
+"`Boost: make_maximal_planar <https://www.boost.org/doc/libs/release/libs/"
+"graph/doc/make_maximal_planar.html>`__"
 msgstr ""
 
 msgid "``pgr_maxCardinalityMatch``"
