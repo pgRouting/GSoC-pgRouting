@@ -126,11 +126,13 @@ Experimental Functions
 .. rubric:: Planar Family
 
 - :doc:`pgr_isPlanar`
+- :doc:`pgr_makeBiconnectedPlanar`
 
 .. toctree::
   :hidden:
 
   pgr_isPlanar
+  pgr_makeBiconnectedPlanar
 
 .. rubric:: Miscellaneous Algorithms
 
