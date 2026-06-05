@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-20 20:20+0000\n"
+"POT-Creation-Date: 2026-06-05 13:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3448,6 +3448,10 @@ msgstr ""
 
 msgid ":doc:`pgr_isPlanar`"
 msgstr ""
+
+#, fuzzy
+msgid ":doc:`pgr_makeBiconnectedPlanar`"
+msgstr "pgr_makeConnected"
 
 msgid "Miscellaneous Algorithms"
 msgstr ""
@@ -12851,6 +12855,13 @@ msgid "https://en.wikipedia.org/wiki/Line_graph"
 msgstr ""
 
 msgid "https://en.wikipedia.org/wiki/Complete_graph"
+msgstr ""
+
+#, fuzzy
+msgid "pgr_makeBiconnectedPlanar"
+msgstr "pgr_makeConnected"
+
+msgid "(Documentation to be added later)"
 msgstr ""
 
 msgid "``pgr_makeConnected`` - Experimental"
