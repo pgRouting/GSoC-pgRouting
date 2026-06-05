@@ -61,6 +61,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
  private:
      std::vector<II_t_rt> generateMakeBiconnectedPlanar(G &graph) {
          auto originalEdgeCount = boost::num_edges(graph.graph);
+         log << "Number of edges before: " << originalEdgeCount << "\n";
 
          E_i ei, ei_end;
          std::map<E, size_t> edge_id_map;
@@ -113,6 +114,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
 
          auto totalEdges = boost::num_edges(graph.graph);
          auto newEdgeCount = totalEdges - originalEdgeCount;
+         log << "Number of edges after: " << totalEdges << "\n";
 
          std::vector<II_t_rt> results(newEdgeCount);
          size_t newEdge = 0;
@@ -121,6 +123,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
              if (newEdge >= originalEdgeCount) {
                  int64_t src = graph[graph.source(*ei)].id;
                  int64_t tgt = graph[graph.target(*ei)].id;
+                 log << "src:" << src << " tgt:" << tgt << "\n";
                  results[i] = {src, tgt};
                  i++;
              }

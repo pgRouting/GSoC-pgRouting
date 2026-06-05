@@ -4,6 +4,7 @@
 
 set(LOCAL_FILES
     pgr_isPlanar.rst
+    pgr_makeBiconnectedPlanar.rst
     )
 
 foreach (f ${LOCAL_FILES})
