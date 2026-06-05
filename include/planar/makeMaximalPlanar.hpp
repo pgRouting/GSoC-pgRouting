@@ -60,13 +60,7 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
      }
 
  private:
-     /*
-      * Visitor that records new edges while adding them to the graph.
-      *
-      * Required for make_maximal_planar because the triangulation
-      * visitor checks adjacent_vertices(v, g) mid-run (Case B).
-      * Newly added edges must be visible in the graph for correct results.
-      */
+     /* Visitor that records new edges while adding them to the graph */
      struct planar_visitor {
          std::vector<II_t_rt>& m_results;
          G& m_graph;
