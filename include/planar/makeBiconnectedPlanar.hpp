@@ -38,6 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/make_biconnected_planar.hpp>
+#include <boost/graph/connected_components.hpp>
 
 #include "c_types/ii_t_rt.h"
 #include "cpp_common/messages.hpp"
@@ -96,6 +97,14 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
 
          if (!is_planar) {
              log << "Graph is not planar\n";
+             return std::vector<II_t_rt>();
+         }
+
+         /* Check if the graph is connected before trying to make it biconnected */
+         std::vector<size_t> component(boost::num_vertices(graph.graph));
+         auto num_components = boost::connected_components(graph.graph, &component[0]);
+         if (num_components > 1) {
+             log << "Graph is not connected. Please run pgr_makeConnected first.\n";
              return std::vector<II_t_rt>();
          }
 
