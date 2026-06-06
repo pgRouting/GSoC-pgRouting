@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: pgr_planarFaces.c
+File: planarFaces.c
 
 Generated with Template by:
 Copyright (c) 2015-2026 pgRouting developers

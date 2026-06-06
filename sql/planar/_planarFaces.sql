@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
-File: pgr_planarFaces.sql
+File: _planarFaces.sql
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2026 Sakir Ahmed
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v4.1
-CREATE FUNCTION pgr_planarFaces(
+CREATE FUNCTION _pgr_planarFaces(
   TEXT,   -- edges_sql (required)
 
   OUT seq     BIGINT,
@@ -35,20 +35,8 @@ CREATE FUNCTION pgr_planarFaces(
   OUT side    TEXT)
 
 RETURNS SETOF RECORD AS
-$BODY$
-  SELECT seq, face_id, edge_id, side
-  FROM _pgr_planarFaces(_pgr_get_statement($1)) AS a;
-$BODY$
-LANGUAGE SQL VOLATILE STRICT
-COST ${COST_HIGH} ROWS ${ROWS_HIGH};
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT;
 
-
-COMMENT ON FUNCTION pgr_planarFaces(TEXT)
-IS 'pgr_planarFaces
-- EXPERIMENTAL
-- Undirected graph
-- Parameters:
-  - edges SQL with columns: id, source, target, cost [,reverse_cost]
-- Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_planarFaces.html
-';
+COMMENT ON FUNCTION _pgr_planarFaces(TEXT)
+IS 'pgRouting internal function';
