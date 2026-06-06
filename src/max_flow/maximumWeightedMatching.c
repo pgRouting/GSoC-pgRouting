@@ -30,70 +30,61 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stdbool.h>
 
 #include "c_common/postgres_connection.h"
-
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
-#include "drivers/max_flow/maximum_weighted_matching_driver.h"
+#include "drivers/max_flow/maximumWeighted_matching_driver.h"
 
-PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_maximumweightedmatching);
+PGDLLEXPORT Datum _pgr_maximumweightedmatching_v1(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_maximumweightedmatching_v1);
 
-static
-void
+static void
 process(
-        char *edges_sql,
-        int64_t **result_tuples,
-        size_t *result_count) {
+    char *edges_sql,
+    int64_t **result_tuples,
+    size_t *result_count) {
     pgr_SPI_connect();
 
-    char *log_msg = NULL;
-    char *notice_msg = NULL;
-    char *err_msg = NULL;
-
+    char* log_msg = NULL;
+    char* notice_msg = NULL;
+    char* err_msg = NULL;
     clock_t start_t = clock();
 
     pgr_do_maximum_weighted_matching(
-            edges_sql,
-            result_tuples,
-            result_count,
-            &log_msg,
-            &notice_msg,
-            &err_msg);
+        edges_sql,
+        result_tuples,
+        result_count,
+        &log_msg,
+        &notice_msg,
+        &err_msg);
 
     time_msg("pgr_maximumWeightedMatching()", start_t, clock());
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
-        (*result_tuples) = NULL;
-        (*result_count) = 0;
+        *result_tuples = NULL;
+        *result_count = 0;
     }
 
     pgr_global_report(&log_msg, &notice_msg, &err_msg);
-
     pgr_SPI_finish();
 }
 
-PGDLLEXPORT Datum
-_pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum _pgr_maximumweightedmatching_v1(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
-
     int64_t *result_tuples = NULL;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext oldcontext;
-
         funcctx = SRF_FIRSTCALL_INIT();
-
-        oldcontext = MemoryContextSwitchTo(
-                funcctx->multi_call_memory_ctx);
+        oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
         process(
-                text_to_cstring(PG_GETARG_TEXT_P(0)),
-                &result_tuples,
-                &result_count);
+            text_to_cstring(PG_GETARG_TEXT_P(0)),
+            &result_tuples,
+            &result_count);
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
@@ -102,18 +93,12 @@ _pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
     }
 
     funcctx = SRF_PERCALL_SETUP();
-
     result_tuples = (int64_t *) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
-        Datum result;
-
-        result = Int64GetDatum(
-                result_tuples[funcctx->call_cntr]);
-
+        Datum result = Int64GetDatum(result_tuples[funcctx->call_cntr]);
         SRF_RETURN_NEXT(funcctx, result);
-    } else {
-        SRF_RETURN_DONE(funcctx);
     }
-}
 
+    SRF_RETURN_DONE(funcctx);
+}

@@ -27,47 +27,61 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+#include "drivers/max_flow/maximumWeighted_matching_driver.h"
+
+#include <sstream>
 #include <vector>
+#include <string>
 
-#include "drivers/max_flow/maximum_weighted_matching_driver.h"
+#include "cpp_common/pgdata_getters.hpp"
+#include "cpp_common/alloc.hpp"
+#include "cpp_common/assert.hpp"
 
-#include "cpp_common/undefPostgresDefine.hpp"
-
-#include "c_types/basic_edge_t.h"
-
-#include "max_flow/maximumWeightedMatching_process.hpp"
-
-extern "C" {
+#include "max_flow/maximumWeightedMatching.hpp"
 
 void
 pgr_do_maximum_weighted_matching(
-        const char *edges_sql,
+    const char *edges_sql,
 
-        int64_t **result_tuples,
-        size_t *result_count,
+    int64_t **return_tuples,
+    size_t *return_count,
 
-        char **log_msg,
-        char **notice_msg,
-        char **err_msg) {
-    std::vector<Basic_edge> edges;
+    char **log_msg,
+    char **notice_msg,
+    char **err_msg) {
+    using pgrouting::pgr_alloc;
+    using pgrouting::to_pg_msg;
+    using pgrouting::pgr_free;
 
-    /*
-     * TODO:
-     * Fetch edges from SQL query
-     */
+    std::ostringstream log;
+    std::ostringstream notice;
+    std::ostringstream err;
 
-    std::vector<int64_t> result =
-        maximumWeightedMatching_process(edges);
+    try {
+        auto edges = pgrouting::pgget::get_basic_edges(std::string(edges_sql));
 
-    (*result_count) = result.size();
+        if (edges.empty()) {
+            *notice_msg = to_pg_msg("No edges found");
+            *log_msg = to_pg_msg(log);
+            return;
+        }
 
-    (*result_tuples) = reinterpret_cast<int64_t*>(
-            palloc(sizeof(int64_t) * (*result_count)));
+        auto result = pgrouting::flow::maximumWeightedMatching(edges);
 
-    for (size_t i = 0; i < (*result_count); ++i) {
-        (*result_tuples)[i] = result[i];
+        *return_count = result.size();
+        *return_tuples = pgr_alloc(result.size(), *return_tuples);
+
+        size_t i = 0;
+        for (const auto &v : result) {
+            (*return_tuples)[i++] = v;
+        }
+
+        *log_msg = to_pg_msg(log);
+        *notice_msg = to_pg_msg(notice);
+    }
+    catch (std::exception &e) {
+        *err_msg = to_pg_msg(e.what());
+        *return_tuples = pgr_free(*return_tuples);
+        *return_count = 0;
     }
 }
-
-}
-```
