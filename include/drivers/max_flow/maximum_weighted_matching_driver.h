@@ -58,4 +58,3 @@ void pgr_do_maximum_weighted_matching(
 #endif
 
 #endif  // INCLUDE_DRIVERS_MAX_FLOW_MAXIMUM_WEIGHTED_MATCHING_DRIVER_H_
-```
