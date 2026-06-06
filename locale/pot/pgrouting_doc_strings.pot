@@ -3163,6 +3163,9 @@ msgstr ""
 msgid ":doc:`pgr_maxCardinalityMatch` - Calculates a maximum cardinality matching in a graph."
 msgstr ""
 
+msgid ":doc:`pgr_maximumWeightedMatching` - Calculates a maximum weighted matching in a graph."
+msgstr ""
+
 msgid "Flow Functions General Information"
 msgstr ""
 
