@@ -116,4 +116,4 @@ _pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
         SRF_RETURN_DONE(funcctx);
     }
 }
-```
+
