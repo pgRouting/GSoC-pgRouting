@@ -121,7 +121,7 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
          std::vector<size_t> component(boost::num_vertices(graph.graph));
          auto num_components = boost::connected_components(graph.graph, &component[0]);
          if (num_components > 1) {
-             throw std::invalid_argument("Graph is not connected. Please run pgr_makeConnected first.");
+             throw std::string("Graph is not connected. Please run pgr_makeConnected first.");
          }
 
          std::vector<II_t_rt> results;
