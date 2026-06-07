@@ -1,4 +1,3 @@
-```cpp
 /*PGR-GNU*****************************************************************
 File: maximumWeightedMatching_process.cpp
 
@@ -97,4 +96,3 @@ maximumWeightedMatching_process(
 
     return result;
 }
-```
