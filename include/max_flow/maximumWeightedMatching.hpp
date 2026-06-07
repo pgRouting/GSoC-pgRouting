@@ -36,17 +36,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <set>
 
-#include "cpp_common/undirectedGraph.hpp"
+#include "cpp_common/base_graph.hpp"
 
 namespace pgrouting {
 namespace flow {
 
 std::set<int64_t>
 maximumWeightedMatching(
-        pgrouting::graph::UndirectedGraph& graph);
+        pgrouting::UndirectedGraph& graph);
 
 }  // namespace flow
 }  // namespace pgrouting
 
 #endif  // INCLUDE_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_HPP_
-```
