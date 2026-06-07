@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: coreNumbers.hpp
+File: coreNumbers.cpp
 
 Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -25,21 +25,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_METRICS_CORENUMBERS_HPP_
-#define INCLUDE_METRICS_CORENUMBERS_HPP_
-#pragma once
+#include "metrics/coreNumbers.hpp"
 
 #include <vector>
 
-#include "c_types/coreNumbers_rt.h"
 #include "cpp_common/base_graph.hpp"
+#include "cpp_common/interruption.hpp"
 
 namespace pgrouting {
 namespace metrics {
 
-std::vector<CoreNumbers_rt> coreNumbers(const pgrouting::UndirectedGraph &graph);
+std::vector<CoreNumbers_rt>
+coreNumbers(const pgrouting::UndirectedGraph &graph) {
+    CHECK_FOR_INTERRUPTS();
+
+    /* TODO: implement k-core decomposition algorithm */
+    std::vector<CoreNumbers_rt> results;
+    (void)graph;
+    return results;
+}
 
 }  // namespace metrics
 }  // namespace pgrouting
-
-#endif  // INCLUDE_METRICS_CORENUMBERS_HPP_
