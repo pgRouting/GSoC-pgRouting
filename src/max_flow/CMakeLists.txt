@@ -6,15 +6,18 @@ ADD_LIBRARY(max_flow OBJECT
     minCostMaxFlow.c
     maximum_cardinality_matching.c
     edge_disjoint_paths.c
+    maximumWeightedMatching.c‎
 
     maxFlow_driver.cpp
     maxFlow_process.cpp
 
     maximum_cardinality_matching_driver.cpp
     minCostMaxFlow_driver.cpp
+    maximumWeighted_matching_driver.cpp
 
     maximumcardinalitymatching.cpp
     maxflow.cpp
     flowgraph.cpp
     minCostMaxFlow.cpp
+    maximumWeightedMatching_process.cpp
 )
