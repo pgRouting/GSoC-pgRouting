@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
-#include "drivers/max_flow/maximumWeighted_matching_driver.h"
+#include "drivers/max_flow/maximum_weighted_matching_driver.h"
 
 PGDLLEXPORT Datum _pgr_maximumweightedmatching_v1(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_maximumweightedmatching_v1);
