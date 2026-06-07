@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _pgr_coreNumbers.sql
+File: _coreNumbers.sql
 
 Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -35,7 +35,7 @@ CREATE FUNCTION _pgr_coreNumbers(
 
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE C VOLATILE STRICT;
+LANGUAGE C IMMUTABLE STRICT;
 
 COMMENT ON FUNCTION _pgr_coreNumbers(TEXT)
 IS 'pgRouting internal function';
