@@ -31,7 +31,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <map>
 #include <vector>
 #include <cstdint>
-#include <stdexcept>
 
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/properties.hpp>
@@ -104,7 +103,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
          std::vector<size_t> component(boost::num_vertices(graph.graph));
          auto num_components = boost::connected_components(graph.graph, &component[0]);
          if (num_components > 1) {
-             throw std::invalid_argument("Graph is not connected. Please run pgr_makeConnected first.");
+             throw std::string("Graph is not connected. Please run pgr_makeConnected first.");
          }
 
          CHECK_FOR_INTERRUPTS();
