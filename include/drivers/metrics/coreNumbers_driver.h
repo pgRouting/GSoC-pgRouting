@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: coreNumbers_process.h
+File: coreNumbers_driver.h
 
 Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -25,30 +25,37 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_PROCESS_CORENUMBERS_PROCESS_H_
-#define INCLUDE_PROCESS_CORENUMBERS_PROCESS_H_
+#ifndef INCLUDE_DRIVERS_METRICS_CORENUMBERS_DRIVER_H_
+#define INCLUDE_DRIVERS_METRICS_CORENUMBERS_DRIVER_H_
 #pragma once
 
+/* for size_t */
 #ifdef __cplusplus
-#include <cstddef>
-#include <cstdint>
+#   include <cstddef>
 using CoreNumbers_rt = struct CoreNumbers_rt;
 #else
-#include <stddef.h>
-#include <stdint.h>
+#   include <stddef.h>
+#include <stdbool.h>
 typedef struct CoreNumbers_rt CoreNumbers_rt;
 #endif
+
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void pgr_process_coreNumbers(
-        const char*,
-        CoreNumbers_rt**, size_t*);
+void
+pgr_do_coreNumbers(
+    const char*,
+
+    CoreNumbers_rt**,
+    size_t*,
+    char**,
+    char**);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // INCLUDE_PROCESS_CORENUMBERS_PROCESS_H_
+#endif  // INCLUDE_DRIVERS_METRICS_CORENUMBERS_DRIVER_H_
