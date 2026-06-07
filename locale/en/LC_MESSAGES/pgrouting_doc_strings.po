@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-06 15:47+0000\n"
+"POT-Creation-Date: 2026-06-07 07:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3356,6 +3356,11 @@ msgid ":doc:`pgr_maxFlowMinCost` - Details of flow and cost on edges."
 msgstr ""
 
 msgid ":doc:`pgr_maxFlowMinCost_Cost` - Only the Min Cost calculation."
+msgstr ""
+
+msgid ""
+":doc:`pgr_maximumWeightedMatching` - Calculates a maximum weighted matching "
+"in a graph."
 msgstr ""
 
 msgid ":doc:`chinesePostmanProblem-family`"
@@ -13123,143 +13128,38 @@ msgstr ""
 msgid "Minimum Cost Maximum Flow possible from the source(s) to the target(s)"
 msgstr ""
 
-msgid ""
-"single: Flow Family ; pgr_maximumWeightedMatching single: "
-"maximumWeightedMatching"
-msgstr ""
-
 #, fuzzy
-msgid "# `pgr_maximumWeightedMatching`"
+msgid "pgr_maximumWeightedMatching"
 msgstr "pgr_maximumcardinalitymatching"
 
 msgid ""
-"`pgr_maximumWeightedMatching` — Calculates a maximum weighted matching in a "
-"graph."
+"``pgr_maximumWeightedMatching`` — Calculates a maximum weighted matching in "
+"a graph."
 msgstr ""
 
-msgid "## Description"
-msgstr ""
-
-msgid "A matching is a set of edges without common vertices."
+msgid "Signature"
 msgstr ""
 
 msgid ""
-"A maximum weighted matching is a matching whose total edge weight is maximum."
-msgstr ""
-
-msgid "There may be many maximum weighted matchings."
-msgstr ""
-
-msgid "Calculates one possible maximum weighted matching in a graph."
-msgstr ""
-
-msgid "Uses the Blossom algorithm implementation from Boost Graph Library."
-msgstr ""
-
-msgid "Running time: :math:`O(V^3)`"
-msgstr ""
-
-msgid "## Signatures"
-msgstr ""
-
-msgid "single: MaximumWeightedMatching"
-msgstr ""
-
-msgid "class"
-msgstr ""
-
-msgid "signatures"
-msgstr ""
-
-msgid "pgr_maximumWeightedMatching(`Edges SQL`_)"
-msgstr ""
-
-msgid "## Parameters"
-msgstr ""
-
-msgid "file"
-msgstr ""
-
-msgid "This file is part of the pgRouting project."
-msgstr ""
-
-msgid "copyright"
-msgstr ""
-
-msgid "Copyright (c) 2017-2026 pgRouting developers"
-msgstr ""
-
-msgid "license"
+"A matching is a set of edges without common vertices. A maximum weighted "
+"matching is a matching whose total edge weight is maximum."
 msgstr ""
 
 msgid ""
-"Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/"
-"licenses/by-sa/3.0"
+"This function uses the Blossom algorithm implementation from Boost Graph "
+"Library."
 msgstr ""
 
-msgid "start-after"
+msgid "edges_sql"
 msgstr ""
 
-msgid "only_edge_param_start"
+msgid "SQL query to get edges"
 msgstr ""
 
-msgid "only_edge_param_end"
+msgid "returns"
 msgstr ""
 
-msgid "## Inner Queries"
-msgstr ""
-
-msgid "width"
-msgstr ""
-
-msgid "81"
-msgstr ""
-
-msgid "widths"
-msgstr ""
-
-msgid "14 14 7 44"
-msgstr ""
-
-msgid "header-rows"
-msgstr ""
-
-#, fuzzy
-msgid "`id`"
-msgstr "``id``"
-
-#, fuzzy
-msgid "`source`"
-msgstr "``source``"
-
-#, fuzzy
-msgid "`target`"
-msgstr "``target``"
-
-#, fuzzy
-msgid "`cost`"
-msgstr "``cost``"
-
-msgid "Weight of the edge."
-msgstr ""
-
-#, fuzzy
-msgid "`reverse_cost`"
-msgstr "``reverse_cost``"
-
-msgid "Weight of the reverse edge."
-msgstr ""
-
-msgid "`SMALLINT`, `INTEGER`, `BIGINT`"
-msgstr ""
-
-msgid "`SMALLINT`, `INTEGER`, `BIGINT`, `REAL`, `FLOAT`"
-msgstr ""
-
-msgid "## Result columns"
-msgstr ""
-
-msgid "## See Also"
+msgid "SET OF (edge_id)"
 msgstr ""
 
 msgid "https://en.wikipedia.org/wiki/Maximum_weight_matching"
@@ -13336,9 +13236,6 @@ msgstr ""
 msgid ""
 "Six different initial will be optimized - the best solution found will be "
 "result"
-msgstr ""
-
-msgid "Signature"
 msgstr ""
 
 msgid ""
