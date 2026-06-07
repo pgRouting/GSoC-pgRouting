@@ -39,6 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/make_biconnected_planar.hpp>
 #include <boost/graph/make_maximal_planar.hpp>
+#include <boost/graph/connected_components.hpp>
 
 #include "c_types/ii_t_rt.h"
 #include "cpp_common/messages.hpp"
@@ -60,7 +61,6 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
      }
 
  private:
-     /* Visitor that records new edges while adding them to the graph */
      struct planar_visitor {
          std::vector<II_t_rt>& m_results;
          G& m_graph;
@@ -114,11 +114,20 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              return std::vector<II_t_rt>();
          }
 
-         /* Visitor collects new edges while mutating the graph */
+         if (boost::num_vertices(graph.graph) < 3) {
+             return std::vector<II_t_rt>();
+         }
+
+         std::vector<size_t> component(boost::num_vertices(graph.graph));
+         auto num_components = boost::connected_components(graph.graph, &component[0]);
+         if (num_components > 1) {
+             throw std::invalid_argument("Graph is not connected. Please run pgr_makeConnected first.");
+         }
+
          std::vector<II_t_rt> results;
          planar_visitor vis(results, graph);
 
-         /* Step 1: Make biconnected planar first */
+         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
          try {
              boost::make_biconnected_planar(graph.graph, &embedding[0], e_index, vis);
@@ -132,20 +141,18 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              throw;
          }
 
-         /* Rebuild edge index map after biconnected augmentation */
          edge_id_map.clear();
          edge_count = 0;
          for (boost::tie(ei, ei_end) = edges(graph.graph); ei != ei_end; ++ei) {
              edge_id_map[*ei] = edge_count++;
          }
 
-         /* Recompute embedding after biconnected augmentation */
          embedding.resize(boost::num_vertices(graph.graph));
          is_planar = boost::boyer_myrvold_planarity_test(
              boost::boyer_myrvold_params::graph = graph.graph,
              boost::boyer_myrvold_params::embedding = &embedding[0]);
 
-         /* Step 2: Make maximal planar (triangulation) */
+         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
          try {
              boost::make_maximal_planar(graph.graph, &embedding[0],
