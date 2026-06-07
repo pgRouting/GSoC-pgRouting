@@ -1,6 +1,6 @@
-/* :file: This file is part of the pgRouting project.
-:copyright: Copyright (c) 2026-2026 pgRouting developers
-:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+:file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2020-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0
 
 .. index::
    single: Flow Family ; pgr_maximumWeightedMatching
