@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: pgr_coreNumbers.sql
+File: coreNumbers.sql
 
 Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
