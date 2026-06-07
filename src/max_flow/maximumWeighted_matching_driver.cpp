@@ -27,47 +27,88 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include <vector>
-
 #include "drivers/max_flow/maximum_weighted_matching_driver.h"
+#include <sstream>
+#include <vector>
+#include <string>
 
-#include "cpp_common/undefPostgresDefine.hpp"
+#include "cpp_common/pgdata_getters.hpp"
+#include "cpp_common/alloc.hpp"
+#include "cpp_common/assert.hpp"
 
-#include "c_types/basic_edge_t.h"
+#include "max_flow/maximumWeightedMatching.hpp"
 
-#include "max_flow/maximumWeightedMatching_process.hpp"
+void pgr_do_maximum_weighted_matching(
+    const char *edges_sql,
+    int64_t **return_tuples,
+    size_t *return_count,
+    char** log_msg,
+    char** notice_msg,
+    char **err_msg) {
 
-extern "C" {
+    using pgrouting::pgr_alloc;
+    using pgrouting::to_pg_msg;
+    using pgrouting::pgr_free;
 
-void
-pgr_do_maximum_weighted_matching(
-        const char *edges_sql,
+    std::ostringstream log;
+    std::ostringstream notice;
+    std::ostringstream err;
+    const char *hint = nullptr;
 
-        int64_t **result_tuples,
-        size_t *result_count,
+    try {
+        hint = edges_sql;
 
-        char **log_msg,
-        char **notice_msg,
-        char **err_msg) {
-    std::vector<Basic_edge> edges;
+        auto edges =
+            pgrouting::pgget::get_basic_edges(std::string(edges_sql));
 
-    /*
-     * TODO:
-     * Fetch edges from SQL query
-     */
+        if (edges.empty()) {
+            *notice_msg = to_pg_msg("No edges found");
+            *log_msg = hint ? to_pg_msg(hint) : to_pg_msg(log);
+            return;
+        }
 
-    std::vector<int64_t> result =
-        maximumWeightedMatching_process(edges);
+        hint = nullptr;
 
-    (*result_count) = result.size();
+        pgrouting::graph::UndirectedHasCostBG graph(edges);
 
-    (*result_tuples) = reinterpret_cast<int64_t*>(
-            palloc(sizeof(int64_t) * (*result_count)));
+        auto matched_edges =
+            pgrouting::flow::maxWeightMatch(graph);
 
-    for (size_t i = 0; i < (*result_count); ++i) {
-        (*result_tuples)[i] = result[i];
+        (*return_tuples) =
+            pgr_alloc(matched_edges.size(), (*return_tuples));
+
+        size_t i = 0;
+        for (const auto &e : matched_edges) {
+            (*return_tuples)[i++] = e;
+        }
+
+        *return_count = matched_edges.size();
+        *log_msg = to_pg_msg(log);
+        *notice_msg = to_pg_msg(notice);
+
+    } catch (AssertFailedException &except) {
+        (*return_tuples) = pgr_free(*return_tuples);
+        *return_count = 0;
+        err << except.what();
+        *err_msg = to_pg_msg(err);
+        *log_msg = to_pg_msg(log);
+
+    } catch (const std::string &ex) {
+        *err_msg = to_pg_msg(ex);
+        *log_msg = hint ? to_pg_msg(hint) : to_pg_msg(log);
+
+    } catch (std::exception &except) {
+        (*return_tuples) = pgr_free(*return_tuples);
+        *return_count = 0;
+        err << except.what();
+        *err_msg = to_pg_msg(err);
+        *log_msg = to_pg_msg(log);
+
+    } catch (...) {
+        (*return_tuples) = pgr_free(*return_tuples);
+        *return_count = 0;
+        err << "Caught unknown exception!";
+        *err_msg = to_pg_msg(err);
+        *log_msg = to_pg_msg(log);
     }
 }
-
-}
-```
