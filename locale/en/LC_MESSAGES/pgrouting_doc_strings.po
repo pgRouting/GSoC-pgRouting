@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-07 11:01+0000\n"
+"POT-Creation-Date: 2026-06-07 11:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13121,12 +13121,6 @@ msgid "RETURNS FLOAT"
 msgstr ""
 
 msgid "Minimum Cost Maximum Flow possible from the source(s) to the target(s)"
-msgstr ""
-
-msgid ""
-"/* :file: This file is part of the pgRouting project. :copyright: Copyright "
-"(c) 2026-2026 pgRouting developers :license: Creative Commons Attribution-"
-"Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */"
 msgstr ""
 
 #, fuzzy
