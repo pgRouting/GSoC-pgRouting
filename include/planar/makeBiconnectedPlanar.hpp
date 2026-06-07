@@ -101,7 +101,6 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
              return std::vector<II_t_rt>();
          }
 
-         /* Check if the graph is connected before trying to make it biconnected */
          std::vector<size_t> component(boost::num_vertices(graph.graph));
          auto num_components = boost::connected_components(graph.graph, &component[0]);
          if (num_components > 1) {
