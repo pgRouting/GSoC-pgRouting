@@ -56,15 +56,18 @@ pgr_do_maximum_weighted_matching(
     std::ostringstream log;
     std::ostringstream notice;
     std::ostringstream err;
+    const char *hint = nullptr;
 
     try {
-        auto edges = pgrouting::pgget::get_basic_edges(std::string(edges_sql));
+        hint = edges_sql;
+        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, true);
 
         if (edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
-            *log_msg = to_pg_msg(log);
+            *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
             return;
         }
+        hint = nullptr;
 
         pgrouting::UndirectedGraph graph;
         graph.insert_edges(edges);
@@ -81,10 +84,26 @@ pgr_do_maximum_weighted_matching(
 
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);
-    }
-    catch (std::exception &e) {
-        *err_msg = to_pg_msg(e.what());
-        *return_tuples = pgr_free(*return_tuples);
-        *return_count = 0;
+    } catch (AssertFailedException &except) {
+        (*return_tuples) = pgr_free(*return_tuples);
+        (*return_count) = 0;
+        err << except.what();
+        *err_msg = to_pg_msg(err);
+        *log_msg = to_pg_msg(log);
+    } catch (const std::string &ex) {
+        *err_msg = to_pg_msg(ex);
+        *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+    } catch (std::exception &except) {
+        (*return_tuples) = pgr_free(*return_tuples);
+        (*return_count) = 0;
+        err << except.what();
+        *err_msg = to_pg_msg(err);
+        *log_msg = to_pg_msg(log);
+    } catch(...) {
+        (*return_tuples) = pgr_free(*return_tuples);
+        (*return_count) = 0;
+        err << "Caught unknown exception!";
+        *err_msg = to_pg_msg(err);
+        *log_msg = to_pg_msg(log);
     }
 }
