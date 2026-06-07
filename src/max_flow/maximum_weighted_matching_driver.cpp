@@ -27,15 +27,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/max_flow/maximumWeighted_matching_driver.h"
+#include "drivers/max_flow/maximum_weighted_matching_driver.h"
 
 #include <sstream>
-#include <vector>
 #include <string>
+#include <vector>
 
-#include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
+#include "cpp_common/pgdata_getters.hpp"
 
 #include "max_flow/maximumWeightedMatching.hpp"
 
