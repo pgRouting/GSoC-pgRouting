@@ -66,7 +66,10 @@ pgr_do_maximum_weighted_matching(
             return;
         }
 
-        auto result = pgrouting::flow::maximumWeightedMatching(edges);
+        pgrouting::UndirectedGraph graph;
+        graph.insert_edges(edges);
+
+        auto result = pgrouting::flow::maximumWeightedMatching(graph);
 
         *return_count = result.size();
         *return_tuples = pgr_alloc(result.size(), *return_tuples);
