@@ -30,13 +30,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <set>
 #include <cstdint>
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/version.hpp>
-#if BOOST_VERSION >= 107600
 #include <boost/graph/maximum_weighted_matching.hpp>
-#else
-#error "pgr_maximumWeightedMatching requires Boost >= 1.76.0"
-#endif
+
 #include "max_flow/maximumWeightedMatching.hpp"
 #include "cpp_common/undirectedHasCostBG.hpp"
 
