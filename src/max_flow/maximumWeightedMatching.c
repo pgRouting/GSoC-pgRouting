@@ -1,6 +1,5 @@
-```c
 /*PGR-GNU*****************************************************************
-File: maximumWeightedMatching.c
+File: maximumweightedmatching.c
 
 Generated with Template by:
 Copyright (c) 2015-2026 pgRouting developers
@@ -63,7 +62,7 @@ process(
             &notice_msg,
             &err_msg);
 
-    time_msg("pgr_maximumWeightedMatching()", start_t, clock());
+    time_msg("pgr_maximumWeightedmatching()", start_t, clock());
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
@@ -117,4 +116,4 @@ _pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
         SRF_RETURN_DONE(funcctx);
     }
 }
-```
+

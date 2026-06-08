@@ -1,0 +1,48 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2016-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+BEGIN;
+
+SELECT CASE WHEN min_version('4.1.0') THEN plan(5) ELSE plan(2) END;
+
+SELECT has_function('pgr_maximumweightedmatching');
+
+CREATE FUNCTION types_check()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+    IF NOT min_version('4.1.0') THEN
+      RETURN QUERY SELECT skip(1, 'pgr_maximumWeightedMatching signature test only valid on newer versions');
+      RETURN;
+    END IF;
+
+    RETURN QUERY SELECT has_function('pgr_maximumweightedmatching', ARRAY['text']);
+    RETURN QUERY SELECT function_returns('pgr_maximumweightedmatching', ARRAY['text'], 'setof bigint');
+
+    IF min_version('4.1.0') THEN
+
+      RETURN QUERY SELECT function_args_eq('pgr_maximumweightedmatching',
+        $$VALUES ('{"","edge"}'::TEXT[]) $$);
+
+      RETURN QUERY SELECT function_types_eq('pgr_maximumweightedmatching',
+        $$VALUES ('{text,int8}'::TEXT[]) $$);
+
+    ELSE
+
+      RETURN QUERY SELECT function_args_has('pgr_maximumweightedmatching',
+        $$VALUES ('{"","edge"}'::TEXT[]) $$);
+
+      RETURN QUERY SELECT function_types_has('pgr_maximumweightedmatching',
+        $$VALUES ('{text,int8}'::TEXT[]) $$);
+
+    END IF;
+
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT types_check();
+SELECT finish();
+ROLLBACK;

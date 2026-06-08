@@ -28,38 +28,21 @@ See the GNU General Public License for more details.
 --v4.1
 
 CREATE FUNCTION pgr_maximumWeightedMatching(
-    TEXT,   -- edges_sql (required)
-
-    OUT seq BIGINT,
-    OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
-    OUT agg_cost FLOAT
+    TEXT  -- edges_sql (required)
 )
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT
-        seq,
-        start_vid,
-        end_vid,
-        agg_cost
-    FROM _pgr_maximumWeightedMatching(
-        _pgr_get_statement($1)
-    );
+SELECT *
+FROM _pgr_maximumWeightedMatching(_pgr_get_statement($1));
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
-COST ${COST_HIGH} ROWS ${ROWS_HIGH};
+COST 100
+ROWS 1000;
 
 COMMENT ON FUNCTION pgr_maximumWeightedMatching(TEXT)
 IS 'pgr_maximumWeightedMatching
-- EXPERIMENTAL
 - Parameters:
-  - Edges SQL with columns:
-    id, source, target, cost
-- Restrictions:
-  - Undirected graph only
-  - Parallel edges are not allowed
-- Returns:
-  - seq, start_vid, end_vid, agg_cost
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_maximumWeightedMatching.html
 ';
