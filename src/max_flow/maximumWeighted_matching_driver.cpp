@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "drivers/max_flow/maximum_weighted_matching_driver.h"
+
 #include <sstream>
 #include <vector>
 #include <string>
@@ -35,7 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
-
+#include "c_types/iid_t_rt.h"
 #include "max_flow/maximumWeightedMatching.hpp"
 
 void pgr_do_maximum_weighted_matching(
@@ -58,24 +59,25 @@ void pgr_do_maximum_weighted_matching(
     try {
         hint = edges_sql;
 
-        auto edges =
-            pgrouting::pgget::get_basic_edges(std::string(edges_sql));
-
-        if (edges.empty()) {
+        auto raw_edges = pgrouting::pgget::get_edges(std::string(edges_sql), false, false);
+        if (raw_edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
             *log_msg = hint ? to_pg_msg(hint) : to_pg_msg(log);
             return;
         }
-
         hint = nullptr;
+
+        std::vector<IID_t_rt> edges;
+        edges.reserve(raw_edges.size());
+        for (const auto& e : raw_edges) {
+            edges.push_back({e.source, e.target, e.cost});
+        }
 
         pgrouting::graph::UndirectedHasCostBG graph(edges);
 
-        auto matched_edges =
-            pgrouting::flow::maxWeightMatch(graph);
+        auto matched_edges = pgrouting::flow::maxWeightMatch(graph);
 
-        (*return_tuples) =
-            pgr_alloc(matched_edges.size(), (*return_tuples));
+        (*return_tuples) = pgr_alloc(matched_edges.size(), (*return_tuples));
 
         size_t i = 0;
         for (const auto &e : matched_edges) {
@@ -85,26 +87,18 @@ void pgr_do_maximum_weighted_matching(
         *return_count = matched_edges.size();
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);
-
-    } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         *return_count = 0;
         err << except.what();
         *err_msg = to_pg_msg(err);
         *log_msg = to_pg_msg(log);
-
-    } catch (const std::string &ex) {
         *err_msg = to_pg_msg(ex);
         *log_msg = hint ? to_pg_msg(hint) : to_pg_msg(log);
-
-    } catch (std::exception &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         *return_count = 0;
         err << except.what();
         *err_msg = to_pg_msg(err);
         *log_msg = to_pg_msg(log);
-
-    } catch (...) {
         (*return_tuples) = pgr_free(*return_tuples);
         *return_count = 0;
         err << "Caught unknown exception!";

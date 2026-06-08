@@ -27,73 +27,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include <algorithm>
 #include <vector>
-
-#include "max_flow/maximumWeightedMatching.hpp"
-
+#include <set>
+#include <cstdint>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/maximum_weighted_matching.hpp>
+#include "max_flow/maximumWeightedMatching.hpp"
+#include "cpp_common/undirectedHasCostBG.hpp"
 
-using boost::adjacency_list;
-using boost::vecS;
-using boost::undirectedS;
+namespace pgrouting {
+namespace flow {
 
-typedef adjacency_list<
-    vecS,
-    vecS,
-    undirectedS,
-    boost::no_property,
-    boost::property<boost::edge_weight_t, double>
-> Graph;
+std::set<int64_t>
+maxWeightMatch(pgrouting::graph::UndirectedHasCostBG& graph) {
+    using Graph = pgrouting::graph::UndirectedHasCostBG::TSP_Graph;
+    using V     = boost::graph_traits<Graph>::vertex_descriptor;
 
-std::vector<int64_t>
-maximumWeightedMatching_process(
-        const std::vector<Basic_edge> &edges) {
-    Graph graph;
+    auto& g = graph.graph();
+    size_t n = boost::num_vertices(g);
 
-    size_t max_vertex = 0;
+    std::vector<V> mate(n);
+    boost::maximum_weighted_matching(g, &mate[0]);
 
-    for (const auto &edge : edges) {
-        max_vertex = std::max(
-                max_vertex,
-                static_cast<size_t>(
-                    std::max(edge.source, edge.target)));
-    }
-
-    for (size_t i = 0; i <= max_vertex; ++i) {
-        boost::add_vertex(graph);
-    }
-
-    for (const auto &edge : edges) {
-        boost::add_edge(
-                edge.source,
-                edge.target,
-                edge.cost,
-                graph);
-    }
-
-    std::vector<
-        boost::graph_traits<Graph>::vertex_descriptor> mate(
-                boost::num_vertices(graph));
-
-    boost::maximum_weighted_matching(
-            graph,
-            &mate[0]);
-
-    std::vector<int64_t> result;
-
+    std::set<int64_t> result;
     for (size_t i = 0; i < mate.size(); ++i) {
-        if (mate[i]
-                != boost::graph_traits<Graph>::null_vertex()
+        if (mate[i] != boost::graph_traits<Graph>::null_vertex()
                 && i < static_cast<size_t>(mate[i])) {
-            result.push_back(
-                    static_cast<int64_t>(i));
-            result.push_back(
-                    static_cast<int64_t>(mate[i]));
+            result.insert(graph.get_vertex_id(static_cast<V>(i)));
+            result.insert(graph.get_vertex_id(mate[i]));
         }
     }
-
     return result;
 }
 
+}  // namespace flow
+}  // namespace pgrouting
