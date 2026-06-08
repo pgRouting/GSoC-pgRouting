@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include <map>
+#include <string>
 #include <vector>
 #include <cstdint>
 
@@ -38,6 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/property_map/property_map.hpp>
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/make_biconnected_planar.hpp>
+#include <boost/graph/connected_components.hpp>
 
 #include "c_types/ii_t_rt.h"
 #include "cpp_common/messages.hpp"
@@ -61,6 +63,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
  private:
      std::vector<II_t_rt> generateMakeBiconnectedPlanar(G &graph) {
          auto originalEdgeCount = boost::num_edges(graph.graph);
+         log << "Number of edges before: " << originalEdgeCount << "\n";
 
          E_i ei, ei_end;
          std::map<E, size_t> edge_id_map;
@@ -98,6 +101,12 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
              return std::vector<II_t_rt>();
          }
 
+         std::vector<size_t> component(boost::num_vertices(graph.graph));
+         auto num_components = boost::connected_components(graph.graph, &component[0]);
+         if (num_components > 1) {
+             throw std::string("Graph is not connected. Please run pgr_makeConnected first.");
+         }
+
          CHECK_FOR_INTERRUPTS();
          try {
              boost::make_biconnected_planar(graph.graph, &embedding[0], e_index);
@@ -113,6 +122,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
 
          auto totalEdges = boost::num_edges(graph.graph);
          auto newEdgeCount = totalEdges - originalEdgeCount;
+         log << "Number of edges after: " << totalEdges << "\n";
 
          std::vector<II_t_rt> results(newEdgeCount);
          size_t newEdge = 0;
@@ -121,6 +131,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
              if (newEdge >= originalEdgeCount) {
                  int64_t src = graph[graph.source(*ei)].id;
                  int64_t tgt = graph[graph.target(*ei)].id;
+                 log << "src:" << src << " tgt:" << tgt << "\n";
                  results[i] = {src, tgt};
                  i++;
              }
