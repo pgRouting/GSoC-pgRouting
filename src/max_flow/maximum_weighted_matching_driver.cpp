@@ -46,59 +46,54 @@ void pgr_do_maximum_weighted_matching(
     char** log_msg,
     char** notice_msg,
     char **err_msg) {
-
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
-
     std::ostringstream log;
     std::ostringstream notice;
     std::ostringstream err;
     const char *hint = nullptr;
-
     try {
         hint = edges_sql;
-
-        auto raw_edges = pgrouting::pgget::get_edges(std::string(edges_sql), false, false);
+        auto raw_edges = pgrouting::pgget::get_edges(
+                std::string(edges_sql), false, false);
         if (raw_edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
             *log_msg = hint ? to_pg_msg(hint) : to_pg_msg(log);
             return;
         }
         hint = nullptr;
-
         std::vector<IID_t_rt> edges;
         edges.reserve(raw_edges.size());
         for (const auto& e : raw_edges) {
             edges.push_back({e.source, e.target, e.cost});
         }
-
         pgrouting::graph::UndirectedHasCostBG graph(edges);
-
         auto matched_edges = pgrouting::flow::maxWeightMatch(graph);
-
         (*return_tuples) = pgr_alloc(matched_edges.size(), (*return_tuples));
-
         size_t i = 0;
         for (const auto &e : matched_edges) {
             (*return_tuples)[i++] = e;
         }
-
         *return_count = matched_edges.size();
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);
+    } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         *return_count = 0;
         err << except.what();
         *err_msg = to_pg_msg(err);
         *log_msg = to_pg_msg(log);
+    } catch (const std::string &ex) {
         *err_msg = to_pg_msg(ex);
         *log_msg = hint ? to_pg_msg(hint) : to_pg_msg(log);
+    } catch (std::exception &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         *return_count = 0;
         err << except.what();
         *err_msg = to_pg_msg(err);
         *log_msg = to_pg_msg(log);
+    } catch (...) {
         (*return_tuples) = pgr_free(*return_tuples);
         *return_count = 0;
         err << "Caught unknown exception!";

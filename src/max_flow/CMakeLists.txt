@@ -13,7 +13,7 @@ ADD_LIBRARY(max_flow OBJECT
 
     maximum_cardinality_matching_driver.cpp
     minCostMaxFlow_driver.cpp
-    maximumWeighted_matching_driver.cpp
+    maximum_weighted_matching_driver.cpp
 
     maximumcardinalitymatching.cpp
     maxflow.cpp
