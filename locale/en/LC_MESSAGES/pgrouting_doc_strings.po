@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-20 20:20+0000\n"
+"POT-Creation-Date: 2026-06-05 13:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3448,6 +3448,10 @@ msgstr ""
 
 msgid ":doc:`pgr_isPlanar`"
 msgstr ""
+
+#, fuzzy
+msgid ":doc:`pgr_makeMaximalPlanar`"
+msgstr "pgr_isPlanar"
 
 msgid "Miscellaneous Algorithms"
 msgstr ""
@@ -12890,6 +12894,13 @@ msgstr ""
 msgid ""
 "`Boost: make connected <https://www.boost.org/libs/graph/doc/make_connected."
 "html>`__"
+msgstr ""
+
+#, fuzzy
+msgid "pgr_makeMaximalPlanar"
+msgstr "pgr_isPlanar"
+
+msgid "(Documentation to be added later)"
 msgstr ""
 
 msgid "``pgr_maxCardinalityMatch``"

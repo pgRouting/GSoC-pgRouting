@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include <map>
+#include <string>
 #include <vector>
 #include <cstdint>
 
@@ -39,6 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/make_biconnected_planar.hpp>
 #include <boost/graph/make_maximal_planar.hpp>
+#include <boost/graph/connected_components.hpp>
 
 #include "c_types/ii_t_rt.h"
 #include "cpp_common/messages.hpp"
@@ -60,8 +62,22 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
      }
 
  private:
+     struct planar_visitor {
+         std::vector<II_t_rt>& m_results;
+         G& m_graph;
+
+         planar_visitor(std::vector<II_t_rt>& results, G& graph)
+             : m_results(results), m_graph(graph) {}
+
+         template <typename Vertex, typename BGraph>
+         void visit_vertex_pair(Vertex u, Vertex v, BGraph& g) {
+             boost::add_edge(u, v, g);
+             m_results.push_back({m_graph[u].id, m_graph[v].id});
+         }
+     };
+
      std::vector<II_t_rt> generateMakeMaximalPlanar(G &graph) {
-         auto originalEdgeCount = boost::num_edges(graph.graph);
+         log << "Number of edges before: " << boost::num_edges(graph.graph) << "\n";
 
          E_i ei, ei_end;
          std::map<E, size_t> edge_id_map;
@@ -99,10 +115,23 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              return std::vector<II_t_rt>();
          }
 
-         /* Step 1: Make biconnected planar first */
+         if (boost::num_vertices(graph.graph) < 3) {
+             return std::vector<II_t_rt>();
+         }
+
+         std::vector<size_t> component(boost::num_vertices(graph.graph));
+         auto num_components = boost::connected_components(graph.graph, &component[0]);
+         if (num_components > 1) {
+             throw std::string("Graph is not connected. Please run pgr_makeConnected first.");
+         }
+
+         std::vector<II_t_rt> results;
+         planar_visitor vis(results, graph);
+
+         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
          try {
-             boost::make_biconnected_planar(graph.graph, &embedding[0], e_index);
+             boost::make_biconnected_planar(graph.graph, &embedding[0], e_index, vis);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -113,24 +142,22 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              throw;
          }
 
-         /* Rebuild edge index map after biconnected augmentation */
          edge_id_map.clear();
          edge_count = 0;
          for (boost::tie(ei, ei_end) = edges(graph.graph); ei != ei_end; ++ei) {
              edge_id_map[*ei] = edge_count++;
          }
 
-         /* Recompute embedding after biconnected augmentation */
          embedding.resize(boost::num_vertices(graph.graph));
          is_planar = boost::boyer_myrvold_planarity_test(
              boost::boyer_myrvold_params::graph = graph.graph,
              boost::boyer_myrvold_params::embedding = &embedding[0]);
 
-         /* Step 2: Make maximal planar */
+         /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
          CHECK_FOR_INTERRUPTS();
          try {
              boost::make_maximal_planar(graph.graph, &embedding[0],
-                 boost::get(boost::vertex_index, graph.graph), e_index);
+                 boost::get(boost::vertex_index, graph.graph), e_index, vis);
          } catch (boost::exception const& ex) {
              (void)ex;
              throw;
@@ -141,20 +168,9 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              throw;
          }
 
-         auto totalEdges = boost::num_edges(graph.graph);
-         auto newEdgeCount = totalEdges - originalEdgeCount;
-
-         std::vector<II_t_rt> results(newEdgeCount);
-         size_t newEdge = 0;
-         size_t i = 0;
-         for (boost::tie(ei, ei_end) = edges(graph.graph); ei != ei_end; ++ei) {
-             if (newEdge >= originalEdgeCount) {
-                 int64_t src = graph[graph.source(*ei)].id;
-                 int64_t tgt = graph[graph.target(*ei)].id;
-                 results[i] = {src, tgt};
-                 i++;
-             }
-             newEdge++;
+         log << "Number of edges after: " << boost::num_edges(graph.graph) << "\n";
+         for (const auto& r : results) {
+             log << "src:" << r.d1 << " tgt:" << r.d2 << "\n";
          }
 
          return results;
