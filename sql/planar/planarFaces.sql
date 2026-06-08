@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: planarFaces_process.h
+File: planarFaces.sql
 
 Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -25,30 +25,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
-#define INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
-#pragma once
+--v4.1
+CREATE FUNCTION pgr_planarFaces(
+  TEXT,   -- edges_sql (required)
 
-#ifdef __cplusplus
-#include <cstddef>
-#include <cstdint>
-using PlanarFace_rt = struct PlanarFace_rt;
-#else
-#include <stddef.h>
-#include <stdint.h>
-typedef struct PlanarFace_rt PlanarFace_rt;
-#endif
+  OUT seq     BIGINT,
+  OUT face_id BIGINT,
+  OUT edge_id BIGINT,
+  OUT side    TEXT)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+RETURNS SETOF RECORD AS
+$BODY$
+  SELECT seq, face_id, edge_id, side
+  FROM _pgr_planarFaces(_pgr_get_statement($1)) AS a;
+$BODY$
+LANGUAGE SQL VOLATILE STRICT
+COST ${COST_HIGH} ROWS ${ROWS_HIGH};
 
-void pgr_process_planarFaces(
-        const char*,
-        PlanarFace_rt**, size_t*);
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif  // INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
+COMMENT ON FUNCTION pgr_planarFaces(TEXT)
+IS 'pgr_planarFaces
+- EXPERIMENTAL
+- Undirected graph
+- Parameters:
+  - edges SQL with columns: id, source, target, cost [,reverse_cost]
+- Documentation:
+  - ${PROJECT_DOC_LINK}/pgr_planarFaces.html
+';

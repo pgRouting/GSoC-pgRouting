@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: _pgr_planarFaces.sql
+File: _planarFaces.sql
 
 Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org

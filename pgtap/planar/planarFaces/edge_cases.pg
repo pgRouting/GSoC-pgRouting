@@ -1,0 +1,101 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2026-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+
+BEGIN;
+
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN min_version('4.1.0') THEN plan (6) ELSE plan(1) END;
+
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF NOT min_version('4.1.0') THEN
+  RETURN QUERY
+  SELECT skip(1, 'Function is new on 4.1.0');
+  RETURN;
+END IF;
+
+-- empty graph
+PREPARE q1 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edges
+WHERE id > 18;
+
+RETURN QUERY
+SELECT is_empty('q1', '1: Graph with 0 edges');
+
+PREPARE emptyTest AS
+SELECT * FROM pgr_planarFaces('q1');
+
+RETURN QUERY
+SELECT is_empty('emptyTest', '2: Empty graph returns 0 rows');
+
+-- single edge: 2 faces (each side)
+PREPARE q3 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edges
+WHERE id = 1;
+
+PREPARE singleEdgeTest AS
+SELECT * FROM pgr_planarFaces('q3');
+
+RETURN QUERY
+SELECT set_eq('singleEdgeTest',
+    $$VALUES
+        (1::BIGINT, 1::BIGINT, 1::BIGINT, 'l'::TEXT),
+        (2::BIGINT, 1::BIGINT, 1::BIGINT, 'r'::TEXT)
+    $$,
+    '3: Single edge has 2 face-edge incidences');
+
+-- triangle: 3 edges, 2 faces, 6 rows
+PREPARE q4 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edges
+WHERE id IN (8, 10, 12);
+
+PREPARE triangleTest AS
+SELECT count(*) FROM pgr_planarFaces('q4');
+
+RETURN QUERY
+SELECT set_eq('triangleTest',
+    $$VALUES (6::BIGINT) $$,
+    '4: Triangle has 6 rows (2 faces x 3 edges)');
+
+-- total rows = 2 * number of edges
+PREPARE q5 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edges;
+
+PREPARE fullGraphRows AS
+SELECT count(*) FROM pgr_planarFaces('q5');
+
+PREPARE expectedRows AS
+SELECT 2 * count(*)::BIGINT FROM (
+    SELECT id FROM edges
+    WHERE cost >= 0 OR reverse_cost >= 0
+) e;
+
+RETURN QUERY
+SELECT set_eq('fullGraphRows', 'expectedRows',
+    '5: Total rows = 2 * number of edges');
+
+-- each edge appears exactly twice (once per side)
+PREPARE sideCheck AS
+SELECT edge_id, count(*) FROM pgr_planarFaces('q5')
+GROUP BY edge_id HAVING count(*) != 2;
+
+RETURN QUERY
+SELECT is_empty('sideCheck', '6: Each edge appears exactly twice');
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
+
+SELECT * FROM finish();
+ROLLBACK;
