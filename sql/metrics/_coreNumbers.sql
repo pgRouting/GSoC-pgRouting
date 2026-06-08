@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
-File: coreNumbers_driver.hpp
+File: _coreNumbers.sql
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2026 Sakir Ahmed
@@ -25,25 +25,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_CORENUMBERS_DRIVER_HPP_
-#define INCLUDE_DRIVERS_CORENUMBERS_DRIVER_HPP_
+--v4.1
+CREATE FUNCTION _pgr_coreNumbers(
+  TEXT,   -- edges_sql (required)
 
-#include <cstddef>
-#include <cstdint>
-#include <string>
-#include <sstream>
+  OUT seq  BIGINT,
+  OUT node BIGINT,
+  OUT core BIGINT)
 
-using CoreNumbers_rt = struct CoreNumbers_rt;
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT;
 
-namespace pgrouting {
-namespace drivers {
-
-void do_coreNumbers(
-        const std::string&,
-        CoreNumbers_rt*&, size_t&,
-        std::ostringstream&, std::ostringstream&, std::ostringstream&);
-
-}  // namespace drivers
-}  // namespace pgrouting
-
-#endif  // INCLUDE_DRIVERS_CORENUMBERS_DRIVER_HPP_
+COMMENT ON FUNCTION _pgr_coreNumbers(TEXT)
+IS 'pgRouting internal function';

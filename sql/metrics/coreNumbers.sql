@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
-File: _pgr_coreNumbers.sql
+File: coreNumbers.sql
 
-Copyright (c) 2015-2026 pgRouting developers
+Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2026 Sakir Ahmed
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v4.1
-CREATE FUNCTION _pgr_coreNumbers(
+CREATE FUNCTION pgr_coreNumbers(
   TEXT,   -- edges_sql (required)
 
   OUT seq  BIGINT,
@@ -34,8 +34,20 @@ CREATE FUNCTION _pgr_coreNumbers(
   OUT core BIGINT)
 
 RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C VOLATILE STRICT;
+$BODY$
+  SELECT seq, node, core
+  FROM _pgr_coreNumbers(_pgr_get_statement($1)) AS a;
+$BODY$
+LANGUAGE SQL VOLATILE STRICT
+COST ${COST_HIGH} ROWS ${ROWS_HIGH};
 
-COMMENT ON FUNCTION _pgr_coreNumbers(TEXT)
-IS 'pgRouting internal function';
+
+COMMENT ON FUNCTION pgr_coreNumbers(TEXT)
+IS 'pgr_coreNumbers
+- EXPERIMENTAL
+- Undirected graph
+- Parameters:
+  - edges SQL with columns: id, source, target, cost [,reverse_cost]
+- Documentation:
+  - ${PROJECT_DOC_LINK}/pgr_coreNumbers.html
+';

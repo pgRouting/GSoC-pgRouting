@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
-File: coreNumbers_process.h
+File: coreNumbers.cpp
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2026 Sakir Ahmed
@@ -25,30 +25,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_PROCESS_CORENUMBERS_PROCESS_H_
-#define INCLUDE_PROCESS_CORENUMBERS_PROCESS_H_
-#pragma once
+#include "metrics/coreNumbers.hpp"
 
-#ifdef __cplusplus
-#include <cstddef>
-#include <cstdint>
-using CoreNumbers_rt = struct CoreNumbers_rt;
-#else
-#include <stddef.h>
-#include <stdint.h>
-typedef struct CoreNumbers_rt CoreNumbers_rt;
-#endif
+#include <vector>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "cpp_common/base_graph.hpp"
+#include "cpp_common/interruption.hpp"
 
-void pgr_process_coreNumbers(
-        const char*,
-        CoreNumbers_rt**, size_t*);
+namespace pgrouting {
+namespace metrics {
 
-#ifdef __cplusplus
+std::vector<CoreNumbers_rt>
+coreNumbers(const pgrouting::UndirectedGraph &graph) {
+    CHECK_FOR_INTERRUPTS();
+
+    /* TODO: implement k-core decomposition algorithm */
+    std::vector<CoreNumbers_rt> results;
+    (void)graph;
+    return results;
 }
-#endif
 
-#endif  // INCLUDE_PROCESS_CORENUMBERS_PROCESS_H_
+}  // namespace metrics
+}  // namespace pgrouting

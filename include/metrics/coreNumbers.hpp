@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
-File: pgr_coreNumbers.sql
+File: coreNumbers.hpp
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2026 Sakir Ahmed
@@ -25,29 +25,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---v4.1
-CREATE FUNCTION pgr_coreNumbers(
-  TEXT,   -- edges_sql (required)
+#ifndef INCLUDE_METRICS_CORENUMBERS_HPP_
+#define INCLUDE_METRICS_CORENUMBERS_HPP_
+#pragma once
 
-  OUT seq  BIGINT,
-  OUT node BIGINT,
-  OUT core BIGINT)
+#include <vector>
 
-RETURNS SETOF RECORD AS
-$BODY$
-  SELECT seq, node, core
-  FROM _pgr_coreNumbers(_pgr_get_statement($1)) AS a;
-$BODY$
-LANGUAGE SQL VOLATILE STRICT
-COST ${COST_HIGH} ROWS ${ROWS_HIGH};
+#include "c_types/coreNumbers_rt.h"
+#include "cpp_common/base_graph.hpp"
 
+namespace pgrouting {
+namespace metrics {
 
-COMMENT ON FUNCTION pgr_coreNumbers(TEXT)
-IS 'pgr_coreNumbers
-- EXPERIMENTAL
-- Undirected graph
-- Parameters:
-  - edges SQL with columns: id, source, target, cost [,reverse_cost]
-- Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_coreNumbers.html
-';
+std::vector<CoreNumbers_rt> coreNumbers(const pgrouting::UndirectedGraph &graph);
+
+}  // namespace metrics
+}  // namespace pgrouting
+
+#endif  // INCLUDE_METRICS_CORENUMBERS_HPP_
