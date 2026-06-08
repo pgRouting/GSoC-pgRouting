@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-07 11:06+0000\n"
+"POT-Creation-Date: 2026-06-08 13:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6829,7 +6829,7 @@ msgstr ""
 msgid "Postgresql version >= 13"
 msgstr ""
 
-msgid "The Boost Graph Library (BGL) >= 1.56.0"
+msgid "The Boost Graph Library (BGL) >= 1.76.0"
 msgstr ""
 
 msgid "CMake >= 3.12"
@@ -13167,9 +13167,6 @@ msgid "Signature"
 msgstr ""
 
 msgid "pgr_maximumWeightedMatching(`Edges SQL`_)"
-msgstr ""
-
-msgid "Returns set of |result-matching|"
 msgstr ""
 
 msgid "SQL query returning a set of rows:"
