@@ -44,7 +44,7 @@ Boost Graph Library implementation of maximum weighted matching.
 
    | pgr_maximumWeightedMatching(`Edges SQL`_)
 
-   | Returns set of |result-matching|
+   | Returns set of |result-edge|
    | OR EMPTY SET
 
 Parameters

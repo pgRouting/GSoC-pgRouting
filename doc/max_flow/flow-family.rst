@@ -50,6 +50,7 @@ Flow - Family of functions
     pgr_maxCardinalityMatch
     pgr_maxFlowMinCost
     pgr_maxFlowMinCost_Cost
+    pgr_maximumWeightedMatching
 
 
 Flow Functions General Information
