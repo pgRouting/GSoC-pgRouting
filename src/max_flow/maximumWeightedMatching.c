@@ -37,8 +37,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/max_flow/maximum_weighted_matching_driver.h"
 
-PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_maximumweightedmatching);
+PGDLLEXPORT Datum _pgr_maximumWeightedmatching(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_maximumWeightedmatching);
 
 static
 void
@@ -62,7 +62,7 @@ process(
             &notice_msg,
             &err_msg);
 
-    time_msg("pgr_maximumweightedmatching()", start_t, clock());
+    time_msg("pgr_maximumWeightedmatching()", start_t, clock());
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
@@ -76,7 +76,7 @@ process(
 }
 
 PGDLLEXPORT Datum
-_pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
+_pgr_maximumWeightedmatching(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
 
     int64_t *result_tuples = NULL;
