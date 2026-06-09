@@ -1,8 +1,7 @@
 /*PGR-GNU*****************************************************************
-File: makeBiconnectedPlanar_driver.h
+File: makeBiconnectedPlanar_driver.hpp
 
-Generated with Template by:
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
@@ -27,29 +26,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_PLANAR_MAKEBICONNECTEDPLANAR_DRIVER_H_
-#define INCLUDE_DRIVERS_PLANAR_MAKEBICONNECTEDPLANAR_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_MAKEBICONNECTEDPLANAR_DRIVER_HPP_
+#define INCLUDE_DRIVERS_MAKEBICONNECTEDPLANAR_DRIVER_HPP_
 #pragma once
 
-#ifdef __cplusplus
-#   include <cstddef>
+#include <cstddef>
+#include <string>
+#include <sstream>
+
 using II_t_rt = struct II_t_rt;
-#else
-#   include <stddef.h>
-typedef struct II_t_rt II_t_rt;
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace pgrouting {
+namespace drivers {
 
-void pgr_do_makeBiconnectedPlanar(
-        const char*,
-        II_t_rt**, size_t*,
-        char**, char**, char**);
+void do_makeBiconnectedPlanar(
+        const std::string&,
+        II_t_rt*&, size_t&,
+        std::ostringstream&, std::ostringstream&, std::ostringstream&);
 
-#ifdef __cplusplus
-}
-#endif
+}  // namespace drivers
+}  // namespace pgrouting
 
-#endif  // INCLUDE_DRIVERS_PLANAR_MAKEBICONNECTEDPLANAR_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_MAKEBICONNECTEDPLANAR_DRIVER_HPP_
