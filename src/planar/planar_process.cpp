@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: makeMaximalPlanar_process.cpp
+File: planar_process.cpp
 
 Copyright (c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "process/makeMaximalPlanar_process.h"
+#include "process/planar_process.h"
 
 #include <string>
 #include <sstream>
@@ -44,10 +44,12 @@ extern "C" {
 #include "cpp_common/assert.hpp"
 #include "cpp_common/alloc.hpp"
 
-#include "drivers/makeMaximalPlanar_driver.hpp"
+#include "drivers/planar_driver.hpp"
 
-void pgr_process_makeMaximalPlanar(
+void pgr_process_planar(
         const char* edges_sql,
+
+        enum Which which,
         II_t_rt **result_tuples,
         size_t *result_count) {
     using pgrouting::to_pg_msg;
@@ -61,12 +63,15 @@ void pgr_process_makeMaximalPlanar(
     std::ostringstream notice;
 
     clock_t start_t = clock();
-    pgrouting::drivers::do_makeMaximalPlanar(
+    pgrouting::drivers::do_planar(
             edges_sql? edges_sql : "",
+
+            which,
             (*result_tuples), (*result_count),
             log, notice, err);
 
-    time_msg(" processing pgr_makeMaximalPlanar", start_t, clock());
+    auto name = std::string(" processing ") + pgrouting::get_name(which);
+    time_msg(name.c_str(), start_t, clock());
 
     if (!err.str().empty() && (*result_tuples)) {
         pfree(*result_tuples);

@@ -33,7 +33,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/ii_t_rt.h"
 #include "c_common/debug_macro.h"
 
-#include "process/makeMaximalPlanar_process.h"
+#include "c_common/enums.h"
+#include "process/planar_process.h"
 
 PGDLLEXPORT Datum _pgr_makemaximalplanar(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_makemaximalplanar);
@@ -51,8 +52,10 @@ PGDLLEXPORT Datum _pgr_makemaximalplanar(PG_FUNCTION_ARGS) {
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
         PGR_DBG("Calling process");
-        pgr_process_makeMaximalPlanar(
+        pgr_process_planar(
             text_to_cstring(PG_GETARG_TEXT_P(0)),
+
+            MAXIMALPLANAR,
             &result_tuples,
             &result_count);
 

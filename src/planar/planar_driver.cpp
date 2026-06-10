@@ -1,9 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: makeMaximalPlanar_driver.cpp
+File: planar_driver.cpp
 
-Generated with Template by:
 Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
+
+Design of one process & driver file by
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 Function's developer:
 Copyright (c) 2026 Mohit Rawat
@@ -27,12 +30,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/makeMaximalPlanar_driver.hpp"
+#include "drivers/planar_driver.hpp"
 
-#include <vector>
-#include <algorithm>
-#include <string>
 #include <sstream>
+#include <vector>
+#include <string>
 #include <utility>
 #include <cstdint>
 
@@ -49,19 +51,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace drivers {
 
-void do_makeMaximalPlanar(
+void do_planar(
         const std::string &edges_sql,
+
+        Which which,
+
         II_t_rt* &return_tuples,
         size_t &return_count,
         std::ostringstream &log,
         std::ostringstream &notice,
         std::ostringstream &err) {
-    using pgrouting::pgr_alloc;
-    using pgrouting::pgget::get_edges;
-
     std::string hint = "";
-    return_tuples = nullptr;
-    return_count = 0;
 
     try {
         if (edges_sql.empty()) {
@@ -69,26 +69,38 @@ void do_makeMaximalPlanar(
             return;
         }
 
-        std::vector<II_t_rt> results;
-        std::string logstr;
+        using pgrouting::pgget::get_edges;
+        using pgrouting::UndirectedGraph;
 
         hint = edges_sql;
         auto edges = get_edges(edges_sql, true, false);
+
         if (edges.empty()) {
             notice << "No edges found";
             log << edges_sql;
             return;
         }
+
         hint = "";
 
-        pgrouting::UndirectedGraph undigraph;
+        UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
-        pgrouting::functions::Pgr_makeMaximalPlanar<pgrouting::UndirectedGraph>
-            fn_makeMaximalPlanar;
-        results = fn_makeMaximalPlanar.makeMaximalPlanar(undigraph);
-        logstr += fn_makeMaximalPlanar.get_log();
-        log << logstr;
+        std::vector<II_t_rt> results;
+
+        switch (which) {
+            case MAXIMALPLANAR:
+                {
+                    pgrouting::functions::Pgr_makeMaximalPlanar<UndirectedGraph>
+                        fn_makeMaximalPlanar;
+                    results = fn_makeMaximalPlanar.makeMaximalPlanar(undigraph);
+                    log << fn_makeMaximalPlanar.get_log();
+                }
+                break;
+            default:
+                err << "Unknown planar function " << get_name(which);
+                return;
+        }
 
         auto count = results.size();
 

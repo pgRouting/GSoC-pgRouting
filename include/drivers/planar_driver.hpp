@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
-File: makeMaximalPlanar_process.h
+File: planar_driver.hpp
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Design of one process & driver file by
@@ -26,31 +26,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_PROCESS_MAKEMAXIMALPLANAR_PROCESS_H_
-#define INCLUDE_PROCESS_MAKEMAXIMALPLANAR_PROCESS_H_
+#ifndef INCLUDE_DRIVERS_PLANAR_DRIVER_HPP_
+#define INCLUDE_DRIVERS_PLANAR_DRIVER_HPP_
 #pragma once
 
-#ifdef __cplusplus
 #include <cstddef>
 #include <cstdint>
+#include <string>
+#include <sstream>
+
+#include "c_common/enums.h"
+
 using II_t_rt = struct II_t_rt;
-#else
-#include <stddef.h>
-#include <stdint.h>
-#include <stdbool.h>
-typedef struct II_t_rt II_t_rt;
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace pgrouting {
+namespace drivers {
 
-void pgr_process_makeMaximalPlanar(
-        const char*,
-        II_t_rt**, size_t*);
+void do_planar(
+        const std::string&,
+        Which,
+        II_t_rt*&, size_t&,
+        std::ostringstream&, std::ostringstream&, std::ostringstream&);
 
-#ifdef __cplusplus
-}
-#endif
+}  // namespace drivers
+}  // namespace pgrouting
 
-#endif  // INCLUDE_PROCESS_MAKEMAXIMALPLANAR_PROCESS_H_
+#endif  // INCLUDE_DRIVERS_PLANAR_DRIVER_HPP_
