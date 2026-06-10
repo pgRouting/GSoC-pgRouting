@@ -104,6 +104,9 @@ get_name(Which which) {
         case EDMONDSKARP:
             return "pgr_edmondsKarp";
             break;
+        case EDMONDSKARP:
+            return "pgr_maximumWeightedMatching";
+            break;
         default:
             return "unknown";
             break;

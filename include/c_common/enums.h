@@ -51,6 +51,8 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     MAXFLOW, PUSHRELABEL, BOYKOV, EDMONDSKARP,
     /* For coloring */
     EDGECOLORING, BIPARTITE, SEQUENTIAL
+    /* For Matching */
+    MAXIMUMWEIGHTEDMATCHING,
 };
 
 #endif  // INCLUDE_C_COMMON_ENUMS_H_
