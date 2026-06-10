@@ -104,6 +104,9 @@ get_name(Which which) {
         case EDMONDSKARP:
             return "pgr_edmondsKarp";
             break;
+        case PLANARFACES:
+            return "pgr_planarFaces";
+            break;
         default:
             return "unknown";
             break;
