@@ -29,47 +29,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
-
 #include "c_types/coreNumbers_rt.h"
-#include "c_common/debug_macro.h"
-#include "c_common/e_report.h"
-#include "c_common/time_msg.h"
-
-#include "drivers/metrics/coreNumbers_driver.h"
+#include "process/coreNumbers_process.h"
 
 PGDLLEXPORT Datum _pgr_corenumbers(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_corenumbers);
-
-static
-void
-process(
-        char* edges_sql,
-        CoreNumbers_rt **result_tuples,
-        size_t *result_count) {
-    pgr_SPI_connect();
-    char* log_msg = NULL;
-    char* notice_msg = NULL;
-    char* err_msg = NULL;
-
-    clock_t start_t = clock();
-    pgr_do_coreNumbers(
-            edges_sql,
-            result_tuples,
-            result_count,
-            &log_msg,
-            &err_msg);
-    time_msg(" processing pgr_coreNumbers", start_t, clock());
-
-    if (err_msg && (*result_tuples)) {
-        pfree(*result_tuples);
-        (*result_tuples) = NULL;
-        (*result_count) = 0;
-    }
-
-    pgr_global_report(&log_msg, &notice_msg, &err_msg);
-
-    pgr_SPI_finish();
-}
 
 
 PGDLLEXPORT Datum
@@ -85,7 +49,7 @@ _pgr_corenumbers(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        process(
+        pgr_process_coreNumbers(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 &result_tuples,
                 &result_count);
