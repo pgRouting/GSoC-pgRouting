@@ -126,11 +126,13 @@ Experimental Functions
 .. rubric:: Planar Family
 
 - :doc:`pgr_isPlanar`
+- :doc:`pgr_planarFaces`
 
 .. toctree::
   :hidden:
 
   pgr_isPlanar
+  pgr_planarFaces
 
 .. rubric:: Miscellaneous Algorithms
 
