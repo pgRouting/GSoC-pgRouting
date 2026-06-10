@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: coreNumbers_process.cpp
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
