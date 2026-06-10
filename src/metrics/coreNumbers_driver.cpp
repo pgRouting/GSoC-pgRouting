@@ -1,9 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: coreNumbers_driver.cpp
 
-Copyright (c) 2026-2026 pgRouting developers
+Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
+Function's developer:
 Copyright (c) 2026 Sakir Ahmed
 Mail: sakirahmed75531 at gmail.com
 
@@ -25,90 +26,79 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/metrics/coreNumbers_driver.h"
+#include "drivers/coreNumbers_driver.hpp"
 
-#include <sstream>
 #include <vector>
 #include <string>
+#include <sstream>
 
 #include "metrics/coreNumbers.hpp"
 #include "c_types/coreNumbers_rt.h"
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
+#include "cpp_common/base_graph.hpp"
+
+namespace pgrouting {
+namespace drivers {
 
 void
-pgr_do_coreNumbers(
-        const char *edges_sql,
+do_coreNumbers(
+        const std::string &edges_sql,
 
-        CoreNumbers_rt **return_tuples,
-        size_t *return_count,
-        char **log_msg,
-        char **err_msg) {
-    using pgrouting::to_pg_msg;
-    using pgrouting::pgr_free;
-    using pgrouting::pgr_alloc;
+        CoreNumbers_rt *&return_tuples,
+        size_t &return_count,
 
-    std::ostringstream log;
-    std::ostringstream err;
-    const char *hint = nullptr;
+        std::ostringstream &log,
+        std::ostringstream &notice,
+        std::ostringstream &err) {
+    std::string hint = "";
 
     try {
-        pgassert(!(*log_msg));
-        pgassert(!(*err_msg));
-        pgassert(!(*return_tuples));
-        pgassert(*return_count == 0);
+        if (edges_sql.empty()) {
+            err << "Empty edges SQL";
+            return;
+        }
 
+        using pgrouting::pgget::get_edges;
         using pgrouting::metrics::coreNumbers;
 
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, true);
-
+        auto edges = get_edges(edges_sql, true, true);
         if (edges.empty()) {
-            throw std::string("No edges found");
+            notice << "No edges found";
+            log << hint;
+            return;
         }
-        hint = nullptr;
+        hint = "";
 
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
         auto results = coreNumbers(undigraph);
 
-        *return_count = results.size();
-        if (*return_count == 0) {
-            err << "No result generated, report this error\n";
-            *err_msg = to_pg_msg(err);
-            *return_tuples = NULL;
-            *return_count = 0;
+        auto count = results.size();
+        if (count == 0) {
+            notice << "No results found";
             return;
         }
 
-        *return_tuples = pgr_alloc(*return_count, (*return_tuples));
-        for (size_t i = 0; i < *return_count; ++i) {
-            (*return_tuples)[i] = results[i];
+        return_tuples = pgr_alloc(count, return_tuples);
+        for (size_t i = 0; i < count; ++i) {
+            return_tuples[i] = results[i];
         }
-
-        *log_msg = to_pg_msg(log);
+        return_count = count;
     } catch (AssertFailedException &except) {
-        (*return_tuples) = pgr_free(*return_tuples);
-        (*return_count) = 0;
         err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
     } catch (const std::string &ex) {
-        *err_msg = to_pg_msg(ex);
-        *log_msg = hint ? to_pg_msg(hint) : to_pg_msg(log);
+        err << ex;
+        log << hint;
     } catch (std::exception &except) {
-        (*return_tuples) = pgr_free(*return_tuples);
-        (*return_count) = 0;
         err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
     } catch (...) {
-        (*return_tuples) = pgr_free(*return_tuples);
-        (*return_count) = 0;
         err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
     }
 }
+
+}  // namespace drivers
+}  // namespace pgrouting
