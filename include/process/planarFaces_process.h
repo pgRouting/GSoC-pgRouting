@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: planar_driver.cpp
+File: planarFaces_process.h
 
 Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,35 +26,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/planar_driver.hpp"
+#ifndef INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
+#define INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
+#pragma once
 
-#include <string>
-#include <sstream>
+#ifdef __cplusplus
+#include <cstddef>
+using PlanarFace_rt = struct PlanarFace_rt;
+#else
+#include <stddef.h>
+typedef struct PlanarFace_rt PlanarFace_rt;
+#endif
 
-#include "drivers/planarFaces_driver.hpp"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-namespace pgrouting {
-namespace drivers {
+void pgr_process_planarFaces(
+        const char*,
+        PlanarFace_rt**, size_t*);
 
-void
-do_planar(
-        const std::string &edges_sql,
-        Which which,
-
-        PlanarFace_rt *&return_tuples,
-        size_t &return_count,
-
-        std::ostringstream &log,
-        std::ostringstream &notice,
-        std::ostringstream &err) {
-    switch (which) {
-        case PLANARFACES:
-            do_planarFaces(edges_sql, return_tuples, return_count, log, notice, err);
-            break;
-        default:
-            break;
-    }
+#ifdef __cplusplus
 }
+#endif
 
-}  // namespace drivers
-}  // namespace pgrouting
+#endif  // INCLUDE_PROCESS_PLANARFACES_PROCESS_H_
