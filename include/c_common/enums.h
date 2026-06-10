@@ -50,7 +50,7 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     /* For flow */
     MAXFLOW, PUSHRELABEL, BOYKOV, EDMONDSKARP,
     /* For coloring */
-    EDGECOLORING, BIPARTITE, SEQUENTIAL
+    EDGECOLORING, BIPARTITE, SEQUENTIAL,
     /* For Matching */
     MAXIMUMWEIGHTEDMATCHING,
 };
