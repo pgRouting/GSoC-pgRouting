@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: maximum_weighted_matching_driver.h
+File: maximumWeightedMatching_driver.h
 
 Generated with Template by:
 Copyright (c) 2007-2026 pgRouting developers
@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2026 Mayur Galhate
-Mail: galhatemayur at gmail.com
+Mail: mayur.galhate at gmail.com
 
 ------
 
@@ -27,34 +27,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_MAX_FLOW_MAXIMUM_WEIGHTED_MATCHING_DRIVER_H_
-#define INCLUDE_DRIVERS_MAX_FLOW_MAXIMUM_WEIGHTED_MATCHING_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_DRIVER_H_
+#define INCLUDE_DRIVERS_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_DRIVER_H_
 #pragma once
 
 #ifdef __cplusplus
-#include <cstddef>
-#include <cstdint>
+#   include <cstddef>
+using IID_t_rt = struct IID_t_rt;
 #else
-#include <stddef.h>
-#include <stdint.h>
+#   include <stddef.h>
+typedef struct IID_t_rt IID_t_rt;
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void pgr_do_maximum_weighted_matching(
-            const char*,
+void pgr_do_maximumWeightedMatching(
+        const char*,
 
-            int64_t **,
-            size_t *,
+        IID_t_rt**, size_t*,
 
-            char**,
-            char**,
-            char **);
+        char**, char**, char**);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // INCLUDE_DRIVERS_MAX_FLOW_MAXIMUM_WEIGHTED_MATCHING_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_DRIVER_H_

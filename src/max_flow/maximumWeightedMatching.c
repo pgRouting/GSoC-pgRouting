@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: maximumweightedmatching.c
+File: maximumWeightedMatching.c
 
 Generated with Template by:
 Copyright (c) 2015-2026 pgRouting developers
@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2026 Mayur Galhate
-Mail: galhatemayur at gmail.com
+Mail: mayur.galhate at gmail.com
 
 ------
 
@@ -28,9 +28,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include <stdbool.h>
-
 #include "c_common/postgres_connection.h"
 
+#include "c_types/iid_t_rt.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
@@ -40,80 +40,102 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_maximumweightedmatching);
 
-static
-void
+static void
 process(
-        char *edges_sql,
-        int64_t **result_tuples,
-        size_t *result_count) {
+    char *edges_sql,
+    IID_t_rt **result_tuples,
+    size_t *result_count) {
     pgr_SPI_connect();
-
-    char *log_msg = NULL;
+    char *log_msg    = NULL;
     char *notice_msg = NULL;
-    char *err_msg = NULL;
+    char *err_msg    = NULL;
+
+    (*result_tuples) = NULL;
+    (*result_count)  = 0;
 
     clock_t start_t = clock();
+    pgr_do_maximumWeightedMatching(
+        edges_sql,
+        result_tuples,
+        result_count,
+        &log_msg,
+        &notice_msg,
+        &err_msg);
+    time_msg(" processing pgr_maximumWeightedMatching", start_t, clock());
 
-    pgr_do_maximum_weighted_matching(
-            edges_sql,
-            result_tuples,
-            result_count,
-            &log_msg,
-            &notice_msg,
-            &err_msg);
-
-    time_msg("pgr_maximumWeightedmatching()", start_t, clock());
-
-    if (err_msg && (*result_tuples)) {
-        pfree(*result_tuples);
-        (*result_tuples) = NULL;
+    if (err_msg) {
+        if (*result_tuples) pfree(*result_tuples);
         (*result_count) = 0;
     }
 
     pgr_global_report(&log_msg, &notice_msg, &err_msg);
 
+    if (log_msg)    pfree(log_msg);
+    if (notice_msg) pfree(notice_msg);
+    if (err_msg)    pfree(err_msg);
+
     pgr_SPI_finish();
 }
 
-PGDLLEXPORT Datum
-_pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
+    TupleDesc        tuple_desc;
 
-    int64_t *result_tuples = NULL;
-    size_t result_count = 0;
+    IID_t_rt *result_tuples = NULL;
+    size_t    result_count  = 0;
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext oldcontext;
-
         funcctx = SRF_FIRSTCALL_INIT();
+        oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        oldcontext = MemoryContextSwitchTo(
-                funcctx->multi_call_memory_ctx);
-
+        PGR_DBG("Calling process");
         process(
-                text_to_cstring(PG_GETARG_TEXT_P(0)),
-                &result_tuples,
-                &result_count);
+            text_to_cstring(PG_GETARG_TEXT_P(0)),
+            &result_tuples,
+            &result_count);
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
 
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
+            ereport(ERROR,
+                    (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+                     errmsg("function returning record called in context "
+                            "that cannot accept type record")));
+        }
+
+        funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);
     }
 
-    funcctx = SRF_PERCALL_SETUP();
-
-    result_tuples = (int64_t *) funcctx->user_fctx;
+    funcctx       = SRF_PERCALL_SETUP();
+    tuple_desc    = funcctx->tuple_desc;
+    result_tuples = (IID_t_rt *) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
-        Datum result;
+        HeapTuple  tuple;
+        Datum      result;
+        Datum     *values;
+        bool      *nulls;
 
-        result = Int64GetDatum(
-                result_tuples[funcctx->call_cntr]);
+        size_t numb = 3;
+        values = palloc(numb * sizeof(Datum));
+        nulls  = palloc(numb * sizeof(bool));
 
+        size_t i;
+        for (i = 0; i < numb; ++i) {
+            nulls[i] = false;
+        }
+
+        values[0] = Int64GetDatum(result_tuples[funcctx->call_cntr].from_vid);
+        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].to_vid);
+        values[2] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
+
+        tuple  = heap_form_tuple(tuple_desc, values, nulls);
+        result = HeapTupleGetDatum(tuple);
         SRF_RETURN_NEXT(funcctx, result);
     } else {
         SRF_RETURN_DONE(funcctx);
     }
 }
-

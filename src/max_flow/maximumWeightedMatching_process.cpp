@@ -1,13 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: maximumWeightedMatching_process.cpp
 
-Generated with Template by:
-Copyright (c) 2015-2026 pgRouting developers
+Copyright (c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2026 Mayur Galhate
-Mail: galhatemayur at gmail.com
+Mail: mayur.galhate at gmail.com
 
 ------
 
@@ -27,40 +26,70 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include <vector>
-#include <set>
-#include <cstdint>
-
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/version.hpp>
-#include <boost/graph/maximum_weighted_matching.hpp>
-
 #include "max_flow/maximumWeightedMatching.hpp"
-#include "cpp_common/undirectedHasCostBG.hpp"
+
+#include <vector>
+#include <utility>
+#include <algorithm>
+
+#include <boost/graph/maximum_weighted_matching.hpp>
+#include "cpp_common/interruption.hpp"
 
 namespace pgrouting {
 namespace flow {
 
-std::set<int64_t>
-maxWeightMatch(pgrouting::graph::UndirectedHasCostBG& graph) {
-    using Graph = pgrouting::graph::UndirectedHasCostBG::TSP_Graph;
-    using V     = boost::graph_traits<Graph>::vertex_descriptor;
+std::vector<IID_t_rt>
+maximumWeightedMatch(pgrouting::graph::UndirectedHasCostBG &graph) {
+    using G = pgrouting::graph::UndirectedHasCostBG::TSP_Graph;
+    using V = pgrouting::graph::UndirectedHasCostBG::V;
+    using E = pgrouting::graph::UndirectedHasCostBG::E;
 
-    auto& g = graph.graph();
-    size_t n = boost::num_vertices(g);
+    std::vector<V> mate_map(boost::num_vertices(graph.graph()));
 
-    std::vector<V> mate(n);
-    boost::maximum_weighted_matching(g, &mate[0]);
-
-    std::set<int64_t> result;
-    for (size_t i = 0; i < mate.size(); ++i) {
-        if (mate[i] != boost::graph_traits<Graph>::null_vertex()
-                && i < static_cast<size_t>(mate[i])) {
-            result.insert(graph.get_vertex_id(static_cast<V>(i)));
-            result.insert(graph.get_vertex_id(mate[i]));
-        }
+    CHECK_FOR_INTERRUPTS();
+    try {
+        boost::maximum_weighted_matching(graph.graph(), &mate_map[0]);
+    } catch (boost::exception const &ex) {
+        (void)ex;
+        throw;
+    } catch (std::exception &e) {
+        (void)e;
+        throw;
+    } catch (...) {
+        throw;
     }
-    return result;
+
+    std::vector<IID_t_rt> results;
+
+    for (const auto &v2 : mate_map) {
+        auto v1 = static_cast<V>(&v2 - &mate_map[0]);
+
+        if (v2 == boost::graph_traits<G>::null_vertex()) continue;
+        if (v1 >= v2) continue;
+
+        E e;
+        bool exists = false;
+        boost::tie(e, exists) = boost::edge(v1, v2, graph.graph());
+        if (!exists) throw;
+
+        int64_t src = graph.get_vertex_id(v1);
+        int64_t tgt = graph.get_vertex_id(v2);
+
+        if (src > tgt) std::swap(src, tgt);
+
+        IID_t_rt row;
+        row.from_vid = src;
+        row.to_vid   = tgt;
+        row.cost     = boost::get(boost::edge_weight_t(), graph.graph(), e);
+        results.push_back(row);
+    }
+
+    std::sort(results.begin(), results.end(),
+        [](const IID_t_rt &a, const IID_t_rt &b) {
+            return a.to_vid < b.to_vid;
+        });
+
+    return results;
 }
 
 }  // namespace flow

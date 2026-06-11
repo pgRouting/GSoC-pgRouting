@@ -1,7 +1,8 @@
 /*PGR-GNU*****************************************************************
-File: maximumWeightedMatching.hpp
+File: maximumWeightedMatching_process.h
 
-Copyright (c) 2025-2026 pgRouting developers
+Generated with Template by:
+Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
@@ -26,23 +27,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_HPP_
-#define INCLUDE_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_HPP_
+#ifndef INCLUDE_PROCESS_MAXIMUMWEIGHTEDMATCHING_PROCESS_H_
+#define INCLUDE_PROCESS_MAXIMUMWEIGHTEDMATCHING_PROCESS_H_
 #pragma once
 
-#include <vector>
+#ifdef __cplusplus
+#include <cstddef>
+#include <cstdint>
+using IID_t_rt = struct IID_t_rt;
+#else
+#include <stddef.h>
+#include <stdint.h>
+typedef struct IID_t_rt IID_t_rt;
+#endif
 
-#include "c_types/iid_t_rt.h"
-#include "cpp_common/undirectedHasCostBG.hpp"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+void pgr_process_maximumWeightedMatching(
+        const char*,
+        IID_t_rt**, size_t*);
 
-namespace pgrouting {
-namespace flow {
+#ifdef __cplusplus
+}
+#endif
 
-std::vector<IID_t_rt>
-maximumWeightedMatch(pgrouting::graph::UndirectedHasCostBG&);
-
-}  // namespace flow
-}  // namespace pgrouting
-
-#endif  // INCLUDE_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_HPP_
+#endif  // INCLUDE_PROCESS_MAXIMUMWEIGHTEDMATCHING_PROCESS_H_
