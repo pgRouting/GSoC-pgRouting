@@ -26,71 +26,52 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "max_flow/maximumWeightedMatching.hpp"
+#include "process/maximumWeightedMatching_process.h"
 
-#include <vector>
-#include <utility>
-#include <algorithm>
+#include <string>
+#include <sstream>
 
-#include <boost/graph/maximum_weighted_matching.hpp>
-#include "cpp_common/interruption.hpp"
-
-namespace pgrouting {
-namespace flow {
-
-std::vector<IID_t_rt>
-maximumWeightedMatch(pgrouting::graph::UndirectedHasCostBG &graph) {
-    using G = pgrouting::graph::UndirectedHasCostBG::TSP_Graph;
-    using V = pgrouting::graph::UndirectedHasCostBG::V;
-    using E = pgrouting::graph::UndirectedHasCostBG::E;
-
-    std::vector<V> mate_map(boost::num_vertices(graph.graph()));
-
-    CHECK_FOR_INTERRUPTS();
-    try {
-        boost::maximum_weighted_matching(graph.graph(), &mate_map[0]);
-    } catch (boost::exception const &ex) {
-        (void)ex;
-        throw;
-    } catch (std::exception &e) {
-        (void)e;
-        throw;
-    } catch (...) {
-        throw;
-    }
-
-    std::vector<IID_t_rt> results;
-
-    for (const auto &v2 : mate_map) {
-        auto v1 = static_cast<V>(&v2 - &mate_map[0]);
-
-        if (v2 == boost::graph_traits<G>::null_vertex()) continue;
-        if (v1 >= v2) continue;
-
-        E e;
-        bool exists = false;
-        boost::tie(e, exists) = boost::edge(v1, v2, graph.graph());
-        if (!exists) throw;
-
-        int64_t src = graph.get_vertex_id(v1);
-        int64_t tgt = graph.get_vertex_id(v2);
-
-        if (src > tgt) std::swap(src, tgt);
-
-        IID_t_rt row;
-        row.from_vid = src;
-        row.to_vid   = tgt;
-        row.cost     = boost::get(boost::edge_weight_t(), graph.graph(), e);
-        results.push_back(row);
-    }
-
-    std::sort(results.begin(), results.end(),
-        [](const IID_t_rt &a, const IID_t_rt &b) {
-            return a.to_vid < b.to_vid;
-        });
-
-    return results;
+extern "C" {
+#include "c_common/postgres_connection.h"
+#include "c_common/e_report.h"
+#include "c_common/time_msg.h"
 }
 
-}  // namespace flow
-}  // namespace pgrouting
+#include "c_types/iid_t_rt.h"
+
+#include "cpp_common/report_messages.hpp"
+#include "cpp_common/assert.hpp"
+#include "cpp_common/alloc.hpp"
+
+#include "drivers/maximumWeightedMatching_driver.hpp"
+
+
+void pgr_process_maximumWeightedMatching(
+        const char* edges_sql,
+        IID_t_rt **result_tuples,
+        size_t *result_count) {
+    pgassert(!(*result_tuples));
+    pgassert(*result_count == 0);
+    pgr_SPI_connect();
+
+    std::ostringstream log;
+    std::ostringstream err;
+    std::ostringstream notice;
+
+    clock_t start_t = clock();
+    pgrouting::drivers::do_maximumWeightedMatching(
+            edges_sql ? edges_sql : "",
+            (*result_tuples), (*result_count),
+            log, notice, err);
+
+    time_msg(" processing pgr_maximumWeightedMatching", start_t, clock());
+
+    if (!err.str().empty() && (*result_tuples)) {
+        pfree(*result_tuples);
+        (*result_tuples) = nullptr;
+        (*result_count)  = 0;
+    }
+
+    pgrouting::report_messages(log, notice, err);
+    pgr_SPI_finish();
+}

@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
-FILE: maximumWeightedMatching.sql
+File: maximumWeightedMatching_driver.hpp
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
@@ -26,28 +26,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---v4.1
-CREATE FUNCTION pgr_maximumWeightedMatching(
-    TEXT,    -- edges_sql (required)
-    BOOLEAN, -- directed (ignored, always undirected)
+#ifndef INCLUDE_DRIVERS_MAXIMUMWEIGHTEDMATCHING_DRIVER_HPP_
+#define INCLUDE_DRIVERS_MAXIMUMWEIGHTEDMATCHING_DRIVER_HPP_
+#pragma once
 
-    OUT start_vid  BIGINT,
-    OUT end_vid    BIGINT,
-    OUT agg_cost   FLOAT)
-RETURNS SETOF RECORD AS
-$BODY$
-    SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_maximumWeightedMatching(_pgr_get_statement($1));
-$BODY$
-LANGUAGE SQL VOLATILE STRICT
-COST ${COST_HIGH} ROWS ${ROWS_HIGH};
+#include <cstddef>
+#include <string>
+#include <sstream>
 
-COMMENT ON FUNCTION pgr_maximumWeightedMatching(TEXT, BOOLEAN)
-IS 'pgr_maximumWeightedMatching
-- EXPERIMENTAL
-- Undirected graph
-- Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-- Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_maximumWeightedMatching.html
-';
+using IID_t_rt = struct IID_t_rt;
+
+namespace pgrouting {
+namespace drivers {
+
+void do_maximumWeightedMatching(
+        const std::string&,
+        IID_t_rt*&, size_t&,
+        std::ostringstream&, std::ostringstream&, std::ostringstream&);
+
+}  // namespace drivers
+}  // namespace pgrouting
+
+#endif  // INCLUDE_DRIVERS_MAXIMUMWEIGHTEDMATCHING_DRIVER_HPP_

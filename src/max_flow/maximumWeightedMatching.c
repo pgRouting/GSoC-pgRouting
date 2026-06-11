@@ -27,55 +27,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include <stdbool.h>
-#include "c_common/postgres_connection.h"
-
 #include "c_types/iid_t_rt.h"
 #include "c_common/debug_macro.h"
-#include "c_common/e_report.h"
-#include "c_common/time_msg.h"
 
-#include "drivers/max_flow/maximumWeightedMatching_driver.h"
+#include "process/maximumWeightedMatching_process.h"
 
 PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_maximumweightedmatching);
-
-static void
-process(
-    char *edges_sql,
-    IID_t_rt **result_tuples,
-    size_t *result_count) {
-    pgr_SPI_connect();
-    char *log_msg    = NULL;
-    char *notice_msg = NULL;
-    char *err_msg    = NULL;
-
-    (*result_tuples) = NULL;
-    (*result_count)  = 0;
-
-    clock_t start_t = clock();
-    pgr_do_maximumWeightedMatching(
-        edges_sql,
-        result_tuples,
-        result_count,
-        &log_msg,
-        &notice_msg,
-        &err_msg);
-    time_msg(" processing pgr_maximumWeightedMatching", start_t, clock());
-
-    if (err_msg) {
-        if (*result_tuples) pfree(*result_tuples);
-        (*result_count) = 0;
-    }
-
-    pgr_global_report(&log_msg, &notice_msg, &err_msg);
-
-    if (log_msg)    pfree(log_msg);
-    if (notice_msg) pfree(notice_msg);
-    if (err_msg)    pfree(err_msg);
-
-    pgr_SPI_finish();
-}
 
 PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
@@ -90,7 +48,7 @@ PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
         PGR_DBG("Calling process");
-        process(
+        pgr_process_maximumWeightedMatching(
             text_to_cstring(PG_GETARG_TEXT_P(0)),
             &result_tuples,
             &result_count);
@@ -120,8 +78,8 @@ PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
         bool      *nulls;
 
         size_t numb = 3;
-        values = palloc(numb * sizeof(Datum));
-        nulls  = palloc(numb * sizeof(bool));
+        values = (Datum *) palloc(numb * sizeof(Datum));
+        nulls  = (bool *)  palloc(numb * sizeof(bool));
 
         size_t i;
         for (i = 0; i < numb; ++i) {

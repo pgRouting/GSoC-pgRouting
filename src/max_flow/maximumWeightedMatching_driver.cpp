@@ -1,8 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: maximumWeightedMatching_driver.cpp
 
-Generated with Template by:
-Copyright (c) 2015-2026 pgRouting developers
+Copyright (c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
@@ -27,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/max_flow/maximumWeightedMatching_driver.h"
+#include "drivers/maximumWeightedMatching_driver.hpp"
 
 #include <sstream>
 #include <string>
@@ -38,45 +37,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
+
 #include "max_flow/maximumWeightedMatching.hpp"
-#include "cpp_common/undirectedHasCostBG.hpp"
 
 
-void
-pgr_do_maximumWeightedMatching(
-        const char *edges_sql,
+namespace pgrouting {
+namespace drivers {
 
-        IID_t_rt **return_tuples,
-        size_t *return_count,
-
-        char **log_msg,
-        char **notice_msg,
-        char **err_msg) {
+void do_maximumWeightedMatching(
+        const std::string &edges_sql,
+        IID_t_rt* &return_tuples,
+        size_t &return_count,
+        std::ostringstream &log,
+        std::ostringstream &notice,
+        std::ostringstream &err) {
     using pgrouting::pgr_alloc;
-    using pgrouting::to_pg_msg;
-    using pgrouting::pgr_free;
 
-    std::ostringstream log;
-    std::ostringstream notice;
-    std::ostringstream err;
-    const char *hint = nullptr;
+    std::string hint = "";
+    return_tuples = nullptr;
+    return_count  = 0;
 
     try {
-        pgassert(!(*log_msg));
-        pgassert(!(*notice_msg));
-        pgassert(!(*err_msg));
-        pgassert(!(*return_tuples));
-        pgassert(*return_count == 0);
-
-        hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), false, false);
-
-        if (edges.empty()) {
-            *notice_msg = to_pg_msg("No edges found");
-            *log_msg = hint ? to_pg_msg(hint) : to_pg_msg(log);
+        if (edges_sql.empty()) {
+            err << "Empty edges SQL";
             return;
         }
-        hint = nullptr;
+
+        hint = edges_sql;
+        auto edges = pgrouting::pgget::get_edges(edges_sql, false, false);
+
+        if (edges.empty()) {
+            notice << "No edges found";
+            log << edges_sql;
+            return;
+        }
+        hint = "";
 
         std::vector<IID_t_rt> matrix;
         matrix.reserve(edges.size());
@@ -95,49 +90,32 @@ pgr_do_maximumWeightedMatching(
         auto count = matched_pairs.size();
 
         if (count == 0) {
-            (*return_tuples) = nullptr;
-            (*return_count)  = 0;
-            notice << "No matching found";
-            *log_msg = to_pg_msg(notice);
+            log << "No matching found";
             return;
         }
 
         double agg = 0.0;
-        (*return_tuples) = pgr_alloc(count, (*return_tuples));
+        return_tuples = pgr_alloc(count, return_tuples);
         for (size_t i = 0; i < count; i++) {
             agg += matched_pairs[i].cost;
             matched_pairs[i].cost = agg;
-            (*return_tuples)[i]   = matched_pairs[i];
+            return_tuples[i]      = matched_pairs[i];
         }
-        *return_count = count;
-
-        pgassert(*err_msg == nullptr);
-        *log_msg    = to_pg_msg(log);
-        *notice_msg = to_pg_msg(notice);
+        return_count = count;
     } catch (AssertFailedException &except) {
-        (*return_tuples) = pgr_free(*return_tuples);
-        (*return_count)  = 0;
         err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
     } catch (const std::pair<std::string, std::string> &ex) {
-        (*return_count) = 0;
-        *err_msg = to_pg_msg(ex.first.c_str());
-        *log_msg = to_pg_msg(ex.second.c_str());
+        err << ex.first;
+        log << ex.second;
     } catch (const std::string &ex) {
-        *err_msg = to_pg_msg(ex);
-        *log_msg = hint ? to_pg_msg(hint) : to_pg_msg(log);
+        err << ex;
+        log << hint;
     } catch (std::exception &except) {
-        (*return_tuples) = pgr_free(*return_tuples);
-        (*return_count)  = 0;
         err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
     } catch (...) {
-        (*return_tuples) = pgr_free(*return_tuples);
-        (*return_count)  = 0;
         err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
     }
 }
+
+}  // namespace drivers
+}  // namespace pgrouting

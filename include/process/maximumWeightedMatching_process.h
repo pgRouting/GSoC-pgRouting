@@ -1,7 +1,6 @@
 /*PGR-GNU*****************************************************************
 File: maximumWeightedMatching_process.h
 
-Generated with Template by:
 Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
@@ -38,6 +37,7 @@ using IID_t_rt = struct IID_t_rt;
 #else
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 typedef struct IID_t_rt IID_t_rt;
 #endif
 
