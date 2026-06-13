@@ -3,15 +3,15 @@
 :license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0
 
 .. index::
-   single: Flow Family ; pgr_maximumWeightedMatching
-   single: maximumWeightedMatching
+   single: Flow Family ; pgr_maxWeightedMatching
+   single: maxWeightedMatching
 
 |
 
-``pgr_maximumWeightedMatching``
+``pgr_maxWeightedMatching``
 ===============================================================================
 
-``pgr_maximumWeightedMatching`` — Calculates a maximum weighted matching in a graph.
+``pgr_maxWeightedMatching`` — Calculates a maximum weighted matching in a graph.
 
 .. rubric:: Availability
 
@@ -42,7 +42,7 @@ Boost Graph Library implementation of maximum weighted matching.
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_maximumWeightedMatching(`Edges SQL`_)
+   | pgr_maxWeightedMatching(`Edges SQL`_)
 
    | Returns set of |result-edge|
    | OR EMPTY SET

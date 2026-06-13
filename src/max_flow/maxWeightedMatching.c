@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: maximumWeightedMatching.c
+File: maxWeightedMatching.c
 
 Generated with Template by:
 Copyright (c) 2015-2026 pgRouting developers
@@ -33,12 +33,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/iid_t_rt.h"
 #include "c_common/debug_macro.h"
 
-#include "process/maximumWeightedMatching_process.h"
+#include "process/maxWeightedMatching_process.h"
 
-PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_maximumweightedmatching);
+PGDLLEXPORT Datum _pgr_maxweightedmatching(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_maxweightedmatching);
 
-PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum _pgr_maxweightedmatching(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
     TupleDesc        tuple_desc;
 
@@ -51,7 +51,7 @@ PGDLLEXPORT Datum _pgr_maximumweightedmatching(PG_FUNCTION_ARGS) {
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
         PGR_DBG("Calling process");
-        pgr_process_maximumWeightedMatching(
+        pgr_process_maxWeightedMatching(
             text_to_cstring(PG_GETARG_TEXT_P(0)),
             &result_tuples,
             &result_count);

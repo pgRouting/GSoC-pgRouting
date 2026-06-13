@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: maximumWeightedMatching_driver.hpp
+File: maxWeightedMatching_driver.hpp
 
 Copyright (c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,8 +26,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_MAXIMUMWEIGHTEDMATCHING_DRIVER_HPP_
-#define INCLUDE_DRIVERS_MAXIMUMWEIGHTEDMATCHING_DRIVER_HPP_
+#ifndef INCLUDE_DRIVERS_MAXWEIGHTEDMATCHING_DRIVER_HPP_
+#define INCLUDE_DRIVERS_MAXWEIGHTEDMATCHING_DRIVER_HPP_
 #pragma once
 
 #include <cstddef>
@@ -39,7 +39,7 @@ using IID_t_rt = struct IID_t_rt;
 namespace pgrouting {
 namespace drivers {
 
-void do_maximumWeightedMatching(
+void do_maxWeightedMatching(
         const std::string&,
         IID_t_rt*&, size_t&,
         std::ostringstream&, std::ostringstream&, std::ostringstream&);
@@ -47,4 +47,4 @@ void do_maximumWeightedMatching(
 }  // namespace drivers
 }  // namespace pgrouting
 
-#endif  // INCLUDE_DRIVERS_MAXIMUMWEIGHTEDMATCHING_DRIVER_HPP_
+#endif  // INCLUDE_DRIVERS_MAXWEIGHTEDMATCHING_DRIVER_HPP_

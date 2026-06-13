@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-FILE: maximumWeightedMatching.sql
+FILE: maxWeightedMatching.sql
 
 Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v4.1
-CREATE FUNCTION pgr_maximumWeightedMatching(
+CREATE FUNCTION pgr_maxWeightedMatching(
     TEXT,    -- edges_sql (required)
     BOOLEAN, -- directed (ignored, always undirected)
 
@@ -37,17 +37,17 @@ CREATE FUNCTION pgr_maximumWeightedMatching(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_maximumWeightedMatching(_pgr_get_statement($1));
+    FROM _pgr_maxWeightedMatching(_pgr_get_statement($1));
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST ${COST_HIGH} ROWS ${ROWS_HIGH};
 
-COMMENT ON FUNCTION pgr_maximumWeightedMatching(TEXT, BOOLEAN)
-IS 'pgr_maximumWeightedMatching
+COMMENT ON FUNCTION pgr_maxWeightedMatching(TEXT, BOOLEAN)
+IS 'pgr_maxWeightedMatching
 - EXPERIMENTAL
 - Undirected graph
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_maximumWeightedMatching.html
+  - ${PROJECT_DOC_LINK}/pgr_maxWeightedMatching.html
 ';

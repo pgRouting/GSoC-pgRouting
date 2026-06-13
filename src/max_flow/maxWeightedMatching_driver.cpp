@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: maximumWeightedMatching_driver.cpp
+File: maxWeightedMatching_driver.cpp
 
 Copyright (c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/maximumWeightedMatching_driver.hpp"
+#include "drivers/maxWeightedMatching_driver.hpp"
 
 #include <sstream>
 #include <string>
@@ -38,13 +38,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
-#include "max_flow/maximumWeightedMatching.hpp"
+#include "max_flow/maxWeightedMatching.hpp"
 
 
 namespace pgrouting {
 namespace drivers {
 
-void do_maximumWeightedMatching(
+void do_maxWeightedMatching(
         const std::string &edges_sql,
         IID_t_rt* &return_tuples,
         size_t &return_count,

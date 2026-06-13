@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: maximumWeightedMatching_process.cpp
+File: maxWeightedMatching_process.cpp
 
 Copyright (c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "process/maximumWeightedMatching_process.h"
+#include "process/maxWeightedMatching_process.h"
 
 #include <string>
 #include <sstream>
@@ -43,10 +43,10 @@ extern "C" {
 #include "cpp_common/assert.hpp"
 #include "cpp_common/alloc.hpp"
 
-#include "drivers/maximumWeightedMatching_driver.hpp"
+#include "drivers/maxWeightedMatching_driver.hpp"
 
 
-void pgr_process_maximumWeightedMatching(
+void pgr_process_maxWeightedMatching(
         const char* edges_sql,
         IID_t_rt **result_tuples,
         size_t *result_count) {
@@ -59,12 +59,12 @@ void pgr_process_maximumWeightedMatching(
     std::ostringstream notice;
 
     clock_t start_t = clock();
-    pgrouting::drivers::do_maximumWeightedMatching(
+    pgrouting::drivers::do_maxWeightedMatching(
             edges_sql ? edges_sql : "",
             (*result_tuples), (*result_count),
             log, notice, err);
 
-    time_msg(" processing pgr_maximumWeightedMatching", start_t, clock());
+    time_msg(" processing pgr_maxWeightedMatching", start_t, clock());
 
     if (!err.str().empty() && (*result_tuples)) {
         pfree(*result_tuples);

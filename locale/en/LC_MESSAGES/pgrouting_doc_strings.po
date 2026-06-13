@@ -13124,11 +13124,11 @@ msgid "Minimum Cost Maximum Flow possible from the source(s) to the target(s)"
 msgstr ""
 
 #, fuzzy
-msgid "``pgr_maximumWeightedMatching``"
+msgid "``pgr_maxWeightedMatching``"
 msgstr "pgr_maximumcardinalitymatching"
 
 msgid ""
-"``pgr_maximumWeightedMatching`` — Calculates a maximum weighted matching in "
+"``pgr_maxWeightedMatching`` — Calculates a maximum weighted matching in "
 "a graph."
 msgstr ""
 
@@ -13166,7 +13166,7 @@ msgstr ""
 msgid "Signature"
 msgstr ""
 
-msgid "pgr_maximumWeightedMatching(`Edges SQL`_)"
+msgid "pgr_maxWeightedMatching(`Edges SQL`_)"
 msgstr ""
 
 msgid "SQL query returning a set of rows:"

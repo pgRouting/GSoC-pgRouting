@@ -52,7 +52,7 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     /* For coloring */
     EDGECOLORING, BIPARTITE, SEQUENTIAL,
     /* For Matching */
-    MAXIMUMWEIGHTEDMATCHING,
+    MAXWEIGHTEDMATCHING,
 };
 
 #endif  // INCLUDE_C_COMMON_ENUMS_H_

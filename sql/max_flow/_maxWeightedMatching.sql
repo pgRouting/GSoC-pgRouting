@@ -1,13 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: maximumWeightedMatching_driver.h
+FILE: _maxWeightedMatching.sql
 
-Generated with Template by:
 Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2026 Mayur Galhate
-Mail: galhatemayur at gmail.com
+Mail: mayur.galhate at gmail.com
 
 ------
 
@@ -27,31 +26,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_DRIVER_H_
-#define INCLUDE_DRIVERS_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_DRIVER_H_
-#pragma once
+--v4.1
+CREATE FUNCTION _pgr_maxWeightedMatching(
+    edges_sql TEXT,
 
-#ifdef __cplusplus
-#   include <cstddef>
-using IID_t_rt = struct IID_t_rt;
-#else
-#   include <stddef.h>
-typedef struct IID_t_rt IID_t_rt;
-#endif
+    OUT start_vid  BIGINT,
+    OUT end_vid    BIGINT,
+    OUT agg_cost   FLOAT)
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT
+COST ${COST_HIGH} ROWS ${ROWS_HIGH};
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void pgr_do_maximumWeightedMatching(
-        const char*,
-
-        IID_t_rt**, size_t*,
-
-        char**, char**, char**);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif  // INCLUDE_DRIVERS_MAX_FLOW_MAXIMUMWEIGHTEDMATCHING_DRIVER_H_
+COMMENT ON FUNCTION _pgr_maxWeightedMatching(TEXT)
+IS 'pgRouting internal function';

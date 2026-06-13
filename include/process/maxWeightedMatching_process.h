@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: maximumWeightedMatching_process.h
+File: maxWeightedMatching_process.h
 
 Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
@@ -26,8 +26,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_PROCESS_MAXIMUMWEIGHTEDMATCHING_PROCESS_H_
-#define INCLUDE_PROCESS_MAXIMUMWEIGHTEDMATCHING_PROCESS_H_
+#ifndef INCLUDE_PROCESS_MAXWEIGHTEDMATCHING_PROCESS_H_
+#define INCLUDE_PROCESS_MAXWEIGHTEDMATCHING_PROCESS_H_
 #pragma once
 
 #ifdef __cplusplus
@@ -45,7 +45,7 @@ typedef struct IID_t_rt IID_t_rt;
 extern "C" {
 #endif
 
-void pgr_process_maximumWeightedMatching(
+void pgr_process_maxWeightedMatching(
         const char*,
         IID_t_rt**, size_t*);
 
@@ -53,4 +53,4 @@ void pgr_process_maximumWeightedMatching(
 }
 #endif
 
-#endif  // INCLUDE_PROCESS_MAXIMUMWEIGHTEDMATCHING_PROCESS_H_
+#endif  // INCLUDE_PROCESS_MAXWEIGHTEDMATCHING_PROCESS_H_
