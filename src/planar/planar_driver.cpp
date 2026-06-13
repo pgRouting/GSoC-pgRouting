@@ -47,6 +47,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "planar/makeBiconnectedPlanar.hpp"
 #include "cpp_common/base_graph.hpp"
+#include <boost/graph/connected_components.hpp>
 
 namespace pgrouting {
 namespace drivers {
@@ -86,21 +87,45 @@ void do_planar(
         UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
+        std::vector<size_t> component(boost::num_vertices(undigraph.graph));
+        auto num_components = boost::connected_components(undigraph.graph, &component[0]);
+
         std::vector<II_t_rt> results;
 
-        switch (which) {
-            case BICONNECTEDPLANAR:
-                {
-                    pgrouting::functions::Pgr_makeBiconnectedPlanar<UndirectedGraph>
-                        fn_makeBiconnectedPlanar;
-                    results = fn_makeBiconnectedPlanar.makeBiconnectedPlanar(
-                            undigraph);
-                    log << fn_makeBiconnectedPlanar.get_log();
-                }
-                break;
-            default:
-                err << "Unknown planar function " << get_name(which);
-                return;
+        auto execute_planar = [&](UndirectedGraph& g) {
+            std::vector<II_t_rt> sub_results;
+            switch (which) {
+                case BICONNECTEDPLANAR:
+                    {
+                        pgrouting::functions::Pgr_makeBiconnectedPlanar<UndirectedGraph>
+                            fn_makeBiconnectedPlanar;
+                        sub_results = fn_makeBiconnectedPlanar.makeBiconnectedPlanar(g);
+                        log << fn_makeBiconnectedPlanar.get_log();
+                    }
+                    break;
+                default:
+                    throw std::string("Unknown planar function ") + get_name(which);
+            }
+            return sub_results;
+        };
+
+        if (num_components == 1) {
+            results = execute_planar(undigraph);
+        } else {
+            std::vector<std::vector<Edge_t>> comp_edges(num_components);
+            for (const auto& edge : edges) {
+                auto v_desc = undigraph.get_V(edge.source);
+                size_t c = component[v_desc];
+                comp_edges[c].push_back(edge);
+            }
+
+            for (size_t c = 0; c < num_components; ++c) {
+                if (comp_edges[c].empty()) continue;
+                UndirectedGraph sub_graph;
+                sub_graph.insert_edges(comp_edges[c]);
+                auto sub_results = execute_planar(sub_graph);
+                results.insert(results.end(), sub_results.begin(), sub_results.end());
+            }
         }
 
         auto count = results.size();

@@ -101,12 +101,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
              return std::vector<II_t_rt>();
          }
 
-         std::vector<size_t> component(boost::num_vertices(graph.graph));
-         auto num_components = boost::connected_components(graph.graph, &component[0]);
-         if (num_components > 1) {
-             log << "Graph has " << num_components << " connected components\n";
-             throw std::string("Graph is not connected. Please run pgr_makeConnected first.");
-         }
+         // Connected components check moved to planar_driver.cpp
 
          CHECK_FOR_INTERRUPTS();
          try {
