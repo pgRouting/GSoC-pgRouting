@@ -6,7 +6,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2026 Mayur Galhate
-Mail: mayur.galhate at gmail.com
+Mail: galhatemayur at gmail.com
 
 ------
 
