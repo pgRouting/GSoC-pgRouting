@@ -43,6 +43,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/connected_components.hpp>
 
 #include "c_types/ii_t_rt.h"
+#include "cpp_common/edge_t.hpp"
 #include "cpp_common/messages.hpp"
 #include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
@@ -58,7 +59,52 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
      typedef typename G::E_i E_i;
 
      std::vector<II_t_rt> makeMaximalPlanar(G &graph) {
-         return generateMakeMaximalPlanar(graph);
+         /* Find how many connected components this graph has */
+         std::vector<size_t> component(boost::num_vertices(graph.graph));
+         auto num_components = boost::connected_components(
+                 graph.graph, &component[0]);
+
+         if (num_components == 1) {
+             /* Simple case: single connected graph — process directly */
+             return generateMakeMaximalPlanar(graph);
+         }
+
+         /*
+          * Multi-component case: split the graph into connected sub-graphs
+          * and process each one independently. This algorithm is defined to
+          * work per-component. Future algorithms (e.g. straightLineDrawing)
+          * that need a single connected graph should throw instead.
+          */
+         log << "Graph has " << num_components
+             << " connected components. Processing each independently.\n";
+
+         /* Collect edges per component using vertex component labels */
+         std::vector<std::vector<Edge_t>> comp_edges(num_components);
+         E_i ei, ei_end;
+         for (boost::tie(ei, ei_end) = edges(graph.graph);
+                 ei != ei_end; ++ei) {
+             V src_v = boost::source(*ei, graph.graph);
+             size_t c = component[src_v];
+             Edge_t e;
+             e.id     = 0;  /* synthetic id — not used by the algorithm */
+             e.source = graph[src_v].id;
+             e.target = graph[boost::target(*ei, graph.graph)].id;
+             e.cost   = 1;
+             e.reverse_cost = -1;
+             comp_edges[c].push_back(e);
+         }
+
+         std::vector<II_t_rt> all_results;
+         for (size_t c = 0; c < num_components; ++c) {
+             if (comp_edges[c].empty()) continue;
+             G sub_graph;
+             sub_graph.insert_edges(comp_edges[c]);
+             auto sub_results = generateMakeMaximalPlanar(sub_graph);
+             all_results.insert(
+                     all_results.end(),
+                     sub_results.begin(), sub_results.end());
+         }
+         return all_results;
      }
 
  private:
@@ -118,8 +164,6 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
          if (boost::num_vertices(graph.graph) < 3) {
              return std::vector<II_t_rt>();
          }
-
-         // Connected components check moved to planar_driver.cpp
 
          std::vector<II_t_rt> results;
          planar_visitor vis(results, graph);
