@@ -7,6 +7,7 @@ ADD_LIBRARY(metrics OBJECT
         bandwidth.c
         coreNumbers.c
         coreNumbers_driver.cpp
+        coreNumbers_process.cpp
         coreNumbers.cpp
 	    metrics_driver.cpp
         metrics_process.cpp

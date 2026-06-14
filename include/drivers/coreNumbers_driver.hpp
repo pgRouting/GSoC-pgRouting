@@ -1,9 +1,10 @@
 /*PGR-GNU*****************************************************************
-File: coreNumbers_driver.h
+File: coreNumbers_driver.hpp
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
+Function's developer:
 Copyright (c) 2026 Sakir Ahmed
 Mail: sakirahmed75531 at gmail.com
 
@@ -25,37 +26,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_METRICS_CORENUMBERS_DRIVER_H_
-#define INCLUDE_DRIVERS_METRICS_CORENUMBERS_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_CORENUMBERS_DRIVER_HPP_
+#define INCLUDE_DRIVERS_CORENUMBERS_DRIVER_HPP_
 #pragma once
 
-/* for size_t */
-#ifdef __cplusplus
-#   include <cstddef>
+#include <cstddef>
+#include <string>
+#include <sstream>
+
 using CoreNumbers_rt = struct CoreNumbers_rt;
-#else
-#   include <stddef.h>
-#include <stdbool.h>
-typedef struct CoreNumbers_rt CoreNumbers_rt;
-#endif
 
+namespace pgrouting {
+namespace drivers {
 
+void do_coreNumbers(
+        const std::string&,
+        CoreNumbers_rt*&, size_t&,
+        std::ostringstream&, std::ostringstream&, std::ostringstream&);
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+}  // namespace drivers
+}  // namespace pgrouting
 
-void
-pgr_do_coreNumbers(
-    const char*,
-
-    CoreNumbers_rt**,
-    size_t*,
-    char**,
-    char**);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif  // INCLUDE_DRIVERS_METRICS_CORENUMBERS_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_CORENUMBERS_DRIVER_HPP_
