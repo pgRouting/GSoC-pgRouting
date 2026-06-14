@@ -104,9 +104,6 @@ get_name(Which which) {
         case EDMONDSKARP:
             return "pgr_edmondsKarp";
             break;
-        case MAXIMALPLANAR:
-            return "pgr_makeMaximalPlanar";
-            break;
         case BICONNECTEDPLANAR:
             return "pgr_makeBiconnectedPlanar";
             break;
