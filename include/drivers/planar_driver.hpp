@@ -1,13 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: makeMaximalPlanar_driver.h
+File: planar_driver.hpp
 
-Generated with Template by:
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
-Copyright (c) 2026 Mohit Rawat
-Mail: mohit25rawat at gmail.com
+Design of one process & driver file by
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -27,29 +26,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_PLANAR_MAKEMAXIMALPLANAR_DRIVER_H_
-#define INCLUDE_DRIVERS_PLANAR_MAKEMAXIMALPLANAR_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_PLANAR_DRIVER_HPP_
+#define INCLUDE_DRIVERS_PLANAR_DRIVER_HPP_
 #pragma once
 
-#ifdef __cplusplus
-#   include <cstddef>
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <sstream>
+
+#include "c_common/enums.h"
+
 using II_t_rt = struct II_t_rt;
-#else
-#   include <stddef.h>
-typedef struct II_t_rt II_t_rt;
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace pgrouting {
+namespace drivers {
 
-void pgr_do_makeMaximalPlanar(
-        const char*,
-        II_t_rt**, size_t*,
-        char**, char**, char**);
+void do_planar(
+        const std::string&,
+        Which,
+        II_t_rt*&, size_t&,
+        std::ostringstream&, std::ostringstream&, std::ostringstream&);
 
-#ifdef __cplusplus
-}
-#endif
+}  // namespace drivers
+}  // namespace pgrouting
 
-#endif  // INCLUDE_DRIVERS_PLANAR_MAKEMAXIMALPLANAR_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_PLANAR_DRIVER_HPP_
