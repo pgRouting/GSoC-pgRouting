@@ -107,9 +107,6 @@ get_name(Which which) {
         case MAXIMALPLANAR:
             return "pgr_makeMaximalPlanar";
             break;
-        case BICONNECTEDPLANAR:
-            return "pgr_makeBiconnectedPlanar";
-            break;
         default:
             return "unknown";
             break;
