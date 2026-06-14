@@ -1,9 +1,10 @@
 /*PGR-GNU*****************************************************************
-File: planarFaces_driver.h
+File: planarFaces_driver.hpp
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
+Function's developer:
 Copyright (c) 2026 Sakir Ahmed
 Mail: sakirahmed75531 at gmail.com
 
@@ -25,29 +26,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_PLANAR_PLANARFACES_DRIVER_H_
-#define INCLUDE_DRIVERS_PLANAR_PLANARFACES_DRIVER_H_
+#ifndef INCLUDE_DRIVERS_PLANARFACES_DRIVER_HPP_
+#define INCLUDE_DRIVERS_PLANARFACES_DRIVER_HPP_
 #pragma once
 
-#ifdef __cplusplus
-#   include <cstddef>
+#include <cstddef>
+#include <string>
+#include <sstream>
+
 using PlanarFace_rt = struct PlanarFace_rt;
-#else
-#   include <stddef.h>
-typedef struct PlanarFace_rt PlanarFace_rt;
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+namespace pgrouting {
+namespace drivers {
 
-void pgr_do_planarFaces(
-            const char*,
-            PlanarFace_rt**, size_t*,
-            char**, char**, char**);
+void do_planarFaces(
+        const std::string&,
+        PlanarFace_rt*&, size_t&,
+        std::ostringstream&, std::ostringstream&, std::ostringstream&);
 
-#ifdef __cplusplus
-}
-#endif
+}  // namespace drivers
+}  // namespace pgrouting
 
-#endif  // INCLUDE_DRIVERS_PLANAR_PLANARFACES_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_PLANARFACES_DRIVER_HPP_

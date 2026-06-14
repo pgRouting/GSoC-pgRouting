@@ -1,0 +1,55 @@
+BEGIN;
+BEGIN
+SET client_min_messages TO NOTICE;
+SET
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2026-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+/* -- q1 */
+SELECT * FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges'
+);
+ seq | face_id | edge_id | side 
+-----+---------+---------+------
+   1 |       1 |       6 | l
+   2 |       1 |       7 | l
+   3 |       1 |       4 | l
+   4 |       1 |       1 | l
+   5 |       1 |       1 | r
+   6 |       1 |       2 | l
+   7 |       1 |       5 | l
+   8 |       1 |       8 | l
+   9 |       1 |       7 | r
+  10 |       1 |       6 | r
+  11 |       2 |       4 | r
+  12 |       2 |      10 | l
+  13 |       2 |      12 | l
+  14 |       2 |      13 | l
+  15 |       2 |      15 | l
+  16 |       2 |      16 | l
+  17 |       2 |       3 | l
+  18 |       2 |       2 | r
+  19 |       3 |       5 | r
+  20 |       3 |       3 | r
+  21 |       3 |      16 | r
+  22 |       3 |       9 | l
+  23 |       4 |       8 | r
+  24 |       4 |      11 | l
+  25 |       4 |      12 | r
+  26 |       4 |      14 | l
+  27 |       4 |      14 | r
+  28 |       4 |      10 | r
+  29 |       5 |      11 | r
+  30 |       5 |       9 | r
+  31 |       5 |      15 | r
+  32 |       5 |      13 | r
+  33 |       6 |      17 | l
+  34 |       6 |      17 | r
+  35 |       7 |      18 | l
+  36 |       7 |      18 | r
+(36 rows)
+
+/* -- q2 */
+ROLLBACK;
+ROLLBACK

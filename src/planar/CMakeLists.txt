@@ -6,4 +6,5 @@ ADD_LIBRARY(planar OBJECT
     isPlanar_driver.cpp
     planarFaces.c
     planarFaces_driver.cpp
+    planarFaces_process.cpp
     )

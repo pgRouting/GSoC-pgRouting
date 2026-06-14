@@ -4,6 +4,7 @@ File: planarFaces_driver.cpp
 Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
+Function's developer:
 Copyright (c) 2026 Sakir Ahmed
 Mail: sakirahmed75531 at gmail.com
 
@@ -25,10 +26,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/planar/planarFaces_driver.h"
+#include "drivers/planarFaces_driver.hpp"
 
 #include <vector>
 #include <string>
+#include <sstream>
 
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
@@ -37,68 +39,68 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "planar/planarFaces.hpp"
 #include "cpp_common/base_graph.hpp"
 
+namespace pgrouting {
+namespace drivers {
 
 void
-pgr_do_planarFaces(
-                const char *edges_sql,
+do_planarFaces(
+        const std::string &edges_sql,
 
-                PlanarFace_rt **return_tuples,
-                size_t *return_count,
-                char ** log_msg,
-                char ** notice_msg,
-                char ** err_msg) {
-    using pgrouting::pgr_alloc;
-    using pgrouting::to_pg_msg;
-    using pgrouting::pgr_free;
-    using pgrouting::pgget::get_edges;
+        PlanarFace_rt *&return_tuples,
+        size_t &return_count,
 
-    std::ostringstream log;
-    std::ostringstream err;
-    std::ostringstream notice;
-    const char *hint = nullptr;
+        std::ostringstream &log,
+        std::ostringstream &notice,
+        std::ostringstream &err) {
+    std::string hint = "";
+
     try {
-        pgassert(!(*log_msg));
-        pgassert(!(*notice_msg));
-        pgassert(!(*err_msg));
-
-        hint = edges_sql;
-        auto edges = get_edges(std::string(edges_sql), true, true);
-
-        if (edges.empty()) {
-            *notice_msg = to_pg_msg(std::string("No edges found"));
+        if (edges_sql.empty()) {
+            err << "Empty edges SQL";
             return;
         }
-        hint = nullptr;
+
+        using pgrouting::pgget::get_edges;
+
+        hint = edges_sql;
+        auto edges = get_edges(edges_sql, true, true);
+        if (edges.empty()) {
+            notice << "No edges found";
+            log << hint;
+            return;
+        }
+        hint = "";
 
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
         pgrouting::functions::Pgr_planarFaces<pgrouting::UndirectedGraph> fn;
         auto results = fn.planarFaces(undigraph);
+        log << fn.get_log();
 
-        *return_count = results.size();
-        *return_tuples = pgr_alloc(*return_count, (*return_tuples));
-        for (size_t i = 0; i < *return_count; ++i) {
-            (*return_tuples)[i] = results[i];
+        auto count = results.size();
+
+        if (count == 0) {
+            notice << "No results found";
+            return;
         }
 
-        pgassert(*err_msg == NULL);
-        *log_msg = to_pg_msg(log);
-        *notice_msg = to_pg_msg(notice);
+        return_tuples = pgr_alloc(count, return_tuples);
+        for (size_t i = 0; i < count; ++i) {
+            return_tuples[i] = results[i];
+        }
+        return_count = count;
     } catch (AssertFailedException &except) {
         err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
     } catch (const std::string &ex) {
-        *err_msg = to_pg_msg(ex);
-        *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+        err << ex;
+        log << hint;
     } catch (std::exception &except) {
         err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
-    } catch(...) {
+    } catch (...) {
         err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
     }
 }
+
+}  // namespace drivers
+}  // namespace pgrouting
