@@ -50,9 +50,7 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     /* For flow */
     MAXFLOW, PUSHRELABEL, BOYKOV, EDMONDSKARP,
     /* For coloring */
-    EDGECOLORING, BIPARTITE, SEQUENTIAL,
-    /* For planar */
-    PLANARFACES
+    EDGECOLORING, BIPARTITE, SEQUENTIAL
 };
 
 #endif  // INCLUDE_C_COMMON_ENUMS_H_
