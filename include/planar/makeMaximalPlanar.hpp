@@ -86,11 +86,11 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              V src_v = boost::source(*ei, graph.graph);
              size_t c = component[src_v];
              Edge_t e;
-             e.id     = 0;  /* synthetic id — not used by the algorithm */
-             e.source = graph[src_v].id;
-             e.target = graph[boost::target(*ei, graph.graph)].id;
-             e.cost   = 1;
-             e.reverse_cost = -1;
+             e.id           = graph[*ei].id;
+             e.source       = graph[src_v].id;
+             e.target       = graph[boost::target(*ei, graph.graph)].id;
+             e.cost         = graph[*ei].cost;
+             e.reverse_cost = graph[*ei].reverse_cost;
              comp_edges[c].push_back(e);
          }
 
