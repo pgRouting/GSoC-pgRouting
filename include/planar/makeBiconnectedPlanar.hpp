@@ -89,7 +89,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
              e.source       = graph[src_v].id;
              e.target       = graph[boost::target(*ei, graph.graph)].id;
              e.cost         = graph[*ei].cost;
-             e.reverse_cost = graph[*ei].reverse_cost;
+             e.reverse_cost = -1;
              comp_edges[c].push_back(e);
          }
 
