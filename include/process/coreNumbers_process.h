@@ -32,10 +32,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #ifdef __cplusplus
 #include <cstddef>
-using CoreNumbers_rt = struct CoreNumbers_rt;
+using II_t_rt = struct II_t_rt;
 #else
 #include <stddef.h>
-typedef struct CoreNumbers_rt CoreNumbers_rt;
+typedef struct II_t_rt II_t_rt;
 #endif
 
 #ifdef __cplusplus
@@ -44,7 +44,7 @@ extern "C" {
 
 void pgr_process_coreNumbers(
         const char*,
-        CoreNumbers_rt**, size_t*);
+        II_t_rt**, size_t*);
 
 #ifdef __cplusplus
 }

@@ -35,12 +35,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace metrics {
 
-std::vector<CoreNumbers_rt>
+std::vector<II_t_rt>
 coreNumbers(const pgrouting::UndirectedGraph &graph) {
     CHECK_FOR_INTERRUPTS();
 
     /* TODO: implement k-core decomposition algorithm */
-    std::vector<CoreNumbers_rt> results;
+    std::vector<II_t_rt> results;
     (void)graph;
     return results;
 }
