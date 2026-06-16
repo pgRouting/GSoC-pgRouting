@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-05 13:15+0000\n"
+"POT-Creation-Date: 2026-06-16 15:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10963,10 +10963,43 @@ msgstr ""
 msgid "https://en.wikipedia.org/wiki/Complete_graph"
 msgstr ""
 
-msgid "pgr_makeBiconnectedPlanar"
+msgid "``pgr_makeBiconnectedPlanar`` - Experimental"
 msgstr ""
 
-msgid "(Documentation to be added later)"
+msgid "``pgr_makeBiconnectedPlanar`` — Returns the set of edges needed to make a planar graph biconnected."
+msgstr ""
+
+msgid "A graph is planar if it can be drawn in two-dimensional space with no two of its edges crossing. A graph is considered **biconnected** if it is connected and cannot be broken into disconnected pieces by deleting any single vertex (it has no articulation points)."
+msgstr ""
+
+msgid "``pgr_makeBiconnectedPlanar`` identifies the missing edges that need to be added to an existing planar graph to make it biconnected, while ensuring the graph remains planar."
+msgstr ""
+
+msgid "Returns a list of all new edges which are needed to make the graph biconnected."
+msgstr ""
+
+msgid "If the input graph is not planar, it returns an empty set."
+msgstr ""
+
+msgid "The algorithm does not consider traversal costs in the calculations."
+msgstr ""
+
+msgid "The algorithm does not consider geometric topology in the calculations."
+msgstr ""
+
+msgid "Running time: :math:`O(|V| + |E|)`"
+msgstr ""
+
+msgid "pgr_makeBiconnectedPlanar(`Edges SQL`_)"
+msgstr ""
+
+msgid "Returns set of |result-component-make|"
+msgstr ""
+
+msgid "List of edges that are needed to make the graph biconnected planar."
+msgstr ""
+
+msgid "`Boost: make_biconnected_planar <https://www.boost.org/libs/graph/doc/make_biconnected_planar.html>`__"
 msgstr ""
 
 msgid "``pgr_makeConnected`` - Experimental"
@@ -10985,9 +11018,6 @@ msgid "The algorithm does not considers geometric topology in the calculations."
 msgstr ""
 
 msgid "pgr_makeConnected(`Edges SQL`_)"
-msgstr ""
-
-msgid "Returns set of |result-component-make|"
 msgstr ""
 
 msgid "List of edges that are needed to connect the graph."
