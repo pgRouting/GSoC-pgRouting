@@ -1,0 +1,57 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+BEGIN;
+
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN min_lib_version('4.1.0') THEN plan(25) ELSE PLAN(1) END;
+
+PREPARE edges1 AS
+SELECT id, source, target, cost FROM edges;
+PREPARE edges2 AS
+SELECT id, source, target, cost, reverse_cost FROM edges;
+
+
+CREATE OR REPLACE FUNCTION test_function()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+params TEXT[];
+subs TEXT[];
+BEGIN
+  subs = ARRAY[
+  'NULL',
+  'NULL'
+  ]::TEXT[];
+
+  IF min_lib_version('4.1.0') THEN
+    params = ARRAY[
+        '$$SELECT id, source, target, cost, reverse_cost FROM edges$$',
+        'false'
+        ]::TEXT[];
+    RETURN query SELECT * FROM no_crash_test('pgr_maxWeightedMatching', params, subs);
+
+    params[1] := '$$SELECT id, source, target, cost FROM edges$$';
+    RETURN query SELECT * FROM no_crash_test('pgr_maxWeightedMatching', params, subs);
+
+    params[1] := '$$edges1$$';
+    RETURN query SELECT * FROM no_crash_test('pgr_maxWeightedMatching', params, subs);
+    params[1] := '$$edges2$$';
+    RETURN query SELECT * FROM no_crash_test('pgr_maxWeightedMatching', params, subs);
+
+    RETURN QUERY SELECT isnt_empty('edges2', 'Should be not empty to tests be meaningful');
+  ELSE
+    RETURN QUERY SELECT skip(1, 'pgr_maxWeightedMatching is new on 4.1.0');
+    RETURN;
+  END IF;
+
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+
+SELECT * FROM test_function();
+
+SELECT finish();
+ROLLBACK;

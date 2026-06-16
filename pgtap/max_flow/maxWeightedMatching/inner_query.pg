@@ -1,0 +1,31 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+
+SET client_min_messages TO ERROR;
+
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN min_lib_version('4.1.0') THEN plan(9) ELSE PLAN(1) END;
+
+
+CREATE OR REPLACE FUNCTION test_function()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+  IF NOT min_lib_version('4.1.0') THEN
+    RETURN QUERY SELECT skip(1, 'pgr_maxWeightedMatching is new on 4.1.0');
+    RETURN;
+  END IF;
+
+  RETURN QUERY SELECT style_dijkstra('pgr_maxweightedmatching(', ', false)');
+
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT test_function();
+
+SELECT finish();
+ROLLBACK;
