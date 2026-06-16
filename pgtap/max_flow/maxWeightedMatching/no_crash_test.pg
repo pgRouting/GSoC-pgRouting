@@ -5,7 +5,7 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_lib_version('4.1.0') THEN plan(25) ELSE PLAN(1) END;
+SELECT CASE WHEN min_lib_version('4.1.0') THEN plan(19) ELSE PLAN(1) END;
 
 PREPARE edges1 AS
 SELECT id, source, target, cost FROM edges;
@@ -16,35 +16,78 @@ SELECT id, source, target, cost, reverse_cost FROM edges;
 CREATE OR REPLACE FUNCTION test_function()
 RETURNS SETOF TEXT AS
 $BODY$
-DECLARE
-params TEXT[];
-subs TEXT[];
 BEGIN
-  subs = ARRAY[
-  'NULL',
-  'NULL'
-  ]::TEXT[];
 
-  IF min_lib_version('4.1.0') THEN
-    params = ARRAY[
-        '$$SELECT id, source, target, cost, reverse_cost FROM edges$$',
-        'false'
-        ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_maxWeightedMatching', params, subs);
-
-    params[1] := '$$SELECT id, source, target, cost FROM edges$$';
-    RETURN query SELECT * FROM no_crash_test('pgr_maxWeightedMatching', params, subs);
-
-    params[1] := '$$edges1$$';
-    RETURN query SELECT * FROM no_crash_test('pgr_maxWeightedMatching', params, subs);
-    params[1] := '$$edges2$$';
-    RETURN query SELECT * FROM no_crash_test('pgr_maxWeightedMatching', params, subs);
-
-    RETURN QUERY SELECT isnt_empty('edges2', 'Should be not empty to tests be meaningful');
-  ELSE
+  IF NOT min_lib_version('4.1.0') THEN
     RETURN QUERY SELECT skip(1, 'pgr_maxWeightedMatching is new on 4.1.0');
     RETURN;
   END IF;
+
+  -- inline SQL, cost only
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching('SELECT id, source, target, cost FROM edges', false)$$,
+    'lives_ok: inline cost only');
+  RETURN QUERY SELECT isnt_empty(
+    $$SELECT * FROM pgr_maxWeightedMatching('SELECT id, source, target, cost FROM edges', false)$$,
+    'isnt_empty: inline cost only');
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
+    'lives_ok: NULL sql cost only');
+  RETURN QUERY SELECT is_empty(
+    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
+    'is_empty: NULL sql cost only');
+
+  -- inline SQL with reverse_cost
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching('SELECT id, source, target, cost, reverse_cost FROM edges', false)$$,
+    'lives_ok: inline with reverse_cost');
+  RETURN QUERY SELECT isnt_empty(
+    $$SELECT * FROM pgr_maxWeightedMatching('SELECT id, source, target, cost, reverse_cost FROM edges', false)$$,
+    'isnt_empty: inline with reverse_cost');
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
+    'lives_ok: NULL sql with reverse_cost');
+  RETURN QUERY SELECT is_empty(
+    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
+    'is_empty: NULL sql with reverse_cost');
+
+  -- prepared stmt, cost only
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching('edges1', false)$$,
+    'lives_ok: prepared cost only');
+  RETURN QUERY SELECT isnt_empty(
+    $$SELECT * FROM pgr_maxWeightedMatching('edges1', false)$$,
+    'isnt_empty: prepared cost only');
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
+    'lives_ok: NULL sql prepared cost only');
+  RETURN QUERY SELECT is_empty(
+    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
+    'is_empty: NULL sql prepared cost only');
+
+  -- prepared stmt with reverse_cost
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching('edges2', false)$$,
+    'lives_ok: prepared with reverse_cost');
+  RETURN QUERY SELECT isnt_empty(
+    $$SELECT * FROM pgr_maxWeightedMatching('edges2', false)$$,
+    'isnt_empty: prepared with reverse_cost');
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
+    'lives_ok: NULL sql prepared with reverse_cost');
+  RETURN QUERY SELECT is_empty(
+    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
+    'is_empty: NULL sql prepared with reverse_cost');
+
+  RETURN QUERY SELECT isnt_empty('edges2', 'Should be not empty to tests be meaningful');
+
+  -- directed flag does not affect result
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching('SELECT id, source, target, cost FROM edges', true)$$,
+    'lives_ok: directed=true');
+  RETURN QUERY SELECT lives_ok(
+    $$SELECT * FROM pgr_maxWeightedMatching('SELECT id, source, target, cost FROM edges', false)$$,
+    'lives_ok: directed=false');
 
 END
 $BODY$
