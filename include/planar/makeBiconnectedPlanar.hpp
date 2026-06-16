@@ -68,12 +68,7 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
              return generateMakeBiconnectedPlanar(graph);
          }
 
-         /*
-          * Multi-component case: split the graph into connected sub-graphs
-          * and process each one independently. This algorithm is defined to
-          * work per-component. Future algorithms (e.g. straightLineDrawing)
-          * that need a single connected graph should throw instead.
-          */
+         /* Multi-component case: split the graph into connected sub-graphs */
          log << "Graph has " << num_components
              << " connected components. Processing each independently.\n";
 
