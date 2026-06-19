@@ -36,75 +36,76 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace {
 
-/*
- * K-core decomposition using the Batagelj-Zaversnik algorithm.
+using V = pgrouting::UndirectedGraph::V;
+
+/**
+ * Sort vertices by degree using bin-sort.
  *
- * Reference:
- * V. Batagelj and M. Zaversnik,
- * "An O(m) Algorithm for Cores Decomposition of Networks", 2003.
- *
- * The algorithm works by iteratively removing the vertex with the
- * smallest current degree. When a vertex is removed, the effective
- * degrees of its neighbors are decremented. The core number of each
- * vertex is the degree it has at the time of its removal.
- *
- * Uses bin-sort for O(m) time complexity.
+ * bin[d] = starting position of vertices with degree d
+ * vert[i] = vertex at position i in the sorted order
+ * pos[v]  = position of vertex v in the vert array
  */
-std::vector<II_t_rt> compute_core_numbers(
-        const pgrouting::UndirectedGraph &graph) {
-    size_t n = boost::num_vertices(graph.graph);
-    if (n == 0) return {};
-
-    using V = pgrouting::UndirectedGraph::V;
-
-    std::vector<size_t> deg(n);
-    size_t max_deg = 0;
-
+void bin_sort_vertices(
+        const pgrouting::UndirectedGraph &graph,
+        const std::vector<size_t> &degree,
+        size_t max_degree,
+        std::vector<V> &vert,
+        std::vector<size_t> &pos,
+        std::vector<size_t> &bin) {
     pgrouting::UndirectedGraph::V_i vi, vi_end;
-    for (boost::tie(vi, vi_end) = vertices(graph.graph); vi != vi_end; ++vi) {
-        size_t d = boost::out_degree(*vi, graph.graph);
-        deg[*vi] = d;
-        if (d > max_deg) max_deg = d;
-    }
 
-    /*
-     * Bin-sort: bin[d] = starting position of vertices with degree d
-     */
-    std::vector<size_t> bin(max_deg + 1, 0);
+    bin.assign(max_degree + 1, 0);
     for (boost::tie(vi, vi_end) = vertices(graph.graph); vi != vi_end; ++vi) {
-        ++bin[deg[*vi]];
+        ++bin[degree[*vi]];
     }
 
     size_t start = 0;
-    for (size_t d = 0; d <= max_deg; ++d) {
+    for (size_t d = 0; d <= max_degree; ++d) {
         size_t num = bin[d];
         bin[d] = start;
         start += num;
     }
 
-    /*
-     * vert[i] = vertex at position i in the sorted order
-     * pos[v]  = position of vertex v in the vert array
-     */
-    std::vector<V> vert(n);
-    std::vector<size_t> pos(n);
-
     for (boost::tie(vi, vi_end) = vertices(graph.graph); vi != vi_end; ++vi) {
-        pos[*vi] = bin[deg[*vi]];
+        pos[*vi] = bin[degree[*vi]];
         vert[pos[*vi]] = *vi;
-        ++bin[deg[*vi]];
+        ++bin[degree[*vi]];
     }
 
     /* Restore bin after the sort pass */
-    for (size_t d = max_deg; d > 0; --d) {
+    for (size_t d = max_degree; d > 0; --d) {
         bin[d] = bin[d - 1];
     }
     bin[0] = 0;
+}
 
-    /*
+std::vector<II_t_rt> compute_core_numbers(
+        const pgrouting::UndirectedGraph &graph) {
+    size_t n = boost::num_vertices(graph.graph);
+    if (n == 0) return {};
+
+    /** degree - current degree of each graph vertex */
+    std::vector<size_t> degree(n);
+
+    pgrouting::UndirectedGraph::V_i vi, vi_end;
+    /**
+     * Get the degree of all vertices in the graph.
+     */
+    for (boost::tie(vi, vi_end) = vertices(graph.graph); vi != vi_end; ++vi) {
+        degree[*vi] = boost::out_degree(*vi, graph.graph);
+    }
+
+    size_t max_degree = *std::max_element(degree.begin(), degree.end());
+
+    std::vector<V> vert(n);
+    std::vector<size_t> pos(n);
+    std::vector<size_t> bin;
+    bin_sort_vertices(graph, degree, max_degree, vert, pos, bin);
+
+    /**
      * Process vertices in order of increasing degree.
-     * For each vertex v, its current deg[v] becomes its core number.
-     * Then for each neighbor u with deg[u] > deg[v], decrement deg[u]
+     * For each vertex v, its current degree[v] becomes its core number.
+     * Then for each neighbor u with degree[u] > degree[v], decrement degree[u]
      * and re-sort by swapping u with the first vertex of its bin.
      */
     for (size_t i = 0; i < n; ++i) {
@@ -113,8 +114,8 @@ std::vector<II_t_rt> compute_core_numbers(
         for (boost::tie(ei, ei_end) = out_edges(v, graph.graph);
                 ei != ei_end; ++ei) {
             V u = target(*ei, graph.graph);
-            if (deg[u] > deg[v]) {
-                size_t du = deg[u];
+            if (degree[u] > degree[v]) {
+                size_t du = degree[u];
                 size_t pu = pos[u];
                 size_t pw = bin[du];
                 V w = vert[pw];
@@ -125,7 +126,7 @@ std::vector<II_t_rt> compute_core_numbers(
                     vert[pw] = u;
                 }
                 ++bin[du];
-                --deg[u];
+                --degree[u];
             }
         }
     }
@@ -134,7 +135,7 @@ std::vector<II_t_rt> compute_core_numbers(
     std::vector<II_t_rt> results;
     for (boost::tie(vi, vi_end) = vertices(graph.graph); vi != vi_end; ++vi) {
         int64_t node = graph[*vi].id;
-        int64_t core = static_cast<int64_t>(deg[*vi]);
+        int64_t core = static_cast<int64_t>(degree[*vi]);
         results.push_back({node, core});
     }
 
