@@ -27,6 +27,10 @@
 Description
 -------------------------------------------------------------------------------
 
+A **face** is a region of the plane bounded by edges in a planar embedding.
+In a connected planar graph, each edge belongs to exactly two faces: one on its
+left side and one on its right side when following the embedding.
+
 Given a planar undirected graph, ``pgr_planarFaces`` computes a planar embedding
 and performs a face traversal using the Boost Graph Library. Each face of the
 embedding is identified, and every edge-face incidence is returned as a row
@@ -38,7 +42,9 @@ The main characteristics are:
 * Uses Boost ``planar_face_traversal`` with a custom visitor.
 * Returns one row per edge-face incidence: each undirected edge appears exactly
   twice (once per side).
+* Each vertex belongs to the graph; the result contains :math:`2|E|` rows.
 * The graph must be planar; a non-planar graph produces an error.
+* Use :doc:`pgr_isPlanar` first when planarity is unknown.
 * Applicable only for **undirected** graphs.
 * The algorithm does not consider traversal costs in the calculations.
 * Running time: :math:`O(|V| + |E|)`
@@ -53,7 +59,7 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_planarFaces(`Edges SQL`)
+   | pgr_planarFaces(`Edges SQL`_)
 
    | RETURNS SET OF (seq, face_id, edge_id, side)
 
@@ -62,6 +68,13 @@ Signatures
 .. literalinclude:: planarFaces.queries
    :start-after: -- q1
    :end-before: -- q2
+
+.. rubric:: Explanation
+
+* The sample graph is planar, so face extraction succeeds.
+* Multiple faces are returned; ``face_id`` identifies each face in the embedding.
+* Each edge appears twice in the result, once with ``side = 'l'`` and once with
+  ``side = 'r'``.
 
 Parameters
 -------------------------------------------------------------------------------
@@ -105,6 +118,29 @@ Result columns
      - | ``'l'`` when the edge borders the face on the left side.
        | ``'r'`` when the edge borders the face on the right side.
 
+Additional Examples
+-------------------------------------------------------------------------------
+
+Check planarity before extracting faces
+...............................................................................
+
+When the input graph may not be planar, use :doc:`pgr_isPlanar` first.
+
+.. literalinclude:: planarFaces.queries
+   :start-after: -- q2
+   :end-before: -- q3
+
+Triangle graph
+...............................................................................
+
+A triangle has two faces: the bounded interior face and the unbounded exterior
+face. The result contains six rows because each of the three edges appears on
+both sides.
+
+.. literalinclude:: planarFaces.queries
+   :start-after: -- q3
+   :end-before: -- q4
+
 See Also
 -------------------------------------------------------------------------------
 
@@ -112,6 +148,8 @@ See Also
 * :doc:`sampledata`
 * `Boost: Planar Face Traversal
   <https://www.boost.org/libs/graph/doc/planar_face_traversal.html>`__
+* Wikipedia: `Planar graph
+  <https://en.wikipedia.org/wiki/Planar_graph>`__
 
 .. rubric:: Indices and tables
 
