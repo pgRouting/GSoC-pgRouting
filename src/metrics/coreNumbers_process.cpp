@@ -46,7 +46,7 @@ extern "C" {
 
 void pgr_process_coreNumbers(
         const char* edges_sql,
-        CoreNumbers_rt **result_tuples,
+        II_t_rt **result_tuples,
         size_t *result_count) {
     pgassert(edges_sql);
     pgassert(!(*result_tuples));

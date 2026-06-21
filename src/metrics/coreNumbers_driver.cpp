@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <sstream>
 
 #include "metrics/coreNumbers.hpp"
-#include "c_types/coreNumbers_rt.h"
+#include "c_types/ii_t_rt.h"
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
@@ -46,7 +46,7 @@ void
 do_coreNumbers(
         const std::string &edges_sql,
 
-        CoreNumbers_rt *&return_tuples,
+        II_t_rt *&return_tuples,
         size_t &return_count,
 
         std::ostringstream &log,

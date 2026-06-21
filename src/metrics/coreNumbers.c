@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
-#include "c_types/coreNumbers_rt.h"
+#include "c_types/ii_t_rt.h"
 #include "process/coreNumbers_process.h"
 
 PGDLLEXPORT Datum _pgr_corenumbers(PG_FUNCTION_ARGS);
@@ -41,7 +41,7 @@ _pgr_corenumbers(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    CoreNumbers_rt  *result_tuples = NULL;
+    II_t_rt  *result_tuples = NULL;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
@@ -70,14 +70,13 @@ _pgr_corenumbers(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (CoreNumbers_rt*) funcctx->user_fctx;
+    result_tuples = (II_t_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;
         Datum        result;
         Datum        *values;
         bool*        nulls;
-        size_t       call_cntr = funcctx->call_cntr;
 
         size_t numb = 3;
         values = palloc(numb * sizeof(Datum));
@@ -88,9 +87,9 @@ _pgr_corenumbers(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        values[0] = Int64GetDatum(result_tuples[call_cntr].seq);
-        values[1] = Int64GetDatum(result_tuples[call_cntr].node);
-        values[2] = Int64GetDatum(result_tuples[call_cntr].core);
+        values[0] = Int64GetDatum((int64_t)funcctx->call_cntr + 1);
+        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d1);
+        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

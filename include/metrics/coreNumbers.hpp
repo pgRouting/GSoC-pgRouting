@@ -31,13 +31,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <vector>
 
-#include "c_types/coreNumbers_rt.h"
+#include "c_types/ii_t_rt.h"
 #include "cpp_common/base_graph.hpp"
 
 namespace pgrouting {
 namespace metrics {
 
-std::vector<CoreNumbers_rt> coreNumbers(const pgrouting::UndirectedGraph &graph);
+std::vector<II_t_rt> coreNumbers(const pgrouting::UndirectedGraph &graph);
 
 }  // namespace metrics
 }  // namespace pgrouting
