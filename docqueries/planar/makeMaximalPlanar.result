@@ -1,3 +1,35 @@
+BEGIN;
+BEGIN
+SET client_min_messages TO NOTICE;
+SET
 /* :file: This file is part of the pgRouting project.
 :copyright: Copyright (c) 2020-2026 pgRouting developers
 :license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+/* -- q1 */
+SELECT * FROM pgr_makeMaximalPlanar(
+  'SELECT id, source, target, cost, reverse_cost FROM edges'
+);
+ seq | start_vid | end_vid
+-----+-----------+---------
+   1 |         7 |       9
+   2 |        10 |       5
+   3 |         3 |      11
+   4 |         1 |       7
+   5 |         1 |       6
+   6 |         1 |       5
+   7 |         1 |      10
+   8 |         1 |      11
+   9 |        17 |      15
+  10 |        17 |      10
+  11 |        17 |       6
+  12 |        17 |       7
+  13 |        17 |       8
+  14 |        15 |      11
+  15 |         9 |      11
+  16 |         9 |      12
+  17 |        16 |      12
+(17 rows)
+
+/* -- q2 */
+ROLLBACK;
+ROLLBACK
