@@ -59,21 +59,21 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
      typedef typename G::E_i E_i;
 
      std::vector<II_t_rt> makeMaximalPlanar(G &graph) {
-         /* Find how many connected components this graph has */
+         /* Process based on connected components */
          std::vector<size_t> component(boost::num_vertices(graph.graph));
          auto num_components = boost::connected_components(
                  graph.graph, &component[0]);
 
          if (num_components == 1) {
-             /* Simple case: single connected graph — process directly */
+             /* Single connected component */
              return generateMakeMaximalPlanar(graph);
          }
 
-         /* Multi-component case: split the graph into connected sub-graphs */
+         /* Multiple connected components */
          log << "Graph has " << num_components
              << " connected components. Processing each independently.\n";
 
-         /* Collect edges per component using vertex component labels */
+         /* Group edges by component */
          std::vector<std::vector<Edge_t>> comp_edges(num_components);
          E_i ei, ei_end;
          for (boost::tie(ei, ei_end) = edges(graph.graph);
