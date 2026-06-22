@@ -93,8 +93,7 @@ void do_planar(
                 {
                     pgrouting::functions::Pgr_makeBiconnectedPlanar<UndirectedGraph>
                         fn_makeBiconnectedPlanar;
-                    results = fn_makeBiconnectedPlanar.makeBiconnectedPlanar(
-                            undigraph);
+                    results = fn_makeBiconnectedPlanar.makeBiconnectedPlanar(undigraph);
                     log << fn_makeBiconnectedPlanar.get_log();
                 }
                 break;
