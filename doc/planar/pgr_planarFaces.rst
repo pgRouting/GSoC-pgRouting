@@ -42,7 +42,7 @@ The main characteristics are:
 * Uses Boost ``planar_face_traversal`` with a custom visitor.
 * Returns one row per edge-face incidence: each undirected edge appears exactly
   twice (once per side).
-* Each vertex belongs to the graph; the result contains :math:`2|E|` rows.
+* The result contains :math:`2|E|` rows when the graph has :math:`|E|` edges.
 * The graph must be planar; a non-planar graph produces an error.
 * Use :doc:`pgr_isPlanar` first when planarity is unknown.
 * Applicable only for **undirected** graphs.
@@ -71,10 +71,11 @@ Signatures
 
 .. rubric:: Explanation
 
-* The sample graph is planar, so face extraction succeeds.
-* Multiple faces are returned; ``face_id`` identifies each face in the embedding.
+* The sample graph is planar, so face extraction succeeds without error.
+* Multiple faces are returned; ``face_id`` identifies each face in the embedding,
+  including the unbounded exterior face.
 * Each edge appears twice in the result, once with ``side = 'l'`` and once with
-  ``side = 'r'``.
+  ``side = 'r'``, following the counterclockwise traversal of the embedding.
 
 Parameters
 -------------------------------------------------------------------------------
