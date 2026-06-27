@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-16 15:22+0000\n"
+"POT-Creation-Date: 2026-06-27 04:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12939,7 +12939,38 @@ msgstr ""
 msgid "pgr_makeMaximalPlanar(`Edges SQL`_)"
 msgstr "pgr_isPlanar"
 
-msgid "List of edges that are needed to make the graph maximal planar."
+msgid "List of edges that are needed to make the sample graph maximal planar."
+msgstr ""
+
+msgid "**Sample graph before:**"
+msgstr ""
+
+msgid "Sample graph before"
+msgstr ""
+
+msgid "**Output:**"
+msgstr ""
+
+msgid "**Sample graph after adding triangulation edges:**"
+msgstr ""
+
+msgid ""
+"Sample graph after adding triangulation edges (olive = original edges, red "
+"dashed = 17 new triangulation edges). Note: When a graph contains multiple "
+"disconnected components, each component is processed independently. "
+"Components (2,4) and (13,14) have < 3 vertices and cannot be triangulated; "
+"the 13-vertex component is triangulated with 17 new edges."
+msgstr ""
+
+msgid "Triangulating a simple 5-cycle ring graph."
+msgstr ""
+
+msgid "Sample 5-cycle ring graph before triangulation."
+msgstr ""
+
+msgid ""
+"Maximal planar triangulation of a simple 5-cycle ring graph (4 red dashed "
+"triangulation edges added)."
 msgstr ""
 
 msgid ""
