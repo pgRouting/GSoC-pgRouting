@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-16 15:28+0000\n"
+"POT-Creation-Date: 2026-06-27 05:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12904,6 +12904,39 @@ msgid "Returns set of |result-component-make|"
 msgstr ""
 
 msgid "List of edges that are needed to make the graph biconnected planar."
+msgstr ""
+
+msgid "**Sample graph before:**"
+msgstr ""
+
+msgid "Sample graph before"
+msgstr ""
+
+msgid "**Output:**"
+msgstr ""
+
+msgid "**Sample graph after adding biconnecting edges:**"
+msgstr ""
+
+msgid ""
+"Sample graph after adding biconnecting edges (olive = original edges, red "
+"dashed = 4 new biconnecting edges). Note: When a graph contains multiple "
+"disconnected components, each component is processed independently. "
+"Components (2,4) and (13,14) are already biconnected (0 articulation points) "
+"and require no new edges."
+msgstr ""
+
+msgid "Biconnecting a simple 4-vertex line graph (path graph)."
+msgstr ""
+
+msgid ""
+"Sample 4-vertex line graph before biconnecting (vertices 2 and 3 are "
+"articulation points)."
+msgstr ""
+
+msgid ""
+"Biconnected planar graph after adding edges (1,3) and (2,4) to eliminate "
+"articulation points without crossing."
 msgstr ""
 
 msgid ""
