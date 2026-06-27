@@ -11,12 +11,36 @@ SELECT * FROM pgr_makeBiconnectedPlanar(
 );
  seq | start_vid | end_vid
 -----+-----------+---------
-   1 |         7 |       9
-   2 |        10 |       5
-   3 |         3 |      11
-   4 |         1 |       7
+   1 |         1 |       7
+   2 |         3 |      11
+   3 |         5 |      10
+   4 |         7 |       9
 (4 rows)
 
 /* -- q2 */
+CREATE TABLE example_edges_bi (
+    id SERIAL PRIMARY KEY,
+    source INTEGER,
+    target INTEGER,
+    cost DOUBLE PRECISION,
+    reverse_cost DOUBLE PRECISION
+);
+CREATE TABLE
+INSERT INTO example_edges_bi (source, target, cost, reverse_cost) VALUES
+(1, 2, 1, 1),
+(2, 3, 1, 1),
+(3, 4, 1, 1);
+INSERT 0 3
+/* -- q3 */
+SELECT * FROM pgr_makeBiconnectedPlanar(
+  'SELECT id, source, target, cost, reverse_cost FROM example_edges_bi'
+);
+ seq | start_vid | end_vid
+-----+-----------+---------
+   1 |         1 |       3
+   2 |         2 |       4
+(2 rows)
+
+/* -- q4 */
 ROLLBACK;
 ROLLBACK

@@ -98,6 +98,10 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
                      all_results.end(),
                      sub_results.begin(), sub_results.end());
          }
+         std::sort(all_results.begin(), all_results.end(), [](const II_t_rt &a, const II_t_rt &b) {
+             if (a.d1 != b.d1) return a.d1 < b.d1;
+             return a.d2 < b.d2;
+         });
          return all_results;
      }
 
@@ -174,6 +178,16 @@ class Pgr_makeBiconnectedPlanar : public pgrouting::Pgr_messages {
              }
              newEdge++;
          }
+
+         for (auto &edge : results) {
+             if (edge.d1 > edge.d2) {
+                 std::swap(edge.d1, edge.d2);
+             }
+         }
+         std::sort(results.begin(), results.end(), [](const II_t_rt &a, const II_t_rt &b) {
+             if (a.d1 != b.d1) return a.d1 < b.d1;
+             return a.d2 < b.d2;
+         });
 
          return results;
      }
