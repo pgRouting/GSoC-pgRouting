@@ -57,11 +57,28 @@ Signatures
    | Returns set of |result-component-make|
    | OR EMPTY SET
 
-:Example: List of edges that are needed to make the graph maximal planar.
+:Example: List of edges that are needed to make the sample graph maximal planar.
+
+**Sample graph before:**
+
+.. figure:: /images/Fig6-undirected.png
+   :scale: 50%
+
+   Sample graph before
+
+**Output:**
 
 .. literalinclude:: makeMaximalPlanar.queries
    :start-after: -- q1
    :end-before: -- q2
+
+**Sample graph after adding triangulation edges:**
+
+.. figure:: images/maximal_planar_sampledata.png
+   :scale: 75%
+
+   Sample graph after adding triangulation edges (olive = original edges, red dashed = 17 new triangulation edges).
+   Note: When a graph contains multiple disconnected components, each component is processed independently. Components (2,4) and (13,14) have < 3 vertices and cannot be triangulated; the 13-vertex component is triangulated with 17 new edges.
 
 Parameters
 -------------------------------------------------------------------------------
@@ -102,6 +119,35 @@ Returns set of |result-component-make|
    * - ``end_vid``
      - ``BIGINT``
      - Identifier of the second end point vertex of the edge.
+
+Additional Examples
+-------------------------------------------------------------------------------
+
+:Example: Triangulating a simple 5-cycle ring graph.
+
+.. literalinclude:: makeMaximalPlanar.queries
+   :start-after: -- q2
+   :end-before: -- q3
+
+**Sample graph before:**
+
+.. figure:: images/maximal_planar_5cycle_before.png
+   :scale: 75%
+
+   Sample 5-cycle ring graph before triangulation.
+
+**Output:**
+
+.. literalinclude:: makeMaximalPlanar.queries
+   :start-after: -- q3
+   :end-before: -- q4
+
+**Sample graph after adding triangulation edges:**
+
+.. figure:: images/maximal_planar_5cycle.png
+   :scale: 75%
+
+   Maximal planar triangulation of a simple 5-cycle ring graph (4 red dashed triangulation edges added).
 
 See Also
 -------------------------------------------------------------------------------

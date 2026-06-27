@@ -11,25 +11,53 @@ SELECT * FROM pgr_makeMaximalPlanar(
 );
  seq | start_vid | end_vid
 -----+-----------+---------
-   1 |         7 |       9
-   2 |        10 |       5
-   3 |         3 |      11
-   4 |         1 |       7
-   5 |         1 |       6
-   6 |         1 |       5
-   7 |         1 |      10
-   8 |         1 |      11
-   9 |        17 |      15
-  10 |        17 |      10
-  11 |        17 |       6
-  12 |        17 |       7
-  13 |        17 |       8
-  14 |        15 |      11
-  15 |         9 |      11
-  16 |         9 |      12
-  17 |        16 |      12
+   1 |         1 |       5
+   2 |         1 |       6
+   3 |         1 |       7
+   4 |         1 |      10
+   5 |         1 |      11
+   6 |         3 |      11
+   7 |         7 |       9
+   8 |         9 |      11
+   9 |         9 |      12
+  10 |        10 |       5
+  11 |        15 |      11
+  12 |        16 |      12
+  13 |        17 |       6
+  14 |        17 |       7
+  15 |        17 |       8
+  16 |        17 |      10
+  17 |        17 |      15
 (17 rows)
 
 /* -- q2 */
+CREATE TABLE example_edges1 (
+    id SERIAL PRIMARY KEY,
+    source INTEGER,
+    target INTEGER,
+    cost DOUBLE PRECISION,
+    reverse_cost DOUBLE PRECISION
+);
+CREATE TABLE
+INSERT INTO example_edges1 (source, target, cost, reverse_cost) VALUES
+(1, 2, 1, 1),
+(2, 3, 1, 1),
+(3, 4, 1, 1),
+(4, 5, 1, 1),
+(5, 1, 1, 1);
+INSERT 0 5
+/* -- q3 */
+SELECT * FROM pgr_makeMaximalPlanar(
+  'SELECT id, source, target, cost, reverse_cost FROM example_edges1'
+);
+ seq | start_vid | end_vid
+-----+-----------+---------
+   1 |         1 |       3
+   2 |         1 |       4
+   3 |         2 |       4
+   4 |         2 |       5
+(4 rows)
+
+/* -- q4 */
 ROLLBACK;
 ROLLBACK
