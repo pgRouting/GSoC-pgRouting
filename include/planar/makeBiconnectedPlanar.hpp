@@ -28,8 +28,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_PLANAR_MAKEBICONNECTEDPLANAR_HPP_
 #pragma once
 
+#include <algorithm>
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 #include <cstdint>
 
