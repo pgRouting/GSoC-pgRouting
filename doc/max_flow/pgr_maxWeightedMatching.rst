@@ -3,21 +3,26 @@
 :license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0
 
 .. index::
-   single: Flow Family ; pgr_maxWeightedMatching
-   single: maxWeightedMatching
+   single: Flow Family ; pgr_maxWeightedMatching - Experimental
+   single: maxWeightedMatching - Experimental on v4.1
 
 |
 
-``pgr_maxWeightedMatching``
+``pgr_maxWeightedMatching`` - Experimental
 ===============================================================================
 
 ``pgr_maxWeightedMatching`` — Calculates a maximum weighted matching in a graph.
+
+.. include:: experimental.rst
+   :start-after: warning-begin
+   :end-before: end-warning
 
 .. rubric:: Availability
 
 .. rubric:: Version 4.1.0
 
-* New function introduced.
+* New experimental function.
+
 
 Description
 -------------------------------------------------------------------------------
@@ -25,113 +30,115 @@ Description
 A **maximum weighted matching** in a graph is a matching where the sum of the
 weights of selected edges is maximized.
 
-A matching is a set of edges without common vertices.
+A matching or independent edge set in a graph is a set of edges without common
+vertices.
 
-Main characteristics:
+The main characteristics are:
 
-* Works on **undirected graphs**
-* Each vertex is matched with at most one other vertex
-* Maximizes total edge weight
-* May have multiple optimal solutions, returns one
+- Works for **undirected** graphs.
+- Each vertex is matched with at most one other vertex.
+- Maximizes the total edge weight sum.
+- There may be many maximum weighted matchings.
 
-Algorithm is based on Edmonds’ blossom algorithm with improvements similar to
-Boost Graph Library implementation of maximum weighted matching.
+  - Calculates one possible maximum weighted matching in a graph.
 
-.. rubric:: Signature
+- Returns the matched pairs of vertices in the form of a set of
+  `(start_vid, end_vid, agg_cost)`.
+
+  - `start_vid` and `end_vid` are the endpoints of the matched edge.
+  - `agg_cost` is the weight of the matched edge.
+
+- For the undirected graph, the results are symmetric.
+
+  - The `agg_cost` of `(u, v)` is the same as for `(v, u)`.
+
+- Running time: :math:`O(n^3)` where :math:`n` is the number of vertices.
+
+|Boost| Boost Graph Inside
+
+Signatures
+-------------------------------------------------------------------------------
+
+.. rubric:: Summary
 
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_maxWeightedMatching(`Edges SQL`_)
+   | pgr_maxWeightedMatching(`Edges SQL`_, ``directed``)
 
-   | Returns set of |result-edge|
+   | Returns set of |matrix-result|
    | OR EMPTY SET
+
+:Example: Using all edges.
+
+.. literalinclude:: maxWeightedMatching.queries
+   :start-after: -- q1
+   :end-before: -- q2
 
 Parameters
 -------------------------------------------------------------------------------
 
-Edges SQL
-...............................................................................
+.. include:: allpairs-family.rst
+    :start-after: edges_start
+    :end-before: edges_end
 
-SQL query returning a set of rows:
+Optional parameters
+...............................................................................
 
 .. list-table::
    :width: 81
-   :widths: 14 14 7 44
+   :widths: auto
    :header-rows: 1
 
    * - Column
      - Type
      - Default
      - Description
-   * - ``id``
-     - **ANY-INTEGER**
-     -
-     - Edge identifier
-   * - ``source``
-     - **ANY-INTEGER**
-     -
-     - Source vertex
-   * - ``target``
-     - **ANY-INTEGER**
-     -
-     - Target vertex
-   * - ``cost``
-     - **ANY-NUMERICAL**
-     -
-     - Weight of the edge (used for matching optimization)
-   * - ``reverse_cost``
-     - **ANY-NUMERICAL**
-     - -1
-     - Reverse direction weight (ignored if not needed)
+   * - ``directed``
+     - ``BOOLEAN``
+     - ``false``
+     - Ignored. The matching algorithm always works on **undirected** graphs.
 
-Where:
+Inner Queries
+-------------------------------------------------------------------------------
 
-* cost must be non-negative for meaningful results
-* reverse_cost is optional depending on graph directionality
+Edges SQL
+...............................................................................
+
+.. include:: pgRouting-concepts.rst
+    :start-after: basic_edges_sql_start
+    :end-before: basic_edges_sql_end
 
 Result columns
 -------------------------------------------------------------------------------
 
-========== ========== =================================================
-Column     Type       Description
-========== ========== =================================================
-``edge``   ``BIGINT`` Identifier of the edge included in matching
-========== ========== =================================================
+Set of |matrix-result|
 
-Algorithm
--------------------------------------------------------------------------------
+.. list-table::
+   :width: 81
+   :widths: 12 14 60
+   :header-rows: 1
 
-The implementation follows the **Edmonds blossom algorithm** for general
-graphs using a primal-dual optimization approach.
-
-Key ideas:
-
-* Alternating trees are built from unmatched vertices
-* Blossoms are formed to handle odd cycles
-* Dual variables ensure optimal weight matching
-* Matching is augmented iteratively until optimal
-
-Complexity
--------------------------------------------------------------------------------
-
-Let:
-
-* n = number of vertices
-* m = number of edges
-
-Time complexity:
-
-* O(n³)
+   * - Column
+     - Type
+     - Description
+   * - ``start_vid``
+     - ``BIGINT``
+     - Identifier of the first end point vertex of the matched edge.
+   * - ``end_vid``
+     - ``BIGINT``
+     - Identifier of the second end point vertex of the matched edge.
+   * - ``agg_cost``
+     - ``FLOAT``
+     - Weight of the matched edge.
 
 See Also
 -------------------------------------------------------------------------------
 
 * :doc:`flow-family`
-* :doc:`migration`
-* Boost Graph Library maximum weighted matching
-* https://en.wikipedia.org/wiki/Blossom_algorithm
-* https://en.wikipedia.org/wiki/Matching_(graph_theory)
+* :doc:`sampledata`
+* `Boost: maximum_weighted_matching
+  <https://www.boost.org/doc/libs/latest/libs/graph/doc/maximum_weighted_matching.html>`__
 
 .. rubric:: Indices and tables
 

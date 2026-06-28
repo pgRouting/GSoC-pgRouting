@@ -2,6 +2,7 @@
 :copyright: Copyright (c) 2026 pgRouting developers
 :license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
 
+
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
@@ -60,12 +61,10 @@ SELECT set_eq('wmatch_false', 'wmatch_true', 'directed flag is ignored');
 
 -- start_vid < end_vid for all rows (canonical ordering)
 RETURN QUERY
-SELECT set_eq(
-  $$SELECT count(*)::INTEGER
-    FROM pgr_maxWeightedMatching(
+SELECT is_empty(
+  $$SELECT * FROM pgr_maxWeightedMatching(
       'SELECT id, source, target, cost, reverse_cost FROM edges', false)
     WHERE start_vid >= end_vid$$,
-  $$VALUES (0)$$,
   'start_vid < end_vid for all rows');
 
 END;
