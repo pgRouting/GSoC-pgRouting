@@ -59,9 +59,26 @@ Signatures
 
 :Example: List of edges that are needed to make the graph biconnected planar.
 
+**Sample graph before:**
+
+.. figure:: /images/Fig6-undirected.png
+   :scale: 50%
+
+   Sample graph before
+
+**Output:**
+
 .. literalinclude:: makeBiconnectedPlanar.queries
    :start-after: -- q1
    :end-before: -- q2
+
+**Sample graph after adding biconnecting edges:**
+
+.. figure:: images/biconnected_planar_sampledata.png
+   :scale: 75%
+
+   Sample graph after adding biconnecting edges (olive = original edges, red dashed = 4 new biconnecting edges).
+   Note: When a graph contains multiple disconnected components, each component is processed independently. Components (2,4) and (13,14) are already biconnected (0 articulation points) and require no new edges.
 
 Parameters
 -------------------------------------------------------------------------------
@@ -102,6 +119,35 @@ Returns set of |result-component-make|
    * - ``end_vid``
      - ``BIGINT``
      - Identifier of the second end point vertex of the edge.
+
+Additional Examples
+-------------------------------------------------------------------------------
+
+:Example: Biconnecting a simple 4-vertex line graph (path graph).
+
+.. literalinclude:: makeBiconnectedPlanar.queries
+   :start-after: -- q2
+   :end-before: -- q3
+
+**Sample graph before:**
+
+.. figure:: images/biconnected_line_before.png
+   :scale: 75%
+
+   Sample 4-vertex line graph before biconnecting (vertices 2 and 3 are articulation points).
+
+**Output:**
+
+.. literalinclude:: makeBiconnectedPlanar.queries
+   :start-after: -- q3
+   :end-before: -- q4
+
+**Sample graph after adding biconnecting edges:**
+
+.. figure:: images/biconnected_line_after.png
+   :scale: 75%
+
+   Biconnected planar graph after adding edges (1,3) and (2,4) to eliminate articulation points without crossing.
 
 See Also
 -------------------------------------------------------------------------------
