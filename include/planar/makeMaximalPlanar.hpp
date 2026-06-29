@@ -28,8 +28,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_PLANAR_MAKEMAXIMALPLANAR_HPP_
 #pragma once
 
+#include <algorithm>
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 #include <cstdint>
 
@@ -99,6 +101,10 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
                      all_results.end(),
                      sub_results.begin(), sub_results.end());
          }
+         std::sort(all_results.begin(), all_results.end(), [](const II_t_rt &a, const II_t_rt &b) {
+             if (a.d1 != b.d1) return a.d1 < b.d1;
+             return a.d2 < b.d2;
+         });
          return all_results;
      }
 
@@ -207,6 +213,16 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
          for (const auto& r : results) {
              log << "src:" << r.d1 << " tgt:" << r.d2 << "\n";
          }
+
+         for (auto &edge : results) {
+             if (edge.d1 > edge.d2) {
+                 std::swap(edge.d1, edge.d2);
+             }
+         }
+         std::sort(results.begin(), results.end(), [](const II_t_rt &a, const II_t_rt &b) {
+             if (a.d1 != b.d1) return a.d1 < b.d1;
+             return a.d2 < b.d2;
+         });
 
          return results;
      }
