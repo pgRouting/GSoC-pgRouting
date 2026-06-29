@@ -20,9 +20,9 @@ graph using k-core decomposition.
 
 .. rubric:: Availability
 
-.. rubric:: Version 4.1.0
+* Version 4.1.0
 
-* New experimental function.
+  * New experimental function.
 
 Description
 -------------------------------------------------------------------------------
@@ -30,16 +30,24 @@ Description
 The **core number** of a vertex is the largest value :math:`k` such that the
 vertex belongs to the :math:`k`-core of the graph.
 
-**The main characteristics are:**
+The :math:`k`-core of a graph is the maximal subgraph in which every vertex has
+degree at least :math:`k`. K-core decomposition assigns one core number to each
+vertex and is widely used in network analysis to identify densely connected
+regions and hierarchical structure.
 
-- Works for **undirected** graphs.
-- Each vertex has **exactly one** core number.
-- **All vertices** in the graph are returned.
-- The number of result rows is :math:`|V|`.
-- Two or more vertices can share the same core number.
-- The result is ordered by ``node`` ascending.
+This implementation works for **undirected** graphs. Each vertex has exactly one
+core number, all vertices in the graph are returned, and the number of result
+rows is :math:`|V|`. Two or more vertices can share the same core number. The
+result is ordered by ``node`` ascending.
 
 - Running time: :math:`O(m)`
+
+|Boost| Boost Graph Inside
+
+.. rubric:: References
+
+* Batagelj, V. and Zaversnik, M. (2003). An O(m) Algorithm for Cores Decomposition
+  of Networks. arXiv:cs/0310049.
 
 Signatures
 -------------------------------------------------------------------------------
@@ -80,27 +88,28 @@ Result columns
 -------------------------------------------------------------------------------
 
 .. list-table::
-   :width: 81
-   :widths: auto
-   :header-rows: 1
+	:width: 81
+	:widths: auto
+	:header-rows: 1
 
-   * - Column
-     - Type
-     - Description
-   * - ``seq``
-     - ``BIGINT``
-     - Sequential value starting from 1.
-   * - ``node``
-     - ``BIGINT``
-     - Identifier of the vertex.
-   * - ``core``
-     - ``BIGINT``
-     - Core number of the vertex.
+	* - Column
+	  - Type
+	  - Description
+	* - ``seq``
+	  - ``BIGINT``
+	  - Sequential value starting from 1.
+	* - ``node``
+	  - ``BIGINT``
+	  - Identifier of the vertex.
+	* - ``core``
+	  - ``BIGINT``
+	  - Core number of the vertex.
 
 See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
+* :doc:`pgr_betweennessCentrality`
 * :doc:`metrics-family`
 
 .. rubric:: Indices and tables
