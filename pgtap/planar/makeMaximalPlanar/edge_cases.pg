@@ -18,81 +18,92 @@ IF NOT min_version('4.1.0') THEN
   RETURN;
 END IF;
 
--- 1. 0 edges test (Empty Graph)
-PREPARE zeroEdgesTest AS
-SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost FROM edges WHERE id > 1000');
+-- 0 edge, 0 vertex tests
+
+-- pgr_makeMaximalPlanar on empty graph returns empty
+RETURN QUERY
+SELECT is_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id > 18')$$,
+  '1: Empty graph returns no edges to add');
+
+
+-- 1 vertex test
+-- Edge 5-5 (self loop), only vertex 5
 
 RETURN QUERY
-SELECT is_empty('zeroEdgesTest', '1: Empty, since input graph has 0 edges');
+SELECT is_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT 1 AS id, 5 AS source, 5 AS target, 1.0 AS cost, -1.0 AS reverse_cost')$$,
+  '2: Single vertex graph returns no edges to add');
 
 
--- 2. 1 vertex test (Self-loop)
-PREPARE oneVertexTest AS
-SELECT * FROM pgr_makeMaximalPlanar('SELECT 1 AS id, 5 AS source, 5 AS target, 1.0 AS cost');
-
-RETURN QUERY
-SELECT is_empty('oneVertexTest', '2: Empty, since graph has only 1 vertex');
-
-
--- 3. 2 vertices test (Single edge 5--6)
-PREPARE twoVerticesTest AS
-SELECT * FROM pgr_makeMaximalPlanar('SELECT 1 AS id, 5 AS source, 6 AS target, 1.0 AS cost');
+-- 2 vertices test
+-- Edge 5-6
 
 RETURN QUERY
-SELECT is_empty('twoVerticesTest', '3: Empty, 2-vertex graph is already maximal planar');
+SELECT is_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT 1 AS id, 5 AS source, 6 AS target, 1.0 AS cost, -1.0 AS reverse_cost')$$,
+  '3: Two vertices (5--6) graph returns no edges to add');
 
 
--- 4. 3 vertices test (Path graph: 5--6--10)
-PREPARE threeVerticesTest AS
-SELECT start_vid, end_vid FROM pgr_makeMaximalPlanar(
-  'SELECT id, source, target, cost FROM (VALUES (1, 5, 6, 1.0), (2, 6, 10, 1.0)) AS t(id, source, target, cost)'
-);
-
-RETURN QUERY
-SELECT set_eq('threeVerticesTest', $$VALUES (5::bigint, 10::bigint)$$, '4: P3 graph bridged with (5,10)');
-
-
--- 5. 4 vertices test (Square C4 cycle: 1-2-3-4-1)
-PREPARE fourVerticesCycleTest AS
-SELECT start_vid, end_vid FROM pgr_makeMaximalPlanar(
-  'SELECT id, source, target, cost FROM (VALUES (1, 1, 2, 1.0), (2, 2, 3, 1.0), (3, 3, 4, 1.0), (4, 4, 1, 1.0)) AS t(id, source, target, cost)'
-);
+-- 3 vertices test (Path graph: 5 -- 6 -- 10)
+-- Edges: 5-6, 6-10
+-- makeMaximalPlanar first makes it biconnected (adds 5-10), then triangulates
+-- The result is a triangle 5-6-10, which is already maximal
+-- So only edge (5,10) is added
 
 RETURN QUERY
-SELECT isnt_empty('fourVerticesCycleTest', '5: Square C4 cycle returns 1 diagonal edge to triangulate');
+SELECT set_eq(
+  $$SELECT start_vid, end_vid FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id IN (1, 2)')$$,
+  $$VALUES (5::bigint, 10::bigint)$$,
+  '4: Path graph 5--6--10 needs edge (5,10) to become maximal planar');
 
 
--- 6. Disconnected Forest Graph test (Disjoint trees: 1--2 and 3--4)
-PREPARE forestGraphTest AS
-SELECT start_vid, end_vid FROM pgr_makeMaximalPlanar(
-  'SELECT id, source, target, cost FROM (VALUES (1, 1, 2, 1.0), (2, 3, 4, 1.0)) AS t(id, source, target, cost)'
-);
-
-RETURN QUERY
-SELECT is_empty('forestGraphTest', '6: Disconnected forest graph returns empty set');
-
-
--- 7. Disjoint graphs from sampledata
-PREPARE sampleDisjointTest AS
-SELECT start_vid, end_vid FROM pgr_makeMaximalPlanar(
-  'SELECT id, source, target, cost FROM edges WHERE id IN (1, 2, 8, 10, 11, 12)'
-);
+-- 4 vertices test (Square cycle: 1-2-3-4-1)
+-- Already biconnected, but not maximal (K4 minus one edge)
+-- makeMaximalPlanar adds 1 diagonal to triangulate it
 
 RETURN QUERY
-SELECT isnt_empty('sampleDisjointTest', '7: Disjoint road network processed independent of components');
+SELECT isnt_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM (VALUES
+    (1, 1, 2, 1.0, 1.0), (2, 2, 3, 1.0, 1.0), (3, 3, 4, 1.0, 1.0), (4, 4, 1, 1.0, 1.0)
+  ) AS t(id, source, target, cost, reverse_cost)')$$,
+  '5: Square cycle C4 needs 1 diagonal to become maximal planar');
 
 
--- 8. Non-planar graph test (K5 complete graph)
-PREPARE nonPlanarTest AS
-SELECT * FROM pgr_makeMaximalPlanar(
-  'SELECT id, source, target, cost FROM (VALUES ' ||
-  '(1,1,2,1.0), (2,1,3,1.0), (3,1,4,1.0), (4,1,5,1.0), ' ||
-  '(5,2,3,1.0), (6,2,4,1.0), (7,2,5,1.0), ' ||
-  '(8,3,4,1.0), (9,3,5,1.0), (10,4,5,1.0)) AS t(id, source, target, cost)'
-);
+-- Disjoint 2-vertex components test (1--2 and 3--4)
+-- Both components have 2 vertices (< 3), so each returns empty
 
 RETURN QUERY
-SELECT is_empty('nonPlanarTest', '8: Non-planar K5 graph returns empty set');
+SELECT is_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM (VALUES
+    (1, 1, 2, 1.0, 1.0), (2, 3, 4, 1.0, 1.0)
+  ) AS t(id, source, target, cost, reverse_cost)')$$,
+  '6: Disjoint 2-vertex components return no edges to add');
+
+
+-- Disjoint graphs from sampledata (path 5--6--10 + cycle 7--11--8)
+-- Component 1: path needs edges to become maximal
+-- Component 2: cycle needs edges to become maximal
+-- Together they return edges added from both components
+
+RETURN QUERY
+SELECT isnt_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id IN (1, 2, 8, 10, 11, 12)')$$,
+  '7: Disjoint road network components each get triangulated');
+
+
+-- Non-planar graph test (K5: complete graph on 5 vertices)
+-- K5 is not planar, so function returns empty
+
+RETURN QUERY
+SELECT is_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM (VALUES
+    (1, 1, 2, 1.0, -1.0), (2, 1, 3, 1.0, -1.0), (3, 1, 4, 1.0, -1.0), (4, 1, 5, 1.0, -1.0),
+    (5, 2, 3, 1.0, -1.0), (6, 2, 4, 1.0, -1.0), (7, 2, 5, 1.0, -1.0),
+    (8, 3, 4, 1.0, -1.0), (9, 3, 5, 1.0, -1.0),
+    (10, 4, 5, 1.0, -1.0)
+  ) AS t(id, source, target, cost, reverse_cost)')$$,
+  '8: Non-planar graph (K5) returns no edges to add');
 
 END;
 $BODY$
