@@ -91,5 +91,93 @@ SELECT * FROM pgr_planarFaces(
 (6 rows)
 
 /* -- q4 */
+SELECT * FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id = 1'
+) ORDER BY seq;
+ seq | face_id | edge_id | side 
+-----+---------+---------+------
+   1 |       1 |       1 | l
+   2 |       1 |       1 | r
+(2 rows)
+
+/* -- q5 */
+SELECT count(*) AS rows
+FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id IN (8, 10, 12)'
+);
+ rows 
+------
+    6
+(1 row)
+
+/* -- q6 */
+SELECT count(*) AS rows
+FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id < 10'
+);
+ rows 
+------
+   18
+(1 row)
+
+/* -- q7 */
+SELECT face_id, count(*) AS edge_count
+FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges'
+)
+GROUP BY face_id
+ORDER BY face_id;
+ face_id | edge_count 
+---------+------------
+       1 |         10
+       2 |          8
+       3 |          4
+       4 |          6
+       5 |          4
+       6 |          2
+       7 |          2
+(7 rows)
+
+/* -- q8 */
+SELECT * FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id > 18'
+) ORDER BY seq;
+NOTICE:  No edges found
+ seq | face_id | edge_id | side 
+-----+---------+---------+------
+(0 rows)
+
+/* -- q9 */
+SELECT node, core
+FROM pgr_coreNumbers(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id < 10'
+) WHERE core >= 2
+ORDER BY node;
+ node | core 
+------+------
+    6 |    2
+    7 |    2
+   10 |    2
+   11 |    2
+(4 rows)
+
+/* -- q10 */
+SELECT count(*) AS rows
+FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id < 10'
+);
+ rows 
+------
+   18
+(1 row)
+
+/* -- q11 */
 ROLLBACK;
 ROLLBACK
