@@ -163,15 +163,5 @@ NOTICE:  No edges found
 (0 rows)
 
 /* -- q11 */
-SELECT pgr_isPlanar(
-'SELECT id, source, target, cost, reverse_cost
-FROM edges WHERE id < 10'
-);
- pgr_isplanar
---------------
- t
-(1 row)
-
-/* -- q12 */
 ROLLBACK;
 ROLLBACK

@@ -482,12 +482,6 @@ then test planarity:
    FROM edges WHERE id < 10'
    );
 
-The planarity test alone:
-
-.. literalinclude:: coreNumbers.queries
-   :start-after: -- q11
-   :end-before: -- q12
-
 .. rubric:: Explanation
 
 * The subgraph with edges :math:`id < 10` is planar (``pgr_isPlanar`` returns
