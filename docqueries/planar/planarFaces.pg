@@ -28,3 +28,46 @@ SELECT * FROM pgr_planarFaces(
   'SELECT id, source, target, cost, reverse_cost FROM tri_edges'
 ) ORDER BY seq;
 /* -- q4 */
+SELECT * FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id = 1'
+) ORDER BY seq;
+/* -- q5 */
+SELECT count(*) AS rows
+FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id IN (8, 10, 12)'
+);
+/* -- q6 */
+SELECT count(*) AS rows
+FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id < 10'
+);
+/* -- q7 */
+SELECT face_id, count(*) AS edge_count
+FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges'
+)
+GROUP BY face_id
+ORDER BY face_id;
+/* -- q8 */
+SELECT * FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id > 18'
+) ORDER BY seq;
+/* -- q9 */
+SELECT node, core
+FROM pgr_coreNumbers(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id < 10'
+) WHERE core >= 2
+ORDER BY node;
+/* -- q10 */
+SELECT count(*) AS rows
+FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id < 10'
+);
+/* -- q11 */
