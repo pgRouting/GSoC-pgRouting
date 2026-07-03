@@ -153,19 +153,16 @@ NOTICE:  No edges found
 (0 rows)
 
 /* -- q9 */
-SELECT node, core
-FROM pgr_coreNumbers(
+SELECT edge_id
+FROM pgr_planarFaces(
   'SELECT id, source, target, cost, reverse_cost
-  FROM edges WHERE id < 10'
-) WHERE core >= 2
-ORDER BY node;
- node | core 
-------+------
-    6 |    2
-    7 |    2
-   10 |    2
-   11 |    2
-(4 rows)
+  FROM edges'
+)
+GROUP BY edge_id
+HAVING count(*) != 2;
+ edge_id 
+---------
+(0 rows)
 
 /* -- q10 */
 SELECT count(*) AS rows

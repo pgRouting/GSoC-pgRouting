@@ -58,12 +58,13 @@ SELECT * FROM pgr_planarFaces(
   FROM edges WHERE id > 18'
 ) ORDER BY seq;
 /* -- q9 */
-SELECT node, core
-FROM pgr_coreNumbers(
+SELECT edge_id
+FROM pgr_planarFaces(
   'SELECT id, source, target, cost, reverse_cost
-  FROM edges WHERE id < 10'
-) WHERE core >= 2
-ORDER BY node;
+  FROM edges'
+)
+GROUP BY edge_id
+HAVING count(*) != 2;
 /* -- q10 */
 SELECT count(*) AS rows
 FROM pgr_planarFaces(

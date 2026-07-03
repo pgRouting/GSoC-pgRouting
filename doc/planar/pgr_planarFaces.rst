@@ -317,13 +317,13 @@ Edges :math:`8`, :math:`10`, and :math:`12` connect vertices
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Edges with ``id < 10`` are the same subgraph used in several
-:doc:`pgr_coreNumbers` examples.
+several metrics-module examples.
 
 .. figure:: /images/Fig6-undirected.png
    :scale: 50%
 
    Undirected view of the sample network (subgraph with ``id < 10`` highlighted
-   in the core-number documentation).
+   in related documentation).
 
 .. graphviz::
 
@@ -407,12 +407,12 @@ half-edges. Labels are ``edge_id`` values from ``sampledata``.
   empty.
 * No exception is raised.
 
-8) Core numbers on the same subgraph
+8) Each edge borders exactly two faces
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Vertices with core number :math:`\geq 2` on edges ``id < 10`` lie in the dense
-2-core region. This step is independent of face extraction but uses the same edge
-filter as examples 5) and 9).
+Every undirected edge must appear once with ``side = 'l'`` and once with
+``side = 'r'``. The query below lists edges that violate this rule (none on the
+full sample graph).
 
 .. literalinclude:: planarFaces.queries
    :start-after: -- q9
@@ -420,9 +420,8 @@ filter as examples 5) and 9).
 
 .. rubric:: Explanation
 
-* Vertices :math:`6`, :math:`7`, :math:`10`, and :math:`11` form the 2-core.
-* Core number measures peeling resilience; ``face_id`` partitions the plane for a
-  planar embedding. A dense core can still span several faces.
+* An empty result confirms each ``edge_id`` appears exactly twice in the output.
+* This is the same property verified in ``pgtap/planar/planarFaces/edge_cases.pg``.
 
 9) Face row count on edges ``id < 10``
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -435,9 +434,10 @@ filter as examples 5) and 9).
 
 * The count **18** matches example 5): the same subgraph yields the same
   :math:`2|E|` row count.
-* Together with example 8), this shows a typical workflow: characterize connectivity
-  with :doc:`pgr_coreNumbers`, confirm planarity with :doc:`pgr_isPlanar`, then
-  list faces with ``pgr_planarFaces`` on the same ``Edges SQL``.
+* Together with example 1), this confirms the :math:`2|E|` row rule on a
+  nine-edge subgraph.
+* Confirm planarity with :doc:`pgr_isPlanar` before calling ``pgr_planarFaces`` on
+  the same ``Edges SQL``.
 
 
 See Also
@@ -445,8 +445,6 @@ See Also
 
 * :doc:`pgr_isPlanar`
 * :doc:`sampledata`
-* :doc:`pgr_coreNumbers`
-* :doc:`metrics-family`
 * `Boost: Planar Face Traversal
   <https://www.boost.org/libs/graph/doc/planar_face_traversal.html>`__
 * `Boost: Boyer Myrvold planarity
