@@ -27,13 +27,13 @@
 Description
 -------------------------------------------------------------------------------
 
+``pgr_makeBiconnectedPlanar`` identifies the missing edges that need to be added to an
+existing planar graph to make it biconnected, while ensuring the graph remains planar.
+
 A graph is considered **biconnected** if it is connected and cannot be broken into
 disconnected pieces by deleting any single vertex (it has no articulation points).
 A planar graph is one that can be drawn in two-dimensional space with no two of
 its edges crossing.
-
-``pgr_makeBiconnectedPlanar`` identifies the missing edges that need to be added to an
-existing planar graph to make it biconnected, while ensuring the graph remains planar.
 
 The main characteristics are:
 
