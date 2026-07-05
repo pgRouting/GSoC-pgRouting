@@ -27,22 +27,23 @@
 Description
 -------------------------------------------------------------------------------
 
-A graph is planar if it can be drawn in two-dimensional space with no two of its
-edges crossing. A graph is considered **biconnected** if it is connected and cannot
-be broken into disconnected pieces by deleting any single vertex (it has no articulation
-points).
+A graph is considered **biconnected** if it is connected and cannot be broken into
+disconnected pieces by deleting any single vertex (it has no articulation points).
+A planar graph is one that can be drawn in two-dimensional space with no two of
+its edges crossing.
 
-``pgr_makeBiconnectedPlanar`` identifies the missing edges that need to be added to an 
+``pgr_makeBiconnectedPlanar`` identifies the missing edges that need to be added to an
 existing planar graph to make it biconnected, while ensuring the graph remains planar.
 
 The main characteristics are:
 
 * Works for **undirected** graphs.
-* Returns a list of all new edges which are needed to make the graph biconnected.
-* If the input graph is not planar, it returns an empty set.
+* Works for **planar** graphs only.
+* If the input graph is not planar, it returns an **empty set**.
+* Returns a list of all new edges needed to make the graph biconnected.
 * The algorithm does not consider traversal costs in the calculations.
 * The algorithm does not consider geometric topology in the calculations.
-* Running time: :math:`O(|V| + |E|)`
+* Running time: :math:`O(|V_G| + |E_G|)` where :math:`G(V_G, E_G)` is the input graph.
 
 |Boost| Boost Graph Inside
 
