@@ -27,22 +27,22 @@
 Description
 -------------------------------------------------------------------------------
 
-A graph is planar if it can be drawn in two-dimensional space with no two of its
-edges crossing. A planar graph is considered **maximal planar** (or fully triangulated) 
-if no additional edges can be added to it without violating its planarity. In a 
-maximal planar graph, every face (including the outer face) is a triangle.
-
-``pgr_makeMaximalPlanar`` identifies the missing edges that need to be added to an 
+``pgr_makeMaximalPlanar`` identifies the missing edges that need to be added to an
 existing planar graph to make it maximal planar.
+
+A planar graph is considered **maximal planar** (or fully triangulated) if no additional
+edges can be added to it without violating its planarity. In a maximal planar graph,
+every face (including the outer face) is a triangle.
 
 The main characteristics are:
 
 * Works for **undirected** graphs.
-* Returns a list of all new edges which are needed to triangulate the graph and make it maximal planar.
-* If the input graph is not planar, it returns an empty set.
+* Works for **planar** graphs only.
+* If the input graph is not planar, it returns an **empty set**.
+* Returns a list of all new edges needed to triangulate the graph and make it maximal planar.
 * The algorithm does not consider traversal costs in the calculations.
 * The algorithm does not consider geometric topology in the calculations.
-* Running time: :math:`O(|V| + |E|)`
+* Running time: :math:`O(|V_G| + |E_G|)` where :math:`G(V_G, E_G)` is the input graph.
 
 |Boost| Boost Graph Inside
 
