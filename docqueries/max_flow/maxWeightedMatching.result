@@ -23,5 +23,32 @@ SELECT * FROM pgr_maxWeightedMatching(
 (8 rows)
 
 /* -- q2 */
+CREATE TABLE additional_sample_1 (
+    id SERIAL PRIMARY KEY,
+    source INTEGER,
+    target INTEGER,
+    cost DOUBLE PRECISION,
+    reverse_cost DOUBLE PRECISION
+);
+CREATE TABLE
+INSERT INTO additional_sample_1 (source, target, cost, reverse_cost) VALUES
+(1, 2, 5, 5),
+(2, 3, 1, 1),
+(1, 3, 2, 2),
+(2, 4, 4, 4),
+(4, 5, 3, 3),
+(3, 5, 6, 6);
+INSERT 0 6
+SELECT * FROM pgr_maxWeightedMatching(
+    'SELECT id, source, target, cost, reverse_cost FROM additional_sample_1',
+    false
+);
+ start_vid | end_vid | agg_cost
+-----------+---------+----------
+         1 |       2 |        5
+         3 |       5 |       11
+(2 rows)
+
+/* -- q4 */
 ROLLBACK;
 ROLLBACK
