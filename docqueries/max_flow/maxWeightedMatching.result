@@ -39,8 +39,6 @@ INSERT INTO additional_sample_1 (source, target, cost, reverse_cost) VALUES
 (4, 5, 3, 3),
 (3, 5, 6, 6);
 INSERT 0 6
-
-/* -- q3 */
 SELECT * FROM pgr_maxWeightedMatching(
     'SELECT id, source, target, cost, reverse_cost FROM additional_sample_1',
     false
