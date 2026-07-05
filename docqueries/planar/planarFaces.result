@@ -148,6 +148,8 @@ SELECT * FROM pgr_planarFaces(
   FROM edges WHERE id > 18'
 ) ORDER BY seq;
 NOTICE:  No edges found
+HINT:  SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id > 18
  seq | face_id | edge_id | side 
 -----+---------+---------+------
 (0 rows)
