@@ -158,6 +158,8 @@ SELECT * FROM pgr_coreNumbers(
 FROM edges WHERE id < 0'
 ) ORDER BY node;
 NOTICE:  No edges found
+HINT:  SELECT id, source, target, cost, reverse_cost
+FROM edges WHERE id < 0
  seq | node | core
 -----+------+------
 (0 rows)
