@@ -132,6 +132,39 @@ Set of |matrix-result|
      - ``FLOAT``
      - Weight of the matched edge.
 
+Additional Examples
+-------------------------------------------------------------------------------
+
+.. raw:: html
+
+   <table style="width:100%; border:none; border-collapse:collapse;">
+     <tr>
+       <td style="width:50%; text-align:center; padding:8px; border:none;">
+         <strong>Before Matching</strong><br/>
+         <img src="_images/before.png" alt="Sample graph before maximum weighted matching" style="max-width:100%;"/>
+         <p><em>Sample graph with 5 vertices and 6 weighted edges before matching.</em></p>
+       </td>
+       <td style="width:50%; text-align:center; padding:8px; border:none;">
+         <strong>After Matching</strong><br/>
+         <img src="_images/after.png" alt="Sample graph after maximum weighted matching" style="max-width:100%;"/>
+         <p><em>Graph after maximum weighted matching: selected edges are highlighted.</em></p>
+       </td>
+     </tr>
+   </table>
+
+.. image:: images/before.png
+   :width: 0
+
+.. image:: images/after.png
+   :width: 0
+
+:Example: Maximum weighted matching on a custom 5-vertex graph.
+
+.. literalinclude:: maxWeightedMatching.queries
+   :start-after: -- q2
+   :end-before: -- q4
+
+
 See Also
 -------------------------------------------------------------------------------
 
