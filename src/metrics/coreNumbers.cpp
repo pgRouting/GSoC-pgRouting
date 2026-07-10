@@ -140,7 +140,7 @@ std::vector<II_t_rt> compute_core_numbers(
     }
 
     std::sort(results.begin(), results.end(),
-            [](const II_t_rt row1, const II_t_rt row2) {
+            [](const II_t_rt &row1, const II_t_rt &row2) {
             return row1.d1 < row2.d1;
             });
 
