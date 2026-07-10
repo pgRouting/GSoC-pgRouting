@@ -6,7 +6,7 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('4.1.0') THEN plan(1) ELSE plan(9) END;
+SELECT CASE WHEN NOT min_version('4.1.0') THEN plan(1) ELSE plan(13) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -59,6 +59,26 @@ RETURN QUERY
 SELECT results_eq('idless4_q', 'idless4_r', 'test 4');
 
 
+PREPARE idless3_q AS
+  SELECT node, core FROM pgr_coreNumbers(
+    'SELECT id, source, target, cost, reverse_cost
+    FROM edges WHERE id < 3'
+  ) ORDER BY node;
+
+PREPARE idless3_r AS
+  SELECT * FROM (VALUES
+    (5::BIGINT, 1::BIGINT),
+    (6, 1),
+    (10, 1))
+  AS t(node, core);
+
+RETURN QUERY
+SELECT lives_ok('idless3_q');
+
+RETURN QUERY
+SELECT results_eq('idless3_q', 'idless3_r', 'test 5');
+
+
 PREPARE idless5_q AS
   SELECT node, core FROM pgr_coreNumbers(
     'SELECT id, source, target, cost, reverse_cost
@@ -79,6 +99,31 @@ SELECT lives_ok('idless5_q');
 
 RETURN QUERY
 SELECT results_eq('idless5_q', 'idless5_r', 'test 6');
+
+
+PREPARE idless8_q AS
+  SELECT node, core FROM pgr_coreNumbers(
+    'SELECT id, source, target, cost, reverse_cost
+    FROM edges WHERE id < 8'
+  ) ORDER BY node;
+
+PREPARE idless8_r AS
+  SELECT * FROM (VALUES
+    (1::BIGINT, 1::BIGINT),
+    (3, 1),
+    (5, 1),
+    (6, 1),
+    (7, 1),
+    (10, 1),
+    (11, 1),
+    (15, 1))
+  AS t(node, core);
+
+RETURN QUERY
+SELECT lives_ok('idless8_q');
+
+RETURN QUERY
+SELECT results_eq('idless8_q', 'idless8_r', 'test 7');
 
 
 PREPARE idless10_q AS
