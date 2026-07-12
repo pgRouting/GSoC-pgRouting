@@ -20,9 +20,9 @@ graph using k-core decomposition.
 
 .. rubric:: Availability
 
-* Version 4.1.0
+.. rubric:: Version 4.1.0
 
-  * New experimental function.
+* New experimental function.
 
 Description
 -------------------------------------------------------------------------------
