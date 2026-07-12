@@ -6,7 +6,7 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('4.1.0') THEN plan (6) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan (8) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -90,6 +90,31 @@ GROUP BY edge_id HAVING count(*) != 2;
 
 RETURN QUERY
 SELECT is_empty('sideCheck', '6: Each edge appears exactly twice');
+
+-- subgraph id < 10: 9 edges, 18 rows
+PREPARE subgraphTest AS
+SELECT count(*) FROM pgr_planarFaces(
+  'SELECT id, source, target, cost, reverse_cost
+  FROM edges WHERE id < 10'
+);
+
+RETURN QUERY
+SELECT set_eq('subgraphTest',
+    $$VALUES (18::BIGINT) $$,
+    '7: Subgraph id < 10 has 18 rows (2 x 9 edges)');
+
+-- non-planar graph (K5 minor) raises error
+INSERT INTO edges (source, target, cost, reverse_cost) VALUES
+  (10, 16, 1, 1), (10, 13, 1, 1),
+  (15, 11, 1, 1), (15, 13, 1, 1),
+  (11, 13, 1, 1), (16, 13, 1, 1);
+
+RETURN QUERY
+SELECT throws_ok(
+  $$SELECT * FROM pgr_planarFaces(
+    'SELECT id, source, target, cost, reverse_cost FROM edges')$$,
+  'Graph is not planar',
+  '8: Non-planar graph raises error');
 
 END;
 $BODY$
