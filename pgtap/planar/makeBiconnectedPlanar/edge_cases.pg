@@ -4,7 +4,6 @@
 
 BEGIN;
 
-UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT CASE WHEN min_version('4.1.0') THEN plan(8) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
@@ -20,14 +19,10 @@ END IF;
 
 -- 0 edge, 0 vertex tests
 
-PREPARE q1 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id > 18;
-
--- q1 is empty
 RETURN QUERY
-SELECT is_empty('q1', '1: Graph with 0 edges and 0 vertices is empty');
+SELECT is_empty(
+  $$SELECT id, source, target, cost, reverse_cost FROM edges WHERE id > 18$$,
+  '1: Graph with 0 edges and 0 vertices is empty');
 
 -- pgr_makeBiconnectedPlanar on empty graph returns empty
 RETURN QUERY
