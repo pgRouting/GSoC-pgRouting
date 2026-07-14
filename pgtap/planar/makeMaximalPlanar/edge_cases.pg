@@ -4,7 +4,6 @@
 
 BEGIN;
 
-UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT CASE WHEN min_version('4.1.0') THEN plan(8) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
