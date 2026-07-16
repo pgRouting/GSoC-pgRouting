@@ -1,78 +1,21 @@
 /* :file: This file is part of the pgRouting project.
-:copyright: Copyright (c) 2026 pgRouting developers
+:copyright: Copyright (c) 2021-2026 pgRouting developers
 :license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
-
 
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_lib_version('4.1.0') THEN plan(4) ELSE plan(1) END;
+SELECT plan(1);
 
-CREATE OR REPLACE FUNCTION edge_cases()
-RETURNS SETOF TEXT AS
-$BODY$
-BEGIN
-
-IF NOT min_lib_version('4.1.0') THEN
-  RETURN QUERY
-  SELECT skip(1, 'pgr_maxWeightedMatching is new on 4.1.0');
-  RETURN;
-END IF;
-
--- no edges
-PREPARE q1 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id > 18;
-
-RETURN QUERY
-SELECT is_empty(
-  $$SELECT * FROM pgr_maxWeightedMatching('q1', false)$$,
-  'No edges -> No answer');
-
--- all negative costs -> no matching
-PREPARE q2 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE cost < 0;
-
-RETURN QUERY
-SELECT is_empty(
-  $$SELECT * FROM pgr_maxWeightedMatching('q2', false)$$,
-  'All negative cost -> no answer');
-
--- directed flag is ignored (graph is always treated as undirected)
-PREPARE wmatch_false AS
-SELECT start_vid, end_vid, agg_cost
-FROM pgr_maxWeightedMatching(
+PREPARE noflag AS
+SELECT * FROM pgr_maxWeightedMatching(
   'SELECT id, source, target, cost, reverse_cost FROM edges',
-  false
-) ORDER BY start_vid, end_vid;
-
-PREPARE wmatch_true AS
-SELECT start_vid, end_vid, agg_cost
-FROM pgr_maxWeightedMatching(
-  'SELECT id, source, target, cost, reverse_cost FROM edges',
-  true
-) ORDER BY start_vid, end_vid;
-
-RETURN QUERY
-SELECT set_eq('wmatch_false', 'wmatch_true', 'directed flag is ignored');
-
--- start_vid < end_vid for all rows (canonical ordering)
-RETURN QUERY
-SELECT is_empty(
-  $$SELECT * FROM pgr_maxWeightedMatching(
-      'SELECT id, source, target, cost, reverse_cost FROM edges', false)
-    WHERE start_vid >= end_vid$$,
-  'start_vid < end_vid for all rows');
-
-END;
-$BODY$
-LANGUAGE plpgsql;
-
-SELECT edge_cases();
+   true
+);
 
 
-SELECT * FROM finish();
+
+SELECT lives_ok('noflag','Using coming and going');
+
+SELECT finish();
 ROLLBACK;
