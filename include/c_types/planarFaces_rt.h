@@ -37,7 +37,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #endif
 
 struct PlanarFace_rt {
-    int64_t seq;
     int64_t face_id;
     int64_t edge_id;
     char    side;
