@@ -88,7 +88,7 @@ _pgr_planarfaces(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        values[0] = Int64GetDatum(result_tuples[call_cntr].seq);
+        values[0] = UInt64GetDatum(call_cntr);
         values[1] = Int64GetDatum(result_tuples[call_cntr].face_id);
         values[2] = Int64GetDatum(result_tuples[call_cntr].edge_id);
 

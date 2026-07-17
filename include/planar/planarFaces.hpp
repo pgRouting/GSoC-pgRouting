@@ -71,7 +71,6 @@ class Pgr_planarFaces : public pgrouting::Pgr_messages {
          void next_edge(E e) {
              int n = ++m_visit_count[e];
              PlanarFace_rt row;
-             row.seq     = ++seq;
              row.face_id = face_id;
              row.edge_id = m_graph.graph[e].id;
              row.side    = (n == 1) ? 'l' : 'r';
