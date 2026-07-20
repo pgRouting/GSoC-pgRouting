@@ -137,9 +137,9 @@ example of :doc:`pgr_betweennessCentrality`. Every vertex is still core
         10 [pos="1,1!";label="10 (1)"];
         15 [pos="2,1!";label="15 (1)"];
         5 -- 6 [label="1"];
+        6 -- 10 [label="2"];
+        10 -- 15 [label="3"];
         6 -- 7 [label="4"];
-        6 -- 10 [label="3"];
-        10 -- 15 [label="4"];
     }
 
 .. rubric:: K-core peeling (illustration)
@@ -211,7 +211,8 @@ Result columns
 	  - Identifier of the vertex.
 	* - ``core``
 	  - ``BIGINT``
-	  - Core number of the vertex.
+	  - Core number of the vertex: the largest :math:`k` for which the vertex
+	    belongs to the :math:`k`-core.
 
 Additional Examples
 -------------------------------------------------------------------------------
