@@ -491,6 +491,45 @@ then test planarity:
 * Planarity and core number measure different properties: a graph can be planar
   while still having a mix of core-:math:`1` and core-:math:`2` vertices.
 
+11) Complete graph :math:`K_4` (all vertices core :math:`3`)
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+The examples above reach at most core :math:`2`, because the
+:doc:`sampledata` network has degeneracy :math:`2`. Higher cores need a denser
+graph. In the complete graph :math:`K_4` every vertex is adjacent to the other
+three, so no vertex can ever be peeled at :math:`k \leq 3` and the whole graph
+is its own 3-core.
+
+.. literalinclude:: coreNumbers.queries
+   :start-after: -- q11
+   :end-before: -- q12
+
+.. rubric:: Explanation
+
+* Every vertex has degree :math:`3`, so nothing is removed while peeling at
+  :math:`k = 1`, :math:`2` or :math:`3`: all four vertices have core :math:`3`.
+* In general the complete graph :math:`K_n` has core number :math:`n - 1` for
+  every vertex, which is the maximum possible core number on :math:`n` vertices.
+* The degeneracy of this graph is :math:`3`, compared with :math:`2` for the
+  :doc:`sampledata` network.
+
+.. graphviz::
+
+    graph G {
+        node [shape=circle;style=filled;width=.5;fixedsize=true;fontsize=8];
+        1,2,3,4 [color=orange];
+        1 [pos="0,1!";label="1 (3)"];
+        2 [pos="1,1!";label="2 (3)"];
+        3 [pos="1,0!";label="3 (3)"];
+        4 [pos="0,0!";label="4 (3)"];
+        1 -- 2 [label="1"];
+        1 -- 3 [label="2"];
+        1 -- 4 [label="3"];
+        2 -- 3 [label="4"];
+        2 -- 4 [label="5"];
+        3 -- 4 [label="6"];
+    }
+
 See Also
 -------------------------------------------------------------------------------
 
