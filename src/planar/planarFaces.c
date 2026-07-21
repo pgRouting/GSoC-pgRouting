@@ -88,14 +88,11 @@ _pgr_planarfaces(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        values[0] = Int64GetDatum(result_tuples[call_cntr].seq);
+        values[0] = UInt64GetDatum(call_cntr + 1);
         values[1] = Int64GetDatum(result_tuples[call_cntr].face_id);
         values[2] = Int64GetDatum(result_tuples[call_cntr].edge_id);
 
-        {
-            char s = result_tuples[call_cntr].side;
-            values[3] = PointerGetDatum(cstring_to_text_with_len(&s, 1));
-        }
+        values[3] = Int32GetDatum(result_tuples[call_cntr].side);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

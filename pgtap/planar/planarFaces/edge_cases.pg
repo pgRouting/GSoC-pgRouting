@@ -46,8 +46,8 @@ SELECT * FROM pgr_planarFaces('q3');
 RETURN QUERY
 SELECT set_eq('singleEdgeTest',
     $$VALUES
-        (1::BIGINT, 1::BIGINT, 1::BIGINT, 'l'::TEXT),
-        (2::BIGINT, 1::BIGINT, 1::BIGINT, 'r'::TEXT)
+        (1::BIGINT, 1::BIGINT, 1::BIGINT, 1),
+        (2::BIGINT, 1::BIGINT, 1::BIGINT, 2)
     $$,
     '3: Single edge has 2 face-edge incidences');
 

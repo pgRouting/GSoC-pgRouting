@@ -32,7 +32,7 @@ CREATE FUNCTION _pgr_planarFaces(
   OUT seq     BIGINT,
   OUT face_id BIGINT,
   OUT edge_id BIGINT,
-  OUT side    TEXT)
+  OUT side    INTEGER)
 
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'

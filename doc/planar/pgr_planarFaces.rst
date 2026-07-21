@@ -40,7 +40,7 @@ side when walked in the direction the embedding assigns around each vertex.
 In a connected planar graph, each edge separates exactly two faces, so it
 contributes one row on the left and one on the right. ``pgr_planarFaces`` returns
 those incidences: ``face_id`` names the face, ``edge_id`` is the border edge, and
-``side`` is ``'l'`` or ``'r'`` for left or right relative to the embedding.
+``side`` is ``1`` (left) or ``2`` (right) relative to the embedding.
 
 The function first computes a planar embedding with the Boyer-Myrvold planarity
 test, then walks faces with Boost ``planar_face_traversal``. Only **undirected**
@@ -88,8 +88,8 @@ Signatures
 * ``face_id`` runs from **1** through **7** on this network; each id is one face
   of the embedding, including the unbounded **exterior face** (here ``face_id = 1``
   borders the outer layout of the city block).
-* Every ``edge_id`` appears **twice**, once with ``side = 'l'`` and once with
-  ``side = 'r'``.
+* Every ``edge_id`` appears **twice**, once with ``side = 1`` and once with
+  ``side = 2``.
 * Rows follow the counterclockwise walk of each face in the computed embedding.
 
 The diagram below sketches the full sample graph. Face boundaries are not drawn
@@ -200,9 +200,9 @@ Result columns
 	  - ``BIGINT``
 	  - Identifier of the edge that borders the face.
 	* - ``side``
-	  - ``TEXT``
-	  - | ``'l'`` when the edge borders the face on the left side.
-	    | ``'r'`` when the edge borders the face on the right side.
+	  - ``INTEGER``
+	  - | ``1`` when the edge borders the face on the left side.
+	    | ``2`` when the edge borders the face on the right side.
 
 Additional Examples
 -------------------------------------------------------------------------------
@@ -271,7 +271,7 @@ Example 3 creates a three-edge table ``tri_edges`` and extracts its faces.
 * Six rows are returned: :math:`2 \times 3` edges.
 * ``face_id`` **1** is the interior triangle; ``face_id`` **2** is the exterior
   face.
-* Each edge lists ``'l'`` on one face and ``'r'`` on the other.
+* Each edge lists ``1`` on one face and ``2`` on the other.
 
 3) Single edge from ``sampledata``
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -286,7 +286,7 @@ Edge ``1`` connects vertices :math:`5` and :math:`6`.
 
 * Two rows are returned for the single edge (:math:`2|E|` with :math:`|E| = 1`).
 * Both incidences use ``face_id = 1`` in this degenerate one-edge graph; the left
-  and right sides still differ (``'l'`` vs ``'r'``).
+  and right sides still differ (``1`` vs ``2``).
 
 4) Row count on three ``sampledata`` edges
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -410,8 +410,8 @@ half-edges. Labels are ``edge_id`` values from ``sampledata``.
 8) Each edge borders exactly two faces
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Every undirected edge must appear once with ``side = 'l'`` and once with
-``side = 'r'``. The query below lists edges that violate this rule (none on the
+Every undirected edge must appear once with ``side = 1`` and once with
+``side = 2``. The query below lists edges that violate this rule (none on the
 full sample graph).
 
 .. literalinclude:: planarFaces.queries
