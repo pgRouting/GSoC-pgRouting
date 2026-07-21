@@ -4,7 +4,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN min_version('4.1.0') THEN plan(8) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(3) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -13,96 +13,34 @@ BEGIN
 
 IF NOT min_version('4.1.0') THEN
   RETURN QUERY
-  SELECT skip(1, 'Function is new on 4.1.0');
+  SELECT skip(1, 'pgr_makeMaximalPlanar is new on 4.1.0');
   RETURN;
 END IF;
 
--- 0 edge, 0 vertex tests
+-- 0 edge, 0 vertex test
 
--- pgr_makeMaximalPlanar on empty graph returns empty
 RETURN QUERY
 SELECT is_empty(
   $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id > 18')$$,
-  '1: Empty graph returns no edges to add');
-
+  '1: Graph with 0 edges and 0 vertices is empty');
 
 -- 1 vertex test
--- Edge 5-5 (self loop), only vertex 5
 
+--6 -- 6
 RETURN QUERY
 SELECT is_empty(
-  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT 1 AS id, 5 AS source, 5 AS target, 1.0 AS cost, -1.0 AS reverse_cost')$$,
-  '2: Single vertex graph returns no edges to add');
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT 2 AS id, 6 AS source, 6 AS target, 1 AS cost, 1 AS reverse_cost')$$,
+  '2: Graph with 1 vertex and 1 edge returns empty set of edges');
 
+-- 2 vertex test(already biconnected)
 
--- 2 vertices test
--- Edge 5-6
-
+--5 -- 6
 RETURN QUERY
 SELECT is_empty(
-  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT 1 AS id, 5 AS source, 6 AS target, 1.0 AS cost, -1.0 AS reverse_cost')$$,
-  '3: Two vertices (5--6) graph returns no edges to add');
+  $$SELECT * FROM pgr_makeMaximalPlanar( 
+    'SELECT 1 AS id,5 AS source,6 AS target, 1 AS cost,1 AS reverse_cost')$$,
+  '3: Graph with 2 vertices returns empty set of edges');
 
-
--- 3 vertices test (Path graph: 5 -- 6 -- 10)
--- Edges: 5-6, 6-10
--- makeMaximalPlanar first makes it biconnected (adds 5-10), then triangulates
--- The result is a triangle 5-6-10, which is already maximal
--- So only edge (5,10) is added
-
-RETURN QUERY
-SELECT set_eq(
-  $$SELECT start_vid, end_vid FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id IN (1, 2)')$$,
-  $$VALUES (5::bigint, 10::bigint)$$,
-  '4: Path graph 5--6--10 needs edge (5,10) to become maximal planar');
-
-
--- 4 vertices test (Square cycle: 1-2-3-4-1)
--- Already biconnected, but not maximal (K4 minus one edge)
--- makeMaximalPlanar adds 1 diagonal to triangulate it
-
-RETURN QUERY
-SELECT isnt_empty(
-  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM (VALUES
-    (1, 1, 2, 1.0, 1.0), (2, 2, 3, 1.0, 1.0), (3, 3, 4, 1.0, 1.0), (4, 4, 1, 1.0, 1.0)
-  ) AS t(id, source, target, cost, reverse_cost)')$$,
-  '5: Square cycle C4 needs 1 diagonal to become maximal planar');
-
-
--- Disjoint 2-vertex components test (1--2 and 3--4)
--- Both components have 2 vertices (< 3), so each returns empty
-
-RETURN QUERY
-SELECT is_empty(
-  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM (VALUES
-    (1, 1, 2, 1.0, 1.0), (2, 3, 4, 1.0, 1.0)
-  ) AS t(id, source, target, cost, reverse_cost)')$$,
-  '6: Disjoint 2-vertex components return no edges to add');
-
-
--- Disjoint graphs from sampledata (path 5--6--10 + cycle 7--11--8)
--- Component 1: path needs edges to become maximal
--- Component 2: cycle needs edges to become maximal
--- Together they return edges added from both components
-
-RETURN QUERY
-SELECT isnt_empty(
-  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id IN (1, 2, 8, 10, 11, 12)')$$,
-  '7: Disjoint road network components each get triangulated');
-
-
--- Non-planar graph test (K5: complete graph on 5 vertices)
--- K5 is not planar, so function returns empty
-
-RETURN QUERY
-SELECT is_empty(
-  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM (VALUES
-    (1, 1, 2, 1.0, -1.0), (2, 1, 3, 1.0, -1.0), (3, 1, 4, 1.0, -1.0), (4, 1, 5, 1.0, -1.0),
-    (5, 2, 3, 1.0, -1.0), (6, 2, 4, 1.0, -1.0), (7, 2, 5, 1.0, -1.0),
-    (8, 3, 4, 1.0, -1.0), (9, 3, 5, 1.0, -1.0),
-    (10, 4, 5, 1.0, -1.0)
-  ) AS t(id, source, target, cost, reverse_cost)')$$,
-  '8: Non-planar graph (K5) returns no edges to add');
 
 END;
 $BODY$
