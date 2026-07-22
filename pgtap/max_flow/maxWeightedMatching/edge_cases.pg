@@ -2,20 +2,131 @@
 :copyright: Copyright (c) 2021-2026 pgRouting developers
 :license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
 
+
 BEGIN;
 
-UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(1);
+SELECT CASE WHEN min_lib_version('4.1.0') THEN plan(6) ELSE plan(1) END;
 
-PREPARE noflag AS
-SELECT * FROM pgr_maxWeightedMatching(
-  'SELECT id, source, target, cost, reverse_cost FROM edges',
-   true
-);
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+  IF NOT min_lib_version('4.1.0') THEN
+    RETURN QUERY
+    SELECT skip(1, 'pgr_maxWeightedMatching is new on 4.1.0');
+    RETURN;
+  END IF;
+
+  -- 1. Empty graph (0 vertices, 0 edges)
+  PREPARE q1 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM edges
+  WHERE id > 18;
+
+  PREPARE r1 AS
+  SELECT * FROM pgr_maxWeightedMatching('q1', false);
+
+  RETURN QUERY
+  SELECT is_empty('r1', '1. Empty graph (0 vertices, 0 edges)');
 
 
+ -- 2. Single edge (2 vertices)
 
-SELECT lives_ok('noflag','Using coming and going');
+    PREPARE q2 AS
+    SELECT id, source, target, cost, reverse_cost
+    FROM edges
+    WHERE id = 1;
 
-SELECT finish();
+    PREPARE r2 AS
+    SELECT * FROM pgr_maxWeightedMatching('q2', false);
+
+    RETURN QUERY
+    SELECT set_eq(
+    'r2',
+    $$VALUES (5::BIGINT, 6::BIGINT, 1.0::FLOAT)$$,
+    '2. Single edge (2 vertices) -> 1 matched pair');
+
+ -- 3. Triangle (3-cycle): odd cycle
+
+PREPARE q3 AS
+SELECT * FROM (VALUES
+    (1::BIGINT, 1::BIGINT, 2::BIGINT, 5.0::FLOAT, 5.0::FLOAT),
+    (2::BIGINT, 2::BIGINT, 3::BIGINT, 6.0::FLOAT, 6.0::FLOAT),
+    (3::BIGINT, 3::BIGINT, 1::BIGINT, 7.0::FLOAT, 7.0::FLOAT)
+) AS t(id, source, target, cost, reverse_cost);
+
+PREPARE r3 AS
+SELECT * FROM pgr_maxWeightedMatching('q3', false);
+
+RETURN QUERY
+SELECT set_eq(
+    'r3',
+    $$VALUES
+        (1::BIGINT, 3::BIGINT, 7.0::FLOAT)
+    $$,
+    '3. Triangle (3-cycle) -> maximum weighted edge selected');
+
+-- 4. Path graph (4 vertices)
+
+PREPARE q4 AS
+SELECT * FROM (VALUES
+    (1::BIGINT, 1::BIGINT, 2::BIGINT, 1.0::FLOAT, 1.0::FLOAT),
+    (2::BIGINT, 2::BIGINT, 3::BIGINT, 1.0::FLOAT, 1.0::FLOAT),
+    (3::BIGINT, 3::BIGINT, 4::BIGINT, 1.0::FLOAT, 1.0::FLOAT)
+) AS t(id, source, target, cost, reverse_cost);
+
+PREPARE r4 AS
+SELECT * FROM pgr_maxWeightedMatching('q4', false);
+
+RETURN QUERY
+SELECT set_eq(
+    'r4',
+    $$VALUES
+        (1::BIGINT, 2::BIGINT, 1.0::FLOAT),
+        (3::BIGINT, 4::BIGINT, 1.0::FLOAT)
+    $$,
+    '4. Path graph (4 vertices) -> 2 matched pairs');
+
+-- 5. Disconnected graph
+
+PREPARE q5 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edges
+WHERE id IN (1,17);
+
+PREPARE r5 AS
+SELECT * FROM pgr_maxWeightedMatching('q5', false);
+
+RETURN QUERY
+SELECT set_eq(
+    'r5',
+    $$VALUES
+        (2::BIGINT, 4::BIGINT, 1.0::FLOAT),
+        (5::BIGINT, 6::BIGINT, 2.0::FLOAT)
+    $$,
+    '5. Disconnected graph -> matches each component');
+
+-- 6. Larger graph
+
+PREPARE q6 AS
+SELECT id, source, target, cost, reverse_cost
+FROM edges
+WHERE id IN (1,2,3,4,5,8,9,16);
+
+PREPARE r6 AS
+SELECT * FROM pgr_maxWeightedMatching('q6', false);
+
+RETURN QUERY
+SELECT lives_ok(
+    'EXECUTE r6',
+    '6. Larger graph executes successfully');
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
+
+SELECT * FROM finish();
 ROLLBACK;
