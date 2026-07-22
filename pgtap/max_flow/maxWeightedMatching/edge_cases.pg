@@ -84,9 +84,10 @@ SELECT set_eq(
     'r4',
     $$VALUES
         (1::BIGINT, 2::BIGINT, 1.0::FLOAT),
-        (3::BIGINT, 4::BIGINT, 1.0::FLOAT)
+        (3::BIGINT, 4::BIGINT, 2.0::FLOAT)
     $$,
-    '4. Path graph (4 vertices) -> 2 matched pairs');
+    '4. Path graph (4 vertices) -> 2 matched pairs'
+);
 
 -- 5. Disconnected graph
 
