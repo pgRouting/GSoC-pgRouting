@@ -31,97 +31,93 @@ BEGIN
   SELECT is_empty('r1', '1. Empty graph (0 vertices, 0 edges)');
 
 
- -- 2. Single edge (2 vertices)
+  -- 2. Single edge (2 vertices) using sample data edge id=1 (5 <-> 6, cost=1)
+  PREPARE q2 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM edges
+  WHERE id = 1;
 
-    PREPARE q2 AS
-    SELECT id, source, target, cost, reverse_cost
-    FROM edges
-    WHERE id = 1;
+  PREPARE r2 AS
+  SELECT * FROM pgr_maxWeightedMatching('q2', false);
 
-    PREPARE r2 AS
-    SELECT * FROM pgr_maxWeightedMatching('q2', false);
-
-    RETURN QUERY
-    SELECT set_eq(
+  RETURN QUERY
+  SELECT set_eq(
     'r2',
     $$VALUES (5::BIGINT, 6::BIGINT, 1.0::FLOAT)$$,
     '2. Single edge (2 vertices) -> 1 matched pair');
 
- -- 3. Triangle (3-cycle): odd cycle
 
-PREPARE q3 AS
-SELECT * FROM (VALUES
+  -- 3. Triangle (3-cycle): odd cycle, maximum weighted edge selected
+  -- Edges with different weights so result is deterministic
+  PREPARE q3 AS
+  SELECT * FROM (VALUES
     (1::BIGINT, 1::BIGINT, 2::BIGINT, 5.0::FLOAT, 5.0::FLOAT),
     (2::BIGINT, 2::BIGINT, 3::BIGINT, 6.0::FLOAT, 6.0::FLOAT),
     (3::BIGINT, 3::BIGINT, 1::BIGINT, 7.0::FLOAT, 7.0::FLOAT)
-) AS t(id, source, target, cost, reverse_cost);
+  ) AS t(id, source, target, cost, reverse_cost);
 
-PREPARE r3 AS
-SELECT * FROM pgr_maxWeightedMatching('q3', false);
+  PREPARE r3 AS
+  SELECT * FROM pgr_maxWeightedMatching('q3', false);
 
-RETURN QUERY
-SELECT set_eq(
+  RETURN QUERY
+  SELECT set_eq(
     'r3',
-    $$VALUES
-        (1::BIGINT, 3::BIGINT, 7.0::FLOAT)
-    $$,
-    '3. Triangle (3-cycle) -> maximum weighted edge selected');
+    $$VALUES (1::BIGINT, 3::BIGINT, 7.0::FLOAT)$$,
+    '3. Triangle (3-cycle) -> maximum weighted edge (1-3, weight 7) selected');
 
--- 4. Path graph (4 vertices)
 
-PREPARE q4 AS
-SELECT * FROM (VALUES
+  -- 4. Path graph (4 vertices: 1-2-3-4) with equal weights -> 2 matched pairs
+  PREPARE q4 AS
+  SELECT * FROM (VALUES
     (1::BIGINT, 1::BIGINT, 2::BIGINT, 1.0::FLOAT, 1.0::FLOAT),
     (2::BIGINT, 2::BIGINT, 3::BIGINT, 1.0::FLOAT, 1.0::FLOAT),
     (3::BIGINT, 3::BIGINT, 4::BIGINT, 1.0::FLOAT, 1.0::FLOAT)
-) AS t(id, source, target, cost, reverse_cost);
+  ) AS t(id, source, target, cost, reverse_cost);
 
-PREPARE r4 AS
-SELECT * FROM pgr_maxWeightedMatching('q4', false);
+  PREPARE r4 AS
+  SELECT * FROM pgr_maxWeightedMatching('q4', false);
 
-RETURN QUERY
-SELECT set_eq(
+  RETURN QUERY
+  SELECT set_eq(
     'r4',
     $$VALUES
-        (1::BIGINT, 2::BIGINT, 1.0::FLOAT),
-        (3::BIGINT, 4::BIGINT, 2.0::FLOAT)
+      (1::BIGINT, 2::BIGINT, 1.0::FLOAT),
+      (3::BIGINT, 4::BIGINT, 2.0::FLOAT)
     $$,
-    '4. Path graph (4 vertices) -> 2 matched pairs'
-);
+    '4. Path graph (4 vertices) -> 2 matched pairs (1-2, 3-4)');
 
--- 5. Disconnected graph
 
-PREPARE q5 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id IN (1,17);
+  -- 5. Disconnected graph: two separate edges, each component yields 1 match
+  PREPARE q5 AS
+  SELECT * FROM (VALUES
+    (1::BIGINT, 1::BIGINT, 2::BIGINT, 1.0::FLOAT, 1.0::FLOAT),
+    (2::BIGINT, 3::BIGINT, 4::BIGINT, 2.0::FLOAT, 2.0::FLOAT)
+  ) AS t(id, source, target, cost, reverse_cost);
 
-PREPARE r5 AS
-SELECT * FROM pgr_maxWeightedMatching('q5', false);
+  PREPARE r5 AS
+  SELECT * FROM pgr_maxWeightedMatching('q5', false);
 
-RETURN QUERY
-SELECT set_eq(
+  RETURN QUERY
+  SELECT set_eq(
     'r5',
     $$VALUES
-        (2::BIGINT, 4::BIGINT, 1.0::FLOAT),
-        (5::BIGINT, 6::BIGINT, 2.0::FLOAT)
+      (1::BIGINT, 2::BIGINT, 1.0::FLOAT),
+      (3::BIGINT, 4::BIGINT, 3.0::FLOAT)
     $$,
-    '5. Disconnected graph -> matches each component');
+    '5. Disconnected graph -> matches each component independently');
 
--- 6. Larger graph
 
-PREPARE q6 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id IN (1,2,3,4,5,8,9,16);
+  -- 6. Larger graph using sample data edges 1,2,3,4 (path: 5-6-10-15, with branch)
+  PREPARE q6 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM edges
+  WHERE id IN (1, 2, 3, 4, 5, 8, 9, 16);
 
-PREPARE r6 AS
-SELECT * FROM pgr_maxWeightedMatching('q6', false);
+  PREPARE r6 AS
+  SELECT * FROM pgr_maxWeightedMatching('q6', false);
 
-RETURN QUERY
-SELECT lives_ok(
-    'EXECUTE r6',
-    '6. Larger graph executes successfully');
+  RETURN QUERY
+  SELECT isnt_empty('r6', '6. Larger graph -> returns at least one matched pair');
 
 END;
 $BODY$
