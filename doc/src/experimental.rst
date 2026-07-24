@@ -129,14 +129,12 @@ Experimental Functions
 
 .. rubric:: Planar Family
 
-- :doc:`pgr_isPlanar`
-- :doc:`pgr_makeMaximalPlanar`
+- :doc:`planar-family`
 
 .. toctree::
   :hidden:
 
-  pgr_isPlanar
-  pgr_makeMaximalPlanar
+  planar-family
 
 .. rubric:: Miscellaneous Algorithms
 
