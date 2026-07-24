@@ -104,10 +104,8 @@ get_name(Which which) {
         case EDMONDSKARP:
             return "pgr_edmondsKarp";
             break;
-<<<<<<< HEAD
         case MAXWEIGHTEDMATCHING:
             return "pgr_maxWeightedMatching";
-=======
 
         case ARTICULATIONPOINTS:
             return "pgr_articulationPoints";
@@ -126,7 +124,6 @@ get_name(Which which) {
             break;
         case STRONGCOMPONENTS:
             return "pgr_strongComponents";
->>>>>>> upstream/develop
             break;
         default:
             return "unknown";
