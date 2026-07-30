@@ -72,7 +72,7 @@ _pgr_topologicalsort(PG_FUNCTION_ARGS) {
     funcctx            = SRF_PERCALL_SETUP();
     tuple_desc         = funcctx->tuple_desc;
     result_tuples      = funcctx->user_fctx;
-    uint32_t call_cntr = (uint32_t)funcctx->call_cntr;
+    uint64_t call_cntr = funcctx->call_cntr;
 
     if (call_cntr < funcctx->max_calls) {
         HeapTuple   tuple;
@@ -88,7 +88,7 @@ _pgr_topologicalsort(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        values[0] = UInt32GetDatum(call_cntr + 1);
+        values[0] = Int32GetDatum((int32_t)call_cntr + 1);
         values[1] = Int64GetDatum(result_tuples[call_cntr]);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);

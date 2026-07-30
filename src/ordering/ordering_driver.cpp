@@ -114,8 +114,8 @@ do_ordering(
         UndirectedGraph undigraph = vertices.empty()? UndirectedGraph() : UndirectedGraph(vertices);
         DirectedGraph digraph = DirectedGraph();
 
-        std::vector<typename UndirectedGraph::V> undi_results;
-        std::vector<typename DirectedGraph::V> di_results;
+        std::vector<UndirectedGraph::V> undi_results;
+        std::vector<DirectedGraph::V> di_results;
         Identifiers<int64_t> id_results;
 
         if (directed) {
