@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "process/ordering_process.h"
+#include <stdbool.h>
 
 extern "C" {
 #include "c_common/postgres_connection.h"
