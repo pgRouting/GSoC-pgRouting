@@ -5,7 +5,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN min_version('4.1.0') THEN plan(5) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(5) ELSE plan(2) END;
 
 SELECT has_function('pgr_maxweightedmatching');
 

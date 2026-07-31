@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-09 11:50+0000\n"
+"POT-Creation-Date: 2026-07-16 19:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -351,6 +351,12 @@ msgid ""
 msgstr ""
 
 msgid "Experimental"
+msgstr ""
+
+msgid "Possible server crash"
+msgstr ""
+
+msgid "These functions might create a server crash"
 msgstr ""
 
 msgid "Experimental functions"
@@ -3974,6 +3980,11 @@ msgstr ""
 msgid ""
 "`#3100 <https://github.com/pgRouting/pgrouting/issues/3100>`__: Coloring: "
 "create and use a process & driver"
+msgstr ""
+
+msgid ""
+"`#3113 <https://github.com/pgRouting/pgrouting/issues/3113>`__: Components: "
+"Integrate into existing process/driver pair"
 msgstr ""
 
 msgid "Bug Fixes"
@@ -13123,129 +13134,6 @@ msgstr ""
 msgid "Minimum Cost Maximum Flow possible from the source(s) to the target(s)"
 msgstr ""
 
-#, fuzzy
-msgid "``pgr_maxWeightedMatching``"
-msgstr "pgr_maximumcardinalitymatching"
-
-msgid ""
-"``pgr_maxWeightedMatching`` — Calculates a maximum weighted matching in "
-"a graph."
-msgstr ""
-
-msgid "New function introduced."
-msgstr ""
-
-msgid ""
-"A **maximum weighted matching** in a graph is a matching where the sum of "
-"the weights of selected edges is maximized."
-msgstr ""
-
-msgid "A matching is a set of edges without common vertices."
-msgstr ""
-
-msgid "Main characteristics:"
-msgstr ""
-
-msgid "Works on **undirected graphs**"
-msgstr ""
-
-msgid "Each vertex is matched with at most one other vertex"
-msgstr ""
-
-msgid "Maximizes total edge weight"
-msgstr ""
-
-msgid "May have multiple optimal solutions, returns one"
-msgstr ""
-
-msgid ""
-"Algorithm is based on Edmonds’ blossom algorithm with improvements similar "
-"to Boost Graph Library implementation of maximum weighted matching."
-msgstr ""
-
-msgid "Signature"
-msgstr ""
-
-msgid "pgr_maxWeightedMatching(`Edges SQL`_)"
-msgstr ""
-
-msgid "SQL query returning a set of rows:"
-msgstr ""
-
-msgid "Edge identifier"
-msgstr ""
-
-msgid "Source vertex"
-msgstr ""
-
-msgid "Target vertex"
-msgstr ""
-
-msgid "Weight of the edge (used for matching optimization)"
-msgstr ""
-
-msgid "Reverse direction weight (ignored if not needed)"
-msgstr ""
-
-msgid "cost must be non-negative for meaningful results"
-msgstr ""
-
-msgid "reverse_cost is optional depending on graph directionality"
-msgstr ""
-
-msgid "Identifier of the edge included in matching"
-msgstr ""
-
-msgid "Algorithm"
-msgstr ""
-
-msgid ""
-"The implementation follows the **Edmonds blossom algorithm** for general "
-"graphs using a primal-dual optimization approach."
-msgstr ""
-
-msgid "Key ideas:"
-msgstr ""
-
-msgid "Alternating trees are built from unmatched vertices"
-msgstr ""
-
-msgid "Blossoms are formed to handle odd cycles"
-msgstr ""
-
-msgid "Dual variables ensure optimal weight matching"
-msgstr ""
-
-msgid "Matching is augmented iteratively until optimal"
-msgstr ""
-
-msgid "Complexity"
-msgstr ""
-
-msgid "Let:"
-msgstr ""
-
-msgid "n = number of vertices"
-msgstr ""
-
-msgid "m = number of edges"
-msgstr ""
-
-msgid "Time complexity:"
-msgstr ""
-
-msgid "O(n³)"
-msgstr ""
-
-msgid "Boost Graph Library maximum weighted matching"
-msgstr ""
-
-msgid "https://en.wikipedia.org/wiki/Blossom_algorithm"
-msgstr ""
-
-msgid "https://en.wikipedia.org/wiki/Matching_(graph_theory)"
-msgstr ""
-
 msgid "``pgr_pickDeliver`` - Experimental"
 msgstr ""
 
@@ -13314,6 +13202,9 @@ msgstr ""
 msgid ""
 "Six different initial will be optimized - the best solution found will be "
 "result"
+msgstr ""
+
+msgid "Signature"
 msgstr ""
 
 msgid ""

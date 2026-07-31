@@ -34,11 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 #include <utility>
 
-#include <boost/version.hpp>
-
-#if BOOST_VERSION >= 107100
 #include <boost/graph/maximum_weighted_matching.hpp>
-#endif
 
 #include "c_types/iid_t_rt.h"
 #include "cpp_common/undirectedHasCostBG.hpp"
@@ -50,7 +46,6 @@ namespace flow {
 
 inline std::vector<IID_t_rt>
 maximumWeightedMatch(pgrouting::graph::UndirectedHasCostBG &graph) {
-#if BOOST_VERSION >= 107100
     using G = pgrouting::graph::UndirectedHasCostBG::TSP_Graph;
     using V = pgrouting::graph::UndirectedHasCostBG::V;
     using E = pgrouting::graph::UndirectedHasCostBG::E;
@@ -101,10 +96,6 @@ maximumWeightedMatch(pgrouting::graph::UndirectedHasCostBG &graph) {
         });
 
     return results;
-#else
-    (void)graph;
-    return std::vector<IID_t_rt>();
-#endif
 }
 
 }  // namespace flow
