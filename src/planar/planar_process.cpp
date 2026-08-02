@@ -28,14 +28,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "process/planar_process.h"
 
+#include <string>
+#include <sstream>
+
 extern "C" {
 #include "c_common/postgres_connection.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 }
-
-#include <string>
-#include <sstream>
 
 #include "c_types/ii_t_rt.h"
 
