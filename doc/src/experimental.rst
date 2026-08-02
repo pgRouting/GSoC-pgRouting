@@ -11,6 +11,10 @@ Experimental Functions
 
 .. admonition:: Experimental
 
+   .. warning:: Possible server crash
+
+     - These functions might create a server crash
+
    .. warning:: Experimental functions
 
      - They are not officially of the current release.
@@ -125,14 +129,12 @@ Experimental Functions
 
 .. rubric:: Planar Family
 
-- :doc:`pgr_isPlanar`
-- :doc:`pgr_makeMaximalPlanar`
+- :doc:`planar-family`
 
 .. toctree::
   :hidden:
 
-  pgr_isPlanar
-  pgr_makeMaximalPlanar
+  planar-family
 
 .. rubric:: Miscellaneous Algorithms
 

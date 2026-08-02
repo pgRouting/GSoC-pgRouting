@@ -54,6 +54,7 @@ PGDLLEXPORT Datum _pgr_makemaximalplanar(PG_FUNCTION_ARGS) {
         PGR_DBG("Calling process");
         pgr_process_planar(
             text_to_cstring(PG_GETARG_TEXT_P(0)),
+            false,
 
             MAXIMALPLANAR,
             &result_tuples,

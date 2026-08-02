@@ -36,6 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #else
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 #endif
 
 #include "c_common/enums.h"
@@ -44,7 +45,7 @@ extern "C" {
 #endif
 
 void pgr_process_ordering(
-        const char*,
+        const char*, bool,
 
         enum Which,
         int64_t**, size_t*);

@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "process/ordering_process.h"
+#include <stdbool.h>
 
 extern "C" {
 #include "c_common/postgres_connection.h"
@@ -48,6 +49,7 @@ extern "C" {
 
 void pgr_process_ordering(
         const char* edges_sql,
+        bool directed,
         enum Which which,
         int64_t **result_tuples,
         size_t *result_count) {
@@ -63,11 +65,12 @@ void pgr_process_ordering(
     clock_t start_t = clock();
     pgrouting::drivers::do_ordering(
             edges_sql? edges_sql : "",
+            directed,
             which,
             (*result_tuples), (*result_count),
             log, notice, err);
 
-    auto name = std::string(" processing ") + pgrouting::get_name(which);
+    auto name = std::string("PROCESS: processing ") + pgrouting::get_name(which);
     time_msg(name.c_str(), start_t, clock());
 
     if (!err.str().empty() && (*result_tuples)) {
