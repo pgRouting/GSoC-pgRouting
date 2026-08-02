@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-05 04:08+0000\n"
+"POT-Creation-Date: 2026-07-24 02:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3446,12 +3446,8 @@ msgstr ""
 msgid "Planar Family"
 msgstr ""
 
-msgid ":doc:`pgr_isPlanar`"
+msgid ":doc:`planar-family`"
 msgstr ""
-
-#, fuzzy
-msgid ":doc:`pgr_makeBiconnectedPlanar`"
-msgstr "pgr_makeConnected"
 
 msgid "Miscellaneous Algorithms"
 msgstr ""
@@ -15090,6 +15086,19 @@ msgstr ""
 msgid ""
 "All this examples are about the route that visits the vertices :math:`\\{-1, "
 "7, -3, 16, 15\\}` in that order on a **directed** graph."
+msgstr ""
+
+msgid "Planar - Family of functions"
+msgstr ""
+
+msgid ""
+":doc:`pgr_isPlanar` - Returns a boolean depending upon the planarity of the "
+"graph."
+msgstr ""
+
+msgid ""
+":doc:`pgr_makeBiconnectedPlanar` - Returns edges to add to a biconnected "
+"planar graph to make it maximal planar."
 msgstr ""
 
 msgid "Prim - Family of functions"
