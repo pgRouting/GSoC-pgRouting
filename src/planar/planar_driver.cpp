@@ -93,7 +93,11 @@ void do_planar(
         undigraph.insert_edges(edges);
 
         std::vector<II_t_rt> results;
-
+	if(directed) {
+	   err << "planar_driver.cpp: Unknown function " << get_name(which)
+           << " for directed graph";
+   	 return;
+}  else{
         switch (which) {
             case MAXIMALPLANAR:
                 {
@@ -107,6 +111,7 @@ void do_planar(
                 err << "Unknown planar function " << get_name(which);
                 return;
         }
+}
 
         std::sort(results.begin(), results.end(), [](const II_t_rt &a, const II_t_rt &b) {
             return a.d1 < b.d1 || (a.d1 == b.d1 && a.d2 < b.d2);
