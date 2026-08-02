@@ -54,7 +54,7 @@ namespace drivers {
 
 void do_planar(
         const std::string &edges_sql,
-	bool directed,
+        bool directed,
 
         Which which,
 
@@ -93,37 +93,37 @@ void do_planar(
         undigraph.insert_edges(edges);
 
         std::vector<II_t_rt> results;
-	if(directed) {
-	   err << "planar_driver.cpp: Unknown function " << get_name(which)
-           << " for directed graph";
-   	 return;
-}  else{
-        switch (which) {
-            case MAXIMALPLANAR:
-                {
-                    pgrouting::functions::Pgr_makeMaximalPlanar<UndirectedGraph>
-                        fn_makeMaximalPlanar;
-                    results = fn_makeMaximalPlanar.makeMaximalPlanar(undigraph);
-                    log << fn_makeMaximalPlanar.get_log();
-                }
-                break;
-            default:
-                err << "Unknown planar function " << get_name(which);
-                return;
+        if (directed) {
+            err << "planar_driver.cpp: Unknown function " << get_name(which)
+                << " for directed graph";
+            return;
+        } else {
+            switch (which) {
+                case MAXIMALPLANAR:
+                    {
+                        pgrouting::functions::Pgr_makeMaximalPlanar<UndirectedGraph>
+                            fn_makeMaximalPlanar;
+                        results = fn_makeMaximalPlanar.makeMaximalPlanar(undigraph);
+                        log << fn_makeMaximalPlanar.get_log();
+                    }
+                    break;
+                default:
+                    err << "Unknown planar function " << get_name(which);
+                    return;
+            }
         }
-}
 
         std::sort(results.begin(), results.end(), [](const II_t_rt &a, const II_t_rt &b) {
             return a.d1 < b.d1 || (a.d1 == b.d1 && a.d2 < b.d2);
         });
 
-       if (!results.empty()) {
-    return_count = get_tuples(results, return_tuples);
-}
-	if (return_count == 0) {
-    	   log << "No results found";
-    	   return;
-	}
+        if (!results.empty()) {
+            return_count = get_tuples(results, return_tuples);
+        }
+        if (return_count == 0) {
+            log << "No results found";
+            return;
+        }
     } catch (AssertFailedException &except) {
         err << except.what();
     } catch (const std::pair<std::string, std::string>& ex) {
