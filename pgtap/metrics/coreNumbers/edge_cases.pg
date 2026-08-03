@@ -6,7 +6,7 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('4.1.0') THEN plan(1) ELSE plan(25) END;
+SELECT CASE WHEN NOT min_version('4.1.0') THEN plan(1) ELSE plan(26) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -296,7 +296,8 @@ SELECT results_eq('ordering_q', 'ordering_r',
   'Results are ordered by node ascending without an explicit ORDER BY');
 
 
-/* parallel edges count towards the degree */
+/* parallel edges are collapsed to a single edge, keeping the lowest cost,
+   so they do not inflate the degree */
 
 PREPARE parallel_q AS
   SELECT node, core FROM pgr_coreNumbers(
@@ -307,13 +308,27 @@ PREPARE parallel_q AS
 
 PREPARE parallel_r AS
   SELECT * FROM (VALUES
-    (1::BIGINT, 2::BIGINT),
-    (2, 2))
+    (1::BIGINT, 1::BIGINT),
+    (2, 1))
   AS t(node, core);
 
 RETURN QUERY
 SELECT results_eq('parallel_q', 'parallel_r',
-  'Two parallel edges give both vertices core 2');
+  'Two parallel edges are collapsed: both vertices are core 1');
+
+
+/* three parallel edges also collapse to a single edge */
+
+PREPARE parallel3_q AS
+  SELECT node, core FROM pgr_coreNumbers(
+    'SELECT * FROM (VALUES
+      (1,1,2,1.0,1.0),(2,1,2,1.0,1.0),(3,1,2,1.0,1.0))
+     AS t(id, source, target, cost, reverse_cost)'
+  ) ORDER BY node;
+
+RETURN QUERY
+SELECT results_eq('parallel3_q', 'parallel_r',
+  'Three parallel edges are collapsed: both vertices are core 1');
 
 
 /* a self loop counts towards the degree of its vertex */
