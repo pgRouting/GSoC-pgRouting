@@ -141,21 +141,21 @@ Additional Examples
      <tr>
        <td style="width:50%; text-align:center; padding:8px; border:none;">
          <strong>Before Matching</strong><br/>
-         <img src="_images/before.png" alt="Sample graph before maximum weighted matching" style="max-width:100%;"/>
+         <img src="_images/mwm_graph.png" alt="Sample graph before maximum weighted matching" style="max-width:100%;"/>
          <p><em>Sample graph with 5 vertices and 6 weighted edges before matching.</em></p>
        </td>
        <td style="width:50%; text-align:center; padding:8px; border:none;">
          <strong>After Matching</strong><br/>
-         <img src="_images/after.png" alt="Sample graph after maximum weighted matching" style="max-width:100%;"/>
+         <img src="_images/mwm_result.png" alt="Sample graph after maximum weighted matching" style="max-width:100%;"/>
          <p><em>Graph after maximum weighted matching: selected edges are highlighted.</em></p>
        </td>
      </tr>
    </table>
 
-.. image:: images/before.png
+.. image:: images/mwm_graph.png
    :width: 0
 
-.. image:: images/after.png
+.. image:: images/mwm_result.png
    :width: 0
 
 :Example: Maximum weighted matching on a custom 5-vertex graph.
