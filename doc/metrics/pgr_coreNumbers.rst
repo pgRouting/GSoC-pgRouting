@@ -58,6 +58,13 @@ one core number, all vertices in the graph are returned, and the number of rows
 is :math:`|V|`. Results are ordered by ``node`` ascending. When the edge SQL
 returns no rows, the function emits a notice and returns no rows.
 
+**Parallel edges** between the same pair of vertices are collapsed into a single
+edge before the peeling starts, so edge multiplicity does not inflate core
+numbers: three parallel edges between two vertices give both vertices core
+:math:`1`, the same as a single edge. This matters when importing road networks
+that contain duplicate geometry. A **self loop** is not removed and still
+contributes to the degree of its own vertex.
+
 |Boost| Boost Graph Inside
 
 .. rubric:: References

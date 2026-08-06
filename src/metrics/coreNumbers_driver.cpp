@@ -73,7 +73,7 @@ do_coreNumbers(
         hint = "";
 
         pgrouting::UndirectedGraph undigraph;
-        undigraph.insert_edges(edges);
+        undigraph.insert_min_edges_no_parallel(edges);
 
         auto results = coreNumbers(undigraph);
 
