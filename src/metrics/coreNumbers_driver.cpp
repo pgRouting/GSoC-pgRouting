@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/coreNumbers_driver.hpp"
 
+#include <algorithm>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -71,6 +72,22 @@ do_coreNumbers(
             return;
         }
         hint = "";
+
+        /*
+         * a self loop is not a neighbor of its own vertex, so it must not
+         * be counted towards that vertex's degree during k-core peeling
+         */
+        edges.erase(
+                std::remove_if(edges.begin(), edges.end(),
+                    [](const Edge_t &edge) {
+                        return edge.source == edge.target;
+                    }),
+                edges.end());
+        if (edges.empty()) {
+            notice << "No edges found";
+            log << hint;
+            return;
+        }
 
         pgrouting::UndirectedGraph undigraph;
         undigraph.insert_min_edges_no_parallel(edges);
