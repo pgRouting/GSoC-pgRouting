@@ -6,7 +6,7 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('4.1.0') THEN plan(1) ELSE plan(26) END;
+SELECT CASE WHEN NOT min_version('4.1.0') THEN plan(1) ELSE plan(27) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -331,7 +331,8 @@ SELECT results_eq('parallel3_q', 'parallel_r',
   'Three parallel edges are collapsed: both vertices are core 1');
 
 
-/* a self loop counts towards the degree of its vertex */
+/* a self loop is not a neighbor of its own vertex, so it is dropped
+   before peeling and does not inflate that vertex's core number */
 
 PREPARE selfloop_q AS
   SELECT node, core FROM pgr_coreNumbers(
@@ -342,13 +343,27 @@ PREPARE selfloop_q AS
 
 PREPARE selfloop_r AS
   SELECT * FROM (VALUES
-    (1::BIGINT, 2::BIGINT),
+    (1::BIGINT, 1::BIGINT),
     (2, 1))
   AS t(node, core);
 
 RETURN QUERY
 SELECT results_eq('selfloop_q', 'selfloop_r',
-  'A self loop adds to the degree of its own vertex');
+  'A self loop is dropped: it does not add to the degree of its own vertex');
+
+/* a vertex whose only edge is a self loop has no real neighbors left
+   after the self loop is dropped, so it does not appear in the result */
+
+PREPARE selfloop_only_q AS
+  SELECT node, core FROM pgr_coreNumbers(
+    'SELECT * FROM (VALUES
+      (1,1,1,1.0,1.0))
+     AS t(id, source, target, cost, reverse_cost)'
+  );
+
+RETURN QUERY
+SELECT is_empty('selfloop_only_q',
+  'A vertex whose only edge is a self loop has no results');
 
 
 /* disconnected components are peeled independently */
