@@ -6,8 +6,6 @@ ADD_LIBRARY(metrics OBJECT
 		betweennessCentrality_driver.cpp
         bandwidth.c
         coreNumbers.c
-        coreNumbers_driver.cpp
-        coreNumbers_process.cpp
         coreNumbers.cpp
 	    metrics_driver.cpp
         metrics_process.cpp
