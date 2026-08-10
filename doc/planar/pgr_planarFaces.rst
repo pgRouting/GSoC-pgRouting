@@ -52,6 +52,13 @@ succeeds. Face identifiers come from the traversal; one is the exterior face.
 An empty edge SQL emits a notice and returns no rows. Running time is
 :math:`O(|V| + |E|)`.
 
+The number of faces obeys **Euler's formula**. On a connected planar graph
+:math:`|V| - |E| + |F| = 2`. The traversal walks the outer face of every
+connected component separately, so on a graph with :math:`C` components the
+relation generalises to :math:`|V| - |E| + |F| = 2C`. On the
+:doc:`sampledata` network, which has :math:`3` components,
+:math:`17 - 18 + 7 = 6 = 2 \times 3`.
+
 |Boost| Boost Graph Inside
 
 .. rubric:: References
