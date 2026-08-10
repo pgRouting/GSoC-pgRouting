@@ -30,27 +30,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 #include "c_types/ii_t_rt.h"
-#include "process/coreNumbers_process.h"
+#include "process/coloring_process.h"
 
 PGDLLEXPORT Datum _pgr_corenumbers(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_corenumbers);
 
-
-PGDLLEXPORT Datum
-_pgr_corenumbers(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum _pgr_corenumbers(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
-    TupleDesc            tuple_desc;
+    TupleDesc           tuple_desc;
 
-    II_t_rt  *result_tuples = NULL;
-    size_t result_count = 0;
+    II_t_rt *result_tuples = NULL;
+    size_t   result_count  = 0;
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        pgr_process_coreNumbers(
+        pgr_process_coloring(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
+                false,
+
+                CORENUMBERS,
                 &result_tuples,
                 &result_count);
 
@@ -61,35 +62,35 @@ _pgr_corenumbers(PG_FUNCTION_ARGS) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "
-                            "that cannot accept type record")));
+                         "that cannot accept type record")));
         }
 
         funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);
     }
 
-    funcctx = SRF_PERCALL_SETUP();
-    tuple_desc = funcctx->tuple_desc;
-    result_tuples = (II_t_rt*) funcctx->user_fctx;
+    funcctx            = SRF_PERCALL_SETUP();
+    tuple_desc         = funcctx->tuple_desc;
+    result_tuples      = (II_t_rt*) funcctx->user_fctx;
+    uint64_t call_cntr = funcctx->call_cntr;
 
-    if (funcctx->call_cntr < funcctx->max_calls) {
-        HeapTuple    tuple;
-        Datum        result;
-        Datum        *values;
-        bool*        nulls;
+    if (call_cntr < funcctx->max_calls) {
+        HeapTuple   tuple;
+        Datum       result;
+        Datum       *values;
+        bool        *nulls;
 
-        size_t numb = 3;
-        values = palloc(numb * sizeof(Datum));
-        nulls = palloc(numb * sizeof(bool));
-
+        size_t num = 3;
+        values = palloc(num * sizeof(Datum));
+        nulls = palloc(num * sizeof(bool));
         size_t i;
-        for (i = 0; i < numb; ++i) {
+        for (i = 0; i < num; ++i) {
             nulls[i] = false;
         }
 
-        values[0] = Int64GetDatum((int64_t)funcctx->call_cntr + 1);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d1);
-        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2);
+        values[0] = UInt64GetDatum(call_cntr + 1);
+        values[1] = Int64GetDatum(result_tuples[call_cntr].d1);
+        values[2] = Int64GetDatum(result_tuples[call_cntr].d2);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

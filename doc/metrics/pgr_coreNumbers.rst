@@ -62,8 +62,10 @@ returns no rows, the function emits a notice and returns no rows.
 edge before the peeling starts, so edge multiplicity does not inflate core
 numbers: three parallel edges between two vertices give both vertices core
 :math:`1`, the same as a single edge. This matters when importing road networks
-that contain duplicate geometry. A **self loop** is not removed and still
-contributes to the degree of its own vertex.
+that contain duplicate geometry. A **self loop** is not a neighbor of its own
+vertex, so it is dropped before peeling and does not contribute to that
+vertex's degree. A vertex whose only edge is a self loop has no real
+neighbors left, and therefore does not appear in the result.
 
 |Boost| Boost Graph Inside
 
