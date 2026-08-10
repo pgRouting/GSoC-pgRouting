@@ -48,7 +48,7 @@ extern "C" {
 
 void pgr_process_planar(
         const char* edges_sql,
-
+        bool directed,
         enum Which which,
         II_t_rt **result_tuples,
         size_t *result_count) {
@@ -65,7 +65,7 @@ void pgr_process_planar(
     clock_t start_t = clock();
     pgrouting::drivers::do_planar(
             edges_sql? edges_sql : "",
-
+            directed,
             which,
             (*result_tuples), (*result_count),
             log, notice, err);
