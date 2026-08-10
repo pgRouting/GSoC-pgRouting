@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <string>
 #include <utility>
 #include <cstdint>
+#include <algorithm>
 
 #include "c_types/ii_t_rt.h"
 #include "cpp_common/pgdata_getters.hpp"
@@ -53,6 +54,7 @@ namespace drivers {
 
 void do_planar(
         const std::string &edges_sql,
+        bool directed,
 
         Which which,
 
@@ -62,6 +64,8 @@ void do_planar(
         std::ostringstream &notice,
         std::ostringstream &err) {
     std::string hint = "";
+    return_tuples = nullptr;
+    return_count = 0;
 
     try {
         if (edges_sql.empty()) {
@@ -87,10 +91,14 @@ void do_planar(
         undigraph.insert_edges(edges);
 
         std::vector<II_t_rt> results;
-
-        switch (which) {
-            case BICONNECTEDPLANAR:
-                {
+         if (directed) {
+            err << "planar_driver.cpp: Unknown function " << get_name(which)
+                << " for directed graph";
+            return;
+        } else {
+           switch (which) {
+                case BICONNECTEDPLANAR:
+                    {
                     pgrouting::functions::Pgr_makeBiconnectedPlanar<UndirectedGraph>
                         fn_makeBiconnectedPlanar;
                     results = fn_makeBiconnectedPlanar.makeBiconnectedPlanar(undigraph);
@@ -101,6 +109,11 @@ void do_planar(
                 err << "Unknown planar function " << get_name(which);
                 return;
         }
+     }
+
+        std::sort(results.begin(), results.end(), [](const II_t_rt &a, const II_t_rt &b) {
+            return a.d1 < b.d1 || (a.d1 == b.d1 && a.d2 < b.d2);
+        });
 
         auto count = results.size();
 
@@ -114,6 +127,7 @@ void do_planar(
             return_tuples[i] = results[i];
         }
         return_count = count;
+
     } catch (AssertFailedException &except) {
         err << except.what();
     } catch (const std::pair<std::string, std::string>& ex) {
