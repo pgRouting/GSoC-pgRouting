@@ -5,73 +5,57 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_lib_version('4.1.0') THEN plan(11) ELSE PLAN(1) END;
+SELECT CASE WHEN min_lib_version('4.1.0') THEN plan(7) ELSE plan(1) END;
 
-PREPARE edges1 AS
-SELECT id, source, target, cost FROM edges;
-PREPARE edges2 AS
+PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost FROM edges;
 
+PREPARE null_ret AS
+SELECT id FROM vertices WHERE id IN (-1);
 
-CREATE OR REPLACE FUNCTION test_function()
+PREPARE null_ret_arr AS
+SELECT array_agg(id) FROM vertices WHERE id IN (-1);
+
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
+DECLARE
+    params TEXT[];
+    subs TEXT[];
 BEGIN
+    IF NOT min_lib_version('4.1.0') THEN
+        RETURN QUERY
+        SELECT skip(1, 'pgr_maxWeightedMatching is new on 4.1.0');
+        RETURN;
+    END IF;
 
-  IF NOT min_lib_version('4.1.0') THEN
-    RETURN QUERY SELECT skip(1, 'pgr_maxWeightedMatching is new on 4.1.0');
-    RETURN;
-  END IF;
+    params := ARRAY[
+        '$$SELECT id, source, target, cost, reverse_cost FROM edges$$',
+        'false'
+    ]::TEXT[];
 
-  RETURN QUERY
-  SELECT isnt_empty('edges2', 'Should be not empty to tests be meaningful');
+    subs := ARRAY[
+        'NULL',
+        'NULL'
+    ]::TEXT[];
 
-  RETURN QUERY SELECT lives_ok(
-    $$SELECT * FROM pgr_maxWeightedMatching(
-        'SELECT id, source, target, cost, reverse_cost FROM edges', false)$$,
-    'lives_ok: inline with reverse_cost');
-  RETURN QUERY SELECT lives_ok(
-    $$SELECT * FROM pgr_maxWeightedMatching(
-        'SELECT id, source, target, cost FROM edges', false)$$,
-    'lives_ok: inline cost only');
+    RETURN QUERY
+    SELECT *
+    FROM no_crash_test(
+        'pgr_maxWeightedMatching',
+        params,
+        subs);
 
-  RETURN QUERY SELECT lives_ok(
-    $$SELECT * FROM pgr_maxWeightedMatching('edges1', false)$$,
-    'lives_ok: prepared cost only');
-  RETURN QUERY SELECT lives_ok(
-    $$SELECT * FROM pgr_maxWeightedMatching('edges2', false)$$,
-    'lives_ok: prepared with reverse_cost');
-
-  RETURN QUERY SELECT lives_ok(
-    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
-    'lives_ok: NULL sql');
-  RETURN QUERY SELECT is_empty(
-    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, false)$$,
-    'is_empty: NULL sql');
-
-  RETURN QUERY SELECT lives_ok(
-    $$SELECT * FROM pgr_maxWeightedMatching(
-        'SELECT id, source, target, cost FROM edges', true)$$,
-    'lives_ok: directed=true');
-
-  RETURN QUERY SELECT lives_ok(
-    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, true)$$,
-    'lives_ok: NULL sql directed=true');
-  RETURN QUERY SELECT is_empty(
-    $$SELECT * FROM pgr_maxWeightedMatching(NULL::TEXT, true)$$,
-    'is_empty: NULL sql directed=true');
-
-  RETURN QUERY SELECT lives_ok(
-    $$SELECT * FROM pgr_maxWeightedMatching(
-        'SELECT id, source, target, cost, reverse_cost FROM edges', true)$$,
-    'lives_ok: reverse_cost directed=true');
+    RETURN QUERY
+    SELECT throw_on_empty_edges_sql(
+        'pgr_maxWeightedMatching',
+        ', false');
 
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-
-SELECT * FROM test_function();
+SELECT * FROM no_crash();
 
 SELECT finish();
 ROLLBACK;
