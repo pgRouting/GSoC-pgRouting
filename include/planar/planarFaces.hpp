@@ -39,7 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/planar_face_traversal.hpp>
 
-#include "c_types/planarFaces_rt.h"
+#include "c_types/iid_t_rt.h"
 #include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
 #include "cpp_common/messages.hpp"
@@ -53,15 +53,20 @@ class Pgr_planarFaces : public pgrouting::Pgr_messages {
      typedef typename G::B_G B_G;
      typedef typename boost::graph_traits<B_G>::edge_descriptor E;
 
+     /*
+      * results are returned on the shared IID_t_rt of the planar family:
+      * from_vid holds the face id, to_vid the edge id and cost the side,
+      * which is 1 (left) or 2 (right)
+      */
      struct FaceVisitor : public boost::planar_face_traversal_visitor {
          const G &m_graph;
-         std::vector<PlanarFace_rt> &m_results;
+         std::vector<IID_t_rt> &m_results;
          std::map<E, int> &m_visit_count;
          int64_t face_id;
          int64_t seq;
 
          FaceVisitor(const G &graph,
-                     std::vector<PlanarFace_rt> &results,
+                     std::vector<IID_t_rt> &results,
                      std::map<E, int> &visit_count)
              : m_graph(graph), m_results(results),
                m_visit_count(visit_count), face_id(0), seq(0) {}
@@ -70,18 +75,18 @@ class Pgr_planarFaces : public pgrouting::Pgr_messages {
 
          void next_edge(E e) {
              int n = ++m_visit_count[e];
-             PlanarFace_rt row;
-             row.face_id = face_id;
-             row.edge_id = m_graph.graph[e].id;
-             row.side    = n;
+             IID_t_rt row;
+             row.from_vid = face_id;
+             row.to_vid   = m_graph.graph[e].id;
+             row.cost     = n;
              m_results.push_back(row);
          }
      };
 
-     std::vector<PlanarFace_rt> planarFaces(G &graph) {
+     std::vector<IID_t_rt> planarFaces(G &graph) {
          CHECK_FOR_INTERRUPTS();
 
-         std::vector<PlanarFace_rt> results;
+         std::vector<IID_t_rt> results;
 
          std::map<E, std::size_t> e_index;
          boost::associative_property_map<std::map<E, std::size_t>>
