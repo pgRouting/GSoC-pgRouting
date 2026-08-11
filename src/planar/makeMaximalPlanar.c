@@ -29,11 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
-
 #include "c_types/ii_t_rt.h"
-#include "c_common/debug_macro.h"
-
-#include "c_common/enums.h"
 #include "process/planar_process.h"
 
 PGDLLEXPORT Datum _pgr_makemaximalplanar(PG_FUNCTION_ARGS);
@@ -51,7 +47,6 @@ PGDLLEXPORT Datum _pgr_makemaximalplanar(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        PGR_DBG("Calling process");
         pgr_process_planar(
             text_to_cstring(PG_GETARG_TEXT_P(0)),
             false,
@@ -75,26 +70,26 @@ PGDLLEXPORT Datum _pgr_makemaximalplanar(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (II_t_rt *)funcctx->user_fctx;
+    result_tuples = (II_t_rt*) funcctx->user_fctx;
+    uint64_t call_cntr = funcctx->call_cntr;
 
-    if (funcctx->call_cntr < funcctx->max_calls) {
+    if (call_cntr < funcctx->max_calls) {
         HeapTuple tuple;
         Datum result;
         Datum *values;
         bool *nulls;
 
-        size_t numb = 3;
-        values = (Datum *)palloc(numb * sizeof(Datum));
-        nulls = (bool *)palloc(numb * sizeof(bool));
-
+        size_t num = 3;
+        values = palloc(num * sizeof(Datum));
+        nulls = palloc(num * sizeof(bool));
         size_t i;
-        for (i = 0; i < numb; ++i) {
+        for (i = 0; i < num; ++i) {
             nulls[i] = false;
         }
 
-        values[0] = Int32GetDatum((int32_t)funcctx->call_cntr + 1);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d1);
-        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2);
+        values[0] = UInt64GetDatum(call_cntr + 1);
+        values[1] = Int64GetDatum(result_tuples[call_cntr].d1);
+        values[2] = Int64GetDatum(result_tuples[call_cntr].d2);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
