@@ -125,7 +125,6 @@ void do_planar(
             log << "No results found";
             return;
         }
-
     } catch (AssertFailedException &except) {
         err << except.what();
     } catch (const std::pair<std::string, std::string>& ex) {
