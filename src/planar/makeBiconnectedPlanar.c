@@ -50,7 +50,7 @@ PGDLLEXPORT Datum _pgr_makebiconnectedplanar(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-	 pgr_process_planar(
+        pgr_process_planar(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 false,
 
