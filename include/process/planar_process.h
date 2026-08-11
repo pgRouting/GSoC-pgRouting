@@ -49,6 +49,7 @@ extern "C" {
 
 void pgr_process_planar(
         const char*,
+        bool,
         enum Which,
         II_t_rt**, size_t*);
 

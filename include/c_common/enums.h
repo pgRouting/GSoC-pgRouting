@@ -35,6 +35,7 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     DAGSP,
     BELLMANFORD,
     EDGEDISJOINT,
+    BINARYBFS,
     /** allpairs **/
     FLOYD = 31, JOHNSON,
     /** metrics **/
@@ -52,7 +53,10 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     /* For coloring */
     EDGECOLORING, BIPARTITE, SEQUENTIAL,
     /* For planar */
-    BICONNECTEDPLANAR
+    BICONNECTEDPLANAR,
+    /* For components */
+    CONNECTEDCOMPONENTS, BICONNECTEDCOMPONENTS, STRONGCOMPONENTS, ARTICULATIONPOINTS,
+    BRIDGES, MAKECONNECTED
 };
 
 #endif  // INCLUDE_C_COMMON_ENUMS_H_
