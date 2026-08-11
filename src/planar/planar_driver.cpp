@@ -74,6 +74,8 @@ void do_planar(
         }
 
         using pgrouting::pgget::get_edges;
+        using pgrouting::to_postgres::get_tuples;
+
         using pgrouting::UndirectedGraph;
 
         hint = edges_sql;
@@ -115,18 +117,14 @@ void do_planar(
             return a.d1 < b.d1 || (a.d1 == b.d1 && a.d2 < b.d2);
         });
 
-        auto count = results.size();
+        if (!results.empty()) {
+            return_count = get_tuples(results, return_tuples);
+        }
 
-        if (count == 0) {
+        if (return_count == 0) {
             log << "No results found";
             return;
         }
-
-        return_tuples = pgr_alloc(count, return_tuples);
-        for (size_t i = 0; i < count; i++) {
-            return_tuples[i] = results[i];
-        }
-        return_count = count;
 
     } catch (AssertFailedException &except) {
         err << except.what();
