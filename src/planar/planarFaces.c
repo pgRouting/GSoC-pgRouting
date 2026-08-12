@@ -29,8 +29,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
-#include "c_types/planarFaces_rt.h"
-#include "process/planarFaces_process.h"
+#include "c_types/iid_t_rt.h"
+#include "process/planar_process.h"
 
 PGDLLEXPORT Datum _pgr_planarfaces(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_planarfaces);
@@ -41,7 +41,7 @@ _pgr_planarfaces(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    PlanarFace_rt  *result_tuples = NULL;
+    IID_t_rt  *result_tuples = NULL;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
@@ -49,8 +49,11 @@ _pgr_planarfaces(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        pgr_process_planarFaces(
+        pgr_process_planar(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
+                false,
+
+                PLANARFACES,
                 &result_tuples,
                 &result_count);
 
@@ -70,7 +73,7 @@ _pgr_planarfaces(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (PlanarFace_rt*) funcctx->user_fctx;
+    result_tuples = (IID_t_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;
@@ -88,11 +91,15 @@ _pgr_planarfaces(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
+        /*
+         * on the shared IID_t_rt: from_vid is the face id, to_vid the edge id
+         * and cost the side, which is 1 (left) or 2 (right)
+         */
         values[0] = UInt64GetDatum(call_cntr + 1);
-        values[1] = Int64GetDatum(result_tuples[call_cntr].face_id);
-        values[2] = Int64GetDatum(result_tuples[call_cntr].edge_id);
+        values[1] = Int64GetDatum(result_tuples[call_cntr].from_vid);
+        values[2] = Int64GetDatum(result_tuples[call_cntr].to_vid);
 
-        values[3] = Int32GetDatum(result_tuples[call_cntr].side);
+        values[3] = Int32GetDatum((int32_t)result_tuples[call_cntr].cost);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
