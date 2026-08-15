@@ -33,6 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "drivers/planar_driver.hpp"
 
 #include <sstream>
+#include <deque>
 #include <vector>
 #include <string>
 #include <utility>
@@ -40,6 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 
 #include "c_types/ii_t_rt.h"
+#include "cpp_common/base_graph.hpp"
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/utilities.hpp"
 #include "cpp_common/to_postgres.hpp"
@@ -47,7 +49,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/assert.hpp"
 
 #include "planar/makeMaximalPlanar.hpp"
-#include "cpp_common/base_graph.hpp"
+#include "coloring/bipartite.hpp"
+#include "coloring/edgeColoring.hpp"
+#include "coloring/sequentialVertexColoring.hpp"
+#include "components/components.hpp"
+#include "components/makeConnected.hpp"
 
 namespace pgrouting {
 namespace drivers {
@@ -76,7 +82,16 @@ void do_planar(
         using pgrouting::pgget::get_edges;
         using pgrouting::to_postgres::get_tuples;
 
+        using pgrouting::DirectedGraph;
         using pgrouting::UndirectedGraph;
+
+        using pgrouting::functions::edgeColoring;
+        using pgrouting::functions::sequentialVertexColoring;
+        using pgrouting::functions::pgr_bipartite;
+        using pgrouting::algorithms::biconnectedComponents;
+        using pgrouting::algorithms::connectedComponents;
+        using pgrouting::algorithms::strongComponents;
+        using pgrouting::functions::makeConnected;
 
         hint = edges_sql;
         auto edges = get_edges(edges_sql, true, false);
@@ -90,7 +105,9 @@ void do_planar(
         hint = "";
 
         UndirectedGraph undigraph;
+
         undigraph.insert_edges(edges);
+        DirectedGraph digraph;
 
         std::vector<II_t_rt> results;
         if (directed) {

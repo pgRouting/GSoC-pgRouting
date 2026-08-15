@@ -34,6 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <string>
 #include <utility>
 #include <cstdint>
+#include <algorithm>
 
 #include "c_types/ii_t_rt.h"
 #include "cpp_common/base_graph.hpp"
@@ -43,6 +44,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
+#include "planar/makeMaximalPlanar.hpp"
 #include "coloring/bipartite.hpp"
 #include "coloring/edgeColoring.hpp"
 #include "coloring/sequentialVertexColoring.hpp"
@@ -119,6 +121,17 @@ void do_coloring(
             undigraph.insert_edges(edges);
 
             switch (which) {
+               case MAXIMALPLANAR:
+                    {
+                        pgrouting::functions::Pgr_makeMaximalPlanar<UndirectedGraph>
+                            fn_makeMaximalPlanar;
+                        results = fn_makeMaximalPlanar.makeMaximalPlanar(undigraph);
+                        log << fn_makeMaximalPlanar.get_log();
+                        std::sort(results.begin(), results.end(), [](const II_t_rt &a, const II_t_rt &b) {
+            return a.d1 < b.d1 || (a.d1 == b.d1 && a.d2 < b.d2);
+        });
+                    }
+                    break;
                 case EDGECOLORING:
                     results = edgeColoring(undigraph);
                     break;
