@@ -1,0 +1,52 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2018-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+BEGIN;
+
+SELECT CASE WHEN min_version('4.1.0') THEN plan(3) ELSE plan(1) END;
+
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF NOT min_version('4.1.0') THEN
+  RETURN QUERY
+  SELECT skip(1, 'pgr_makeMaximalPlanar is new on 4.1.0');
+  RETURN;
+END IF;
+
+-- 0 edge, 0 vertex test
+
+RETURN QUERY
+SELECT is_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id > 18')$$,
+  '1: Graph with 0 edges and 0 vertices is empty');
+
+-- 1 vertex test
+
+--6 -- 6
+RETURN QUERY
+SELECT is_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar('SELECT 2 AS id, 6 AS source, 6 AS target, 1 AS cost, 1 AS reverse_cost')$$,
+  '2: Graph with 1 vertex and 1 edge returns empty set of edges');
+
+-- 2 vertex test(already biconnected)
+
+--5 -- 6
+RETURN QUERY
+SELECT is_empty(
+  $$SELECT * FROM pgr_makeMaximalPlanar( 
+    'SELECT 1 AS id,5 AS source,6 AS target, 1 AS cost,1 AS reverse_cost')$$,
+  '3: Graph with 2 vertices returns empty set of edges');
+
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
+
+SELECT * FROM finish();
+ROLLBACK;
