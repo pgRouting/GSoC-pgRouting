@@ -1,12 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: planarFaces_process.cpp
+File: planar_process.cpp
 
 Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
-Copyright (c) 2026 Sakir Ahmed
-Mail: sakirahmed75531 at gmail.com
+Design of one process & driver file by
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "process/planarFaces_process.h"
+#include "process/planar_process.h"
 
 #include <string>
 #include <sstream>
@@ -37,16 +37,20 @@ extern "C" {
 #include "c_common/time_msg.h"
 }
 
+#include "c_types/iid_t_rt.h"
+
 #include "cpp_common/report_messages.hpp"
+#include "cpp_common/utilities.hpp"
 #include "cpp_common/assert.hpp"
 #include "cpp_common/alloc.hpp"
 
-#include "drivers/planarFaces_driver.hpp"
+#include "drivers/planar_driver.hpp"
 
-
-void pgr_process_planarFaces(
+void pgr_process_planar(
         const char* edges_sql,
-        PlanarFace_rt **result_tuples,
+        bool directed,
+        enum Which which,
+        IID_t_rt **result_tuples,
         size_t *result_count) {
     pgassert(edges_sql);
     pgassert(!(*result_tuples));
@@ -58,12 +62,15 @@ void pgr_process_planarFaces(
     std::ostringstream notice;
 
     clock_t start_t = clock();
-    pgrouting::drivers::do_planarFaces(
+    pgrouting::drivers::do_planar(
             edges_sql? edges_sql : "",
+            directed,
+            which,
             (*result_tuples), (*result_count),
             log, notice, err);
 
-    time_msg(" processing pgr_planarFaces", start_t, clock());
+    auto name = std::string(" processing ") + pgrouting::get_name(which);
+    time_msg(name.c_str(), start_t, clock());
 
     if (!err.str().empty() && (*result_tuples)) {
         pfree(*result_tuples);

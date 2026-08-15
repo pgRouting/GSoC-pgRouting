@@ -1,12 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: planarFaces_driver.cpp
+File: planar_driver.cpp
 
 Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
-Copyright (c) 2026 Sakir Ahmed
-Mail: sakirahmed75531 at gmail.com
+Design of one process & driver file by
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -26,33 +26,40 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/planarFaces_driver.hpp"
+#include "drivers/planar_driver.hpp"
 
+#include <sstream>
 #include <vector>
 #include <string>
-#include <sstream>
+#include <utility>
+#include <cstdint>
 
+#include "c_types/iid_t_rt.h"
+#include "cpp_common/base_graph.hpp"
+#include "cpp_common/pgdata_getters.hpp"
+#include "cpp_common/utilities.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
-#include "cpp_common/pgdata_getters.hpp"
 
 #include "planar/planarFaces.hpp"
-#include "cpp_common/base_graph.hpp"
 
 namespace pgrouting {
 namespace drivers {
 
-void
-do_planarFaces(
+void do_planar(
         const std::string &edges_sql,
+        bool directed,
 
-        PlanarFace_rt *&return_tuples,
+        Which which,
+
+        IID_t_rt* &return_tuples,
         size_t &return_count,
-
         std::ostringstream &log,
         std::ostringstream &notice,
         std::ostringstream &err) {
     std::string hint = "";
+    return_tuples = nullptr;
+    return_count = 0;
 
     try {
         if (edges_sql.empty()) {
@@ -61,22 +68,40 @@ do_planarFaces(
         }
 
         using pgrouting::pgget::get_edges;
+        using pgrouting::UndirectedGraph;
 
         hint = edges_sql;
         auto edges = get_edges(edges_sql, true, true);
+
         if (edges.empty()) {
             notice << "No edges found";
-            log << hint;
+            log << edges_sql;
             return;
         }
+
         hint = "";
 
-        pgrouting::UndirectedGraph undigraph;
+        /* the planar family works on the undirected structure only */
+        (void)directed;
+
+        UndirectedGraph undigraph;
         undigraph.insert_edges(edges);
 
-        pgrouting::functions::Pgr_planarFaces<pgrouting::UndirectedGraph> fn;
-        auto results = fn.planarFaces(undigraph);
-        log << fn.get_log();
+        std::vector<IID_t_rt> results;
+
+        switch (which) {
+            case PLANARFACES:
+                {
+                    pgrouting::functions::Pgr_planarFaces<UndirectedGraph> fn;
+                    results = fn.planarFaces(undigraph);
+                    log << fn.get_log();
+                }
+                break;
+            default:
+                err << "planar_driver.cpp: Unknown function with name '" << get_name(which)
+                    << "' for undirected graph";
+                return;
+        }
 
         auto count = results.size();
 
@@ -92,6 +117,9 @@ do_planarFaces(
         return_count = count;
     } catch (AssertFailedException &except) {
         err << except.what();
+    } catch (const std::pair<std::string, std::string>& ex) {
+        err << ex.first;
+        log << ex.second;
     } catch (const std::string &ex) {
         err << ex;
         log << hint;

@@ -1,11 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: planarFaces_rt.h
+File: planar_driver.hpp
 
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2026 Sakir Ahmed
-Mail: sakirahmed75531 at gmail.com
+Design of one process & driver file by
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -24,22 +25,31 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
-/*! @file */
 
-#ifndef INCLUDE_C_TYPES_PLANARFACES_RT_H_
-#define INCLUDE_C_TYPES_PLANARFACES_RT_H_
+#ifndef INCLUDE_DRIVERS_PLANAR_DRIVER_HPP_
+#define INCLUDE_DRIVERS_PLANAR_DRIVER_HPP_
 #pragma once
 
-#ifdef __cplusplus
-#   include <cstdint>
-#else
-#   include <stdint.h>
-#endif
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <sstream>
 
-struct PlanarFace_rt {
-    int64_t face_id;
-    int64_t edge_id;
-    int    side;
-};
+#include "c_common/enums.h"
 
-#endif  // INCLUDE_C_TYPES_PLANARFACES_RT_H_
+using IID_t_rt = struct IID_t_rt;
+
+namespace pgrouting {
+namespace drivers {
+
+void do_planar(
+        const std::string&,
+        bool,
+        Which,
+        IID_t_rt*&, size_t&,
+        std::ostringstream&, std::ostringstream&, std::ostringstream&);
+
+}  // namespace drivers
+}  // namespace pgrouting
+
+#endif  // INCLUDE_DRIVERS_PLANAR_DRIVER_HPP_
