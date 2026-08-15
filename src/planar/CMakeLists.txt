@@ -5,7 +5,4 @@ ADD_LIBRARY(planar OBJECT
     isPlanar.c
     isPlanar_driver.cpp
     makeMaximalPlanar.c
-
-    planar_process.cpp
-    planar_driver.cpp
 )
