@@ -70,7 +70,11 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          boost_minor: [56, 68, 75, 76, 77, 78, 79, 80, 83, 84, 86]
+          # boost version proof of concept for pgr_coreNumbers
+          # 55: previous  -> expected to fail (below BOOST_MINIMUM_VERSION 1.56.0)
+          # 56: critical  -> expected to pass
+          # 57: next      -> expected to pass
+          boost_minor: [55, 56, 57]
 
     steps:
       - uses: actions/checkout@v6
@@ -107,8 +111,8 @@ jobs:
             postgresql-${PGVER}-postgis-${PGIS}-scripts \
             postgresql-server-dev-${PGVER}
 
-          wget https://sourceforge.net/projects/boost/files/boost/1.${{ matrix.boost_minor }}.0/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
-          #wget https://dl.bintray.com/boostorg/release/1.${{ matrix.boost_minor }}.0/source/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
+          # official boost archive, releases are never retired
+          wget https://archives.boost.io/release/1.${{ matrix.boost_minor }}.0/source/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo tar --bzip2 -xf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/
 
