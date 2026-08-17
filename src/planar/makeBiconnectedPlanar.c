@@ -30,57 +30,55 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 #include "c_types/ii_t_rt.h"
-
-
-#include "c_common/enums.h"
-#include "process/planar_process.h"
+#include "process/coloring_process.h"
 
 PGDLLEXPORT Datum _pgr_makebiconnectedplanar(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_makebiconnectedplanar);
 
 PGDLLEXPORT Datum _pgr_makebiconnectedplanar(PG_FUNCTION_ARGS) {
-    FuncCallContext *funcctx;
-    TupleDesc tuple_desc;
+    FuncCallContext     *funcctx;
+    TupleDesc           tuple_desc;
 
     II_t_rt *result_tuples = NULL;
-    size_t result_count = 0;
+    size_t   result_count  = 0;
 
     if (SRF_IS_FIRSTCALL()) {
-        MemoryContext oldcontext;
+        MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        pgr_process_planar(
+        pgr_process_coloring(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 false,
 
-            BICONNECTEDPLANAR,
-            &result_tuples,
-            &result_count);
+                BICONNECTEDPLANAR,
+                &result_tuples,
+                &result_count);
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
+                != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "
-                            "that cannot accept type record")));
+                         "that cannot accept type record")));
         }
 
         funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);
     }
 
-    funcctx = SRF_PERCALL_SETUP();
-    tuple_desc = funcctx->tuple_desc;
-    result_tuples = (II_t_rt *)funcctx->user_fctx;
+    funcctx            = SRF_PERCALL_SETUP();
+    tuple_desc         = funcctx->tuple_desc;
+    result_tuples      = (II_t_rt*) funcctx->user_fctx;
     uint64_t call_cntr = funcctx->call_cntr;
 
     if (call_cntr < funcctx->max_calls) {
-        HeapTuple tuple;
-        Datum result;
-        Datum *values;
-        bool *nulls;
+        HeapTuple   tuple;
+        Datum       result;
+        Datum       *values;
+        bool        *nulls;
 
         size_t num = 3;
         values = palloc(num * sizeof(Datum));

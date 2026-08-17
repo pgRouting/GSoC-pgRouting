@@ -5,7 +5,4 @@ ADD_LIBRARY(planar OBJECT
     isPlanar.c
     isPlanar_driver.cpp
     makeBiconnectedPlanar.c
-
-    planar_process.cpp
-    planar_driver.cpp
 )
