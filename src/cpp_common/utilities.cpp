@@ -106,6 +106,24 @@ get_name(Which which) {
             break;
         case MAXWEIGHTEDMATCHING:
             return "pgr_maxWeightedMatching";
+
+        case ARTICULATIONPOINTS:
+            return "pgr_articulationPoints";
+            break;
+        case BRIDGES:
+            return "pgr_bridges";
+            break;
+        case MAKECONNECTED:
+            return "pgr_makeConnected";
+            break;
+        case BICONNECTEDCOMPONENTS:
+            return "pgr_biconnectedComponents";
+            break;
+        case CONNECTEDCOMPONENTS:
+            return "pgr_connectedComponents";
+            break;
+        case STRONGCOMPONENTS:
+            return "pgr_strongComponents";
             break;
         default:
             return "unknown";
@@ -134,6 +152,9 @@ get_name(Which which, bool is_only_cost, bool is_near, bool is_matrix) {
             break;
         case DAGSP :
             base = "pgr_dagShortestPath";
+            break;
+        case BINARYBFS :
+            base = "pgr_binaryBreadthFirstSearch";
             break;
         case BELLMANFORD :
             base = "pgr_bellmanFord";

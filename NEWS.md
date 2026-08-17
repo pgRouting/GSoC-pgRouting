@@ -25,6 +25,10 @@ To see all issues & pull requests closed by this release see the
 * [#3089](https://github.com/pgRouting/pgrouting/issues/3089): edgeDisjoint and bellmanFord use shortestPath driver and
   process
 * [#3100](https://github.com/pgRouting/pgrouting/issues/3100): Coloring: create and use a process & driver
+* [#3113](https://github.com/pgRouting/pgrouting/issues/3113): Components: Integrate into existing process/driver pair
+* [#3129](https://github.com/pgRouting/pgrouting/issues/3129): breadthFirstSearch: Reorganize into traversal
+* [#3131](https://github.com/pgRouting/pgrouting/issues/3131): binaryBreadthFirstSearch: Integrate into existing
+  process/driver pair
 
 **Bug Fixes**
 
@@ -42,6 +46,41 @@ To see all issues & pull requests closed by this release see the
 
 ## pgRouting 4.0
 
+
+<details> <summary>pgRouting 4.0.2 Release Notes</summary>
+
+To see all issues & pull requests closed by this release see the
+[#4.0.2](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%204.0.2%22)
+
+4.0.2 Summary of changes by function
+
+* pgr_dijkstraVia
+
+  * Fix: bad alloc
+
+* pgr_drivingDistance
+
+  * Standardizing negative distance behaviour
+    * Throws when :math:`distance < 0`.
+    * Standard message and hint.
+
+* pgr_withPointsDD
+
+  * Standardizing negative distance behaviour
+    * Throws when :math:`distance < 0`.
+    * Standard message and hint.
+
+* pgr_withPointsVia
+
+  * Fix: bad alloc
+
+4.0.2 Bug Fixes
+
+* [#3110](https://github.com/pgRouting/pgrouting/issues/3110): pgr_dijkstraVia throws std::bad_alloc when a node does not exist
+* [#3091](https://github.com/pgRouting/pgrouting/issues/3091): Catchment functions when negative distance do not have a
+  standardized behaviour
+
+</details>
 
 <details> <summary>pgRouting 4.0.1 Release Notes</summary>
 
