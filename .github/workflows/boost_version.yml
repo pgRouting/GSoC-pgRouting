@@ -70,10 +70,6 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          # boost version proof of concept for pgr_coreNumbers
-          # 55: previous  -> expected to fail (below BOOST_MINIMUM_VERSION 1.56.0)
-          # 56: critical  -> expected to pass
-          # 57: next      -> expected to pass
           boost_minor: [55, 56, 57]
 
     steps:
