@@ -11,7 +11,7 @@
 ``pgr_coreNumbers`` - Experimental
 ===============================================================================
 
-``pgr_coreNumbers`` — Computes the core number of each vertex in an undirected
+``pgr_coreNumbers`` - Computes the core number of each vertex in an undirected
 graph using k-core decomposition.
 
 .. include:: experimental.rst
@@ -36,21 +36,16 @@ removes vertices of degree less than :math:`k` until no such vertices remain,
 increasing :math:`k` at each stage. The process assigns one core number to every
 vertex and runs in :math:`O(m)` time on a graph with :math:`m` edges.
 
-Vertices whose largest :math:`k` is :math:`1` belong only to the 1-core. In the
-induced subgraph these are **terminal nodes**: vertices adjacent to at most one
-other vertex. In road networks they correspond to **dead-ends** and
-**cul-de-sacs**, where traffic can enter but has no alternative route through
-the vertex.
+The core number says how deeply a vertex sits inside the graph:
 
-Vertices with core number :math:`2` participate in **unbranched linear
-sequences** of vertices that survive the first peeling step. On transportation
-networks such chains resemble **rural highways** and **transit corridors** where
-movement continues along a corridor before reaching a branch or terminal.
-
-For core numbers :math:`3` and higher, the graph structure is one of maximally
-interconnected regions with redundant connections and multiple independent paths
-between vertices. Dense urban street grids, where many intersections offer
-alternate routes, are a common geographic analogy for these higher cores.
+* Core :math:`1` vertices are peeled in the first step. They are **terminal
+  nodes**, adjacent to at most one other vertex in the induced subgraph: the
+  dead-ends and cul-de-sacs of a road network.
+* Core :math:`2` vertices survive that step. They lie on cycles, or on the
+  chains joining them, like a rural highway that runs on before it branches.
+* Core :math:`3` and above mark dense regions where every vertex keeps three or
+  more neighbors however much of the graph is peeled away. Urban street grids,
+  which offer alternate routes at most intersections, behave this way.
 
 The function applies to **undirected** graphs only. Edge direction and traversal
 costs are ignored; only the edge endpoints matter. Each vertex receives exactly
@@ -304,7 +299,7 @@ wrap the call in a standard SQL query.
 .. rubric:: Explanation
 
 * The ``WHERE core >= 2`` clause keeps only the 2-core vertices.
-* This pattern is useful when exporting hub vertices for further analysis.
+* Use it to export only the hub vertices for further analysis.
 
 Full sample graph
 ...............................................................................
@@ -321,8 +316,10 @@ Full sample graph
 * The full network has :math:`17` vertices and maximum core number :math:`2`.
 * Terminal branches (vertices :math:`1`, :math:`2`, :math:`3`, :math:`4`,
   :math:`5`, :math:`9`, :math:`13`, :math:`14`) remain core :math:`1`.
-* The central block (vertices :math:`6` through :math:`12`, plus :math:`15`,
-  :math:`16`, :math:`17`) forms the 2-core region of the city network.
+* The 2-core is vertices :math:`6`, :math:`7`, :math:`8`, :math:`10`,
+  :math:`11`, :math:`12`, :math:`15`, :math:`16` and :math:`17`: the central
+  block of the city network. Vertex :math:`9` hangs off :math:`8` by edge
+  :math:`14` alone, so it is peeled first and stays core :math:`1`.
 
 Small graphs
 ...............................................................................
