@@ -10,18 +10,13 @@
 Planar - Family of functions
 ===============================================================================
 
-.. official-start
-
-- :doc:`pgr_isPlanar` - Returns whether the graph is planar.
-
-.. official-end
-
 .. include:: experimental.rst
    :start-after: warning-begin
    :end-before: end-warning
 
 .. experimental-start
 
+* :doc:`pgr_isPlanar` - Returns whether the graph is planar.
 * :doc:`pgr_planarFaces` - Identifies the faces of a planar embedding and lists
   every edge-face incidence for an undirected graph.
 

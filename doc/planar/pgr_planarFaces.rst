@@ -11,7 +11,7 @@
 ``pgr_planarFaces`` - Experimental
 ===============================================================================
 
-``pgr_planarFaces`` — Identifies the faces of a planar embedding and lists every
+``pgr_planarFaces`` - Identifies the faces of a planar embedding and lists every
 edge-face incidence for an undirected graph.
 
 .. include:: experimental.rst
@@ -28,12 +28,10 @@ Description
 -------------------------------------------------------------------------------
 
 In a **planar embedding**, the graph is drawn in the plane so that edges meet only
-at vertices. A **face** is a maximal connected region of the plane that does not
-cross any edge; think of the faces as the “patches” between streets on a map.
-Every bounded face is a cycle of edges enclosing an interior region. The
-**exterior face** (also called the unbounded face) is the region outside the
-outermost cycle; in GIS terms it plays the same role as the infinite region
-outside a polygon layer’s outer boundary.
+at vertices. A **face** is a maximal connected region of the plane bounded by
+edges: on a street network, the city blocks between the roads. Every bounded face
+is a cycle of edges enclosing an interior region. The **exterior face**, also
+called the unbounded face, is the region outside the outermost cycle.
 
 Once an embedding is fixed, each undirected edge has a **left** and a **right**
 side when walked in the direction the embedding assigns around each vertex.
@@ -45,12 +43,12 @@ those incidences: ``face_id`` names the face, ``edge_id`` is the border edge, an
 The function first computes a planar embedding with the Boyer-Myrvold planarity
 test, then walks faces with Boost ``planar_face_traversal``. Only **undirected**
 structure matters: ``cost`` and ``reverse_cost`` are ignored. The input must be
-**planar**; otherwise the call fails with an error. When planarity is unknown,
-run :doc:`pgr_isPlanar` first. The result has one row per edge-side pair, so a
-graph with :math:`|E|` edges yields :math:`2|E|` rows when extraction
-succeeds. Face identifiers come from the traversal; one is the exterior face.
-An empty edge SQL emits a notice and returns no rows. Running time is
-:math:`O(|V| + |E|)`.
+**planar**; otherwise the call raises ``ERROR: Graph is not planar``. When
+planarity is unknown, run :doc:`pgr_isPlanar` first. The result has one row per
+edge-side pair, so a graph with :math:`|E|` edges yields :math:`2|E|` rows when
+extraction succeeds. Face identifiers come from the traversal; one is the
+exterior face. An empty edge SQL emits a notice and returns no rows. Running
+time is :math:`O(|V| + |E|)`.
 
 The number of faces obeys **Euler's formula**. On a connected planar graph
 :math:`|V| - |E| + |F| = 2`. The traversal walks the outer face of every
@@ -65,7 +63,7 @@ relation generalises to :math:`|V| - |E| + |F| = 2C`. On the
 
 * Boyer, J. M. and Myrvold, W. J. (2004). On the Cutting Edge: Simplified O(n)
   Planarity Algorithms by Edge Addition. Journal of Graph Algorithms and
-  Applications, 8(3), 241–273.
+  Applications, 8(3), 241-273.
 
 * Boost Graph Library: `Planar Face Traversal
   <https://www.boost.org/libs/graph/doc/planar_face_traversal.html>`__
@@ -133,16 +131,16 @@ to scale; run example 6) to count how many edge incidences belong to each
         1 -- 3 [label="6"];
         3 -- 7 [label="7"];
         7 -- 11 [label="8"];
-        1 -- 9 [label="9"];
-        3 -- 12 [label="10"];
-        11 -- 16 [label="11"];
-        12 -- 13 [label="12"];
-        11 -- 14 [label="13"];
-        14 -- 15 [label="14"];
-        2 -- 4 [label="15"];
-        4 -- 17 [label="16"];
-        16 -- 17 [label="17"];
-        8 -- 12 [label="18"];
+        11 -- 16 [label="9"];
+        7 -- 8 [label="10"];
+        11 -- 12 [label="11"];
+        8 -- 12 [label="12"];
+        12 -- 17 [label="13"];
+        8 -- 9 [label="14"];
+        16 -- 17 [label="15"];
+        15 -- 16 [label="16"];
+        2 -- 4 [label="17"];
+        13 -- 14 [label="18"];
     }
 
 A **triangle** has one bounded interior face and the exterior face. Each of the
@@ -231,8 +229,9 @@ Non-planar graphs
 
 Face extraction requires a planar graph. Subgraphs containing a :math:`K_5` or
 :math:`K_{3,3}` minor cannot be embedded without crossings; ``pgr_planarFaces``
-raises an error in that case. The :doc:`pgr_isPlanar` documentation shows a
-non-planar subgraph of ``sampledata`` (edges highlighted in blue in the figure).
+raises ``ERROR: Graph is not planar`` in that case. The :doc:`pgr_isPlanar`
+documentation shows a non-planar subgraph of ``sampledata`` (edges highlighted in
+blue in the figure).
 
 .. figure:: images/nonPlanar.png
    :scale: 50%
@@ -318,13 +317,14 @@ Edges :math:`8`, :math:`10`, and :math:`12` connect vertices
 .. rubric:: Explanation
 
 * The count is **6** (:math:`2 \times 3` edges).
-* Three edges on four vertices still yield two faces in the embedding (compare the six rows in example 2)).
+* Three edges on four vertices still yield two faces in the embedding (compare
+  the six rows in example 2)).
 
 5) Row count on a larger subgraph
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-Edges with ``id < 10`` are the same subgraph used in several
-several metrics-module examples.
+Edges with ``id < 10`` are the same subgraph used in several metrics-module
+examples.
 
 .. figure:: /images/Fig6-undirected.png
    :scale: 50%
@@ -387,7 +387,7 @@ Aggregate the main example result by ``face_id``.
 Face-walk illustration (subgraph ``id < 10``)
 ...............................................................................
 
-The following sketch suggests how a face traversal cycles through directed
+The following sketch shows how a face traversal cycles through directed
 half-edges. Labels are ``edge_id`` values from ``sampledata``.
 
 .. graphviz::
