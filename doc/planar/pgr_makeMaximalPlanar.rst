@@ -27,8 +27,8 @@
 Description
 -------------------------------------------------------------------------------
 
-``pgr_makeMaximalPlanar`` identifies the missing edges that need to be added to an
-existing planar graph to make it maximal planar.
+``pgr_makeMaximalPlanar`` identifies the missing edges that need to be added to
+the connected components of a planar graph to make each eligible component maximal planar.
 
 A planar graph is considered **maximal planar** (or fully triangulated) if no additional
 edges can be added to it without violating its planarity. In a maximal planar graph,
@@ -39,7 +39,8 @@ The main characteristics are:
 * Works for **undirected** graphs.
 * Works for **planar** graphs only.
 * If the input graph is not planar, it returns an **empty set**.
-* Returns a list of all new edges needed to triangulate the graph and make it maximal planar.
+* Returns a list of all new edges needed to triangulate the eligible components of the graph and make them maximal planar.
+* The augmentation applies independently to eligible components (components with 3 or more vertices). Components with fewer than 3 vertices are skipped and returned unchanged.
 * The algorithm does not consider traversal costs in the calculations.
 * The algorithm does not consider geometric topology in the calculations.
 * Running time: :math:`O(|V_G| + |E_G|)` where :math:`G(V_G, E_G)` is the input graph.

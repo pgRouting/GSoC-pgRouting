@@ -16,7 +16,7 @@ Planar - Family of functions
 .. experimental-start
 
 * :doc:`pgr_isPlanar` - Returns a boolean depending upon the planarity of the graph.
-* :doc:`pgr_makeMaximalPlanar` - Returns edges to add to a biconnected planar graph to make it maximal planar.
+* :doc:`pgr_makeMaximalPlanar` - Returns edges to add to a planar graph to make its eligible components maximal planar.
 
 .. experimental-end
 
