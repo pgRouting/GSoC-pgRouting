@@ -51,11 +51,20 @@ To see all issues & pull requests closed by this release see the
   process
 * :issue:`3100`: Coloring: create and use a process & driver
 * :issue:`3113`: Components: Integrate into existing process/driver pair
+* :issue:`3129`: breadthFirstSearch: Reorganize into traversal
+* :issue:`3131`: binaryBreadthFirstSearch: Integrate into existing
+  process/driver pair
 
 .. rubric:: Bug Fixes
 
 * :issue:`3101`: pgr_edgeColoring not building graph correctly
 
+
+.. rubric:: New experimental functions.
+
+* Planar
+
+  * pgr_makeMaximalPlanar
 
 .. rubric:: Summary of changes by function
 
@@ -65,12 +74,58 @@ To see all issues & pull requests closed by this release see the
      :start-after: Version 4.1.0
      :end-before: .. rubric
 
+* pgr_makeMaximalPlanar
+
+  .. include:: pgr_makeMaximalPlanar.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
+
 pgRouting 4.0
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. contents:: Contents
    :local:
    :depth: 1
+
+pgRouting 4.0.2 Release Notes
+-------------------------------------------------------------------------------
+
+To see all issues & pull requests closed by this release see the
+:milestone:`4.0.2`
+
+4.0.2 Summary of changes by function
+...............................................................................
+
+* pgr_dijkstraVia
+
+  .. include:: pgr_dijkstraVia.rst
+     :start-after: Version 4.0.2
+     :end-before: .. rubric
+
+* pgr_drivingDistance
+
+  .. include:: pgr_drivingDistance.rst
+     :start-after: Version 4.0.2
+     :end-before: .. rubric
+
+* pgr_withPointsDD
+
+  .. include:: pgr_withPointsDD.rst
+     :start-after: Version 4.0.2
+     :end-before: .. rubric
+
+* pgr_withPointsVia
+
+  .. include:: pgr_withPointsVia.rst
+     :start-after: Version 4.0.2
+     :end-before: .. rubric
+
+4.0.2 Bug Fixes
+...............................................................................
+
+* :issue:`3110`: pgr_dijkstraVia throws std::bad_alloc when a node does not exist
+* :issue:`3091`: Catchment functions when negative distance do not have a
+  standardized behaviour
 
 pgRouting 4.0.1 Release Notes
 -------------------------------------------------------------------------------
@@ -315,6 +370,7 @@ Summary of changes by function
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
+
 * pgr_maxCardinalityMatch
 
   .. include:: pgr_maxCardinalityMatch.rst
@@ -481,6 +537,7 @@ New experimental functions.
 
   * :issue:`2954`: pgr_kingOrdering
   * :issue:`2955`: pgr_sloanOrdering
+
 
 SQL signatures and output standardization
 ...............................................................................

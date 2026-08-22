@@ -127,9 +127,6 @@ void do_coloring(
                             fn_makeMaximalPlanar;
                         results = fn_makeMaximalPlanar.makeMaximalPlanar(undigraph);
                         log << fn_makeMaximalPlanar.get_log();
-                        std::sort(results.begin(), results.end(), [](const II_t_rt &a, const II_t_rt &b) {
-            return a.d1 < b.d1 || (a.d1 == b.d1 && a.d2 < b.d2);
-        });
                     }
                     break;
                 case EDGECOLORING:

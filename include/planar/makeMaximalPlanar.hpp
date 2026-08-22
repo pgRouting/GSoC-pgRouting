@@ -61,6 +61,10 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
      typedef typename G::E_i E_i;
 
      std::vector<II_t_rt> makeMaximalPlanar(G &graph) {
+         if (boost::num_vertices(graph.graph) < 3) {
+             return std::vector<II_t_rt>();
+         }
+
          /* Process based on connected components */
          std::vector<size_t> component(boost::num_vertices(graph.graph));
          auto num_components = boost::connected_components(
@@ -124,6 +128,10 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
      };
 
      std::vector<II_t_rt> generateMakeMaximalPlanar(G &graph) {
+         if (boost::num_vertices(graph.graph) < 3) {
+             return std::vector<II_t_rt>();
+         }
+
          log << "Number of edges before: " << boost::num_edges(graph.graph) << "\n";
 
          E_i ei, ei_end;
@@ -162,9 +170,6 @@ class Pgr_makeMaximalPlanar : public pgrouting::Pgr_messages {
              return std::vector<II_t_rt>();
          }
 
-         if (boost::num_vertices(graph.graph) < 3) {
-             return std::vector<II_t_rt>();
-         }
 
          std::vector<II_t_rt> results;
          planar_visitor vis(results, graph);
